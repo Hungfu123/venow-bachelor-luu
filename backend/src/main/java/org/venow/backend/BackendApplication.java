@@ -1,13 +1,13 @@
-package org.venow.eventorganizer;
+package org.venow.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EventorganizerApplication {
+public class BackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EventorganizerApplication.class, args);
+		SpringApplication.run(BackendApplication.class, args);
 	}
 
 }
