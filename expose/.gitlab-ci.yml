@@ -1,0 +1,19 @@
+image: $CI_REGISTRY/cn-tsn/general/templates/latex
+
+pdf:
+  script:
+    - latexmk
+  artifacts:
+    paths:
+      - master.pdf
+
+
+deploy:
+  stage: deploy
+  script:
+    - apt-get update && apt-get -y install ca-certificates sshpass openssh-client zip
+    - mkdir -p /root/.ssh && ssh-keyscan wwwcn.cs.uni-duesseldorf.de > /root/.ssh/known_hosts
+    - zip -r abschlussarbeiten_vorlage.zip . -x .git/\*
+    - echo -e "cd /teaching\n put abschlussarbeiten_vorlage.zip . \n bye" | sshpass -e sftp -oBatchMode=no -b - teaching@wwwcn.cs.uni-duesseldorf.de
+  only:
+    - master
