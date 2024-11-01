@@ -1,0 +1,207 @@
+% !TeX document-id = {05f45447-adab-45a1-81bc-52e6257b709a}
+% !TeX TXS-program:compile = txs:///pdflatex/[--shell-escape]
+\documentclass[12pt,a4paper,twoside=false,% twoside=true zum drucken!
+%BCOR=12mm,% Bindungskorrektur. aka, wieviel von der Seite geht durch die Bindung in der Mitte verloren? 
+DIV=14,%
+headsepline,%
+cleardoublepage=empty,%
+chapterprefix,%
+parskip,%
+listof=totoc,%
+index=totoc,%
+bibliography=totoc]{scrbook}
+
+\usepackage[english, ngerman]{babel} % Deutsch
+%\usepackage[ngerman, english]{babel} % Englisch
+
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[utf8]{inputenc} % erlaubt direkte Eingabe von Unicode-Zeichen, insbesondere Umlaute
+\usepackage[T1]{fontenc}
+\usepackage[style=alphabetic, backend=bibtex]{biblatex}
+\usepackage{mathptmx}
+\usepackage[scaled=0.92]{helvet}
+\usepackage{courier}
+\usepackage[calc]{datetime2}
+\usepackage{amsmath}
+\makeatletter
+\def\displaymath{\typeout{*** Do not use DISPLAYMATH. Use \[...\] instead ***}}
+\def\eqnarray{\typeout{*** Do not use EQNARRAY(*). Use align(*)-environment instead ***}}
+\makeatother
+\usepackage{ifthen}
+\usepackage{amsfonts}
+\usepackage{amstext}
+\usepackage{subfigure}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{ifpdf}
+\usepackage{iflang}
+\usepackage{makeidx}
+\usepackage{nomencl}
+\usepackage{setspace}
+\usepackage{lscape}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{todonotes}
+\usepackage{listings}
+\usepackage{float}
+
+\usepackage[chapter]{minted}
+\usepackage{csquotes}
+\usepackage[%
+    per-mode=symbol,
+    exponent-product=\cdot,
+    prefix-mode=combine-exponent,
+    drop-zero-decimal
+    ]{siunitx}
+\KOMAoptions{DIV=last} 
+
+
+% first include the hyperref package, then the cite package
+\usepackage[plainpages=false,pdfpagelabels,breaklinks=true]{hyperref}
+\usepackage{hyperref}
+\IfLanguageName{ngerman}{
+\usepackage[german]{cleveref}
+
+
+}{
+\usepackage{cleveref}
+}
+
+\renewcommand{\listoflistingscaption}{Listings}
+
+\def\mauve{0}
+
+\input{thesis_meta}
+
+\IfLanguageName{ngerman}{
+    \newcommand{\thesistype}{\graduationlevel{}}
+}{
+    \ifthenelse{\equal{\graduationlevel}{Seminar}}
+    {% Seminararbeit
+        \newcommand{\thesistype}{Seminar Paper}
+    }
+    {% Abschlussarbeit
+        \newcommand{\thesistype}{\graduationlevel{}'s Thesis}
+    }
+}
+\newcommand{\thesistypegerman}{\graduationlevel{}arbeit}
+
+\ifpdf
+    \definecolor{brown}{cmyk}{0, 0.81, 1, 0.60}
+    \hypersetup{%
+      pdftitle={\thesistitle{}},
+      pdfsubject={\thesistype{}},
+      pdfauthor={\thesisauthor{}},
+      colorlinks=false, urlcolor=blue, citecolor=brown,
+      bookmarksnumbered=true,
+    }
+\else   
+\fi
+
+\DefineBibliographyStrings{ngerman}{%
+    mathesis = {Masterarbeit},
+    bathesis = {Bachelorarbeit},
+    phdthesis = {Dissertation}
+}
+
+\DefineBibliographyStrings{english}{%
+    mathesis = {Master's Thesis},
+    bathesis = {Bachelor's Thesis},
+    phdthesis = {PhD Thesis}
+}
+
+\listfiles
+\makeindex
+
+% Include all BibTeX resources in the preambel
+\addbibresource{bib/example.bib}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{lmodern}
+\usepackage{verbatim}
+\begin{document}
+\onehalfspacing
+
+\frontmatter
+
+\include{static/titlepage}
+
+\cleardoublepage
+
+%\input{abstract}
+
+\cleardoublepage
+
+%\input{acknowledgements}
+
+
+\cleardoublepage
+
+\pdfbookmark[0]{\contentsname}{content}
+\tableofcontents
+
+%\listoffigures % entfernen, wenn leer
+%
+%\listoftables % entfernen, wenn leer
+
+%\listoflistings % entfernen, wenn leer
+
+\mainmatter
+
+\cleardoublepage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%    Beginning of the main document        %%
+%%                                          %%
+%%    Include your tex-files with \input{}  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Betreeung
+\input{betreuung}
+
+%Problemstellung/Motivation
+\input{intro}
+
+%Ziel der Arbeit
+\input{problem}
+
+%Minimalanforderungen
+\input{related}
+
+%Erweiterungen
+\input{methode}
+
+% Auskommentieren, falls kein Anhang notwendig
+
+%Vorläufige Gliederung
+\input{ressource}
+
+%\input{hindernis}
+
+% Zeitplan
+\input{stundenplan}
+
+\input{anhangtwo}
+%\input{help}
+%\input{anhang}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%    End of the main document              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\backmatter
+
+\printbibliography
+
+\cleardoublepage
+
+\printindex
+
+%\include{static/declaration}
+
+\cleardoublepage
+
+%\input{cd}
+
+\end{document}

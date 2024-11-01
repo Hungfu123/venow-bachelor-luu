@@ -1,0 +1,15 @@
+\chapter{Minimalanforderungen}
+
+Damit die Bachelorarbeit als bestanden gilt, müssen die folgenden minimalen Ziele erreicht werden:
+
+\begin{itemize}
+	\item \textbf{Theoretische Analyse}: Untersuchung und Erklärung der Testpyramide und des Testing-Honeycomb-Modells, einschließlich ihrer spezifischen Anwendung auf Unit- und Integrationstests. Dabei wird die unterschiedliche Rolle der H2-Datenbank in der Testpyramide und der produktionsnahen Datenbank in Honeycomb dargestellt.
+	
+	\item \textbf{Vergleich von Datenbanklösungen}: Analyse der H2-Datenbank im Vergleich zu produktionsnahen Datenbanken, bereitgestellt über Testcontainers, mit Fokus auf Laufzeit und spezifische Herausforderungen. Die Analyse berücksichtigt, dass das Testing-Honeycomb-Modell keine In-Memory-Datenbank (wie H2) für Integrationstests nutzt.
+	
+	\item \textbf{Implementierung von Testszenarien für einen zentralen Use Case}: Entwicklung von Tests für 1-2 zentrale Funktionalitäten der Webanwendung, um die beiden Teststrategien (Testpyramide und Testing-Honeycomb) in Kombination mit den unterschiedlichen Datenbanklösungen am selben Use Case zu bewerten. Der Aufwand für die Entwicklung und Durchführung der Tests wird dokumentiert, insbesondere im Hinblick auf die erzielte Testabdeckung und die Grenzen der H2-Datenbank im Vergleich zu Testcontainers.
+	
+	\item \textbf{Empirische Auswertung}: Durchführung der Tests, um Daten zu Laufzeit, Testabdeckung und spezifischen Schwierigkeiten zu erfassen, die bei der Nutzung von H2 auftreten. Die Ergebnisse werden mit Testcontainers verglichen, um die Auswirkungen der Datenbankwahl auf denselben Use Case darzustellen. Der Testaufwand wird festgehalten, um Effizienzunterschiede der Teststrategien zu verdeutlichen.
+	
+	\item \textbf{Visualisierung und Empfehlungen}: Darstellung der Ergebnisse in klaren, verständlichen Diagrammen und Formulierung von Empfehlungen basierend auf den analysierten Daten. Die Empfehlung soll die Effizienz der Kombination aus Teststrategie und Datenbanklösung hervorheben, abhängig von der Anwendung im zentralen Use Case und der erzielten Testabdeckung.
+\end{itemize}

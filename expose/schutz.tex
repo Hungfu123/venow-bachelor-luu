@@ -1,0 +1,42 @@
+\chapter{Prävention und Behebung}
+
+Dieses Kapitel erläutert die notwendigen Maßnahmen, um die Log4Shell-Schwachstelle effektiv zu verhindern, mögliche Auswirkungen zu mildern und langfristig sichere IT-Umgebungen zu schaffen \hyperref[bib:MLOG]{[MLOG]}.
+
+\section{Vorbeugung gegen Sicherheitslücken}
+
+Um Schwachstellen wie Log4Shell von vornherein zu vermeiden, ist es entscheidend, dass die Softwareentwicklungsprozesse durchdacht und sicher gestaltet werden. Dazu gehören sichere Programmierpraktiken, regelmäßige Überprüfungen des Codes sowie der Einsatz von Tools zur Erkennung von Schwachstellen (beispielsweise statische und dynamische Code-Analyse-Tools). Ebenso wichtig ist die sorgfältige Konfiguration von Anwendungen, insbesondere wenn Drittanbieter-Bibliotheken wie Log4j verwendet werden \hyperref[bib:CISA]{[CISA]}.
+
+\subsection{Sensibilisierung und Schulung}
+
+Entwickler und Systemadministratoren müssen regelmäßig über potenzielle Sicherheitsrisiken und bewährte Verfahren informiert werden. Schulungen zur IT-Sicherheit und die Förderung eines sicherheitsbewussten Arbeitsumfelds tragen wesentlich dazu bei, die Wahrscheinlichkeit von Sicherheitslücken zu verringern.
+
+\section{Maßnahmen nach der Entdeckung der Schwachstelle}
+
+Nach Bekanntwerden der Log4Shell-Schwachstelle war es unerlässlich, schnell zu handeln, um mögliche Schäden einzudämmen. Verschiedene internationale Sicherheitsbehörden, darunter die CISA, das FBI, die NSA sowie Organisationen aus Australien, Kanada, Neuseeland und Großbritannien, haben umgehend reagiert und Empfehlungen für betroffene Organisationen ausgesprochen.
+
+Die folgenden Maßnahmen sollten ergriffen werden, um das Risiko, das von Log4Shell und anderen ähnlichen Schwachstellen ausgeht, zu minimieren \hyperref[bib:MLOG]{[MLOG]}:
+
+\begin{itemize}
+	\item \textbf{Identifizierung betroffener Systeme:} Es ist wichtig, alle Systeme, die die Log4j-Bibliothek nutzen, zu identifizieren und zu überprüfen, inwieweit sie von Log4Shell und ähnlichen Schwachstellen betroffen sind. Dazu sollte eine vollständige Inventarisierung der IT- und Cloud-Ressourcen erfolgen.
+	\item \textbf{Schnelles Update:} Alle betroffenen Systeme sollten umgehend auf die neueste Version von Log4j aktualisiert werden, insbesondere auf Version 2.17.0 für Java 8 oder Version 2.12.3 für Java 7, um bekannte Schwachstellen wie CVE-2021-44228, CVE-2021-45046 und CVE-2021-45105 zu schließen.
+	
+	\item \textbf{Überwachung und Reaktion:} Es wird empfohlen, proaktiv nach Anzeichen einer Kompromittierung zu suchen. Organisationen sollten davon ausgehen, dass Systeme, die Log4j verwenden, potenziell kompromittiert sind, und entsprechende forensische Untersuchungen einleiten.
+	
+	\item \textbf{Netzwerkisolierung und Firewall-Nutzung:} Insbesondere Systeme, die nicht sofort gepatcht werden können, sollten isoliert und überwacht werden. Zusätzliche Schutzmaßnahmen, wie die strikte Segmentierung von Netzwerken und der Einsatz von Firewalls, helfen, den Datenverkehr zu kontrollieren und das Risiko einer Ausnutzung zu minimieren.
+	
+	\item \textbf{Vorübergehende Maßnahmen:} Falls ein sofortiges Update nicht möglich ist, sollten vorübergehende Schutzmaßnahmen ergriffen werden, wie z.B. die Deaktivierung von JNDI-Lookups durch geeignete Konfigurationsänderungen.
+\end{itemize}
+
+\section{Langfristige Sicherheitsstrategien}
+
+\subsection{Erkennung von Bedrohungen}
+
+Die Ereignisse um Log4Shell verdeutlichen, wie wichtig es ist, robuste Systeme zur Erkennung von Angriffen zu haben. Die kontinuierliche Überwachung von Protokolldateien ist hierbei essenziell. Systeme zur Angriffserkennung sollten in der Lage sein, verdächtige Aktivitäten zu identifizieren, die typischerweise bei Angriffen wie Log4Shell auftreten. Der Einsatz spezialisierter Tools zur Erkennung von JNDI-Injektionen und ähnlichen Bedrohungen ist daher stark zu empfehlen \hyperref[bib:CISA]{[CISA]}.
+
+\subsection{Schutz vor neuen Angriffsmethoden}
+
+Da Angreifer ständig neue Techniken entwickeln, um Sicherheitsvorkehrungen zu umgehen, ist es wichtig, Web Application Firewalls (WAFs) so zu konfigurieren, dass sie gezielt auf bestimmte Angriffsarten reagieren können. Regelmäßige Updates und Anpassungen der Konfigurationen sind notwendig, um sicherzustellen, dass auch neueste Angriffstechniken erkannt und abgewehrt werden können.
+
+\subsection{Fortlaufende Verbesserung der Sicherheitsstrategien}
+
+Die Lehren aus der Log4Shell-Schwachstelle sollten dazu genutzt werden, die eigenen Sicherheitsstrategien kontinuierlich zu verbessern. Dazu gehören regelmäßige Sicherheitsaudits, die Einführung eines automatisierten Patch-Managements und die gezielte Weiterbildung von IT-Mitarbeitern. Regelmäßige Überprüfungen und Aktualisierungen von Systemen und Anwendungen, insbesondere solcher, die Drittanbieter-Komponenten nutzen, sind entscheidend, um zukünftige Sicherheitslücken frühzeitig zu erkennen und zu beheben.

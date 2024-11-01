@@ -1,0 +1,24 @@
+\chapter{Problemstellung/Motivation}
+
+
+In der modernen Softwareentwicklung ist das Testen von Anwendungen unerlässlich, um deren Qualität und Zuverlässigkeit sicherzustellen. Zwei  Teststrategien, die Testpyramide und das Testing-Honeycomb-Modell, bieten unterschiedliche Ansätze zur Strukturierung von Tests. Eine weitere Sache für Softwaretestens ist die Wahl der Datenbanklösung: H2 wird häufig als leichtgewichtige, eingebettete Datenbank genutzt , während produktionsnahe Datenbanken, bereitgestellt durch Testcontainers, eine realistischere Testumgebung bieten.
+
+\section{Motivation des gewählten Anwendungsfalls}
+Diese Bachelorarbeit konzentriert sich auf eine Webanwendung, die als Plattform für die Kommunikation und Organisation zwischen Schaustellern, Veranstaltern und Ausstellern auf Messen dient. Die Anwendung ermöglicht es Ausstellern und Veranstaltern, nach Events und Gelegenheiten zu suchen. Um die Qualität dieser Webanwendung zu gewährleisten, ist es entscheidend, die optimale Kombination aus Teststrategie und Datenbanklösung zu finden. Ohne eine fundierte Analyse ist es für Entwickler schwierig, die beste Entscheidung für ihre Testumgebungen zu treffen. Diese Arbeit zielt darauf ab, das Problem der optimalen Kombination von Teststrategien und Datenbanklösungen zu untersuchen, um die Effizienz und Effektivität der Testprozesse zu maximieren
+
+
+\section{Anwendungsfallbeschreibung}
+Die Webanwendung dient als Plattform, auf der sich Schausteller online auf Veranstaltungen bewerben und Veranstalter diese Bewerbungen zentral verwalten können. Die wichtigsten Funktionen der Anwendung sind:
+
+\begin{itemize}
+	\item \textbf{Benutzerregistrierung und -verwaltung:} Sowohl Schausteller als auch Veranstalter können sich registrieren und ein Profil erstellen. Schausteller haben die Möglichkeit, relevante Informationen wie Kontaktdaten, Firmeninformationen und Standdetails anzugeben. Veranstalter können Veranstaltungsprofile anlegen, um Details wie Datum, Standort und verfügbare Standplätze anzugeben.
+	
+	\item \textbf{Bewerbungsprozess:} Schausteller können sich mit wenigen Klicks auf gelistete Veranstaltungen bewerben. Veranstalter erhalten eine Übersicht über alle Bewerbungen und können diese direkt in der Anwendung annehmen oder ablehnen.
+	
+	\item \textbf{Automatische Vertragserstellung und -verwaltung:} Nach der Annahme einer Bewerbung wird automatisch ein Vertrag generiert, der von beiden Parteien online eingesehen und digital bestätigt werden kann.
+	
+	
+	\item \textbf{Platzzuweisung:} Veranstalter können Standplätze verwalten und zuweisen.
+	
+\end{itemize}
+

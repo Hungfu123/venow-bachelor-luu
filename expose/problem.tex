@@ -1,0 +1,21 @@
+\chapter{Ziel der Arbeit}
+
+Das Ziel dieser Bachelorarbeit ist es, die Effektivität der Testpyramide und des Testing-Honeycomb-Modells im Kontext unterschiedlicher Datenbanklösungen (H2 vs. produktionsnahe Datenbanken mittels Testcontainers) zu untersuchen. Dabei wird analysiert, wie sich Aufwand und Effizienz der beiden Teststrategien unterscheiden und welche Herausforderungen sich durch die Nutzung verschiedener Datenbanken ergeben. Da das Testing-Honeycomb-Modell auf Integrationstests und End-to-End-Tests mit einer produktionsnahen Datenbank setzt, kommen Unit-Tests hier zwar zum Einsatz, jedoch in geringerem Umfang als bei der Testpyramide, wo sie eine zentrale Rolle spielen.
+
+Für die Untersuchung wird eine Webanwendung zur Veranstaltungsorganisation als Praxisbeispiel herangezogen, um die Anwendungsfälle konsistent zu halten und einen direkten Vergleich der Teststrategien zu ermöglichen. Im Fokus stehen dabei sechs zentrale Aspekte:
+
+\begin{itemize}
+	\item \textbf{Teststrategien für spezifische Anwendungsfälle}: Analyse und Vergleich der Testpyramide (mit H2-Datenbank und starkem Fokus auf Unit-Tests) und des Testing-Honeycomb-Modells (mit produktionsnaher Datenbank via Testcontainers und reduziertem Anteil an Unit-Tests).
+	
+	\item \textbf{Herausforderungen bei der Nutzung von H2}: Dokumentation der spezifischen Schwierigkeiten, die bei der Verwendung von H2 in Integrationstests auftreten, und Vergleich, wie Testcontainers diese durch realistischere Testbedingungen abmildern könnte.
+	
+	\item \textbf{Datenbankwahl im Integrationskontext}: Untersuchung der Relevanz der Datenbankwahl bei der Teststrategie, wobei das Testing-Honeycomb-Modell auf produktionsnahe Datenbanken ausgelegt ist, während die Testpyramide auf H2-Datenbanktests zurückgreift.
+	
+	\item \textbf{Aufwand und Nutzen}: Analyse, wie der Aufwand und die Vorteile der einzelnen Testmethoden im Verhältnis stehen. Dabei wird betrachtet,  wann Unit-Tests, Integrationstests oder End-to-End-Tests eingesetzt werden sollten, um eine optimale Testabdeckung zu gewährleisten.
+	
+	\item \textbf{Testabdeckung und Effektivität}: Untersuchung, wie eine hohe Testabdeckung durch unterschiedliche Testmethoden zur Stabilität und Zuverlässigkeit der Webanwendung beiträgt.
+	
+	\item \textbf{Datenbankwahl und Testergebnisse}: Analyse der Auswirkungen der Wahl zwischen H2 und produktionsnahen Datenbanken auf die Aussagekraft und Zuverlässigkeit der Testergebnisse. Dabei wird untersucht, welche spezifischen Herausforderungen bei der Nutzung von H2 für Integrationstests auftreten und wie Testcontainers durch realistischere Testbedingungen diese Probleme mindern könnte.
+\end{itemize}
+
+Die zentrale Forschungsfrage lautet: \glqq Welche Kombination aus Teststrategie und Datenbanklösung ist in einer Webanwendung am effizientesten?\grqq \ Zur Beantwortung dieser Frage wird eine Reihe von Testszenarien entworfen und implementiert, um die beiden Modelle und ihre jeweiligen Stärken und Schwächen zu evaluieren. Basierend auf den Ergebnissen werden Empfehlungen ausgesprochen, welche Kombination aus Teststrategie und Datenbanklösung für spezifische Anwendungsfälle am sinnvollsten ist.
