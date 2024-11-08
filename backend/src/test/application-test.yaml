@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydatabase
+    username: myuser
+    password: secret
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none  # Adjust based on your needs; `none` means no schema changes
+    show-sql: true  # Optional, if you want to see SQL logs for debugging
+
+# Optional: Disable Flyway for tests if not needed
+flyway:
+  enabled: false
