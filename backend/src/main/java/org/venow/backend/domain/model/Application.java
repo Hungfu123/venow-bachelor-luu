@@ -22,7 +22,7 @@ public class Application {
     @Column(nullable = false, unique = true)
     private final UUID userId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private final UUID eventId;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")

@@ -4,5 +4,10 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class Price {
-    public int amountInCents;
+    private final int amountInCents;
+
+    public int getAmountInCents() {
+        return amountInCents;
+    }
 }
+

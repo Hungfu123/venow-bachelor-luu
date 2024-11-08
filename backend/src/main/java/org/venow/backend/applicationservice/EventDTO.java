@@ -1,0 +1,16 @@
+package org.venow.backend.applicationservice;
+
+import lombok.Builder;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Builder
+public record EventDTO(UUID eventId,
+                       String title,
+                       String description,
+                       String location,
+                       LocalDateTime startDate,
+                       LocalDateTime endDate
+) {
+}

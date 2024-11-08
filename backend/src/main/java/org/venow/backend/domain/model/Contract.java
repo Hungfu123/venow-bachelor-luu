@@ -5,13 +5,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.venow.backend.infrastructure.converter.PriceConverter;
 
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-@Entity(name = "applications")
+@Entity(name = "contracts")
 public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,7 @@ public class Contract {
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private final String terms;
 
-    @Convert(converter = Price.class)
+    @Convert(converter = PriceConverter.class)
     @Column(nullable = false)
     private final Price price;
 

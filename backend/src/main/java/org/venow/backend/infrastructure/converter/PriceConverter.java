@@ -6,7 +6,7 @@ import org.venow.backend.domain.model.Price;
 public class PriceConverter implements AttributeConverter<Price, Integer> {
     @Override
     public Integer convertToDatabaseColumn(final Price price) {
-       return price == null ?  null: price.amountInCents;
+       return price == null ?  null: price.getAmountInCents();
     }
 
     @Override

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
@@ -16,7 +17,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
     private final UUID eventId;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")
