@@ -39,6 +39,10 @@ dependencies {
 	testImplementation 'org.assertj:assertj-core:3.24.2'
 
 }
+tasks.withType(Copy) {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 
 dependencyManagement {
 	imports {
@@ -53,6 +57,7 @@ configurations {
 	}
 	honeycombRuntimeOnly {
 		canBeResolved = true
+		extendsFrom testRuntimeOnly
 		extendsFrom testRuntimeOnly
 	}
 	testpyramidImplementation {

@@ -1,9 +1,10 @@
 package org.venow.backend.infrastructure.converter;
 
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 import java.util.UUID;
-
+@Converter(autoApply = true)
 public class UUIDConverter implements AttributeConverter<UUID, String> {
     @Override
     public String convertToDatabaseColumn(final UUID uuid) {
