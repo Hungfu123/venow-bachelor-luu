@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.venow.backend.applicationservice.EventDTO;
 import org.venow.backend.applicationservice.Eventservice;
-import org.venow.backend.domain.model.Event;
 import org.venow.backend.web.reponse.EventResponse;
 
 import java.util.List;

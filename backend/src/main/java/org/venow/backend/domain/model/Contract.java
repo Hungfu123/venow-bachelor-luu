@@ -1,6 +1,5 @@
 package org.venow.backend.domain.model;
 
-import ch.qos.logback.classic.pattern.DateConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

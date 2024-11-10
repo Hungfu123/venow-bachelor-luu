@@ -17,12 +17,6 @@ java {
 	}
 }
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
 repositories {
 	mavenCentral()
 }
@@ -33,17 +27,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-mysql'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.testcontainers:junit-jupiter'
-	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 	testImplementation 'org.testcontainers:mysql'
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.assertj:assertj-core:3.24.2'
+
 }
 
 dependencyManagement {
@@ -52,7 +46,69 @@ dependencyManagement {
 	}
 }
 
-tasks.named('test') {
+configurations {
+	honeycombImplementation {
+		canBeResolved = true
+		extendsFrom testImplementation
+	}
+	honeycombRuntimeOnly {
+		canBeResolved = true
+		extendsFrom testRuntimeOnly
+	}
+	testpyramidImplementation {
+		canBeResolved = true
+		extendsFrom testImplementation
+	}
+	testpyramidRuntimeOnly {
+		canBeResolved = true
+		extendsFrom testRuntimeOnly
+	}
+}
+
+sourceSets {
+	honeycomb {
+		java {
+			srcDir 'src/honeycomb/java'
+		}
+		resources {
+			srcDir 'src/honeycomb/resources'
+		}
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+
+	testpyramid {
+		java {
+			srcDir 'src/testpyramid/java'
+		}
+		resources {
+			srcDir 'src/testpyramid/resources'
+		}
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+}
+
+task honeycombTest(type: Test) {
+	group = 'verification'
+	description = 'Run Honeycomb model integration tests'
+	testClassesDirs = sourceSets.honeycomb.output.classesDirs
+	classpath = sourceSets.honeycomb.runtimeClasspath
 	useJUnitPlatform()
 }
 
+task testPyramidTest(type: Test) {
+	group = 'verification'
+	description = 'Run Test Pyramid unit tests'
+	testClassesDirs = sourceSets.testpyramid.output.classesDirs
+	classpath = sourceSets.testpyramid.runtimeClasspath
+	useJUnitPlatform()
+}
+
+tasks.named('check') {
+	dependsOn 'honeycombTest', 'testPyramidTest'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
