@@ -23,6 +23,6 @@ public class EventRepositoryImpl implements EventRepository {
 
     @Override
     public Optional<Event> findById(UUID id) {
-        return repository.findById(id);
+        return repository.findEventByEventId(id);
     }
 }

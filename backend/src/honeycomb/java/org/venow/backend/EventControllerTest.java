@@ -14,7 +14,7 @@ import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 
-public class EventControllerTest extends TestBase {
+ class EventControllerTest extends TestBase {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -24,10 +24,11 @@ public class EventControllerTest extends TestBase {
     @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
     public void test() {
         ResponseEntity<String> response =
-                restTemplate.exchange("http://localhost:" + port + "/events",
+                restTemplate.exchange("http://localhost:{port}/events",
                         HttpMethod.GET,
                         new HttpEntity<>(null),
-                        String.class);
+                        String.class,
+                        port);
 
         assertThat(response.getStatusCode()).as("Checking for status code").isEqualTo(HttpStatus.OK);
 
