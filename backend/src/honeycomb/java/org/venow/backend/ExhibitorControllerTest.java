@@ -10,9 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.time.format.DateTimeFormatter;
+
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ShowmannControllerTest extends TestBase{
+class ExhibitorControllerTest extends TestBase{
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -24,7 +27,7 @@ class ShowmannControllerTest extends TestBase{
     void userGetsOnEventPage() {
         final ResponseEntity<String> response = restTemplate
                 .exchange(
-                        "http://localhost:{port}showman/{userId}/event/{eventId}",
+                        "http://localhost:{port}exhibitor/{userId}/event/{eventId}",
                         HttpMethod.GET,
                         new HttpEntity<>(null),
                         String.class,
@@ -32,5 +35,20 @@ class ShowmannControllerTest extends TestBase{
     assertThat(response.getStatusCode())
             .as("check if HTTP Status 200 OK")
             .isEqualTo(HttpStatus.OK);
+
+        assertThatJson(response.getBody()).as("check eventId").node("eventId").isEqualTo(EVENT_1.getEventId().toString());
+        assertThatJson(response.getBody()).as("check title").node("title").isEqualTo(EVENT_1.getTitle());
+        assertThatJson(response.getBody()).as("check description").node("description").isEqualTo(EVENT_1.getDescription());
+        assertThatJson(response.getBody()).as("check location").node("location").isEqualTo(EVENT_1.getLocation());
+        assertThatJson(response.getBody()).as("check startDate")
+                .node("startDate").isEqualTo(EVENT_1.getStartDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        assertThatJson(response.getBody()).as("check endDate")
+                .node("endDate").isEqualTo(EVENT_1.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+
+
     }
-}
+    }
+
+
+
+

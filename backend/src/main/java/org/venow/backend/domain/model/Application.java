@@ -11,18 +11,24 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Entity(name = "applications")
+@Table(
+        name = "applications",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"userId", "eventId"})
+        }
+)
 public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private final UUID applicationId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private final UUID userId;
 
-    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    @Column(nullable = false, columnDefinition = "VARCHAR(36)")
     private final UUID eventId;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")

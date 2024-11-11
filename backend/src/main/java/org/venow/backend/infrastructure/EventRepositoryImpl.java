@@ -15,7 +15,6 @@ public class EventRepositoryImpl implements EventRepository {
 
     private final JpaEventRepository repository;
 
-
     @Override
     public List<Event> findAll() {
         return repository.findAll();

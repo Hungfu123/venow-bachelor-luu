@@ -25,4 +25,5 @@ VALUES ('550e8400-e29b-41d4-a716-446655440000', 'Fischstaebchen-Band', 'A large 
         'Convention Center', '2024-07-15 09:00:00', '2024-07-15 17:00:00', '123e4567-e89b-12d3-a456-426614174001');
 
 INSERT INTO users (user_id, email, password, role)
-VALUES ('df333e19-6ed6-4c8b-b86e-ef78943a98a4', 'showman@example.com', 'password123', 'EXHIBITOR');
+VALUES ('df333e19-6ed6-4c8b-b86e-ef78943a98a4', 'showman@example.com', 'password123', 'EXHIBITOR'),
+        ('af333e19-6ed6-4c8b-b86e-ef78943a98a2', 'showmantest@example.com', 'password123', 'EXHIBITOR');

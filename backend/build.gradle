@@ -72,23 +72,17 @@ configurations {
 
 sourceSets {
 	honeycomb {
-		java {
-			srcDir 'src/honeycomb/java'
-		}
-		resources {
-			srcDir 'src/honeycomb/resources'
-		}
+			java.srcDir 'src/honeycomb/java'
+			resources.srcDir 'src/honeycomb/resources'
+
 		compileClasspath += sourceSets.main.output
 		runtimeClasspath += sourceSets.main.output
 	}
 
 	testpyramid {
-		java {
-			srcDir 'src/testpyramid/java'
-		}
-		resources {
-			srcDir 'src/testpyramid/resources'
-		}
+		java.srcDir 'src/testpyramid/java'
+		resources.srcDir 'src/testpyramid/resources'
+
 		compileClasspath += sourceSets.main.output
 		runtimeClasspath += sourceSets.main.output
 	}
