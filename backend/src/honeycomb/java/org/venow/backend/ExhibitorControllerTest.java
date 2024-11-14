@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ExhibitorControllerTest extends TestBase{
+class ExhibitorControllerTest extends TestBase {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -32,10 +32,10 @@ class ExhibitorControllerTest extends TestBase{
                         HttpMethod.GET,
                         new HttpEntity<>(null),
                         String.class,
-                        port, EXHIBITOR_ID_1,EVENT_ID_1);
-    assertThat(response.getStatusCode())
-            .as("check if HTTP Status 200 OK")
-            .isEqualTo(HttpStatus.OK);
+                        port, EXHIBITOR_ID_1, EVENT_ID_1);
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Status 200 OK")
+                .isEqualTo(HttpStatus.OK);
 
         String jsonBody = response.getBody();
         assertThatJson(response.getBody())
@@ -133,6 +133,29 @@ class ExhibitorControllerTest extends TestBase{
                 .isEqualTo("User has already applied for this event.");
     }
 
+    @Test
+    @DisplayName("another exhibitor apply for the same event")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    void anotherExhibitorApplyForSameEvent() {
+
+        ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
+
+        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:{port}exhibitor/{userId}/event/{eventId}/application",
+                        HttpMethod.POST,
+                new HttpEntity<>(requestBody),
+                String.class,
+                port, USER_EXHIBITOR_2.getUserId(), EVENT_ID_1);
+
+        assertThat(response.getStatusCode()).as("check if HTTP Status 201 CREATED").isEqualTo(HttpStatus.CREATED);
+
+        assertThatJson(response.getBody()).as("check if response contains application").and(
+                json -> json.node("applicationId").isNotNull(),
+                        json -> json.node("userId").isEqualTo(EXHIBITOR_ID_2.toString()),
+                        json -> json.node("eventId").isEqualTo(EVENT_ID_1.toString()),
+                        json -> json.node("contactInformation").isEqualTo("example@example.com"),
+                        json -> json.node("businessName").isEqualTo("Sample Business"),
+                        json -> json.node("status").isEqualTo("IN_PROGRESS"));
+    }
 
 }
 

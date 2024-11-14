@@ -49,6 +49,7 @@ public abstract class TestBase {
 
     protected static final UUID EVENT_ID_1 = EVENT_1.getEventId();
     protected static final UUID EXHIBITOR_ID_1 = USER_EXHIBITOR_1.getUserId();
+    protected static final UUID EXHIBITOR_ID_2 = USER_EXHIBITOR_2.getUserId();
 
     @Container
     public static MySQLContainer<?> jdbcDataBaseContainer = new MySQLContainer<>("mysql:latest")
