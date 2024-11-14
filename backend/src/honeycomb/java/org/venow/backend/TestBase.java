@@ -46,6 +46,7 @@ public abstract class TestBase {
             UUID.fromString("123e4567-e89b-12d3-a456-426614174000")
     );
 
+
     protected static final UUID EVENT_ID_1 = EVENT_1.getEventId();
     protected static final UUID EXHIBITOR_ID_1 = USER_EXHIBITOR_1.getUserId();
 

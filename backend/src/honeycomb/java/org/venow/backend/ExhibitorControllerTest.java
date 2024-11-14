@@ -110,6 +110,28 @@ class ExhibitorControllerTest extends TestBase{
                 );
     }
 
+    @Test
+    @DisplayName("exhibitor apply for the same event again - CONFLICTED")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    void exhibitorApplyForSameEventAgain() {
+
+        ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
+
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}exhibitor/{userId}/event/{eventId}/application",
+                HttpMethod.POST,
+                new HttpEntity<>(requestBody),
+                String.class,
+                port, EXHIBITOR_ID_1, EVENT_ID_1);
+
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Status IS CONFLICTED")
+                .isEqualTo(HttpStatus.CONFLICT);
+
+        assertThat(response.getBody())
+                .as("check if response contains message")
+                .isEqualTo("User has already applied for this event.");
+    }
 
 
 }

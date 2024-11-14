@@ -18,7 +18,8 @@ import static org.venow.backend.web.reponse.ResponseMapper.mapToEventResponse;
 @Slf4j
 @RestController
 @AllArgsConstructor
-public class EventController {
+public class
+EventController {
 
     private final Eventservice eventservice;
 
