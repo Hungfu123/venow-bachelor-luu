@@ -95,8 +95,40 @@ class ExhibitorControllerTest extends TestBase{
         assertThat(response.getStatusCode())
                 .as("check if HTTP Status 201 CREATED")
                 .isEqualTo(HttpStatus.CREATED);
+
+        assertThatJson(response.getBody())
+                .as("check if response contains application")
+                .and(
+                        json -> json.node("applicationId").isNotNull(),
+                        json -> json.node("userId").isEqualTo(EXHIBITOR_ID_1.toString()),
+                        json -> json.node("eventId").isEqualTo(EVENT_ID_1.toString()),
+                        json -> json.node("contactInformation").isEqualTo("example@example.com"),
+                        json -> json.node("businessName").isEqualTo("Sample Business"),
+                        json -> json.node("status").isEqualTo("IN_PROGRESS")
+                );
     }
+
+    @Test
+    @DisplayName("exhibitor apply for an event")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    void exhibitorApplyForEvent() {
+
+        ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
+
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}exhibitor/{userId}/event/{eventId}/application",
+                HttpMethod.POST,
+                new HttpEntity<>(requestBody),
+                String.class,
+                port, EXHIBITOR_ID_1, EVENT_ID_1);
+
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Status 201 CREATED")
+                .isEqualTo(HttpStatus.CREATED);
+    }
+
 }
+
 
 
 
