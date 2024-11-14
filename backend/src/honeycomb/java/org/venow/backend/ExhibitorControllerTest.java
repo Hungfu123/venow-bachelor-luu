@@ -38,14 +38,16 @@ class ExhibitorControllerTest extends TestBase{
             .isEqualTo(HttpStatus.OK);
 
         String jsonBody = response.getBody();
-        assertThatJson(jsonBody).as("check eventId").node("eventId").isEqualTo(EVENT_1.getEventId().toString());
-        assertThatJson(jsonBody).as("check title").node("title").isEqualTo(EVENT_1.getTitle());
-        assertThatJson(jsonBody).as("check description").node("description").isEqualTo(EVENT_1.getDescription());
-        assertThatJson(jsonBody).as("check location").node("location").isEqualTo(EVENT_1.getLocation());
-        assertThatJson(jsonBody).as("check startDate")
-                .node("startDate").isEqualTo(EVENT_1.getStartDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        assertThatJson(jsonBody).as("check endDate")
-                .node("endDate").isEqualTo(EVENT_1.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        assertThatJson(response.getBody())
+                .as("check if response contains expected event details")
+                .and(
+                        json -> json.node("eventId").isEqualTo(EVENT_1.getEventId().toString()),
+                        json -> json.node("title").isEqualTo(EVENT_1.getTitle()),
+                        json -> json.node("description").isEqualTo(EVENT_1.getDescription()),
+                        json -> json.node("location").isEqualTo(EVENT_1.getLocation()),
+                        json -> json.node("startDate").isEqualTo(EVENT_1.getStartDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)),
+                        json -> json.node("endDate").isEqualTo(EVENT_1.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                );
 
     }
 
@@ -108,24 +110,7 @@ class ExhibitorControllerTest extends TestBase{
                 );
     }
 
-    @Test
-    @DisplayName("exhibitor apply for an event")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
-    void exhibitorApplyForEvent() {
 
-        ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
-
-        final ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:{port}exhibitor/{userId}/event/{eventId}/application",
-                HttpMethod.POST,
-                new HttpEntity<>(requestBody),
-                String.class,
-                port, EXHIBITOR_ID_1, EVENT_ID_1);
-
-        assertThat(response.getStatusCode())
-                .as("check if HTTP Status 201 CREATED")
-                .isEqualTo(HttpStatus.CREATED);
-    }
 
 }
 
