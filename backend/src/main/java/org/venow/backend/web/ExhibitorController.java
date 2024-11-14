@@ -2,6 +2,7 @@ package org.venow.backend.web;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.venow.backend.applicationservice.ApplicationDTO;
@@ -69,7 +70,7 @@ public class ExhibitorController {
                         .build()
         );
 
-        return ResponseEntity.ok(mapToApplicationResponse(applicationDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapToApplicationResponse(applicationDTO));
     }
 
 }
