@@ -8,10 +8,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.venow.backend.applicationservice.ApplicationDTO;
-import org.venow.backend.applicationservice.Applicationservice;
-import org.venow.backend.applicationservice.EventDTO;
-import org.venow.backend.applicationservice.Eventservice;
+import org.venow.backend.applicationservice.*;
+import org.venow.backend.testdata.ApplicationDTOFactory;
+import org.venow.backend.testdata.EventDTOFactory;
+import org.venow.backend.testdata.UserDTOFactory;
 import org.venow.backend.web.request.ApplicationRequest;
 
 import java.util.UUID;
@@ -34,85 +34,82 @@ class ExhibitorControllerTest {
     @MockBean
     Applicationservice applicationservice;
 
-    @DisplayName("exhibitor get specific Event")
+    @DisplayName("get specific Event")
     @Test
     void getEventId() throws Exception {
-
-        EventDTO expectedEvent = EventDTO.builder().eventId(UUID.randomUUID()).description("test").title("ok").build();
+        final UserDTO testuser = UserDTOFactory.createWithExhibitorRole();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault();
         when(eventservice.getEvent(any())).thenReturn(expectedEvent);
 
-        mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}", UUID.randomUUID(), UUID.randomUUID()))
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}", testuser.userId(), expectedEvent.eventId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventId").exists())
-                .andExpect(jsonPath("$.title").value("ok"))
-                .andExpect(jsonPath("$.description").value("test"));
+                .andExpect(jsonPath("$.title").value("Test Event"))
+                .andExpect(jsonPath("$.description").value("Test Description"));
 
         verify(eventservice, times(1)).getEvent(any());
     }
 
-    @DisplayName("exhibitor cant get specific Event - BadRequest")
+    @DisplayName("cant get specific Event - BadRequest")
     @Test
     void cantGetEventId() throws Exception {
-        mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}", "random", UUID.randomUUID()))
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}", null, UUID.randomUUID()))
+                .andExpect(status().isNotFound());
 
     }
 
-    @DisplayName("exhibitor get Application Details")
+    @DisplayName("get Application Details")
     @Test
     void exhibitorGetApplicationDetails() throws Exception {
-        mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}/application", UUID.randomUUID(), UUID.randomUUID()))
+        final UserDTO testuser = UserDTOFactory.createWithExhibitorRole();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault();
+        when(eventservice.getEvent(any())).thenReturn(expectedEvent);
+
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}/application", testuser.userId(), expectedEvent.eventId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(""));
 
     }
 
-    @DisplayName("exhibitor cant get Application Details on even - Not Found")
+    @DisplayName("cant get Application Details on even - Not Found")
     @Test
     void exhibitorCantGetApplicationDetails() throws Exception {
-        mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}/application", null, UUID.randomUUID()))
+        final EventDTO expectedEvent = EventDTOFactory.createDefault();
+
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}/application", null, expectedEvent.eventId()))
                 .andExpect(status().isNotFound());
     }
 
-    @DisplayName("exhibitor apply for an event")
+    @DisplayName(" apply for an event")
     @Test
     void exhibitorApplyForAnEvent() throws Exception {
 
         ApplicationRequest applicationRequest = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
-        UUID applicationId = UUID.randomUUID();
-        UUID userId = UUID.randomUUID();
-        UUID eventId = UUID.randomUUID();
 
-        final ApplicationDTO expectedApplicationDTO = ApplicationDTO.builder()
-                .applicationId(applicationId)
-                .userId(userId)
-                .eventId(eventId)
-                .contactInformation("Hans Peter")
-                .businessName("Hans Buerger")
-                .typeOfBusiness(" foodie")
-                .previousParticipation(false)
-                .message("nimm mich")
-                .status("IN_PROGRESS")
-                .build();
+        final UserDTO testuser = UserDTOFactory.createWithExhibitorRole();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault();
+
+        final ApplicationDTO expectedApplicationDTO = ApplicationDTOFactory.createDefault();
         when(applicationservice.createApplication(any())).thenReturn(expectedApplicationDTO);
 
-        mockMvc.perform(post("/exhibitor/{exhibitorId}/event/{eventId}/application", userId, eventId)
+        mockMvc.perform(post("/exhibitor/{exhibitorId}/event/{eventId}/application", testuser.userId(), expectedEvent.eventId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(applicationRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.applicationId").value(applicationId.toString()))
-                .andExpect(jsonPath("$.eventId").value(eventId.toString()))
-                .andExpect(jsonPath("$.userId").value(userId.toString()))
-                .andExpect(jsonPath("$.businessName").value(expectedApplicationDTO.businessName()))
-                .andExpect(jsonPath("$.status").value("IN_PROGRESS"));
+                .andExpect(jsonPath("$.applicationId").value(expectedApplicationDTO.applicationId().toString()))
+                .andExpect(jsonPath("$.eventId").value(expectedApplicationDTO.eventId().toString()))
+                .andExpect(jsonPath("$.userId").value(expectedApplicationDTO.userId().toString()))
+                .andExpect(jsonPath("$.businessName").value(expectedApplicationDTO.businessName().toString()))
+                .andExpect(jsonPath("$.status").value(expectedApplicationDTO.status().toString()));
     }
 
-    @DisplayName("exhibitor apply for an event without applicationinformation - bad request")
+    @DisplayName("apply for an event without applicationinformation - bad request")
     @Test
     void exhibitorApplyForAnEventWithoutApplicationInformation() throws Exception {
-        UUID userId = UUID.randomUUID();
-        UUID eventId = UUID.randomUUID();
-        mockMvc.perform(post("/exhibitor/{exhibitorId}/event/{eventId}/application", userId, eventId))
+        final UserDTO testuser = UserDTOFactory.createWithExhibitorRole();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault();
+
+        mockMvc.perform(post("/exhibitor/{exhibitorId}/event/{eventId}/application", testuser.userId(), expectedEvent.eventId()))
                 .andExpect(status().isBadRequest());
     }
 
