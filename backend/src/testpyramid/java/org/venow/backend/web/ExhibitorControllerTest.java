@@ -80,7 +80,7 @@ class ExhibitorControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @DisplayName(" apply for an event")
+    @DisplayName("apply for an event")
     @Test
     void exhibitorApplyForAnEvent() throws Exception {
 
@@ -99,17 +99,18 @@ class ExhibitorControllerTest {
                 .andExpect(jsonPath("$.applicationId").value(expectedApplicationDTO.applicationId().toString()))
                 .andExpect(jsonPath("$.eventId").value(expectedApplicationDTO.eventId().toString()))
                 .andExpect(jsonPath("$.userId").value(expectedApplicationDTO.userId().toString()))
-                .andExpect(jsonPath("$.businessName").value(expectedApplicationDTO.businessName().toString()))
-                .andExpect(jsonPath("$.status").value(expectedApplicationDTO.status().toString()));
+                .andExpect(jsonPath("$.businessName").value(expectedApplicationDTO.businessName()))
+                .andExpect(jsonPath("$.status").value(expectedApplicationDTO.status()));
     }
 
-    @DisplayName("apply for an event without applicationinformation - bad request")
+    @DisplayName("apply for an event without application information - bad request")
     @Test
     void exhibitorApplyForAnEventWithoutApplicationInformation() throws Exception {
         final UserDTO testuser = UserDTOFactory.createWithExhibitorRole();
         final EventDTO expectedEvent = EventDTOFactory.createDefault();
 
-        mockMvc.perform(post("/exhibitor/{exhibitorId}/event/{eventId}/application", testuser.userId(), expectedEvent.eventId()))
+        mockMvc.perform(post("/exhibitor/{exhibitorId}/event/{eventId}/application", testuser.userId(), expectedEvent.eventId())
+                        .content(""))
                 .andExpect(status().isBadRequest());
     }
 
