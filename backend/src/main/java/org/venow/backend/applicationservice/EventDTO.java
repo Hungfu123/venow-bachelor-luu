@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Builder
+@Builder(toBuilder = true)
 public record EventDTO(UUID eventId,
                        String title,
                        String description,

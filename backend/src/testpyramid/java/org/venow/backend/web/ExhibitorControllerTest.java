@@ -37,8 +37,8 @@ class ExhibitorControllerTest {
     @DisplayName("get specific Event")
     @Test
     void getEventId() throws Exception {
-        final UserDTO testuser = UserDTOFactory.createWithExhibitorRole();
-        final EventDTO expectedEvent = EventDTOFactory.createDefault();
+        final UserDTO testuser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
         when(eventservice.getEvent(any())).thenReturn(expectedEvent);
 
         mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}", testuser.userId(), expectedEvent.eventId()))
@@ -61,8 +61,8 @@ class ExhibitorControllerTest {
     @DisplayName("get Application Details")
     @Test
     void exhibitorGetApplicationDetails() throws Exception {
-        final UserDTO testuser = UserDTOFactory.createWithExhibitorRole();
-        final EventDTO expectedEvent = EventDTOFactory.createDefault();
+        final UserDTO testuser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
         when(eventservice.getEvent(any())).thenReturn(expectedEvent);
 
         mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}/application", testuser.userId(), expectedEvent.eventId()))
@@ -74,7 +74,7 @@ class ExhibitorControllerTest {
     @DisplayName("cant get Application Details on even - Not Found")
     @Test
     void exhibitorCantGetApplicationDetails() throws Exception {
-        final EventDTO expectedEvent = EventDTOFactory.createDefault();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
 
         mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}/application", null, expectedEvent.eventId()))
                 .andExpect(status().isNotFound());
@@ -86,10 +86,10 @@ class ExhibitorControllerTest {
 
         ApplicationRequest applicationRequest = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
 
-        final UserDTO testuser = UserDTOFactory.createWithExhibitorRole();
-        final EventDTO expectedEvent = EventDTOFactory.createDefault();
+        final UserDTO testuser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
 
-        final ApplicationDTO expectedApplicationDTO = ApplicationDTOFactory.createDefault();
+        final ApplicationDTO expectedApplicationDTO = ApplicationDTOFactory.createDefault().build();
         when(applicationservice.createApplication(any())).thenReturn(expectedApplicationDTO);
 
         mockMvc.perform(post("/exhibitor/{exhibitorId}/event/{eventId}/application", testuser.userId(), expectedEvent.eventId())
@@ -106,8 +106,8 @@ class ExhibitorControllerTest {
     @DisplayName("apply for an event without application information - bad request")
     @Test
     void exhibitorApplyForAnEventWithoutApplicationInformation() throws Exception {
-        final UserDTO testuser = UserDTOFactory.createWithExhibitorRole();
-        final EventDTO expectedEvent = EventDTOFactory.createDefault();
+        final UserDTO testuser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
 
         mockMvc.perform(post("/exhibitor/{exhibitorId}/event/{eventId}/application", testuser.userId(), expectedEvent.eventId())
                         .content(""))

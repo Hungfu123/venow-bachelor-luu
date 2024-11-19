@@ -6,31 +6,40 @@ import java.util.UUID;
 
 public class UserDTOFactory {
 
-    public static UserDTO.UserDTOBuilder defaultBuilder() {
-        return UserDTO.builder()
+    public static UserDTOWith createDefault() {
+        UserDTO defaultUser = UserDTO.builder()
                 .userId(UUID.randomUUID())
                 .email("luugner@venow.com")
-                .role("USER");
-    }
-
-    public static UserDTO createDefault() {
-        return defaultBuilder().build();
-    }
-
-    public static UserDTO createWithCustomEmail(String email) {
-        return defaultBuilder()
+                .role("USER")
                 .build();
+
+        return new UserDTOWith(defaultUser);
     }
 
-    public static UserDTO createWithExhibitorRole() {
-        return defaultBuilder()
-                .role("EXHIBITOR")
-                .build();
-    }
-    public static UserDTO createWithOrganizerRole() {
-        return defaultBuilder()
-                .role("ORGANIZER")
-                .build();
-    }
+    public static class UserDTOWith {
+        private UserDTO userDTO;
 
+        public UserDTOWith(UserDTO userDTO) {
+            this.userDTO = userDTO;
+        }
+
+        public UserDTOWith withUserId(UUID userId) {
+            this.userDTO = userDTO.toBuilder().userId(userId).build();
+            return this;
+        }
+
+        public UserDTOWith withEmail(String email) {
+            this.userDTO = userDTO.toBuilder().email(email).build();
+            return this;
+        }
+
+        public UserDTOWith withRole(String role) {
+            this.userDTO = userDTO.toBuilder().role(role).build();
+            return this;
+        }
+
+        public UserDTO build() {
+            return this.userDTO;
+        }
+    }
 }
