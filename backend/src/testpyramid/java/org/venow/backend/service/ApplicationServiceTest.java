@@ -32,7 +32,8 @@ public class ApplicationServiceTest {
     @DisplayName("should throw exception when exhibitor already applied for the event")
     void shouldThrowExceptionWhenCreateApplication() {
         ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
-        when(applicationRepository.existsByUserIdAndEventId(any(), any())).thenReturn(true);
+        when(applicationRepository.existsByUserIdAndEventId(applicationDTO.userId(), applicationDTO.eventId()))
+                .thenReturn(true);
 
         assertThatThrownBy(() -> service.createApplication(applicationDTO))
                 .isInstanceOf(DuplicateApplicationException.class)
@@ -82,5 +83,7 @@ public class ApplicationServiceTest {
         assertThat(result1.eventId()).isEqualTo(event1.eventId());
         assertThat(result2.eventId()).isEqualTo(event2.eventId());
     }
+
+
 
 }
