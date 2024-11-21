@@ -17,6 +17,20 @@ CREATE TABLE users (
                        role VARCHAR(50) NOT NULL,
                        CONSTRAINT chk_role CHECK (role IN ('EXHIBITOR', 'ORGANIZER'))
 );
+CREATE TABLE applications (
+                              id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                              application_id VARCHAR(36) NOT NULL,
+                              business_name VARCHAR(255) NOT NULL,
+                              contact_information VARCHAR(255) NOT NULL,
+                              event_id VARCHAR(36) NOT NULL,
+                              message VARCHAR(255) NOT NULL,
+                              previous_participation BOOLEAN NOT NULL,
+                              status VARCHAR(255) NOT NULL,
+                              type_of_business VARCHAR(255) NOT NULL,
+                              user_id VARCHAR(36) NOT NULL,
+                              UNIQUE(user_id, event_id)
+);
+
 
 INSERT INTO events (event_id, title, description, location, start_date, end_date, organizer_id)
 VALUES ('550e8400-e29b-41d4-a716-446655440000', 'Fischstaebchen-Band', 'A large outdoor music festival', 'Central Park',

@@ -29,18 +29,18 @@ public class ApplicationDTOFactory {
             this.applicationDTO = applicationDTO;
         }
 
-        public ApplicationDTOWith withApplicationId(UUID applicationId) {
-            this.applicationDTO = applicationDTO.toBuilder().applicationId(applicationId).build();
+        public ApplicationDTOWith withApplicationId(String applicationId) {
+            this.applicationDTO = applicationDTO.toBuilder().applicationId(UUID.fromString(applicationId)).build();
             return this;
         }
 
-        public ApplicationDTOWith withUserId(UUID userId) {
-            this.applicationDTO = applicationDTO.toBuilder().userId(userId).build();
+        public ApplicationDTOWith withUserId(String userId) {
+            this.applicationDTO = applicationDTO.toBuilder().userId(UUID.fromString(userId)).build();
             return this;
         }
 
-        public ApplicationDTOWith withEventId(UUID eventId) {
-            this.applicationDTO = applicationDTO.toBuilder().eventId(eventId).build();
+        public ApplicationDTOWith withEventId(String eventId) {
+            this.applicationDTO = applicationDTO.toBuilder().eventId(UUID.fromString(eventId)).build();
             return this;
         }
 
