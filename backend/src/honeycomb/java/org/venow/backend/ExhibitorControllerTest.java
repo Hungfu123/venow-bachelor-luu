@@ -37,7 +37,6 @@ class ExhibitorControllerTest extends TestBase {
                 .as("check if HTTP Status 200 OK")
                 .isEqualTo(HttpStatus.OK);
 
-        String jsonBody = response.getBody();
         assertThatJson(response.getBody())
                 .as("check if response contains expected event details")
                 .and(

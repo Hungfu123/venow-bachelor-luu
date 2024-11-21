@@ -32,9 +32,10 @@ public class ApplicationServiceIT extends TestBase {
 
         final ApplicationDTO result = applicationservice.createApplication(applicationDTO);
 
-        assertThat(result).isNotNull();
+
         assertThat(applicationRepository.existsByUserIdAndEventId(result.userId(), result.eventId())).isTrue();
         assertThat(result.eventId()).isEqualTo(applicationDTO.eventId());
+        assertThat(result.status()).isEqualTo(applicationDTO.status());
     }
 
     @DisplayName("should not create a new application when exhibitor already applied to the same event")
@@ -51,5 +52,22 @@ public class ApplicationServiceIT extends TestBase {
                 .isInstanceOf(DuplicateApplicationException.class)
                 .hasMessageContaining("User has already applied for this event");
     }
+
+    @DisplayName("another application of another user on the same event should be created ")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    void shouldCreateAnotherApplicationForSameEvent() {
+
+        final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault()
+                .withEventId("45353065-3834-3030-2d65-3239633d3431")
+                .withUserId("af333e19-6ed6-4c8b-b86e-ef78943a98a2")
+                .build();
+
+        final ApplicationDTO result = applicationservice.createApplication(applicationDTO);
+        assertThat(result.eventId()).isEqualTo(applicationDTO.eventId());
+        assertThat(result.userId()).isEqualTo(applicationDTO.userId());
+
+    }
+
 
 }
