@@ -21,10 +21,10 @@
 \usepackage[english,ngerman]{babel} % Deutsch
 
 %% Ihr Name
-\author{Jon Snow}
+\author{Vinh Hung Luu}
 
 %% Der Titel der Arbeit
-\title{My Extraordinary Thesis}
+\title{Testpyramide vs. Honeycomb-Modell: Ein Vergleich von Teststrategien im Kontext einer Webanwendung}
 % \subtitle{Usually not needed}
 
 %% Der zu erreichende Abschluss, entweder Bachelor oder Master
@@ -35,11 +35,11 @@
 \subject{Informatik}
 
 %% Beginn- und Abgabedaten der Arbeit
-\begindate{03.~September~2019} % Beginn
-\duedate{03.~Dezember~2019} % Abgabe
+\begindate{26.~November~2024} % Beginn
+\duedate{26.~Februar~2025} % Abgabe
 
 %% Erst- und Zweitgutachter
-\firstexaminer{Prof.~Dr.~Michael~Leuschel}
+\firstexaminer{~Dr.~Jens~Bendisposto}
 \secondexaminer{tbd}
 
 %% Farb- oder Schwarzweißdruck
@@ -108,7 +108,10 @@
 %% (Ende) LaTeX Packages in Nutzung                                           %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+\setlength{\parskip}{0pt}
+\setlength{\itemsep}{0pt}
+\usepackage{setspace}
+\setstretch{1.0}
 \begin{document}
 %% Set up title page, declaration of authorship, abstract, acknowledgements
 \frontmatter
@@ -150,7 +153,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{contents.tex}
-
+\input{theoretische-grundlagen.tex}
+\input{methodik.tex}
+\input{ergebnis.tex}
+\input{empirisch.tex}
+\input{fazit.tex}
 %% Dieser Part kann auskommentiert werden, sollte kein Anhang nötig sein.
 %% Der \appendix-Befehl leitet hierbei den Anhang ein.
  \appendix

@@ -1,0 +1,50 @@
+\section{Teststrategien}
+Softwaretests sind ein zentraler Bestandteil der Qualitätssicherung und dienen dazu, Fehler frühzeitig zu erkennen und die Zuverlässigkeit von Anwendungen sicherzustellen.
+In diesem Abschnitt wird die Testpyramide und das Honeycomb Modell beschrieben, die als bewährtes Modell in der Praxis benutzt wird.
+
+\subsection{Testpyramide}
+Die Testpyramide wurde erstmals von Fowler~\cite{Fow12} als hierarchisches Modell beschrieben. Sie unterteilt Softwaretests in drei Ebenen: Unit-Tests, Integrationstests und Systemtests. Ziel ist es, möglichst viele Tests auf den unteren Ebenen durchzuführen, da diese kosteneffizienter und schneller sind.
+
+\begin{itemize}
+	\item \textbf{Unit-Tests:} Die Basis der Pyramide bilden Unit-Tests, die einzelne, isolierte Softwareeinheiten wie Methoden oder Klassen testen. Sie sind unabhängig von externen Schnittstellen und ermöglichen durch ihre geringe Komplexität eine schnelle und einfache Fehlerlokalisierung~\cite{BF14}.
+	\item \textbf{Integrationstests:} Diese Ebene prüft das Zusammenspiel mehrerer Module oder Komponenten. Sie erfordern mehr Aufwand in der Implementierung, gewährleisten jedoch, dass die Integration reibungslos funktioniert~\cite{Wac15}.
+	\item \textbf{Systemtests:} An der Spitze der Pyramide stehen Systemtests, die das gesamte System auf funktionale und nicht-funktionale Anforderungen testen. Aufgrund ihrer Komplexität und Kosten sollten sie sparsam eingesetzt werden~\cite{BF14}.
+\end{itemize}
+
+Cohn~\cite{Coh09} betont, dass Tests möglichst auf der niedrigsten Ebene implementiert werden sollten, um Kosten und Laufzeit zu minimieren. Wacker~\cite{Wac15} ergänzt, dass Systemtests zwar wichtig sind, aber in ihrer Anzahl begrenzt bleiben sollten, um die Testpipeline nicht zu verlangsamen.
+
+\subsection{Testing-Honeycomb-Modell}
+
+Das Testing-Honeycomb-Modell wurde von Spotify~\cite{Spotify18} speziell für Microservices-Architekturen entwickelt. Der Fokus dieses Modells liegt auf Integrationstests, da in solchen Architekturen die Hauptkomplexität oft in der Interaktion zwischen verschiedenen Diensten liegt. Spotify betont ~\cite{Spotify18}, dass diese Tests nicht nur die Kommunikation zwischen Services, sondern auch die zugrunde liegende Infrastruktur, wie Datenbanken und APIs, abdecken sollten, um realitätsnahe Szenarien zu gewährleisten. In ihrem Artikel \enquote{Testing of Microservices} beschreiben sie diesen Ansatz mit den Worten:
+
+\begin{quote} \enquote{We spin up a database, populate it, start the service, and query the actual API in the tests.} \end{quote}
+
+Dieser Ansatz verdeutlicht, dass die Tests nicht auf isolierte Komponenten beschränkt bleiben, sondern das Gesamtsystem einbeziehen. Die Integration von Datenbank-, Service- und API-Schichten ermöglicht es, das Zusammenspiel aller Komponenten zu validieren, ohne sich auf spezifische Implementierungsdetails zu beschränken~\cite{Spotify18}. Damit hebt sich das Honeycomb-Modell klar von der Testpyramide ab, die den Schwerpunkt auf isolierte Tests legt.
+
+Spotify ~\cite{Spotify18} beschreibt in ihrem Artikel drei zentrale Testtypen, die im Rahmen des Honeycomb-Modells eingesetzt werden: 
+\begin{itemize} 
+	\item \textbf{Integrationstests:} Diese bilden das Herzstück des Modells. Laut Spotify sollen sie sicherstellen, dass Schnittstellen korrekt implementiert sind und Dienste wie erwartet zusammenarbeiten~\cite{Spotify18}. 
+	\item \textbf{Implementierungsdetail-Tests:} Diese Tests konzentrieren sich auf die interne Logik eines einzelnen Services, wie z. B. komplexe Berechnungen. Spotify sieht diese Tests als Ergänzung zu Integrationstests, jedoch mit geringerer Priorität~\cite{Spotify18}. 
+	\item \textbf{Integrierte Tests:} Diese hängen von der Korrektheit anderer Systeme ab und sollten laut Spotify reduziert oder vermieden werden, da sie schwerer zu warten sind und die Testpipeline verlangsamen können~\cite{Spotify18}. 
+\end{itemize}
+Indem Spotify ~\cite{Spotify18} Integrationstests in den Vordergrund stellt, wird eine umfassende Überprüfung der Interaktionspunkte im System ermöglicht. Sie empfehlen, Tests so zu gestalten, das das Gesamtsystem realistisch abgebildet wird, was besonders bei komplexen Architekturen essenziell ist. Auch in meinem Testaufbau verzichte ich auf Mocking und orientiere mich an diesen Best Practices, indem ich mit Testcontainers eine produktionsnahe Datenbankumgebung integriere. Dieser Ansatz spiegelt den von Spotify beschriebenen Workflow wider und ermöglicht es die Integration auf allen Schichten zu  testen.
+
+\subsection{Datenbanklösung für Tests}
+
+In dieser Arbeit werden die H2-Datenbank und eine MySQL-Datenbank mithilfe von Testcontainers genutzt. Die Wahl der Datenbank richtet sich nach der verwendeten Teststrategie.
+
+Im Rahmen der Testpyramide kommen beide Datenbanklösungen zum Einsatz. Die H2-Datenbank~\cite{H2Doc} wird für schnelle Unit- und Integrationstests verwendet, da sie eine einfache Konfiguration und kurze Laufzeiten ermöglicht. Sie erlaubt die Prüfung isolierter Logik ohne Abhängigkeit von externer Infrastruktur. Ergänzend wird für Integrationstests eine MySQL-Datenbank mithilfe von Testcontainers eingesetzt. Diese ermöglicht realitätsnahe Tests in einer produktionsnahen Umgebung und minimiert das Risiko von Umgebungsinkonsistenzen~\cite{Testcontainers}.
+
+Das Honeycomb-Modell setzt ausschließlich auf die MySQL-Datenbank mit Testcontainers. Ziel ist es, realistische Testbedingungen zu schaffen, indem das gesamte System einschließlich der Datenbank getestet wird~\cite{Spotify18}. Testcontainers stellt eine produktionsnahe Umgebung bereit und bildet Interaktionen zwischen Anwendung und Datenbank realistisch ab. Zur Sicherstellung eines konsistenten Datenbankschemas wird Flyway als Migrationstool eingesetzt~\cite{FlywayDoc}.
+
+Die gewählte Kombination erlaubt es, die Vorteile beider Ansätze zu nutzen. Die H2-Datenbank ermöglicht schnelle, ressourcenschonende Tests in der Testpyramide, während Testcontainers realitätsnahe Tests unterstützt und für das Honeycomb-Modell unverzichtbar ist.
+
+\subsection{Webanwendung zur Veranstaltungsorganisation}
+
+Die entwickelte Webanwendung unterstützt Veranstalter und Schausteller bei der Organisation von Veranstaltungen. Veranstalter können Events erstellen, Bewerbungen verwalten und Verträge abschließen. Schausteller können sich über die Plattform bewerben und ihre Teilnahme organisieren.
+
+Die zentralen Funktionalitäten umfassen: \begin{itemize} \item Event-Management: Verwaltung von Veranstaltungen mit Informationen wie Datum, Ort und Teilnehmern. \item Bewerbungsmanagement: Einreichung und Prüfung von Bewerbungen durch Schausteller und Veranstalter. \item Vertragsverwaltung: Erstellung und Speicherung von Verträgen zwischen Veranstaltern und Schaustellern. \item Benutzerverwaltung: Registrierung neuer Benutzer, bei der User angelegt und gespeichert werden. \end{itemize}
+
+Die Implementierung beginnt mit dem Bewerbungsprozess. Dieser Use Case bildet die Grundlage für die Anwendung, da er die Interaktion zwischen Schaustellern und Veranstaltern abbildet. Weitere Use Cases wie Vertragsverwaltung und Event-Management werden ebenfalls betrachtet.
+
+\subsubsection{Bewerbungsprozess} Der Bewerbungsprozess ermöglicht es Schaustellern, sich für Veranstaltungen zu bewerben, und Veranstaltern, Bewerbungen zu prüfen. Der Prozess umfasst: \begin{itemize} \item Einreichung und Validierung von Bewerbungen. \item Speicherung der Daten in der Datenbank. \item Statusänderungen wie „eingereicht“, „angenommen“ oder „abgelehnt“. \end{itemize} Dieser Use Case wird als erster implementiert und dient als Basis für die Analyse der Teststrategien.
