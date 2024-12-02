@@ -2,6 +2,7 @@ package org.venow.backend.domain.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Entity(name = "events")
+@Builder(toBuilder = true)
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -11,4 +11,6 @@ public interface EventRepository {
     List<Event> findAll();
 
     Optional<Event> findById(UUID id);
+
+    EventDTO save(EventDTO event);
 }

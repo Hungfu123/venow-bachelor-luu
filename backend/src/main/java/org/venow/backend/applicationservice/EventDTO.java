@@ -11,6 +11,7 @@ public record EventDTO(UUID eventId,
                        String description,
                        String location,
                        LocalDateTime startDate,
-                       LocalDateTime endDate
+                       LocalDateTime endDate,
+                       UUID organizerId
 ) {
 }

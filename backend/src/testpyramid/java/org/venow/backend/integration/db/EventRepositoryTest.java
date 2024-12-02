@@ -1,0 +1,63 @@
+package org.venow.backend.integration.db;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.jdbc.Sql;
+import org.venow.backend.TestBase;
+import org.venow.backend.applicationservice.EventDTO;
+import org.venow.backend.domain.model.Event;
+import org.venow.backend.infrastructure.EventRepositoryImpl;
+import org.venow.backend.testdata.EventDTOFactory;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class EventRepositoryTest extends TestBase {
+
+    @Autowired
+    private EventRepositoryImpl eventRepository;
+
+    @DisplayName("should save and retrieve event by ID")
+    @Test
+    void shouldSaveAndRetrieveEventById() {
+        EventDTO event = EventDTOFactory.createDefault().build();
+        eventRepository.save(event);
+
+        Optional<Event> retrievedEvent = eventRepository.findById(event.eventId());
+
+        assertThat(retrievedEvent).isPresent();
+        assertThat(retrievedEvent.get().getTitle()).isEqualTo(event.title());
+        assertThat(retrievedEvent.get().getStartDate()).isEqualTo(event.startDate());
+        assertThat(retrievedEvent.get().getEndDate()).isEqualTo(event.endDate());
+    }
+
+    @DisplayName("should return empty optional if event is not found")
+    @Test
+    void shouldReturnEmptyOptionalIfEventNotFound() {
+        UUID nonExistentId = UUID.randomUUID();
+
+        Optional<Event> retrievedEvent = eventRepository.findById(nonExistentId);
+
+        assertThat(retrievedEvent).isEmpty();
+    }
+
+    @DisplayName("should find all events")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
+    void shouldFindAllEventsByName() {
+        String eventName = "Tech Expo";
+        EventDTO event1 = EventDTOFactory.createDefault().build();
+        EventDTO event2 = EventDTOFactory.createDefault().withEventId(UUID.randomUUID()).withTitle(eventName).build();
+        eventRepository.save(event1);
+        eventRepository.save(event2);
+
+        List<Event> events = eventRepository.findAll();
+
+        assertThat(events).hasSize(2);
+        assertThat(events).extracting(Event::getTitle).containsOnly(event1.title(), eventName);
+    }
+}

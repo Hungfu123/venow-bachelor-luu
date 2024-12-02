@@ -2,6 +2,7 @@ package org.venow.backend.testdata;
 
 import org.venow.backend.applicationservice.EventDTO;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class EventDTOFactory {
@@ -11,6 +12,10 @@ public class EventDTOFactory {
                 .eventId(UUID.randomUUID())
                 .title("Test Event")
                 .description("Test Description")
+                .startDate(LocalDateTime.of(2024,1,1,8,2))
+                .endDate(LocalDateTime.of(2024,1,3,8,2))
+                .location("Düsseldorf")
+                .organizerId(UUID.randomUUID())
                 .build();
 
         return new EventDTOWith(defaultEvent);

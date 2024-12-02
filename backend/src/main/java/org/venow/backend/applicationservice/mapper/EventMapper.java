@@ -14,6 +14,19 @@ public class EventMapper {
                 .location(event.getLocation())
                 .startDate(event.getStartDate())
                 .endDate(event.getEndDate())
+                .organizerId(event.getOrganizerId())
+                .build();
+    }
+
+    public static Event mapToEntity(EventDTO eventDTO) {
+        return Event.builder()
+                .eventId(eventDTO.eventId())
+                .title(eventDTO.title())
+                .description(eventDTO.description())
+                .location(eventDTO.location())
+                .startDate(eventDTO.startDate())
+                .endDate(eventDTO.endDate())
+                .organizerId(eventDTO.organizerId())
                 .build();
     }
 }
