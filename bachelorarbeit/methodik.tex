@@ -2,18 +2,13 @@
 
 \subsection{Entwicklung von Testszenarien}
 
-Die vorliegenden Testszenarien wurden entwickelt, um die Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb-Modell} unter identischen Bedingungen zu vergleichen. Die beiden Ansätze wurden in separaten Testordnern organisiert. . Diese Vorgehensweise erlaubt eine präzise Analyse der jeweiligen Vor- und Nachteile der Strategien, ohne dass eine gegenseitige Beeinflussung erfolgt.
+Die Testszenarien wurden entwickelt, um die Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb} unter vergleichbaren Bedingungen zu analysieren. Beide Ansätze wurden in separaten Testordnern organisiert, um eine präzise Bewertung ihrer jeweiligen Vor- und Nachteile zu ermöglichen.
 
-Im Rahmen der Testpyramide wurde  eine \texttt{TestBase}-Klasse erstellt, die mit der Annotation \texttt{@ActiveProfile} ausgestattet ist. Dies ermöglicht ein flexibles Wechseln  zwischen der H2-Datenbank und der MySQL-Datenbank (mittels \texttt{Testcontainers}) gewechselt werden. H2 wird für schnelle und einfache Unit-Tests genutzt, während \texttt{Testcontainers} die Durchführung produktionsnaher Integrationstests ermöglicht. Diese Vorgehensweise entspricht den Prinzipien der Testpyramide, bei der einfache Tests auf schnellen Datenbanken und komplexere Tests auf realistischer Infrastruktur basieren.
+Für die Testpyramide wurde eine \texttt{TestBase}-Klasse erstellt, die mithilfe der Annotation \texttt{@ActiveProfile} einen flexiblen Wechsel zwischen der H2-Datenbank und einer MySQL-Datenbank (über \texttt{Testcontainers}) ermöglicht. H2 dient dabei für schnelle Unit-Tests, während \texttt{Testcontainers} produktionsnahe Integrationstests unterstützt. Dieses Vorgehen entspricht den Prinzipien der Testpyramide, die auf einfache Tests mit schnellen Datenbanken sowie komplexere Tests auf realistischer Infrastruktur setzt.
 
-Das Honeycomb-Modell fokussiert sich auf Integrationstests und nutzt \texttt{Testcontainers}, um eine MySQL-Datenbank in einem Docker-Container zu emulieren.
-Die Basis für Unit-Tests bilden folglich schnelle und einfache Datenbanken. Im Gegensatz dazu fokussiert sich das Honeycomb-Modell auf die vollständige Systemintegration unter produktionsnahen Bedingungen. Auch in diesem Kontext stellt die \texttt{TestBase}-Klasse eine Konfiguration dar, welche die automatische Einrichtung der benötigten Datenbankumgebung ermöglicht.
+Das Honeycomb-Modell fokussiert sich ausschliesslich auf Integrationstests. Mithilfe von \texttt{Testcontainers} wird eine MySQL-Datenbank in einem Docker-Container bereitgestellt, die mit realistischen Anwendungsdaten und einem konsistenten Schema typische Produktionsszenarien simuliert. Die \texttt{TestBase}-Klasse stellt sicher, dass die benötigte Datenbankumgebung effizient und automatisiert erfolgt.
 
-Nach Abschluss der Testszenarien erfolgt die Implementierung eines neuen Features, welches die Bewertung der Robustheit und des Anpassungsaufwands der beiden Strategien zum Ziel hat. Im Rahmen dessen wird untersucht, wie gut die Teststrategien auf Änderungen reagieren und welche Anpassungen erforderlich sind.
-Die Testszenarien wurden entwickelt, um Unterschiede in Laufzeit, Fehlererkennungsrate und Anpassungsaufwand zwischen den Strategien zu untersuchen. Eine detaillierte Analyse erfolgt in einem späteren Abschnitt.
-
-
-
+Nach Abschluss der Testszenarien wird ein neues Feature implementiert, um die Anpassungsfähigkeit und Robustheit der Strategien zu bewerten. Die dabei gewonnenen Erkenntnisse bilden die Grundlage für die spätere Analyse im Hinblick auf Effizienz und Wartbarkeit.
 
 
 \subsection{Tests für spezifische Anwendungsfälle}
