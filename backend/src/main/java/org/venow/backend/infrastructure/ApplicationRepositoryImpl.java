@@ -5,8 +5,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.venow.backend.applicationservice.ApplicationDTO;
 import org.venow.backend.applicationservice.ApplicationRepository;
+import org.venow.backend.applicationservice.mapper.ApplicationMapper;
 import org.venow.backend.domain.model.Application;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.venow.backend.applicationservice.mapper.ApplicationMapper.mapToDTO;
@@ -30,4 +32,10 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     public boolean existsByUserIdAndEventId(UUID userId, UUID eventId) {
         return repository.existsByUserIdAndEventId(userId,eventId);
     }
+
+    @Override
+    public Optional<ApplicationDTO> findById(UUID id) {
+        return repository.findByApplicationId(id).map(ApplicationMapper::mapToDTO);
+    }
+
 }

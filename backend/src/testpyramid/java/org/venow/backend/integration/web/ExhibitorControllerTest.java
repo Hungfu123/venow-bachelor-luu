@@ -1,4 +1,4 @@
-package org.venow.backend.web;
+package org.venow.backend.integration.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +12,7 @@ import org.venow.backend.applicationservice.*;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 import org.venow.backend.testdata.EventDTOFactory;
 import org.venow.backend.testdata.UserDTOFactory;
+import org.venow.backend.web.ExhibitorController;
 import org.venow.backend.web.request.ApplicationRequest;
 
 import java.util.UUID;
