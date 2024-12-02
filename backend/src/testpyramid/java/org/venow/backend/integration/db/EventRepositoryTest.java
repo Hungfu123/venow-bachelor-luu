@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.TestBase;
 import org.venow.backend.applicationservice.EventDTO;
-import org.venow.backend.domain.model.Event;
 import org.venow.backend.infrastructure.EventRepositoryImpl;
 import org.venow.backend.testdata.EventDTOFactory;
 
@@ -27,12 +26,12 @@ class EventRepositoryTest extends TestBase {
         EventDTO event = EventDTOFactory.createDefault().build();
         eventRepository.save(event);
 
-        Optional<Event> retrievedEvent = eventRepository.findById(event.eventId());
+        Optional<EventDTO> retrievedEvent = eventRepository.findById(event.eventId());
 
         assertThat(retrievedEvent).isPresent();
-        assertThat(retrievedEvent.get().getTitle()).isEqualTo(event.title());
-        assertThat(retrievedEvent.get().getStartDate()).isEqualTo(event.startDate());
-        assertThat(retrievedEvent.get().getEndDate()).isEqualTo(event.endDate());
+        assertThat(retrievedEvent.get().title()).isEqualTo(event.title());
+        assertThat(retrievedEvent.get().startDate()).isEqualTo(event.startDate());
+        assertThat(retrievedEvent.get().endDate()).isEqualTo(event.endDate());
     }
 
     @DisplayName("should return empty optional if event is not found")
@@ -40,7 +39,7 @@ class EventRepositoryTest extends TestBase {
     void shouldReturnEmptyOptionalIfEventNotFound() {
         UUID nonExistentId = UUID.randomUUID();
 
-        Optional<Event> retrievedEvent = eventRepository.findById(nonExistentId);
+        Optional<EventDTO> retrievedEvent = eventRepository.findById(nonExistentId);
 
         assertThat(retrievedEvent).isEmpty();
     }
@@ -55,9 +54,9 @@ class EventRepositoryTest extends TestBase {
         eventRepository.save(event1);
         eventRepository.save(event2);
 
-        List<Event> events = eventRepository.findAll();
+        List<EventDTO> events = eventRepository.findAll();
 
         assertThat(events).hasSize(2);
-        assertThat(events).extracting(Event::getTitle).containsOnly(event1.title(), eventName);
+        assertThat(events).extracting(EventDTO::title).containsOnly(event1.title(), eventName);
     }
 }

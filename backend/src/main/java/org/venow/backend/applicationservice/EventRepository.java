@@ -8,9 +8,9 @@ import java.util.UUID;
 
 public interface EventRepository {
 
-    List<Event> findAll();
+    List<EventDTO> findAll();
 
-    Optional<Event> findById(UUID id);
+    Optional<EventDTO> findById(UUID id);
 
     EventDTO save(EventDTO event);
 }

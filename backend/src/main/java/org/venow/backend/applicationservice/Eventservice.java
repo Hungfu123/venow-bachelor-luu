@@ -15,13 +15,11 @@ public class Eventservice {
     private final EventRepository eventRepository;
 
     public List<EventDTO> getAllEvents() {
-        return eventRepository.findAll().stream()
-                .map(EventMapper::mapToEventDTO)
-                .toList();
+        return eventRepository.findAll();
 
     }
 
     public EventDTO getEvent(UUID eventId) {
-        return EventMapper.mapToEventDTO(eventRepository.findById(eventId).orElseThrow(NotFoundException::new));
+        return eventRepository.findById(eventId).orElseThrow(NotFoundException::new);
     }
 }

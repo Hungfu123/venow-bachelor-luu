@@ -18,13 +18,13 @@ public class EventRepositoryImpl implements EventRepository {
     private final JpaEventRepository repository;
 
     @Override
-    public List<Event> findAll() {
-        return repository.findAll();
+    public List<EventDTO> findAll() {
+        return repository.findAll().stream().map(EventMapper::mapToEventDTO).toList();
     }
 
     @Override
-    public Optional<Event> findById(final UUID id) {
-        return repository.findEventByEventId(id);
+    public Optional<EventDTO> findById(final UUID id) {
+        return repository.findEventByEventId(id).map(EventMapper::mapToEventDTO);
     }
 
     @Override
