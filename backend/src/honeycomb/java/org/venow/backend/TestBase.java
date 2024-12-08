@@ -12,9 +12,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.venow.backend.domain.model.Event;
-import org.venow.backend.domain.model.Role;
-import org.venow.backend.domain.model.User;
+import org.venow.backend.domain.model.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -31,7 +29,7 @@ public abstract class TestBase {
     protected static final  Role EXHIBITOR = Role.EXHIBITOR;
     protected static final  Role ORGANIZER = Role.ORGANIZER;
 
-    protected static final User USER_ORGANIZER_1 = new User(1L,  UUID.fromString("df333e19-6ed6-4c8b-b86e-ef78943a98a4"),"maxm@venow.de", DEFAULT_PASSWORD, ORGANIZER);
+    protected static final User USER_ORGANIZER_1 = new User(1L,  UUID.fromString("123e4567-e89b-12d3-a456-426614174000"),"maxm@venow.de", DEFAULT_PASSWORD, ORGANIZER);
     protected static final User USER_EXHIBITOR_1 = new User(2L,  UUID.fromString("df333e19-6ed6-4c8b-b86e-ef78943a98a4"),"malehehem@venow.de", DEFAULT_PASSWORD, EXHIBITOR);
     protected static final User USER_EXHIBITOR_2 = new User(3L,  UUID.fromString("af333e19-6ed6-4c8b-b86e-ef78943a98a2"),"malehehem@venow.de", DEFAULT_PASSWORD, EXHIBITOR);
 
@@ -46,10 +44,24 @@ public abstract class TestBase {
             UUID.fromString("123e4567-e89b-12d3-a456-426614174000")
     );
 
+    protected static final Application APPLICATION_1 =
+            new Application(
+                    null,
+                    UUID.fromString("b79a8e9b-7d74-4a5f-93e1-73f451e1ae0a"),
+                    UUID.fromString("df333e19-6ed6-4c8b-b86e-ef78943a98a4"),
+                    UUID.fromString("45353065-3834-3030-2d65-3239633d3431"),
+                    "Kontakti",
+                    "Luu Business",
+                    "food",
+                    false,
+                    "Hallo zusammen",
+                    Status.IN_PROGRESS);
 
     protected static final UUID EVENT_ID_1 = EVENT_1.getEventId();
+    protected static final UUID ORGANIZER_ID = USER_ORGANIZER_1.getUserId();
     protected static final UUID EXHIBITOR_ID_1 = USER_EXHIBITOR_1.getUserId();
     protected static final UUID EXHIBITOR_ID_2 = USER_EXHIBITOR_2.getUserId();
+
 
     @Container
     public static MySQLContainer<?> jdbcDataBaseContainer = new MySQLContainer<>("mysql:latest")

@@ -30,7 +30,7 @@ public class ExhibitorController {
     public ResponseEntity<EventResponse> getEventDetails(
             @PathVariable("exhibitorId") final UUID exhibitorId,
             @PathVariable("eventId") final UUID eventId) {
-        EventDTO eventDTO = eventservice.getEvent(eventId);
+        final EventDTO eventDTO = eventservice.getEvent(eventId);
         log.info("Found event {}", eventDTO.eventId());
         return ResponseEntity.ok(mapToEventResponse(eventDTO));
     }

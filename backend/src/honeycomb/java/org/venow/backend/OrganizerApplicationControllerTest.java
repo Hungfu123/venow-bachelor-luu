@@ -1,0 +1,73 @@
+package org.venow.backend;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.jdbc.Sql;
+import org.venow.backend.testfactory.ApplicationTestDataFactory;
+import org.venow.backend.web.reponse.ApplicationResponse;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class OrganizerApplicationControllerTest extends TestBase {
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @DisplayName("get all Applications by an organizer")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    void organizerSeeAllHisApplication() throws JsonProcessingException {
+        final List<ApplicationResponse> expectedRespones = List.of(ApplicationTestDataFactory.createDefaultApplicationResponse(),ApplicationTestDataFactory.createConsultingApplicationResponse(), ApplicationTestDataFactory.createITApplicationResponse());
+
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}organizer/{organizerId}/applications",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port, ORGANIZER_ID.toString());
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Stastus is 200")
+                .isEqualTo(HttpStatus.OK);
+
+        List<ApplicationResponse> actualResponses = objectMapper.readValue(
+                response.getBody(),
+                new TypeReference<>() {
+                }
+        );
+
+        assertThat(actualResponses)
+                .as("check if response contains expected applications by organizerId")
+                .containsExactlyInAnyOrderElementsOf(expectedRespones);
+
+    }
+
+    @DisplayName("get all Applications by an organizer")
+    @Test
+    void organizershouldNotSeeAllHisApplication() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}organizer/{organizerId}/applications",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port, null);
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Stastus is Not Found")
+                .isEqualTo(HttpStatus.NOT_FOUND);
+
+    }
+}

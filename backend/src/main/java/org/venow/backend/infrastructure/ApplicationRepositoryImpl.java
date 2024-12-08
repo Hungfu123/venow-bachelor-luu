@@ -8,6 +8,7 @@ import org.venow.backend.applicationservice.ApplicationRepository;
 import org.venow.backend.applicationservice.mapper.ApplicationMapper;
 import org.venow.backend.domain.model.Application;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,6 +37,11 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     @Override
     public Optional<ApplicationDTO> findById(final UUID id) {
         return repository.findByApplicationId(id).map(ApplicationMapper::mapToDTO);
+    }
+
+    @Override
+    public List<ApplicationDTO> getAllApplicationsByOrganizer(UUID organizerId) {
+        return repository.findAllByOrganizerIdFromEvent(organizerId).stream().map(ApplicationMapper::mapToDTO).toList();
     }
 
 }

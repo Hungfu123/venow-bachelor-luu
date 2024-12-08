@@ -1,7 +1,6 @@
 package org.venow.backend.applicationservice;
 
-import org.venow.backend.domain.model.Application;
-
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,4 +11,7 @@ public interface ApplicationRepository {
     boolean existsByUserIdAndEventId(UUID uuid, UUID uuid1);
 
     Optional<ApplicationDTO> findById(UUID id);
+
+    List<ApplicationDTO> getAllApplicationsByOrganizer(UUID organizerId);
+
 }

@@ -4,21 +4,30 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.venow.backend.applicationservice.exception.DuplicateApplicationException;
+
+import java.util.List;
+import java.util.UUID;
+
 @Slf4j
 @Service
 @AllArgsConstructor
 public class Applicationservice {
 
-    private final ApplicationRepository repository;
+    private final ApplicationRepository applicationRepository;
 
 
     public ApplicationDTO createApplication(ApplicationDTO applicationDTO) {
-        if (repository.existsByUserIdAndEventId(applicationDTO.userId(), applicationDTO.eventId())) {
+        if (applicationRepository.existsByUserIdAndEventId(applicationDTO.userId(), applicationDTO.eventId())) {
             throw new DuplicateApplicationException("User has already applied for this event.");
         }
 
-        final ApplicationDTO savedApplication = repository.save(applicationDTO);
+        final ApplicationDTO savedApplication = applicationRepository.save(applicationDTO);
         log.info("application created: {}", savedApplication);
         return savedApplication;
+    }
+
+    public List<ApplicationDTO> getAllApplicationsByOrganizer(UUID organizerId) {
+
+        return applicationRepository.getAllApplicationsByOrganizer(organizerId);
     }
 }
