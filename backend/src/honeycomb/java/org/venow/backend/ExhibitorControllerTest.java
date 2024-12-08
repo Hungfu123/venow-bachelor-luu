@@ -16,7 +16,8 @@ import java.time.format.DateTimeFormatter;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ExhibitorControllerTest extends TestBase {
+class
+ExhibitorControllerTest extends TestBase {
 
     @Autowired
     private TestRestTemplate restTemplate;

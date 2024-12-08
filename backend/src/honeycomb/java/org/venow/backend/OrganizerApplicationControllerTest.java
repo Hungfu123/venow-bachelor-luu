@@ -56,6 +56,30 @@ class OrganizerApplicationControllerTest extends TestBase {
 
     }
 
+    @DisplayName("Organizer has no applications")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    void organizerHasNoApplications() throws JsonProcessingException {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}organizer/{organizerId}/applications",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port, ORGANIZER_ID_EMPTY_APP.toString()
+        );
+
+        assertThat(response.getStatusCode())
+                .isEqualTo(HttpStatus.OK);
+
+        List<ApplicationResponse> actualResponses = objectMapper.readValue(
+                response.getBody(),
+                new TypeReference<>() {}
+        );
+
+        assertThat(actualResponses)
+                .isEmpty();
+    }
+
     @DisplayName("get all Applications by an organizer")
     @Test
     void organizershouldNotSeeAllHisApplication() {
@@ -69,5 +93,19 @@ class OrganizerApplicationControllerTest extends TestBase {
                 .as("check if HTTP Stastus is Not Found")
                 .isEqualTo(HttpStatus.NOT_FOUND);
 
+    }
+    @Test
+    @DisplayName("Invalid organizer ID format")
+    void invalidOrganizerIdFormat() {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}organizer/{organizerId}/applications",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port, "invalid-id"
+        );
+
+        assertThat(response.getStatusCode())
+                .isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }

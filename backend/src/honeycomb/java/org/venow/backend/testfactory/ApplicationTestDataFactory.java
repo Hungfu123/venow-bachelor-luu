@@ -53,6 +53,21 @@ public class ApplicationTestDataFactory {
                 .build();
     }
 
+    public static ApplicationResponse createOtherOrganizerApplicationResponse() {
+        return new ApplicationResponseBuilder()
+                .withId(4L)
+                .withApplicationId("c3456789-01cd-ef23-4567-8901cdef2346")
+                .withEventId("17353065-3834-3030-2d65-3239633d3431")
+                .withUserId("af333e19-6ed6-4c8b-b86e-ef78943a98a2")
+                .withContactInformation("dfadf@example.com")
+                .withBusinessName("IT Technik")
+                .withTypeOfBusiness("Software IT")
+                .withPreviousParticipation(true)
+                .withMessage("Looking forward to participating!")
+                .withStatus("IN_PROGRESS")
+                .build();
+    }
+
     public static List<ApplicationResponse> getAllApplicationResponses() {
         return List.of(
                 createDefaultApplicationResponse(),
