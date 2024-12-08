@@ -26,9 +26,8 @@ import java.util.UUID;
 @ActiveProfiles("test")
 public abstract class TestBase {
 
-    protected static final String DEFAULT_PASSWORD = "password";
-    protected static final  Role EXHIBITOR = Role.EXHIBITOR;
-    protected static final User USER_EXHIBITOR_2 = new User(3L,  UUID.fromString("af333e19-6ed6-4c8b-b86e-ef78943a98a2"),"malehehem@venow.de", DEFAULT_PASSWORD, EXHIBITOR);
+
+    protected static final User USER_EXHIBITOR_2 = UserTestData.createExhibitor3();
 
     protected static final Event EVENT_1 = new Event(
             null,
@@ -45,7 +44,7 @@ public abstract class TestBase {
     protected static final UUID EVENT_ID_1 = EVENT_1.getEventId();
     protected static final UUID ORGANIZER_ID = UserTestData.createOrganizer1().getUserId();
     protected static final UUID ORGANIZER_ID_EMPTY_APP = UserTestData.createOrganizer3().getUserId();
-    protected static final UUID EXHIBITOR_ID_1 = UserTestData.createDefaultUser().getUserId();
+    protected static final UUID EXHIBITOR_ID_1 = UserTestData.createExhibitor1().getUserId();
     protected static final UUID EXHIBITOR_ID_2 = USER_EXHIBITOR_2.getUserId();
 
 

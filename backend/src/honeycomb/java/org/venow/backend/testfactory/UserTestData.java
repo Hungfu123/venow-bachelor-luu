@@ -4,11 +4,28 @@ import org.venow.backend.builder.UserBuilder;
 import org.venow.backend.domain.model.User;
 
 public class UserTestData {
-    public static User createDefaultUser() {
+    public static User createExhibitor1() {
         return new UserBuilder()
                 .withId(1L)
                 .withUserId("df333e19-6ed6-4c8b-b86e-ef78943a98a4")
                 .withEmail("showman@example.com")
+                .withRole(org.venow.backend.domain.model.Role.EXHIBITOR)
+                .build();
+    }
+    public static User createExhibitor2() {
+        return new UserBuilder()
+                .withId(5L)
+                .withUserId("af333e19-6ed6-4c8b-b86e-ef78943a98a3")
+                .withEmail("showmantest3@example.com")
+                .withRole(org.venow.backend.domain.model.Role.EXHIBITOR)
+                .build();
+    }
+
+    public static User createExhibitor3() {
+        return new UserBuilder()
+                .withId(6L)
+                .withUserId("bf333e19-6ed6-4c8b-b86e-ef78943a98a4")
+                .withEmail("showmantest4@example.com")
                 .withRole(org.venow.backend.domain.model.Role.EXHIBITOR)
                 .build();
     }

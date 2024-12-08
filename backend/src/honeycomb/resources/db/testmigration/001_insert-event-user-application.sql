@@ -9,6 +9,8 @@ VALUES ('45353065-3834-3030-2d65-3239633d3431', 'Test', 'Ablblalball', 'Test Par
 INSERT INTO users (user_id, email, password, role)
 VALUES ('df333e19-6ed6-4c8b-b86e-ef78943a98a4', 'showman@example.com', 'password123', 'EXHIBITOR'),
        ('af333e19-6ed6-4c8b-b86e-ef78943a98a2', 'showmantest@example.com', 'password123', 'EXHIBITOR'),
+       ('af333e19-6ed6-4c8b-b86e-ef78943a98a3', 'showmantest3@example.com', 'password123', 'EXHIBITOR'),
+       ('bf333e19-6ed6-4c8b-b86e-ef78943a98a4', 'showmantest4@example.com', 'password123', 'EXHIBITOR'),
        ('123e4567-e89b-12d3-a456-426614174000', 'organizer1@example.com', 'password123', 'ORGANIZER'),
        ('b23e4567-e89b-12d3-a456-426614174001', 'organizer2@example.com', 'password123', 'ORGANIZER'),
        ('b23e4567-e89b-12d3-a456-426614174002', 'organizer3@example.com', 'password123', 'ORGANIZER');
