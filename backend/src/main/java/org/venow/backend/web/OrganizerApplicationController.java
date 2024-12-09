@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.venow.backend.applicationservice.ApplicationDTO;
 import org.venow.backend.applicationservice.Applicationservice;
-import org.venow.backend.applicationservice.Eventservice;
 import org.venow.backend.web.reponse.ApplicationResponse;
 
 import java.util.ArrayList;
@@ -36,8 +35,19 @@ public class OrganizerApplicationController {
         return ResponseEntity.ok(allApplication.stream()
                 .collect(
                         ArrayList::new,
-                        (arrayList, applicationDTO) -> arrayList.add( mapToApplicationResponse(applicationDTO)),
+                        (arrayList, applicationDTO) -> arrayList.add(mapToApplicationResponse(applicationDTO)),
                         ArrayList::addAll ));
+    }
+
+    @GetMapping("/applications/{applicationId}")
+    public ResponseEntity<ApplicationResponse> getApplication(
+            @PathVariable("organizerId") final UUID organizerId,
+            @PathVariable("applicationId") final UUID applicationId
+    ) {
+        final ApplicationDTO applicationDTO = applicationservice.getApplication(applicationId);
+        log.info("Found application {}", applicationDTO.applicationId());
+        return ResponseEntity.ok(mapToApplicationResponse(applicationDTO));
+
     }
 
 }

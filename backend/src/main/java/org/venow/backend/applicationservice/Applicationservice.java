@@ -3,7 +3,9 @@ package org.venow.backend.applicationservice;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.venow.backend.applicationservice.exception.ApplicationNotFoundException;
 import org.venow.backend.applicationservice.exception.DuplicateApplicationException;
+import org.venow.backend.applicationservice.exception.NotFoundException;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,5 +31,9 @@ public class Applicationservice {
     public List<ApplicationDTO> getAllApplicationsByOrganizer(UUID organizerId) {
 
         return applicationRepository.getAllApplicationsByOrganizer(organizerId);
+    }
+
+    public ApplicationDTO getApplication(UUID applicationId) {
+        return applicationRepository.findById(applicationId).orElseThrow(() -> new NotFoundException("Application not found"));
     }
 }

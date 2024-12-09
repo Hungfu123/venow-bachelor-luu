@@ -20,6 +20,6 @@ public class Eventservice {
     }
 
     public EventDTO getEvent(UUID eventId) {
-        return eventRepository.findById(eventId).orElseThrow(NotFoundException::new);
+        return eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Event not found"));
     }
 }

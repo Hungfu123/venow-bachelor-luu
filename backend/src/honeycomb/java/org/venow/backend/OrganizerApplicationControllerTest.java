@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -17,6 +16,7 @@ import org.venow.backend.testfactory.ApplicationDataFactory;
 import org.venow.backend.web.reponse.ApplicationResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -80,7 +80,7 @@ class OrganizerApplicationControllerTest extends TestBase {
                 .isEmpty();
     }
 
-    @DisplayName("get all Applications by an organizer")
+    @DisplayName("should not found applications")
     @Test
     void organizershouldNotSeeAllHisApplication() {
         final ResponseEntity<String> response = restTemplate
@@ -108,4 +108,62 @@ class OrganizerApplicationControllerTest extends TestBase {
         assertThat(response.getStatusCode())
                 .isEqualTo(HttpStatus.BAD_REQUEST);
     }
+
+    @Test
+    @DisplayName("should see an application by organizer")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    void shouldSeeAnApplicationByOrganizer() throws JsonProcessingException {
+
+
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}organizer/{organizerId}/applications/{applicationId}",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port, ORGANIZER_ID.toString(), APPLICATION_1.applicationId()
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        ApplicationResponse actualResponses = objectMapper.readValue(
+                response.getBody(),
+                new TypeReference<>() {
+                }
+        );
+
+        assertThat(actualResponses)
+                .as("check if response contains expected applications by organizerId")
+                .isEqualTo(APPLICATION_1);
+    }
+
+    @DisplayName("should not get his application")
+    @Test
+    void organizershouldNotSeeHisApplication() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}organizer/{organizerId}/applications/{applicationId}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port, ORGANIZER_ID_EMPTY_APP.toString(), null);
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Stastus is Not Found")
+                .isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("should return NOT_FOUND for non-existent applicationId")
+    void shouldReturnNotFoundForNonExistentApplicationId() {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}organizer/{organizerId}/applications/{applicationId}",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port, ORGANIZER_ID.toString(), UUID.randomUUID().toString()
+        );
+
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Status is Not Found for invalid applicationId")
+                .isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
 }

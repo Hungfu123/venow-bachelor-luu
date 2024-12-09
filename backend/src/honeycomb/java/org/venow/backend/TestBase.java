@@ -13,7 +13,9 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.venow.backend.domain.model.*;
+import org.venow.backend.testfactory.ApplicationDataFactory;
 import org.venow.backend.testfactory.UserTestData;
+import org.venow.backend.web.reponse.ApplicationResponse;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -47,6 +49,7 @@ public abstract class TestBase {
     protected static final UUID EXHIBITOR_ID_1 = UserTestData.createExhibitor1().getUserId();
     protected static final UUID EXHIBITOR_ID_2 = USER_EXHIBITOR_2.getUserId();
 
+    protected static final ApplicationResponse APPLICATION_1 = ApplicationDataFactory.createITApplicationResponse();
 
     @Container
     public static MySQLContainer<?> jdbcDataBaseContainer = new MySQLContainer<>("mysql:latest")
