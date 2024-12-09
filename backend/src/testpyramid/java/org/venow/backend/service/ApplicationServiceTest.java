@@ -12,9 +12,10 @@ import org.venow.backend.testdata.ApplicationDTOFactory;
 import org.venow.backend.testdata.EventDTOFactory;
 import org.venow.backend.testdata.UserDTOFactory;
 
+import java.util.List;
 import java.util.UUID;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -84,6 +85,42 @@ public class ApplicationServiceTest {
         assertThat(result2.eventId()).isEqualTo(event2.eventId());
     }
 
+    @Test
+    @DisplayName("organizer gets all applications")
+    void organizerGetsAllApplications() {
+        ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
+                .withEventId(UUID.randomUUID().toString())
+                .build();
 
+        ApplicationDTO application2 = ApplicationDTOFactory.createDefault()
+                .withEventId(UUID.randomUUID().toString())
+                .build();
+
+        List<ApplicationDTO> expectedApplications = List.of(application1, application2);
+
+        when(applicationRepository.getAllApplicationsByOrganizer(any()))
+                .thenReturn(expectedApplications);
+
+        List<ApplicationDTO> result = service.getAllApplicationsByOrganizer(any());
+
+        assertThat(result)
+                .isNotNull()
+                .hasSize(2)
+                .containsExactly(application1, application2);
+    }
+
+    @Test
+    @DisplayName("Should return empty list when organizer has no applications")
+    void shouldReturnEmptyListWhenNoApplications() {
+        UUID organizerId = UUID.randomUUID();
+
+        when(applicationRepository.getAllApplicationsByOrganizer(organizerId))
+                .thenReturn(List.of());
+
+        List<ApplicationDTO> result = service.getAllApplicationsByOrganizer(organizerId);
+
+        assertThat(result)
+                .isEmpty();
+    }
 
 }

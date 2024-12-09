@@ -60,7 +60,7 @@ public class ApplicationServiceIT extends TestBase {
 
         final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault()
                 .withEventId("45353065-3834-3030-2d65-3239633d3431")
-                .withUserId("af333e19-6ed6-4c8b-b86e-ef78943a98a2")
+                .withUserId("bf333e19-6ed6-4c8b-b86e-ef78943a98a4")
                 .build();
 
         final ApplicationDTO result = applicationservice.createApplication(applicationDTO);

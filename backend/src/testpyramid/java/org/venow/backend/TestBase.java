@@ -24,7 +24,7 @@ import java.util.UUID;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @AutoConfigureWireMock
-@ActiveProfiles("testpyramid-h2")
+@ActiveProfiles("testpyramid-testcontainer")
 public abstract class TestBase {
 
 

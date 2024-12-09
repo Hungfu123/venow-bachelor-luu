@@ -43,6 +43,11 @@ public class EventDTOFactory {
             return this;
         }
 
+        public EventDTOWith withOrganizerId(UUID organizerId) {
+            this.eventDTO = eventDTO.toBuilder().eventId(organizerId).build();
+            return this;
+        }
+
         public EventDTO build() {
             return this.eventDTO;
         }
