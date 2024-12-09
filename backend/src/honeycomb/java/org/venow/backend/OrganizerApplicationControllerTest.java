@@ -174,7 +174,7 @@ class OrganizerApplicationControllerTest extends TestBase {
                 HttpMethod.GET,
                 null,
                 String.class,
-                port, ORGANIZER_ID.toString(), "invalid-uuid"
+                port, ORGANIZER_ID.toString(), "blabla"
         );
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);

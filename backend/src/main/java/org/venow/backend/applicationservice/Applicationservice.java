@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.venow.backend.applicationservice.exception.ApplicationNotFoundException;
 import org.venow.backend.applicationservice.exception.DuplicateApplicationException;
+import org.venow.backend.applicationservice.exception.InvalidInputException;
 import org.venow.backend.applicationservice.exception.NotFoundException;
 
 import java.util.List;
@@ -34,6 +35,13 @@ public class Applicationservice {
     }
 
     public ApplicationDTO getApplication(UUID applicationId) {
-        return applicationRepository.findById(applicationId).orElseThrow(() -> new NotFoundException("Application not found"));
+        if (applicationId == null) {
+            throw new InvalidInputException("Application ID must not be null");
+        }
+
+        return applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new NotFoundException("Application not found for ID: " + applicationId));
     }
+
+
 }

@@ -8,11 +8,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.venow.backend.applicationservice.*;
 import org.venow.backend.applicationservice.exception.DuplicateApplicationException;
+import org.venow.backend.applicationservice.exception.InvalidInputException;
+import org.venow.backend.applicationservice.exception.NotFoundException;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 import org.venow.backend.testdata.EventDTOFactory;
 import org.venow.backend.testdata.UserDTOFactory;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,6 +53,17 @@ public class ApplicationServiceTest {
 
         assertThat(service.createApplication(applicationDTO)).isEqualTo(applicationDTO);
     }
+    @Test
+    @DisplayName("Should throw exception when eventId is null")
+    void shouldThrowExceptionWhenEventIdIsNull() {
+        ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().withEventId(null).build();
+
+        assertThatThrownBy(() -> service.createApplication(applicationDTO))
+                .isInstanceOf(InvalidInputException.class)
+                .hasMessageContaining("Event ID must not be null");
+    }
+
+
 
     @Test
     @DisplayName("Should set initial status to IN_PROGRESS")
@@ -122,5 +136,43 @@ public class ApplicationServiceTest {
         assertThat(result)
                 .isEmpty();
     }
+
+    @Test
+    @DisplayName("organizer gets application")
+    void organizerGetsApplications() throws InvalidInputException {
+        ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
+                .withEventId(UUID.randomUUID().toString())
+                .build();
+
+        when(applicationRepository.findById(any()))
+                .thenReturn(Optional.ofNullable(application1));
+
+
+        ApplicationDTO application = service.getApplication(application1.applicationId());
+
+        assertThat(application).isEqualTo(application1);
+    }
+
+    @Test
+    @DisplayName("organizer gets Error getting application")
+    void organizerGetsError() {
+
+        assertThatThrownBy(() -> service.getApplication(null))
+                .isInstanceOf(InvalidInputException.class);
+    }
+
+    @Test
+    @DisplayName("organizer gets Error when application is not found")
+    void organizerGetsErrorForNonExistentApplication() {
+        UUID nonExistentId = UUID.randomUUID();
+
+        when(applicationRepository.findById(nonExistentId))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.getApplication(nonExistentId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Application not found");
+    }
+
 
 }

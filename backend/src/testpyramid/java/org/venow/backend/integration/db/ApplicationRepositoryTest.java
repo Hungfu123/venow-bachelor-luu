@@ -97,7 +97,6 @@ class ApplicationRepositoryTest extends TestBase {
 
         List<ApplicationDTO> applications = applicationRepository.getAllApplicationsByOrganizer(organizerId);
 
-        // in sql script we already have 3 applications for this particular organizerId
         assertThat(applications)
                 .hasSize(4)
                 .contains(savedApplication1)

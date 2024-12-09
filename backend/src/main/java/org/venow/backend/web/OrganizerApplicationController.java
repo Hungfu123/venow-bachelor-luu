@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.venow.backend.applicationservice.ApplicationDTO;
 import org.venow.backend.applicationservice.Applicationservice;
+import org.venow.backend.applicationservice.exception.InvalidInputException;
 import org.venow.backend.web.reponse.ApplicationResponse;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class OrganizerApplicationController {
     public ResponseEntity<ApplicationResponse> getApplication(
             @PathVariable("organizerId") final UUID organizerId,
             @PathVariable("applicationId") final UUID applicationId
-    ) {
+    ) throws InvalidInputException {
         final ApplicationDTO applicationDTO = applicationservice.getApplication(applicationId);
         log.info("Found application {}", applicationDTO.applicationId());
         return ResponseEntity.ok(mapToApplicationResponse(applicationDTO));

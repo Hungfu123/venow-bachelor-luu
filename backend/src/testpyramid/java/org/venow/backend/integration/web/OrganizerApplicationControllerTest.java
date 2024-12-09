@@ -10,11 +10,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.venow.backend.applicationservice.ApplicationDTO;
 import org.venow.backend.applicationservice.Applicationservice;
+import org.venow.backend.applicationservice.exception.InvalidInputException;
 import org.venow.backend.testdata.ApplicationDataFactory;
 import org.venow.backend.testdata.UserTestData;
 import org.venow.backend.web.OrganizerApplicationController;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -96,5 +98,56 @@ class OrganizerApplicationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+    @DisplayName("Organizer gets BAD REQUEST for invalid applicationId format")
+    @Test
+    void organizerBadRequestInvalidApplicationIdFormat() throws Exception {
+        mockMvc.perform(get("/organizer/{organizerId}/applications/{applicationId}",
+                        UserTestData.createOrganizer1().getUserId(), "invalid-uuid")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("Organizer sees a specific application")
+    @Test
+    void organizerSeeSpecificApplication() throws Exception, InvalidInputException {
+        ApplicationDTO applicationDTO = ApplicationDataFactory.createDefaultApplicationDTO();
+
+        when(applicationService.getApplication(any())).thenReturn(applicationDTO);
+
+        String expectedJson = objectMapper.writeValueAsString(applicationDTO);
+
+        String contentAsString = mockMvc.perform(get("/organizer/{organizerId}/applications/{applicationId}",
+                        UserTestData.createOrganizer1().getUserId(), applicationDTO.applicationId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo(expectedJson);
+    }
+
+    @DisplayName("Organizer does not see a non-existent application")
+    @Test
+    void organizerSeeNonExistentApplication() throws Exception, InvalidInputException {
+        when(applicationService.getApplication(any()))
+                .thenThrow(new IllegalArgumentException("Application not found"));
+
+        mockMvc.perform(get("/organizer/{organizerId}/applications/{applicationId}",
+                        UserTestData.createOrganizer1().getUserId(), UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @DisplayName("Organizer gets NOT FOUND for empty organizerId")
+    @Test
+    void organizerEmptyOrganizerId() throws Exception {
+        mockMvc.perform(get("/organizer/{organizerId}/applications", "")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+
+
 }
 
