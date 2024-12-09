@@ -166,4 +166,19 @@ class OrganizerApplicationControllerTest extends TestBase {
                 .isEqualTo(HttpStatus.NOT_FOUND);
     }
 
+    @Test
+    @DisplayName("should return BAD_REQUEST for invalid applicationId format")
+    void shouldReturnBadRequestForInvalidApplicationIdFormat() {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}organizer/{organizerId}/applications/{applicationId}",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port, ORGANIZER_ID.toString(), "invalid-uuid"
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+
 }
