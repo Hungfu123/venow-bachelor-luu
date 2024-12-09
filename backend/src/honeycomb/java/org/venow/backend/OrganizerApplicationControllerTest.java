@@ -13,7 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
-import org.venow.backend.testfactory.ApplicationTestDataFactory;
+import org.venow.backend.testfactory.ApplicationDataFactory;
 import org.venow.backend.web.reponse.ApplicationResponse;
 
 import java.util.List;
@@ -32,7 +32,7 @@ class OrganizerApplicationControllerTest extends TestBase {
     @Test
     @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
     void organizerSeeAllHisApplication() throws JsonProcessingException {
-        final List<ApplicationResponse> expectedRespones = List.of(ApplicationTestDataFactory.createDefaultApplicationResponse(),ApplicationTestDataFactory.createConsultingApplicationResponse(), ApplicationTestDataFactory.createITApplicationResponse());
+        final List<ApplicationResponse> expectedRespones = List.of(ApplicationDataFactory.createDefaultApplicationResponse(),ApplicationDataFactory.createConsultingApplicationResponse(), ApplicationDataFactory.createITApplicationResponse());
 
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}organizer/{organizerId}/applications",

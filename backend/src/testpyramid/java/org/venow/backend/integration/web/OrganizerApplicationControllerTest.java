@@ -1,0 +1,100 @@
+package org.venow.backend.integration.web;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.venow.backend.applicationservice.ApplicationDTO;
+import org.venow.backend.applicationservice.Applicationservice;
+import org.venow.backend.testdata.ApplicationDataFactory;
+import org.venow.backend.testdata.UserTestData;
+import org.venow.backend.web.OrganizerApplicationController;
+
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(OrganizerApplicationController.class)
+class OrganizerApplicationControllerTest {
+
+    @Autowired
+    ObjectMapper objectMapper;
+    @Autowired
+    private MockMvc mockMvc;
+    @MockBean
+    private Applicationservice applicationService;
+
+
+    @DisplayName("Organizer sees all his applications")
+    @Test
+    void organizerSeeAllHisApplication() throws Exception {
+        ApplicationDTO defaultApplicationDTO = ApplicationDataFactory.createDefaultApplicationDTO();
+        ApplicationDTO consultingApplicationDTO = ApplicationDataFactory.createConsultingApplicationDTO();
+        ApplicationDTO itApplicationDTO = ApplicationDataFactory.createITApplicationDTO();
+        final List<ApplicationDTO> expected = List.of(
+                defaultApplicationDTO,
+                consultingApplicationDTO,
+                itApplicationDTO
+        );
+
+        when(applicationService.getAllApplicationsByOrganizer(any()))
+                .thenReturn(expected);
+
+        String expectedJson = objectMapper.writeValueAsString(expected);
+
+        String contentAsString = mockMvc.perform(get("/organizer/{organizerId}/applications", UserTestData.createOrganizer1().getUserId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo(expectedJson);
+    }
+
+    @DisplayName("Organizer sees an empty list of applications")
+    @Test
+    void organizerSeeEmptyApplications() throws Exception {
+        when(applicationService.getAllApplicationsByOrganizer(any()))
+                .thenReturn(List.of());
+
+        String expectedJson = objectMapper.writeValueAsString(List.of());
+
+        String contentAsString = mockMvc.perform(get("/organizer/{organizerId}/applications", UserTestData.createOrganizer1().getUserId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo(expectedJson);
+    }
+
+    @DisplayName("Organizer gets BAD REQUEST for invalid input")
+    @Test
+    void organizerNotFound() throws Exception {
+        when(applicationService.getAllApplicationsByOrganizer(any()))
+                .thenThrow(new IllegalArgumentException("Organizer not found"));
+
+        mockMvc.perform(get("/organizer/{organizerId}/applications", "invalid-id")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("Organizer gets NOT FOUND when no organizer exists")
+    @Test
+    void organizerBadRequest() throws Exception {
+        mockMvc.perform(get("/organizer/{organizerId}/applications", "")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+}
+

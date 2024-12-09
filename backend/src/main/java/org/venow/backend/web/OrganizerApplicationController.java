@@ -24,7 +24,7 @@ import static org.venow.backend.web.reponse.ResponseMapper.mapToApplicationRespo
 @RequestMapping("/organizer/{organizerId}")
 public class OrganizerApplicationController {
 
-    private final Eventservice eventservice;
+
     private final Applicationservice applicationservice;
 
     @GetMapping("/applications")
@@ -32,7 +32,11 @@ public class OrganizerApplicationController {
             @PathVariable("organizerId") final UUID organizerId) {
         final List<ApplicationDTO> allApplication = applicationservice.getAllApplicationsByOrganizer(organizerId);
         log.info("Found application {}", allApplication.stream().map(ApplicationDTO::applicationId).toList());
-        return ResponseEntity.ok(allApplication.stream().collect(ArrayList::new, (a, e) -> a.add( mapToApplicationResponse(e)),ArrayList::addAll ));
+        return ResponseEntity.ok(allApplication.stream()
+                .collect(
+                        ArrayList::new,
+                        (arrayList, applicationDTO) -> arrayList.add( mapToApplicationResponse(applicationDTO)),
+                        ArrayList::addAll ));
     }
 
 }
