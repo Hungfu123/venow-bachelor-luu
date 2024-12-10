@@ -33,7 +33,7 @@ class ExhibitorControllerTest {
     @MockBean
     Eventservice eventservice;
     @MockBean
-    Applicationservice applicationservice;
+    ApplicationService applicationservice;
 
     @DisplayName("get specific Event")
     @Test

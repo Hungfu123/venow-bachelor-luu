@@ -1,5 +1,7 @@
 package org.venow.backend.applicationservice;
 
+import org.venow.backend.domain.model.Status;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,4 +16,5 @@ public interface ApplicationRepository {
 
     List<ApplicationDTO> getAllApplicationsByOrganizer(UUID organizerId);
 
+    ApplicationDTO updateStatus(ApplicationDTO applicationDTO);
 }

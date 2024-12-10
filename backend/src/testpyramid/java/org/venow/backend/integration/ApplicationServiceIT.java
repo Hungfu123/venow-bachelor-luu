@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.TestBase;
 import org.venow.backend.applicationservice.ApplicationDTO;
-import org.venow.backend.applicationservice.Applicationservice;
+import org.venow.backend.applicationservice.ApplicationService;
 import org.venow.backend.applicationservice.exception.DuplicateApplicationException;
 import org.venow.backend.infrastructure.ApplicationRepositoryImpl;
 import org.venow.backend.testdata.ApplicationDTOFactory;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class ApplicationServiceIT extends TestBase {
 
     @Autowired
-    private Applicationservice applicationservice;
+    private ApplicationService applicationservice;
 
     @Autowired
     private ApplicationRepositoryImpl applicationRepository;

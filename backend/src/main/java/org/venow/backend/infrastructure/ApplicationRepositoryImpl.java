@@ -7,6 +7,7 @@ import org.venow.backend.applicationservice.ApplicationDTO;
 import org.venow.backend.applicationservice.ApplicationRepository;
 import org.venow.backend.applicationservice.mapper.ApplicationMapper;
 import org.venow.backend.domain.model.Application;
+import org.venow.backend.domain.model.Status;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +43,11 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     @Override
     public List<ApplicationDTO> getAllApplicationsByOrganizer(UUID organizerId) {
         return repository.findAllByOrganizerIdFromEvent(organizerId).stream().map(ApplicationMapper::mapToDTO).toList();
+    }
+
+    @Override
+    public ApplicationDTO updateStatus(ApplicationDTO applicationDTO) {
+        return null;
     }
 
 }

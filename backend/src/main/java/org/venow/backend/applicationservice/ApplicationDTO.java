@@ -1,20 +1,24 @@
 package org.venow.backend.applicationservice;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
+
+@Getter
+@Setter
 @Builder(toBuilder = true)
-public record ApplicationDTO(
-        Long id,
-        UUID applicationId,
-        UUID userId,
-        UUID eventId,
-        String contactInformation,
-        String businessName,
-        String typeOfBusiness,
-        boolean previousParticipation,
-        String message,
-        String status
-) {
+public class ApplicationDTO {
+    private Long id;
+    private UUID applicationId;
+    private UUID userId;
+    private UUID eventId;
+    private String contactInformation;
+    private String businessName;
+    private String typeOfBusiness;
+    private boolean previousParticipation;
+    private String message;
+    private String status;
 
 }

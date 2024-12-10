@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.venow.backend.applicationservice.ApplicationDTO;
-import org.venow.backend.applicationservice.Applicationservice;
+import org.venow.backend.applicationservice.ApplicationService;
 import org.venow.backend.applicationservice.EventDTO;
 import org.venow.backend.applicationservice.Eventservice;
 import org.venow.backend.web.reponse.ApplicationResponse;
@@ -24,7 +24,7 @@ import static org.venow.backend.web.reponse.ResponseMapper.mapToEventResponse;
 public class ExhibitorController {
 
     private final Eventservice eventservice;
-    private final Applicationservice applicationservice;
+    private final ApplicationService applicationservice;
 
     @GetMapping("/event/{eventId}")
     public ResponseEntity<EventResponse> getEventDetails(

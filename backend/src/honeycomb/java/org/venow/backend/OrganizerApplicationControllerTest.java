@@ -18,6 +18,7 @@ import org.venow.backend.web.reponse.ApplicationResponse;
 import java.util.List;
 import java.util.UUID;
 
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class OrganizerApplicationControllerTest extends TestBase {
@@ -180,5 +181,34 @@ class OrganizerApplicationControllerTest extends TestBase {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    @Test
+    @DisplayName("reject application and has status rejected")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    void rejectApplication() throws JsonProcessingException {
+
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}organizer/{organizerId}/applications/{applicationId}",
+                HttpMethod.POST,
+                null,
+                String.class,
+                port, ORGANIZER_ID.toString(), APPLICATION_1.applicationId()
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+        ApplicationResponse actualResponses = objectMapper.readValue(
+                response.getBody(),
+                new TypeReference<>() {
+                }
+        );
+
+        assertThatJson(response.getBody()).as("check if application contains status rejected").and(
+                json -> json.node("applicationId").isEqualTo(APPLICATION_1.applicationId().toString()),
+                json -> json.node("userId").isEqualTo("af333e19-6ed6-4c8b-b86e-ef78943a98a3"),
+                json -> json.node("eventId").isEqualTo(EVENT_ID_1.toString()),
+                json -> json.node("contactInformation").isEqualTo("dfadf@example.com"),
+                json -> json.node("businessName").isEqualTo("IT Technik"),
+                json -> json.node("status").isEqualTo("REJECTED"));
+    }
 
 }

@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.venow.backend.applicationservice.ApplicationDTO;
-import org.venow.backend.applicationservice.Applicationservice;
+import org.venow.backend.applicationservice.ApplicationService;
 import org.venow.backend.applicationservice.exception.InvalidInputException;
 import org.venow.backend.testdata.ApplicationDataFactory;
 import org.venow.backend.testdata.UserTestData;
@@ -32,7 +32,7 @@ class OrganizerApplicationControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private Applicationservice applicationService;
+    private ApplicationService applicationService;
 
 
     @DisplayName("Organizer sees all his applications")

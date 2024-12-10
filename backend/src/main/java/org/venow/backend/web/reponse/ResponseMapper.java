@@ -16,20 +16,20 @@ public class ResponseMapper {
                 .endDate(event.endDate())
                 .build();
     }
-
     public static ApplicationResponse mapToApplicationResponse(final ApplicationDTO application) {
         return ApplicationResponse.builder()
-                .id(application.id())
-                .applicationId(application.applicationId())
-                .userId(application.userId())
-                .eventId(application.eventId())
-                .contactInformation(application.contactInformation())
-                .businessName(application.businessName())
-                .typeOfBusiness(application.typeOfBusiness())
-                .previousParticipation(application.previousParticipation())
-                .message(application.message())
-                .status(application.status())
+                .id(application.getId())
+                .applicationId(application.getApplicationId())
+                .userId(application.getUserId())
+                .eventId(application.getEventId())
+                .contactInformation(application.getContactInformation())
+                .businessName(application.getBusinessName())
+                .typeOfBusiness(application.getTypeOfBusiness())
+                .previousParticipation(application.isPreviousParticipation())
+                .message(application.getMessage())
+                .status(application.getStatus())
                 .build();
     }
+
 
 }

@@ -3,13 +3,11 @@ package org.venow.backend.web;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.venow.backend.applicationservice.ApplicationDTO;
-import org.venow.backend.applicationservice.Applicationservice;
+import org.venow.backend.applicationservice.ApplicationService;
 import org.venow.backend.applicationservice.exception.InvalidInputException;
 import org.venow.backend.web.reponse.ApplicationResponse;
 
@@ -26,13 +24,13 @@ import static org.venow.backend.web.reponse.ResponseMapper.mapToApplicationRespo
 public class OrganizerApplicationController {
 
     @Autowired
-    private final Applicationservice applicationservice;
+    private final ApplicationService applicationservice;
 
     @GetMapping("/applications")
     public ResponseEntity<List<ApplicationResponse>> getallApplicationsByOrganizer(
             @PathVariable("organizerId") final UUID organizerId) {
         final List<ApplicationDTO> allApplication = applicationservice.getAllApplicationsByOrganizer(organizerId);
-        log.info("Found application {}", allApplication.stream().map(ApplicationDTO::applicationId).toList());
+        log.info("Found application {}", allApplication.stream().map(ApplicationDTO::getApplicationId).toList());
         return ResponseEntity.ok(allApplication.stream()
                 .collect(
                         ArrayList::new,
@@ -46,10 +44,19 @@ public class OrganizerApplicationController {
             @PathVariable("applicationId") final UUID applicationId
     ) throws InvalidInputException {
         final ApplicationDTO applicationDTO = applicationservice.getApplication(applicationId);
-        log.info("Found application {}", applicationDTO.applicationId());
+        log.info("Found application {}", applicationDTO.getApplicationId());
         return ResponseEntity.ok(mapToApplicationResponse(applicationDTO));
 
     }
 
+    @PostMapping("/applications/{applicationId}")
+    public ResponseEntity<ApplicationResponse> rejectApplication(
+            @PathVariable("organizerId") final UUID organizerId,
+            @PathVariable("applicationId") final UUID applicationId
+    ) throws InvalidInputException {
+        final ApplicationDTO applicationDTO = applicationservice.rejectApplication(applicationId);
+        log.info("Application was rejected {}", applicationDTO.getApplicationId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapToApplicationResponse(applicationDTO));
+    }
 }
 

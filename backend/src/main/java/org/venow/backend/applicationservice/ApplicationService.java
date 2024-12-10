@@ -3,10 +3,10 @@ package org.venow.backend.applicationservice;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.venow.backend.applicationservice.exception.ApplicationNotFoundException;
 import org.venow.backend.applicationservice.exception.DuplicateApplicationException;
 import org.venow.backend.applicationservice.exception.InvalidInputException;
 import org.venow.backend.applicationservice.exception.NotFoundException;
+import org.venow.backend.domain.model.Status;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,13 +14,13 @@ import java.util.UUID;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class Applicationservice {
+public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
 
 
     public ApplicationDTO createApplication(ApplicationDTO applicationDTO) {
-        if (applicationRepository.existsByUserIdAndEventId(applicationDTO.userId(), applicationDTO.eventId())) {
+        if (applicationRepository.existsByUserIdAndEventId(applicationDTO.getUserId(), applicationDTO.getEventId())) {
             throw new DuplicateApplicationException("User has already applied for this event.");
         }
 
@@ -44,4 +44,9 @@ public class Applicationservice {
     }
 
 
+    public ApplicationDTO rejectApplication(UUID applicationId) {
+        final ApplicationDTO applicationDTO = getApplication(applicationId);
+        applicationDTO.setStatus(Status.REJECTED.name());
+        return applicationRepository.save(applicationDTO);
+    }
 }

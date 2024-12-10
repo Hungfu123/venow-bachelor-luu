@@ -30,13 +30,13 @@ public class ApplicationServiceTest {
     ApplicationRepository applicationRepository;
 
     @InjectMocks
-    Applicationservice service;
+    ApplicationService service;
 
     @Test
     @DisplayName("should throw exception when exhibitor already applied for the event")
     void shouldThrowExceptionWhenCreateApplication() {
         ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
-        when(applicationRepository.existsByUserIdAndEventId(applicationDTO.userId(), applicationDTO.eventId()))
+        when(applicationRepository.existsByUserIdAndEventId(applicationDTO.getUserId(), applicationDTO.getEventId()))
                 .thenReturn(true);
 
         assertThatThrownBy(() -> service.createApplication(applicationDTO))
@@ -74,7 +74,7 @@ public class ApplicationServiceTest {
 
         ApplicationDTO result = service.createApplication(applicationDTO);
 
-        assertThat(result.status()).isEqualTo("IN_PROGRESS");
+        assertThat(result.getStatus()).isEqualTo("IN_PROGRESS");
     }
 
     @Test
@@ -95,8 +95,8 @@ public class ApplicationServiceTest {
         ApplicationDTO result1 = service.createApplication(applicationDTO1);
         ApplicationDTO result2 = service.createApplication(applicationDTO2);
 
-        assertThat(result1.eventId()).isEqualTo(event1.eventId());
-        assertThat(result2.eventId()).isEqualTo(event2.eventId());
+        assertThat(result1.getEventId()).isEqualTo(event1.eventId());
+        assertThat(result2.getEventId()).isEqualTo(event2.eventId());
     }
 
     @Test
@@ -148,7 +148,8 @@ public class ApplicationServiceTest {
                 .thenReturn(Optional.ofNullable(application1));
 
 
-        ApplicationDTO application = service.getApplication(application1.applicationId());
+        assert application1 != null;
+        ApplicationDTO application = service.getApplication(application1.getApplicationId());
 
         assertThat(application).isEqualTo(application1);
     }
