@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.venow.backend.applicationservice.exception.AlreadyRejectedException;
 import org.venow.backend.applicationservice.exception.DuplicateApplicationException;
 import org.venow.backend.applicationservice.exception.InvalidInputException;
 import org.venow.backend.applicationservice.exception.NotFoundException;
@@ -30,5 +31,9 @@ public class GlobalExceptionHandler {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+    @ExceptionHandler(AlreadyRejectedException.class)
+    public ResponseEntity<String> handleIllegalArgumentException(AlreadyRejectedException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 }

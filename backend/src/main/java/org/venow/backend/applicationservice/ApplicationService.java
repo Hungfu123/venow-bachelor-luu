@@ -3,6 +3,7 @@ package org.venow.backend.applicationservice;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.venow.backend.applicationservice.exception.AlreadyRejectedException;
 import org.venow.backend.applicationservice.exception.DuplicateApplicationException;
 import org.venow.backend.applicationservice.exception.InvalidInputException;
 import org.venow.backend.applicationservice.exception.NotFoundException;
@@ -46,6 +47,9 @@ public class ApplicationService {
 
     public ApplicationDTO rejectApplication(UUID applicationId) {
         final ApplicationDTO applicationDTO = getApplication(applicationId);
+        if(applicationDTO.getStatus().equals(Status.REJECTED.name())){
+            throw new AlreadyRejectedException("Application already rejected");
+        }
         applicationDTO.setStatus(Status.REJECTED.name());
         return applicationRepository.save(applicationDTO);
     }

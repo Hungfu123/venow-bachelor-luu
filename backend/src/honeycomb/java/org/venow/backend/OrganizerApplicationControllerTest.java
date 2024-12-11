@@ -12,6 +12,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
+import org.venow.backend.applicationservice.ApplicationDTO;
+import org.venow.backend.applicationservice.exception.NotFoundException;
+import org.venow.backend.infrastructure.ApplicationRepositoryImpl;
 import org.venow.backend.testfactory.ApplicationDataFactory;
 import org.venow.backend.web.reponse.ApplicationResponse;
 
@@ -28,6 +31,9 @@ class OrganizerApplicationControllerTest extends TestBase {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private ApplicationRepositoryImpl applicationRepository;
 
     @DisplayName("get all Applications by an organizer")
     @Test
@@ -196,11 +202,6 @@ class OrganizerApplicationControllerTest extends TestBase {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-        ApplicationResponse actualResponses = objectMapper.readValue(
-                response.getBody(),
-                new TypeReference<>() {
-                }
-        );
 
         assertThatJson(response.getBody()).as("check if application contains status rejected").and(
                 json -> json.node("applicationId").isEqualTo(APPLICATION_1.applicationId().toString()),
@@ -209,6 +210,32 @@ class OrganizerApplicationControllerTest extends TestBase {
                 json -> json.node("contactInformation").isEqualTo("dfadf@example.com"),
                 json -> json.node("businessName").isEqualTo("IT Technik"),
                 json -> json.node("status").isEqualTo("REJECTED"));
+
+
+        ApplicationDTO savedApplication = applicationRepository.findById(APPLICATION_1.applicationId()).orElseThrow(
+                () -> new NotFoundException("Application not found")
+        );
+
+        assertThat(savedApplication.getStatus()).isEqualTo("REJECTED");
+    }
+
+    @Test
+    @DisplayName("reject application already rejected")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/002_reject_application.sql"})
+    void rejectApplicationAlreadyRejected() throws JsonProcessingException {
+
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}organizer/{organizerId}/applications/{applicationId}",
+                HttpMethod.POST,
+                null,
+                String.class,
+                port, ORGANIZER_ID.toString(), APPLICATION_1.applicationId()
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+
+        String errorMessage = response.getBody();
+        assertThat(errorMessage).isEqualTo("Application already rejected");
     }
 
 }
