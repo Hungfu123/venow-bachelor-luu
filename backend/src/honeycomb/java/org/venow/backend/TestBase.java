@@ -29,7 +29,8 @@ import java.util.UUID;
 public abstract class TestBase {
 
 
-    protected static final User USER_EXHIBITOR_2 = UserTestData.createExhibitor3();
+    protected static final User USER_EXHIBITOR_3 = UserTestData.createExhibitor3();
+    protected static final User USER_EXHIBITOR_2 = UserTestData.createExhibitor2();
 
     protected static final Event EVENT_1 = new Event(
             null,
@@ -47,7 +48,7 @@ public abstract class TestBase {
     protected static final UUID ORGANIZER_ID = UserTestData.createOrganizer1().getUserId();
     protected static final UUID ORGANIZER_ID_EMPTY_APP = UserTestData.createOrganizer3().getUserId();
     protected static final UUID EXHIBITOR_ID_1 = UserTestData.createExhibitor1().getUserId();
-    protected static final UUID EXHIBITOR_ID_2 = USER_EXHIBITOR_2.getUserId();
+    protected static final UUID EXHIBITOR_ID_2 = USER_EXHIBITOR_3.getUserId();
 
     protected static final ApplicationResponse APPLICATION_1 = ApplicationDataFactory.createITApplicationResponse();
 

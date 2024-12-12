@@ -1,6 +1,6 @@
 package org.venow.backend.applicationservice;
 
-import org.venow.backend.domain.model.Event;
+import org.venow.backend.applicationservice.dto.EventDTO;
 
 import java.util.List;
 import java.util.Optional;

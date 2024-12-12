@@ -3,6 +3,7 @@ package org.venow.backend.applicationservice;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.venow.backend.applicationservice.dto.ApplicationDTO;
 import org.venow.backend.applicationservice.exception.AlreadyRejectedException;
 import org.venow.backend.applicationservice.exception.DuplicateApplicationException;
 import org.venow.backend.applicationservice.exception.InvalidInputException;
@@ -19,9 +20,9 @@ public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
 
-    public ApplicationDTO createApplication(ApplicationDTO applicationDTO) {
-        if (applicationDTO.getUserId() == null || applicationDTO.getApplicationId() == null || applicationDTO.getEventId() == null) {
-            throw new InvalidInputException("User ID, Application ID, and Event ID must not be null");
+    public ApplicationDTO createApplication(final ApplicationDTO applicationDTO) {
+        if (applicationDTO.getUserId() == null ||  applicationDTO.getEventId() == null) {
+            throw new InvalidInputException("User ID and Event ID must not be null");
         }
         if (applicationRepository.existsByUserIdAndEventId(applicationDTO.getUserId(), applicationDTO.getEventId())) {
             throw new DuplicateApplicationException("User has already applied for this event.");
@@ -32,12 +33,12 @@ public class ApplicationService {
         return savedApplication;
     }
 
-    public List<ApplicationDTO> getAllApplicationsByOrganizer(UUID organizerId) {
+    public List<ApplicationDTO> getAllApplicationsByOrganizer(final UUID organizerId) {
 
         return applicationRepository.getAllApplicationsByOrganizer(organizerId);
     }
 
-    public ApplicationDTO getApplication(UUID applicationId) {
+    public ApplicationDTO getApplication(final UUID applicationId) {
         if (applicationId == null) {
             throw new InvalidInputException("Application ID must not be null");
         }
@@ -47,12 +48,21 @@ public class ApplicationService {
     }
 
 
-    public ApplicationDTO rejectApplication(UUID applicationId) {
+    public ApplicationDTO rejectApplication(final UUID applicationId) {
         final ApplicationDTO applicationDTO = getApplication(applicationId);
         if(applicationDTO.getStatus().equals(Status.REJECTED.name())){
             throw new AlreadyRejectedException("Application already rejected");
         }
         applicationDTO.setStatus(Status.REJECTED.name());
+        return applicationRepository.save(applicationDTO);
+    }
+
+    public ApplicationDTO acceptApplication(final UUID applicationId) {
+        final ApplicationDTO applicationDTO = getApplication(applicationId);
+        if(applicationDTO.getStatus().equals(Status.ACCEPTED.name()) || applicationDTO.getStatus().equals(Status.REJECTED.name())){
+            throw new AlreadyRejectedException("Application already accepted or rejected");
+        }
+        applicationDTO.setStatus(Status.ACCEPTED.name());
         return applicationRepository.save(applicationDTO);
     }
 }

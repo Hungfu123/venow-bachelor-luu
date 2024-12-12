@@ -12,7 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
-import org.venow.backend.applicationservice.ApplicationDTO;
+import org.venow.backend.applicationservice.dto.ApplicationDTO;
 import org.venow.backend.applicationservice.exception.NotFoundException;
 import org.venow.backend.infrastructure.ApplicationRepositoryImpl;
 import org.venow.backend.testfactory.ApplicationDataFactory;

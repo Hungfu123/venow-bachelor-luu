@@ -17,7 +17,7 @@ public class UserTestData {
     public static User createExhibitor2() {
         return User.builder()
                 .id(5L)
-                .userId(UUID.fromString("af333e19-6ed6-4c8b-b86e-ef78943a98a3"))
+                .userId(UUID.fromString("45353065-3834-3030-2d65-3239633d3431"))
                 .email("showmantest3@example.com")
                 .role(org.venow.backend.domain.model.Role.EXHIBITOR)
                 .build();

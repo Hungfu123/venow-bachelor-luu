@@ -7,10 +7,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.venow.backend.applicationservice.*;
+import org.venow.backend.applicationservice.dto.ApplicationDTO;
+import org.venow.backend.applicationservice.dto.EventDTO;
+import org.venow.backend.applicationservice.dto.UserDTO;
 import org.venow.backend.applicationservice.exception.AlreadyRejectedException;
 import org.venow.backend.applicationservice.exception.DuplicateApplicationException;
 import org.venow.backend.applicationservice.exception.InvalidInputException;
 import org.venow.backend.applicationservice.exception.NotFoundException;
+import org.venow.backend.domain.model.Status;
 import org.venow.backend.infrastructure.ApplicationRepositoryImpl;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 import org.venow.backend.testdata.EventDTOFactory;
@@ -72,7 +76,7 @@ public class ApplicationServiceTest {
 
         assertThatThrownBy(() -> service.createApplication(applicationDTO))
                 .isInstanceOf(InvalidInputException.class)
-                .hasMessageContaining("User ID, Application ID, and Event ID must not be null");
+                .hasMessageContaining("User ID and Event ID must not be null");
     }
 
 
@@ -215,6 +219,64 @@ public class ApplicationServiceTest {
         assertThatThrownBy(() -> service.rejectApplication(applicationDTO1.get().getApplicationId()))
                 .isInstanceOf(AlreadyRejectedException.class)
                 .hasMessageContaining("Application already rejected");
+    }
+
+    @Test
+    @DisplayName("organizer accept application")
+    void organizerAcceptApplication() {
+
+        ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
+        Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
+        when(applicationRepository.findById(any()))
+                .thenReturn(applicationDTO1);
+
+        when(applicationRepository.save(any())).thenReturn(applicationDTO);
+
+        ApplicationDTO app = service.acceptApplication(applicationDTO1.get().getApplicationId());
+
+        assertThat(app.getStatus()).isEqualTo(Status.ACCEPTED.toString());
+    }
+
+    @Test
+    @DisplayName("organizer accept already accepted application")
+    void organizerAcceptAlreadyAcceptedApplication() {
+        ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
+        applicationDTO.setStatus("ACCEPTED");
+        Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
+        when(applicationRepository.findById(any()))
+                .thenReturn(applicationDTO1);
+
+        assertThatThrownBy(() -> service.acceptApplication(applicationDTO1.get().getApplicationId()))
+                .isInstanceOf(AlreadyRejectedException.class)
+                .hasMessageContaining("Application already accepted or rejected");
+    }
+
+    @Test
+    @DisplayName("organizer accept already accepted application")
+    void organizerAcceptAlreadyRejectedApplication() {
+        ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
+        applicationDTO.setStatus("REJECTED");
+        Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
+        when(applicationRepository.findById(any()))
+                .thenReturn(applicationDTO1);
+
+        assertThatThrownBy(() -> service.acceptApplication(applicationDTO1.get().getApplicationId()))
+                .isInstanceOf(AlreadyRejectedException.class)
+                .hasMessageContaining("Application already accepted or rejected");
+    }
+
+    @Test
+    @DisplayName("organizer reject already accepted application")
+    void organizerRejectAlreadyAcceptedApplication() {
+        ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
+        applicationDTO.setStatus("ACCEPTED");
+        Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
+        when(applicationRepository.findById(any()))
+                .thenReturn(applicationDTO1);
+
+        assertThatThrownBy(() -> service.acceptApplication(applicationDTO1.get().getApplicationId()))
+                .isInstanceOf(AlreadyRejectedException.class)
+                .hasMessageContaining("Application already accepted or rejected");
     }
 
 

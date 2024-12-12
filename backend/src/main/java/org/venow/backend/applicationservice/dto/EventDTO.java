@@ -1,4 +1,4 @@
-package org.venow.backend.applicationservice;
+package org.venow.backend.applicationservice.dto;
 
 import lombok.Builder;
 

@@ -1,6 +1,6 @@
 package org.venow.backend.applicationservice.mapper;
 
-import org.venow.backend.applicationservice.ApplicationDTO;
+import org.venow.backend.applicationservice.dto.ApplicationDTO;
 import org.venow.backend.domain.model.Application;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.web.reponse.ApplicationResponse;

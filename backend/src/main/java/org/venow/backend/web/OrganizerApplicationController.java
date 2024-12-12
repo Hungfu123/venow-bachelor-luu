@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.venow.backend.applicationservice.ApplicationDTO;
+import org.venow.backend.applicationservice.dto.ApplicationDTO;
 import org.venow.backend.applicationservice.ApplicationService;
 import org.venow.backend.applicationservice.exception.InvalidInputException;
 import org.venow.backend.web.reponse.ApplicationResponse;
@@ -56,6 +56,16 @@ public class OrganizerApplicationController {
     ) throws InvalidInputException {
         final ApplicationDTO applicationDTO = applicationservice.rejectApplication(applicationId);
         log.info("Application was rejected {}", applicationDTO.getApplicationId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapToApplicationResponse(applicationDTO));
+    }
+
+    @PostMapping("/applications/{applicationId}/accept")
+    public ResponseEntity<ApplicationResponse> acceptApplication(
+            @PathVariable("organizerId") final UUID organizerId,
+            @PathVariable("applicationId") final UUID applicationId
+    ) throws InvalidInputException {
+        final ApplicationDTO applicationDTO = applicationservice.acceptApplication(applicationId);
+        log.info("Application was accepted {}", applicationDTO.getApplicationId());
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToApplicationResponse(applicationDTO));
     }
 }

@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.groups.Tuple.tuple;
 
 class
 ExhibitorControllerTest extends TestBase {
@@ -67,10 +68,35 @@ ExhibitorControllerTest extends TestBase {
     }
 
     @Test
+    @DisplayName("should return all 2 events")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    public void test() {
+        ResponseEntity<String> response =
+                restTemplate.exchange(
+                        "http://localhost:{port}exhibitor/{exhibitorId}/event",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port, USER_EXHIBITOR_3.getUserId());
+
+        assertThat(response.getStatusCode()).as("Checking for status code").isEqualTo(HttpStatus.OK);
+
+        assertThatJson(response.getBody())
+                .as("Checking for events")
+                .isArray()
+                .hasSize(2)
+                .extracting("eventId", "title")
+                .contains(
+                        tuple("45353065-3834-3030-2d65-3239633d3431", "Test"),
+                        tuple("35353065-3834-3030-2d65-3239622d3432", "Thiens Schmackofatz")
+                );
+    }
+
+    @Test
     @DisplayName("exhibitor gets on application for eventId")
     void applicationGetsOnApplicationPage() {
         final ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:{port}exhibitor/{userId}/event/{eventId}/application",
+                "http://localhost:{port}exhibitor/{exhibitorId}/event/{eventId}/application",
                 HttpMethod.GET,
                 new HttpEntity<>(null),
                 String.class,
@@ -144,7 +170,7 @@ ExhibitorControllerTest extends TestBase {
                         HttpMethod.POST,
                 new HttpEntity<>(requestBody),
                 String.class,
-                port, USER_EXHIBITOR_2.getUserId(), EVENT_ID_1);
+                port, USER_EXHIBITOR_3.getUserId(), EVENT_ID_1);
 
         assertThat(response.getStatusCode()).as("check if HTTP Status 201 CREATED").isEqualTo(HttpStatus.CREATED);
 

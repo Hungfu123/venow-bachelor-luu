@@ -2,7 +2,7 @@ package org.venow.backend.infrastructure;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.venow.backend.applicationservice.EventDTO;
+import org.venow.backend.applicationservice.dto.EventDTO;
 import org.venow.backend.applicationservice.EventRepository;
 import org.venow.backend.applicationservice.mapper.EventMapper;
 import org.venow.backend.domain.model.Event;

@@ -1,6 +1,6 @@
 package org.venow.backend.applicationservice.mapper;
 
-import org.venow.backend.applicationservice.EventDTO;
+import org.venow.backend.applicationservice.dto.EventDTO;
 import org.venow.backend.domain.model.Event;
 
 public class EventMapper {

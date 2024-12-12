@@ -1,6 +1,5 @@
 package org.venow.backend.integration.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.venow.backend.applicationservice.ApplicationDTO;
+import org.venow.backend.applicationservice.dto.ApplicationDTO;
 import org.venow.backend.applicationservice.ApplicationService;
 import org.venow.backend.applicationservice.exception.AlreadyRejectedException;
 import org.venow.backend.applicationservice.exception.InvalidInputException;
@@ -190,6 +189,85 @@ class OrganizerApplicationControllerTest {
                 .getContentAsString();
 
         assertThat(contentAsString).isEqualTo("Application already rejected");
+    }
+
+    @DisplayName("Organizer accept application")
+    @Test
+    void organizeAcceptApplication() throws Exception {
+        ApplicationDTO applicationDTO = ApplicationDataFactory.createDefaultApplicationDTO();
+        applicationDTO.setStatus("ACCEPTED");
+        when(applicationService.acceptApplication(any()))
+                .thenReturn(applicationDTO);
+
+
+        String contentAsString = mockMvc.perform(post("/organizer/{organizerId}/applications/{applicationId}/accept",
+                        UserTestData.createOrganizer1().getUserId(), applicationDTO.getApplicationId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        ApplicationDTO actualResponse = objectMapper.readValue(contentAsString, ApplicationDTO.class);
+
+        assertThat(actualResponse.getStatus()).isEqualTo(Status.ACCEPTED.toString());
+    }
+
+    @DisplayName("organizer accept application which is already rejected")
+    @Test
+    void organizerAcceptApplicationWhichIsAlreadyRejected() throws Exception {
+        ApplicationDTO applicationDTO = ApplicationDataFactory.createDefaultApplicationDTO();
+        applicationDTO.setStatus("REJECTED");
+        when(applicationService.rejectApplication(any()))
+                .thenThrow(new AlreadyRejectedException("Application already accepted or rejected"));
+
+        String contentAsString = mockMvc.perform(post("/organizer/{organizerId}/applications/{applicationId}/reject",
+                        UserTestData.createOrganizer1().getUserId(), applicationDTO.getApplicationId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo("Application already accepted or rejected");
+    }
+
+    @DisplayName("organizer accept application which is already accepted")
+    @Test
+    void organizerAcceptApplicationWhichIsAlreadyAccepted() throws Exception {
+        ApplicationDTO applicationDTO = ApplicationDataFactory.createDefaultApplicationDTO();
+        applicationDTO.setStatus("ACCEPTED");
+        when(applicationService.acceptApplication(any()))
+                .thenThrow(new AlreadyRejectedException("Application already accepted or rejected"));
+
+        String contentAsString = mockMvc.perform(post("/organizer/{organizerId}/applications/{applicationId}/accept",
+                        UserTestData.createOrganizer1().getUserId(), applicationDTO.getApplicationId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo("Application already accepted or rejected");
+    }
+
+    @DisplayName("organizer reject application which is already accepted")
+    @Test
+    void organizerRejectApplicationWhichIsAlreadyAccepted() throws Exception {
+        ApplicationDTO applicationDTO = ApplicationDataFactory.createDefaultApplicationDTO();
+        applicationDTO.setStatus("ACCEPTED");
+        when(applicationService.rejectApplication(any()))
+                .thenThrow(new AlreadyRejectedException("Application already accepted or rejected"));
+
+        String contentAsString = mockMvc.perform(post("/organizer/{organizerId}/applications/{applicationId}/reject",
+                        UserTestData.createOrganizer1().getUserId(), applicationDTO.getApplicationId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo("Application already accepted or rejected");
     }
 
 }

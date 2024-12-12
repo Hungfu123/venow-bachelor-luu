@@ -3,11 +3,10 @@ package org.venow.backend.infrastructure;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.venow.backend.applicationservice.ApplicationDTO;
+import org.venow.backend.applicationservice.dto.ApplicationDTO;
 import org.venow.backend.applicationservice.ApplicationRepository;
 import org.venow.backend.applicationservice.mapper.ApplicationMapper;
 import org.venow.backend.domain.model.Application;
-import org.venow.backend.domain.model.Status;
 
 import java.util.List;
 import java.util.Optional;

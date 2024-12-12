@@ -1,6 +1,6 @@
 package org.venow.backend.testdata;
 
-import org.venow.backend.applicationservice.UserDTO;
+import org.venow.backend.applicationservice.dto.UserDTO;
 
 import java.util.UUID;
 

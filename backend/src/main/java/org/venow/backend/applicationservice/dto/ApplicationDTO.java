@@ -1,6 +1,7 @@
-package org.venow.backend.applicationservice;
+package org.venow.backend.applicationservice.dto;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @Builder(toBuilder = true)
 public class ApplicationDTO {
     private Long id;

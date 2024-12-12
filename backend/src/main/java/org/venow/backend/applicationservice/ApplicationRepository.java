@@ -1,6 +1,6 @@
 package org.venow.backend.applicationservice;
 
-import org.venow.backend.domain.model.Status;
+import org.venow.backend.applicationservice.dto.ApplicationDTO;
 
 import java.util.List;
 import java.util.Optional;
