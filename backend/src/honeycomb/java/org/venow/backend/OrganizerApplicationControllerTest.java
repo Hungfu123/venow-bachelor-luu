@@ -193,7 +193,7 @@ class OrganizerApplicationControllerTest extends TestBase {
     void rejectApplication() throws JsonProcessingException {
 
         final ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:{port}organizer/{organizerId}/applications/{applicationId}",
+                "http://localhost:{port}organizer/{organizerId}/applications/{applicationId}/reject",
                 HttpMethod.POST,
                 null,
                 String.class,
@@ -225,7 +225,7 @@ class OrganizerApplicationControllerTest extends TestBase {
     void rejectApplicationAlreadyRejected() throws JsonProcessingException {
 
         final ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:{port}organizer/{organizerId}/applications/{applicationId}",
+                "http://localhost:{port}organizer/{organizerId}/applications/{applicationId}/reject",
                 HttpMethod.POST,
                 null,
                 String.class,

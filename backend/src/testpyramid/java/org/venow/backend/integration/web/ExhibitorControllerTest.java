@@ -97,11 +97,11 @@ class ExhibitorControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(applicationRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.applicationId").value(expectedApplicationDTO.applicationId().toString()))
-                .andExpect(jsonPath("$.eventId").value(expectedApplicationDTO.eventId().toString()))
-                .andExpect(jsonPath("$.userId").value(expectedApplicationDTO.userId().toString()))
-                .andExpect(jsonPath("$.businessName").value(expectedApplicationDTO.businessName()))
-                .andExpect(jsonPath("$.status").value(expectedApplicationDTO.status()));
+                .andExpect(jsonPath("$.applicationId").value(expectedApplicationDTO.getApplicationId().toString()))
+                .andExpect(jsonPath("$.eventId").value(expectedApplicationDTO.getEventId().toString()))
+                .andExpect(jsonPath("$.userId").value(expectedApplicationDTO.getUserId().toString()))
+                .andExpect(jsonPath("$.businessName").value(expectedApplicationDTO.getBusinessName()))
+                .andExpect(jsonPath("$.status").value(expectedApplicationDTO.getStatus()));
     }
 
     @DisplayName("apply for an event without application information - bad request")

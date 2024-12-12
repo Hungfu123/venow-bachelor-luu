@@ -33,9 +33,9 @@ public class ApplicationServiceIT extends TestBase {
         final ApplicationDTO result = applicationservice.createApplication(applicationDTO);
 
 
-        assertThat(applicationRepository.existsByUserIdAndEventId(result.userId(), result.eventId())).isTrue();
-        assertThat(result.eventId()).isEqualTo(applicationDTO.eventId());
-        assertThat(result.status()).isEqualTo(applicationDTO.status());
+        assertThat(applicationRepository.existsByUserIdAndEventId(result.getUserId(), result.getEventId())).isTrue();
+        assertThat(result.getEventId()).isEqualTo(applicationDTO.getEventId());
+        assertThat(result.getStatus()).isEqualTo(applicationDTO.getStatus());
     }
 
     @DisplayName("should not create a new application when exhibitor already applied to the same event")
@@ -64,8 +64,8 @@ public class ApplicationServiceIT extends TestBase {
                 .build();
 
         final ApplicationDTO result = applicationservice.createApplication(applicationDTO);
-        assertThat(result.eventId()).isEqualTo(applicationDTO.eventId());
-        assertThat(result.userId()).isEqualTo(applicationDTO.userId());
+        assertThat(result.getEventId()).isEqualTo(applicationDTO.getEventId());
+        assertThat(result.getUserId()).isEqualTo(applicationDTO.getUserId());
 
     }
 

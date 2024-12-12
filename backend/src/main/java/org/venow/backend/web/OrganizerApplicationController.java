@@ -49,7 +49,7 @@ public class OrganizerApplicationController {
 
     }
 
-    @PostMapping("/applications/{applicationId}")
+    @PostMapping("/applications/{applicationId}/reject")
     public ResponseEntity<ApplicationResponse> rejectApplication(
             @PathVariable("organizerId") final UUID organizerId,
             @PathVariable("applicationId") final UUID applicationId

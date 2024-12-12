@@ -41,7 +41,7 @@ class ApplicationRepositoryTest extends TestBase {
                 .build();
 
         applicationRepository.save(application);
-        boolean exists = applicationRepository.existsByUserIdAndEventId(application.userId(), application.eventId());
+        boolean exists = applicationRepository.existsByUserIdAndEventId(application.getUserId(), application.getEventId());
         assertThat(exists).isTrue();
 
     }
@@ -62,11 +62,11 @@ class ApplicationRepositoryTest extends TestBase {
         ApplicationDTO application = ApplicationDTOFactory.createDefault().build();
         ApplicationDTO savedApplication = applicationRepository.save(application);
 
-        Optional<ApplicationDTO> retrievedApplication = applicationRepository.findById(savedApplication.applicationId());
+        Optional<ApplicationDTO> retrievedApplication = applicationRepository.findById(savedApplication.getApplicationId());
 
         assertThat(retrievedApplication).isPresent();
-        assertThat(retrievedApplication.get().applicationId()).isEqualTo(savedApplication.applicationId());
-        assertThat(retrievedApplication.get().contactInformation()).isEqualTo(savedApplication.contactInformation());
+        assertThat(retrievedApplication.get().getApplicationId()).isEqualTo(savedApplication.getApplicationId());
+        assertThat(retrievedApplication.get().getContactInformation()).isEqualTo(savedApplication.getContactInformation());
     }
 
     @DisplayName("should return empty optional if application is not found")
