@@ -58,11 +58,21 @@ public class ApplicationServiceTest {
     @Test
     @DisplayName("Should throw exception when eventId is null")
     void shouldThrowExceptionWhenEventIdIsNull() {
-        ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().withEventId(null).build();
+        ApplicationDTO applicationDTO = ApplicationDTO.builder()
+                .id(1L)
+                .applicationId(UUID.randomUUID())
+                .userId(UUID.randomUUID())
+                .eventId(null)
+                .businessName("Luu Business")
+                .typeOfBusiness("Luu Type")
+                .previousParticipation(false)
+                .message("Nimm mich")
+                .status("IN_PROGRESS")
+                .build();
 
         assertThatThrownBy(() -> service.createApplication(applicationDTO))
                 .isInstanceOf(InvalidInputException.class)
-                .hasMessageContaining("Event ID must not be null");
+                .hasMessageContaining("User ID, Application ID, and Event ID must not be null");
     }
 
 

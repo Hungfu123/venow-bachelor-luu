@@ -19,8 +19,10 @@ public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
 
-
     public ApplicationDTO createApplication(ApplicationDTO applicationDTO) {
+        if (applicationDTO.getUserId() == null || applicationDTO.getApplicationId() == null || applicationDTO.getEventId() == null) {
+            throw new InvalidInputException("User ID, Application ID, and Event ID must not be null");
+        }
         if (applicationRepository.existsByUserIdAndEventId(applicationDTO.getUserId(), applicationDTO.getEventId())) {
             throw new DuplicateApplicationException("User has already applied for this event.");
         }
