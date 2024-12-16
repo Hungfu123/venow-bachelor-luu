@@ -153,7 +153,7 @@ class OrganizerApplicationControllerTest {
     @DisplayName("Organizer reject application")
     @Test
     void organizeRejectApplication() throws Exception {
-        ApplicationDTO applicationDTO = ApplicationDataFactory.createDefaultApplicationDTO();
+        final ApplicationDTO applicationDTO = ApplicationDataFactory.createDefaultApplicationDTO();
         applicationDTO.setStatus("REJECTED");
         when(applicationService.rejectApplication(any()))
                 .thenReturn(applicationDTO);
@@ -167,7 +167,7 @@ class OrganizerApplicationControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        ApplicationDTO actualResponse = objectMapper.readValue(contentAsString, ApplicationDTO.class);
+        final ApplicationDTO actualResponse = objectMapper.readValue(contentAsString, ApplicationDTO.class);
 
         assertThat(actualResponse.getStatus()).isEqualTo(Status.REJECTED.toString());
     }
