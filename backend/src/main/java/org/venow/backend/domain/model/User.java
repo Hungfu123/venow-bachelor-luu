@@ -26,6 +26,9 @@ public class User {
     private final String email;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")
+    private final String name;
+
+    @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private final String password;
 
     @Enumerated(EnumType.STRING)

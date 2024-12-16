@@ -59,6 +59,17 @@ public class ExhibitorController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/event/{eventId}/application/{applicationId}")
+    public ResponseEntity<ApplicationResponse> getApplicationDetails(
+            @PathVariable("eventId") final UUID eventId,
+            @PathVariable("exhibitorId") final UUID exhibitorId,
+            @PathVariable("applicationId") final UUID applicationId
+    ) {
+      final ApplicationDTO applicationDTO = applicationservice.getApplication(applicationId);
+
+        return ResponseEntity.ok(ResponseMapper.mapToApplicationResponse(applicationDTO));
+    }
+
     @PostMapping("/event/{eventId}/application")
     public ResponseEntity<ApplicationResponse> applyForEvent(
             @PathVariable("exhibitorId") final UUID exhibitorId,
@@ -81,5 +92,6 @@ public class ExhibitorController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToApplicationResponse(applicationDTO));
     }
+
 
 }

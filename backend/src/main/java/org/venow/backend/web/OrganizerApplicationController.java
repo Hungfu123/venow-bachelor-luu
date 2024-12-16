@@ -68,5 +68,6 @@ public class OrganizerApplicationController {
         log.info("Application was accepted {}", applicationDTO.getApplicationId());
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToApplicationResponse(applicationDTO));
     }
+
 }
 
