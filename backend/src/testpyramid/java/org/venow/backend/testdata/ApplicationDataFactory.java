@@ -2,7 +2,7 @@ package org.venow.backend.testdata;
 
 
 
-import org.venow.backend.applicationservice.dto.ApplicationDTO;
+import org.venow.backend.service.dto.ApplicationDTO;
 
 import java.util.List;
 import java.util.UUID;

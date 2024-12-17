@@ -1,13 +1,14 @@
-package org.venow.backend.applicationservice;
+package org.venow.backend.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.venow.backend.applicationservice.dto.ApplicationDTO;
-import org.venow.backend.applicationservice.exception.AlreadyRejectedException;
-import org.venow.backend.applicationservice.exception.DuplicateApplicationException;
-import org.venow.backend.applicationservice.exception.InvalidInputException;
-import org.venow.backend.applicationservice.exception.NotFoundException;
+import org.venow.backend.service.dto.ApplicationDTO;
+import org.venow.backend.service.dto.UserDTO;
+import org.venow.backend.service.exception.AlreadyRejectedException;
+import org.venow.backend.service.exception.DuplicateApplicationException;
+import org.venow.backend.service.exception.InvalidInputException;
+import org.venow.backend.service.exception.NotFoundException;
 import org.venow.backend.domain.model.Status;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
+    private final UserService userService;
 
     public ApplicationDTO createApplication(final ApplicationDTO applicationDTO) {
         if (applicationDTO.getUserId() == null ||  applicationDTO.getEventId() == null) {
@@ -64,5 +66,11 @@ public class ApplicationService {
         }
         applicationDTO.setStatus(Status.ACCEPTED.name());
         return applicationRepository.save(applicationDTO);
+    }
+
+    public String getApplicationName(UUID applicationId) {
+        ApplicationDTO applicationDTO = getApplication(applicationId);
+        UserDTO user = userService.getUserByUserId(applicationDTO.getUserId());
+        return user.name();
     }
 }

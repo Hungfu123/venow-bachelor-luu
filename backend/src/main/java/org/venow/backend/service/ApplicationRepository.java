@@ -1,6 +1,6 @@
-package org.venow.backend.applicationservice;
+package org.venow.backend.service;
 
-import org.venow.backend.applicationservice.dto.ApplicationDTO;
+import org.venow.backend.service.dto.ApplicationDTO;
 
 import java.util.List;
 import java.util.Optional;

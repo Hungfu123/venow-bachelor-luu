@@ -51,7 +51,7 @@ public abstract class TestBase {
     protected static final UUID EXHIBITOR_ID_2 = USER_EXHIBITOR_3.getUserId();
 
     protected static final ApplicationResponse APPLICATION_1 = ApplicationDataFactory.createITApplicationResponse();
-
+    protected static final ApplicationResponse APPLICATION_2 = ApplicationDataFactory.createDefaultApplicationResponse();
     @Container
     public static MySQLContainer<?> jdbcDataBaseContainer = new MySQLContainer<>("mysql:latest")
             .withDatabaseName("mydatabase")

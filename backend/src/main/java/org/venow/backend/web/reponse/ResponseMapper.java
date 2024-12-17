@@ -1,7 +1,7 @@
 package org.venow.backend.web.reponse;
 
-import org.venow.backend.applicationservice.dto.ApplicationDTO;
-import org.venow.backend.applicationservice.dto.EventDTO;
+import org.venow.backend.service.dto.ApplicationDTO;
+import org.venow.backend.service.dto.EventDTO;
 
 public class ResponseMapper {
 

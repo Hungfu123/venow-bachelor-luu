@@ -1,4 +1,4 @@
-package org.venow.backend.applicationservice.exception;
+package org.venow.backend.service.exception;
 
 public class DuplicateApplicationException extends RuntimeException {
     public DuplicateApplicationException(String message) {

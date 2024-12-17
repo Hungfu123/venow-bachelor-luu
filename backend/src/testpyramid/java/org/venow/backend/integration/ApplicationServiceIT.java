@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.TestBase;
-import org.venow.backend.applicationservice.dto.ApplicationDTO;
-import org.venow.backend.applicationservice.ApplicationService;
-import org.venow.backend.applicationservice.exception.DuplicateApplicationException;
+import org.venow.backend.service.dto.ApplicationDTO;
+import org.venow.backend.service.ApplicationService;
+import org.venow.backend.service.exception.DuplicateApplicationException;
 import org.venow.backend.infrastructure.ApplicationRepositoryImpl;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 

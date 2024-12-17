@@ -1,6 +1,6 @@
 package org.venow.backend.testdata;
 
-import org.venow.backend.applicationservice.dto.EventDTO;
+import org.venow.backend.service.dto.EventDTO;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

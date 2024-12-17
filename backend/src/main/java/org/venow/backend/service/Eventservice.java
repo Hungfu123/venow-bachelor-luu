@@ -1,9 +1,9 @@
-package org.venow.backend.applicationservice;
+package org.venow.backend.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.venow.backend.applicationservice.dto.EventDTO;
-import org.venow.backend.applicationservice.exception.NotFoundException;
+import org.venow.backend.service.dto.EventDTO;
+import org.venow.backend.service.exception.NotFoundException;
 
 import java.util.List;
 import java.util.UUID;

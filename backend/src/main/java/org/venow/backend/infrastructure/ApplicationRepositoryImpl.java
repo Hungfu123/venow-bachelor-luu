@@ -3,17 +3,17 @@ package org.venow.backend.infrastructure;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.venow.backend.applicationservice.dto.ApplicationDTO;
-import org.venow.backend.applicationservice.ApplicationRepository;
-import org.venow.backend.applicationservice.mapper.ApplicationMapper;
+import org.venow.backend.service.dto.ApplicationDTO;
+import org.venow.backend.service.ApplicationRepository;
+import org.venow.backend.service.mapper.ApplicationMapper;
 import org.venow.backend.domain.model.Application;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.venow.backend.applicationservice.mapper.ApplicationMapper.mapToDTO;
-import static org.venow.backend.applicationservice.mapper.ApplicationMapper.mapToEntity;
+import static org.venow.backend.service.mapper.ApplicationMapper.mapToDTO;
+import static org.venow.backend.service.mapper.ApplicationMapper.mapToEntity;
 
 @Service
 @Repository

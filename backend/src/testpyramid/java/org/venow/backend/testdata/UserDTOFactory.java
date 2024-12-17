@@ -1,6 +1,6 @@
 package org.venow.backend.testdata;
 
-import org.venow.backend.applicationservice.dto.UserDTO;
+import org.venow.backend.service.dto.UserDTO;
 
 import java.util.UUID;
 
@@ -9,8 +9,10 @@ public class UserDTOFactory {
     public static UserDTOWith createDefault() {
         UserDTO defaultUser = UserDTO.builder()
                 .userId(UUID.randomUUID())
+                .name("Luugner")
                 .email("luugner@venow.com")
-                .role("USER")
+                .password("password")
+                .role("ORGANIZER")
                 .build();
 
         return new UserDTOWith(defaultUser);

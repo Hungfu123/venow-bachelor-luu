@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.TestBase;
-import org.venow.backend.applicationservice.dto.ApplicationDTO;
+import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.infrastructure.ApplicationRepositoryImpl;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 

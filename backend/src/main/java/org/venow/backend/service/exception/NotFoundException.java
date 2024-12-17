@@ -1,4 +1,4 @@
-package org.venow.backend.applicationservice.exception;
+package org.venow.backend.service.exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

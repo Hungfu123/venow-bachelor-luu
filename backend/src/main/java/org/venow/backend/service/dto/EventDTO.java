@@ -1,6 +1,7 @@
-package org.venow.backend.applicationservice.dto;
+package org.venow.backend.service.dto;
 
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

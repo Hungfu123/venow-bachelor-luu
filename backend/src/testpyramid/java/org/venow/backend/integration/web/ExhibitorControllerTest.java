@@ -8,12 +8,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.venow.backend.applicationservice.*;
-import org.venow.backend.applicationservice.dto.ApplicationDTO;
-import org.venow.backend.applicationservice.dto.EventDTO;
-import org.venow.backend.applicationservice.dto.UserDTO;
-import org.venow.backend.applicationservice.exception.NotFoundException;
+import org.venow.backend.service.*;
+import org.venow.backend.service.dto.ApplicationDTO;
+import org.venow.backend.service.dto.EventDTO;
+import org.venow.backend.service.dto.UserDTO;
+import org.venow.backend.service.exception.NotFoundException;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 import org.venow.backend.testdata.EventDTOFactory;
 import org.venow.backend.testdata.UserDTOFactory;
@@ -38,6 +37,7 @@ class ExhibitorControllerTest {
 
     @MockBean
     Eventservice eventservice;
+
     @MockBean
     ApplicationService applicationservice;
 

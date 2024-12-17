@@ -1,15 +1,19 @@
 package org.venow.backend.web.reponse;
 
-import org.venow.backend.applicationservice.dto.PriceDto;
+import org.venow.backend.service.dto.PriceDto;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record ContractResponse(
-        Long id,
         UUID contractId,
+        UUID organizerId,
         String applicantName,
         String organizerName,
         String eventName,
+        String location,
+        LocalDateTime startDate,
+        LocalDateTime endDate,
         String typeOfBusiness,
         String contactInformation,
         String businessName,

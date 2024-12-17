@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.venow.backend.applicationservice.dto.ApplicationDTO;
-import org.venow.backend.applicationservice.ApplicationService;
-import org.venow.backend.applicationservice.exception.InvalidInputException;
+import org.venow.backend.service.dto.ApplicationDTO;
+import org.venow.backend.service.ApplicationService;
+import org.venow.backend.service.exception.InvalidInputException;
 import org.venow.backend.web.reponse.ApplicationResponse;
 
 import java.util.ArrayList;
@@ -68,6 +68,5 @@ public class OrganizerApplicationController {
         log.info("Application was accepted {}", applicationDTO.getApplicationId());
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToApplicationResponse(applicationDTO));
     }
-
 }
 

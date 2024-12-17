@@ -6,9 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.venow.backend.applicationservice.dto.EventDTO;
-import org.venow.backend.applicationservice.Eventservice;
-import org.venow.backend.applicationservice.exception.NotFoundException;
+import org.venow.backend.service.dto.EventDTO;
+import org.venow.backend.service.exception.NotFoundException;
 import org.venow.backend.infrastructure.EventRepositoryImpl;
 import org.venow.backend.testdata.EventDTOFactory;
 
