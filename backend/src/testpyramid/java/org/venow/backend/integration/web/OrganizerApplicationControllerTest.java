@@ -41,9 +41,9 @@ class OrganizerApplicationControllerTest {
     @DisplayName("Organizer sees all his applications")
     @Test
     void organizerSeeAllHisApplication() throws Exception {
-        ApplicationDTO defaultApplicationDTO = ApplicationDataFactory.createDefaultApplicationDTO();
-        ApplicationDTO consultingApplicationDTO = ApplicationDataFactory.createConsultingApplicationDTO();
-        ApplicationDTO itApplicationDTO = ApplicationDataFactory.createITApplicationDTO();
+        final ApplicationDTO defaultApplicationDTO = ApplicationDataFactory.createDefaultApplicationDTO();
+        final ApplicationDTO consultingApplicationDTO = ApplicationDataFactory.createConsultingApplicationDTO();
+        final ApplicationDTO itApplicationDTO = ApplicationDataFactory.createITApplicationDTO();
         final List<ApplicationDTO> expected = List.of(
                 defaultApplicationDTO,
                 consultingApplicationDTO,
@@ -53,9 +53,9 @@ class OrganizerApplicationControllerTest {
         when(applicationService.getAllApplicationsByOrganizer(any()))
                 .thenReturn(expected);
 
-        String expectedJson = objectMapper.writeValueAsString(expected);
+        final String expectedJson = objectMapper.writeValueAsString(expected);
 
-        String contentAsString = mockMvc.perform(get("/organizer/{organizerId}/applications", UserTestData.createOrganizer1().getUserId())
+        final String contentAsString = mockMvc.perform(get("/organizer/{organizerId}/applications", UserTestData.createOrganizer1().getUserId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()

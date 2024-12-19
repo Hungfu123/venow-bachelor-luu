@@ -34,6 +34,9 @@ public class ApplicationServiceTest {
     @Mock
     ApplicationRepositoryImpl applicationRepository;
 
+    @Mock
+    UserService userService;
+
     @InjectMocks
     ApplicationService service;
 
@@ -277,6 +280,22 @@ public class ApplicationServiceTest {
                 .isInstanceOf(AlreadyRejectedException.class)
                 .hasMessageContaining("Application already accepted or rejected");
     }
+
+    @Test
+    @DisplayName("get application name from user")
+    void getApplicationNameFromUser() {
+        ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
+        Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
+        UserDTO user = UserDTOFactory.createDefault().build();
+
+        when(applicationRepository.findById(any()))
+                .thenReturn(applicationDTO1);
+        when(userService.getUserByUserId(applicationDTO1.get().getUserId())).thenReturn(user);
+        String applicationName = service.getApplicationName(applicationDTO1.get().getApplicationId());
+
+        assertThat(applicationName).isEqualTo(user.name());
+    }
+
 
 
 }

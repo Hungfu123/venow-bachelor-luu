@@ -14,7 +14,7 @@ public class EventDTOFactory {
                 .description("Test Description")
                 .startDate(LocalDateTime.of(2024,1,1,8,2))
                 .endDate(LocalDateTime.of(2024,1,3,8,2))
-                .location("Düsseldorf")
+                .location("Duesseldorf")
                 .organizerId(UUID.randomUUID())
                 .build();
 

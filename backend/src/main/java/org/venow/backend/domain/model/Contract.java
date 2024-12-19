@@ -2,6 +2,7 @@ package org.venow.backend.domain.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.venow.backend.infrastructure.converter.PriceConverter;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Entity(name = "contracts")
+@Builder(toBuilder = true)
 public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +22,18 @@ public class Contract {
     @Column(nullable = false, unique = true)
     private final UUID contractId;
 
+    @Column(nullable = false, unique = true)
+    private final UUID organizerId;
+
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private final String terms;
 
     @Convert(converter = PriceConverter.class)
-    @Column(nullable = false)
+    @Column
     private final Price price;
+
+    @Column
+    private final String boothNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")

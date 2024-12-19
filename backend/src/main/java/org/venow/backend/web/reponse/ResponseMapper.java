@@ -1,7 +1,11 @@
 package org.venow.backend.web.reponse;
 
 import org.venow.backend.service.dto.ApplicationDTO;
+import org.venow.backend.service.dto.ContractDTO;
 import org.venow.backend.service.dto.EventDTO;
+
+import java.net.URI;
+import java.time.LocalDateTime;
 
 public class ResponseMapper {
 
@@ -32,4 +36,25 @@ public class ResponseMapper {
     }
 
 
+    public static ContractResponse mapToContractResponse(ContractDTO contract) {
+        return ContractResponse.builder()
+                .contractId(contract.getContractId())
+                .organizerId(contract.getOrganizerId())
+                .applicantName(contract.getApplicantName())
+                .organizerName(contract.getOrganizerName())
+                .eventName(contract.getEventName())
+                .location(contract.getLocation())
+                .startDate(LocalDateTime.parse(contract.getStartDate()))
+                .endDate(LocalDateTime.parse(contract.getEndDate()))
+                .typeOfBusiness(contract.getTypeOfBusiness())
+                .contactInformation(contract.getContactInformation())
+                .businessName(contract.getBusinessName())
+                .terms(contract.getTerms())
+                .price(contract.getPrice())
+                .boothNumber(contract.getBoothNumber())
+                .status(contract.getStatus())
+                .organizerEmail(contract.getOrganizerEmail())
+                .build();
+
+    }
 }

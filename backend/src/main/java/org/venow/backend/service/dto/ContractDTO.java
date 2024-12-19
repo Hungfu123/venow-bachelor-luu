@@ -12,8 +12,20 @@ import java.util.UUID;
 public class ContractDTO {
     private final Long id;
     private final UUID contractId;
+    private final UUID organizerId;
+    private final String applicantName;
+    private final String organizerName;
+    private final String eventName;
+    private final String location;
+    private final String startDate;
+    private final String endDate;
+    private final String typeOfBusiness;
+    private final String contactInformation;
+    private final String businessName;
     private final String terms;
     private final PriceDto price;
+    private final String boothNumber;
     private final String status;
+    private final String organizerEmail;
 
 }
