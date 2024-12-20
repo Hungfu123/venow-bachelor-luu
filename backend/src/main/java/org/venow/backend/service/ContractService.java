@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.dto.*;
 import org.venow.backend.service.exception.InvalidInputException;
+import org.venow.backend.service.exception.InvalidStatusException;
 
 import java.util.UUID;
 
@@ -19,12 +20,16 @@ public class ContractService {
     private final ContractRepository contractRepository;
 
 
-    public ContractDTO createContract(final UUID applicationId, final UUID organizerId, PriceDto priceDto, String bootNumber) {
+    public ContractDTO createContract(final UUID applicationId, final UUID organizerId, PriceDto priceDto, String bootNumber) throws InvalidStatusException {
         if(applicationId == null || organizerId == null){
             throw new InvalidInputException("Application ID and Organizer ID must not be null");
         }
 
         final ApplicationDTO application = applicationService.getApplication(applicationId);
+        if(!application.getStatus().equals(Status.IN_PROGRESS.name())) {
+            throw new InvalidStatusException("Application Status must be in progress");
+        }
+
         final EventDTO event = eventservice.getEvent(application.getEventId());
         final UserDTO organizer = userService.getUserByUserId(organizerId);
 

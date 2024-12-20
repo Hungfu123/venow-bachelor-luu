@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.venow.backend.service.dto.*;
 import org.venow.backend.service.exception.ApplicationNotFoundException;
 import org.venow.backend.service.exception.InvalidInputException;
+import org.venow.backend.service.exception.InvalidStatusException;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 import org.venow.backend.testdata.ContractDTOFactory;
 import org.venow.backend.testdata.EventDTOFactory;
@@ -41,7 +42,7 @@ public class ContractServiceTest {
 
     @Test
     @DisplayName("should create contract")
-    void shouldCreateContract() {
+    void shouldCreateContract() throws InvalidStatusException {
         final ApplicationDTO application = ApplicationDTOFactory.createDefault().build();
         final EventDTO event = EventDTOFactory.createDefault().build();
         final UserDTO organizer = UserDTOFactory.createDefault().build();
@@ -127,7 +128,7 @@ public class ContractServiceTest {
 
     @Test
     @DisplayName("should create contract with minimal valid values")
-    void shouldCreateContractWithMinimalValidValues() {
+    void shouldCreateContractWithMinimalValidValues() throws InvalidStatusException {
         final ApplicationDTO application = ApplicationDTOFactory.createDefault().build();
         final EventDTO event = EventDTOFactory.createDefault().build();
         final UserDTO organizer = UserDTOFactory.createDefault().build();

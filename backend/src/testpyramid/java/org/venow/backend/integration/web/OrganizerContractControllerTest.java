@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.venow.backend.service.*;
 import org.venow.backend.service.dto.*;
+import org.venow.backend.service.exception.InvalidStatusException;
 import org.venow.backend.service.exception.NotFoundException;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 import org.venow.backend.testdata.ContractDTOFactory;
@@ -112,7 +113,7 @@ class OrganizerContractControllerTest {
 
     @DisplayName("submit contract and create contract")
     @Test
-    void submitContractAndCreateContract() throws Exception {
+    void submitContractAndCreateContract() throws Exception, InvalidStatusException {
         final ApplicationDTO application = ApplicationDTOFactory.createDefault().build();
         final ContractDTO contract = ContractDTOFactory.createDefault().build();
 
@@ -151,7 +152,7 @@ class OrganizerContractControllerTest {
 
     @DisplayName("validate price and booth number")
     @Test
-    void validatePriceAndBoothNumber() throws Exception {
+    void validatePriceAndBoothNumber() throws Exception, InvalidStatusException {
         final ApplicationDTO application = ApplicationDTOFactory.createDefault().build();
         final ContractDTO contract = ContractDTOFactory.createDefault().build();
 
@@ -178,7 +179,7 @@ class OrganizerContractControllerTest {
 
     @DisplayName("validate price and booth number empty - BAD REQUEST")
     @Test
-    void validatePriceAndBoothNumber2() throws Exception {
+    void validatePriceAndBoothNumber2() throws Exception, InvalidStatusException {
         final ApplicationDTO application = ApplicationDTOFactory.createDefault().build();
         final ContractDTO contract = ContractDTOFactory.createDefault().build();
 

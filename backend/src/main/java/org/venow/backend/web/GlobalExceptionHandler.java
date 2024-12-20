@@ -5,10 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.venow.backend.service.exception.AlreadyRejectedException;
-import org.venow.backend.service.exception.DuplicateApplicationException;
-import org.venow.backend.service.exception.InvalidInputException;
-import org.venow.backend.service.exception.NotFoundException;
+import org.venow.backend.service.exception.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +54,11 @@ public class GlobalExceptionHandler {
         });
 
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(InvalidStatusException.class)
+    public ResponseEntity<String> handleInvalidStatusException(InvalidStatusException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 }
 

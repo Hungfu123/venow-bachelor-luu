@@ -15,6 +15,7 @@ import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.dto.ContractDTO;
 import org.venow.backend.service.dto.EventDTO;
 import org.venow.backend.service.dto.UserDTO;
+import org.venow.backend.service.exception.InvalidStatusException;
 import org.venow.backend.web.reponse.ContractResponse;
 import org.venow.backend.web.reponse.ResponseMapper;
 import org.venow.backend.web.request.ContractRequest;
@@ -74,7 +75,7 @@ public class OrganizerContractController {
             @PathVariable final UUID organizerId,
             @PathVariable final UUID applicationId,
             @Valid @RequestBody final ContractRequest contractRequest
-    ) {
+    ) throws InvalidStatusException {
         ContractDTO contract = contractService.createContract(applicationId, organizerId, contractRequest.price(), contractRequest.boothNumber());
         log.info("Contract was created {}", contract.getContractId());
 
