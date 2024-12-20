@@ -34,6 +34,7 @@ public class ContractMapper {
         return ContractDTO.builder()
                 .contractId(contract.getContractId())
                 .terms(contract.getTerms())
+                .organizerId(contract.getOrganizerId())
                 .price(toPriceDto(contract.getPrice()))
                 .boothNumber(contract.getBoothNumber())
                 .status(contract.getStatus().name())

@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 public class ApplicationServiceTest {
 
     @Mock
-    ApplicationRepositoryImpl applicationRepository;
+    ApplicationRepository applicationRepository;
 
     @Mock
     UserService userService;
@@ -55,7 +55,7 @@ public class ApplicationServiceTest {
     @Test
     @DisplayName("should create a new application successfully when no duplicate exists")
     void shouldCreateApplicationSuccessfully() {
-        ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
+        final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
         when(applicationRepository.existsByUserIdAndEventId(any(), any())).thenReturn(false);
         when(applicationRepository.save(any())).thenReturn(applicationDTO);
 

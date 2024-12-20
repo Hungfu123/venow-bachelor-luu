@@ -1,9 +1,13 @@
 package org.venow.backend.integration.db;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.venow.backend.TestBase;
+import org.venow.backend.infrastructure.JpaUserRepository;
 import org.venow.backend.infrastructure.UserRepositoryImpl;
 import org.venow.backend.service.dto.UserDTO;
 import org.venow.backend.testdata.UserDTOFactory;
@@ -12,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 class UserRepositoryTest extends TestBase {
 

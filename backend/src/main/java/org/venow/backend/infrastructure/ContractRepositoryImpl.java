@@ -5,6 +5,10 @@ import org.springframework.stereotype.Repository;
 import org.venow.backend.domain.model.Contract;
 import org.venow.backend.service.ContractRepository;
 import org.venow.backend.service.dto.ContractDTO;
+import org.venow.backend.service.mapper.ContractMapper;
+
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.venow.backend.service.mapper.ContractMapper.toDTO;
 import static org.venow.backend.service.mapper.ContractMapper.toEntity;
@@ -19,5 +23,10 @@ public class ContractRepositoryImpl implements ContractRepository {
     public ContractDTO save(final ContractDTO contractDTO) {
         Contract save = repository.save(toEntity(contractDTO));
         return toDTO(save);
+    }
+
+    @Override
+    public Optional<ContractDTO> findById(final UUID id) {
+        return repository.findByContractId(id).map(ContractMapper::toDTO);
     }
 }

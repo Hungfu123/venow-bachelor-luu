@@ -31,6 +31,15 @@ CREATE TABLE applications (
                               user_id VARCHAR(36) NOT NULL,
                               UNIQUE(user_id, event_id)
 );
+CREATE TABLE contracts (
+                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                           contract_id CHAR(36) NOT NULL UNIQUE,
+                           organizer_id CHAR(36) NOT NULL UNIQUE,
+                           terms VARCHAR(255) NOT NULL,
+                           price INT,
+                           booth_number VARCHAR(255),
+                           status VARCHAR(255) NOT NULL
+);
 
 
 INSERT INTO events (event_id, title, description, location, start_date, end_date, organizer_id)

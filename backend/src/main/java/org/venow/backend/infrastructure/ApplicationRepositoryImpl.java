@@ -44,9 +44,6 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
         return repository.findAllByOrganizerIdFromEvent(organizerId).stream().map(ApplicationMapper::mapToDTO).toList();
     }
 
-    @Override
-    public ApplicationDTO updateStatus(ApplicationDTO applicationDTO) {
-        return null;
-    }
+
 
 }

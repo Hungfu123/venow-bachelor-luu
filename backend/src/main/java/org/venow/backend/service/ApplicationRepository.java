@@ -16,5 +16,4 @@ public interface ApplicationRepository {
 
     List<ApplicationDTO> getAllApplicationsByOrganizer(UUID organizerId);
 
-    ApplicationDTO updateStatus(ApplicationDTO applicationDTO);
 }
