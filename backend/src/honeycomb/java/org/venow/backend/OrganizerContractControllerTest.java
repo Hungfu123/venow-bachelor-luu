@@ -199,4 +199,6 @@ class OrganizerContractControllerTest extends TestBase {
         assertThat(response.getBody()).isEqualTo("Application Status must be in progress");
     }
 
+
+
 }

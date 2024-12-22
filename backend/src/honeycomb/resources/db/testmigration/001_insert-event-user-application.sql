@@ -5,6 +5,8 @@ VALUES ('45353065-3834-3030-2d65-3239633d3431', 'Test', 'Ablblalball', 'Test Par
         ('67353065-3834-3030-2d65-3239633kjld', 'Test Event 2', 'blablabal', 'Linking Park',
         '2024-06-01 12:00:00', '2024-06-01 23:00:00', '123e4567-e89b-12d3-a456-426614174000'),
        ('17353065-3834-3030-2d65-3239633d3431', 'Test Event 3', 'tschüssi', 'Mühlheim',
+        '2024-06-01 12:00:00', '2024-06-01 23:00:00', 'b23e4567-e89b-12d3-a456-426614174001'),
+       ('17353065-3834-3030-2d65-3239633d3432', 'Test Event 4', 'Cooles Event und vieles mehr', 'Berlin',
         '2024-06-01 12:00:00', '2024-06-01 23:00:00', 'b23e4567-e89b-12d3-a456-426614174001');
 INSERT INTO users (user_id, email, name, password, role)
 VALUES ('df333e19-6ed6-4c8b-b86e-ef78943a98a4', 'showman@example.com', 'Hung Luu','password123', 'EXHIBITOR'),

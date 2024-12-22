@@ -17,9 +17,11 @@ import org.venow.backend.service.dto.EventDTO;
 import org.venow.backend.service.dto.UserDTO;
 import org.venow.backend.service.exception.InvalidStatusException;
 import org.venow.backend.web.reponse.ContractResponse;
+import org.venow.backend.web.reponse.EventResponse;
 import org.venow.backend.web.reponse.ResponseMapper;
 import org.venow.backend.web.request.ContractRequest;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -39,10 +41,6 @@ public class OrganizerContractController {
             @PathVariable final UUID applicationId
     ) {
         final ApplicationDTO application = applicationService.getApplication(applicationId);
-
-        if (application == null) {
-            return ResponseEntity.notFound().build();
-        }
         final String applicantName = applicationService.getApplicationName(applicationId);
         final EventDTO event = eventservice.getEvent(application.getEventId());
         final UserDTO organizer = userService.getUserByUserId(organizerId);
@@ -83,4 +81,6 @@ public class OrganizerContractController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
+
+
 }

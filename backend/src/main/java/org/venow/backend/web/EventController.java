@@ -21,12 +21,12 @@ EventController {
 
     private final Eventservice eventservice;
 
-    @GetMapping("/events")
-    public ResponseEntity<List<EventResponse>> getAllEvents() {
-        final List<EventDTO> allEvents = eventservice.getAllEvents();
-        log.info("Found all events");
-        return ResponseEntity.ok(allEvents.stream().map(ResponseMapper::mapToEventResponse).toList());
-    }
+//    @GetMapping("/events")
+//    public ResponseEntity<List<EventResponse>> getAllEvents() {
+//        final List<EventDTO> allEvents = eventservice.getAllEvents();
+//        log.info("Found all events");
+//        return ResponseEntity.ok(allEvents.stream().map(ResponseMapper::mapToEventResponse).toList());
+//    }
 
 
 

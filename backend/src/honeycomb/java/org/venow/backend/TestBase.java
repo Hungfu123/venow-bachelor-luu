@@ -31,6 +31,7 @@ public abstract class TestBase {
 
     protected static final User USER_EXHIBITOR_3 = UserTestData.createExhibitor3();
     protected static final User USER_EXHIBITOR_2 = UserTestData.createExhibitor2();
+    protected static final User USER_ORGANIZER_1 = UserTestData.createOrganizer2();
 
     protected static final Event EVENT_1 = new Event(
             null,
