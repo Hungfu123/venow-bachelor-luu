@@ -46,7 +46,7 @@ VALUES (
            'Software IT',
            true,
            'Looking forward to participating!',
-           'CONTRACT'
+           'IN_PROGRESS'
        ),
        (
            'c3456789-01cd-ef23-4567-8901cdef2346',

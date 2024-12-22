@@ -157,7 +157,7 @@ class OrganizerContractControllerTest extends TestBase {
         String responseBody = response.getBody();
         assertThatJson(responseBody).and(
                 jsonNode -> jsonNode.node("price.amountInEuro").isEqualTo("Price must not be null"),
-                jsonNode -> jsonNode.node("boothNumber").isEqualTo("Stand number must not be null")
+                jsonNode -> jsonNode.node("boothNumber").isEqualTo("Stand number must not be empty")
         );
     }
 
