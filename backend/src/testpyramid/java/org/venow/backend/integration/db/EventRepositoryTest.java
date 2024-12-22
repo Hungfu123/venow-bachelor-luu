@@ -59,4 +59,20 @@ class EventRepositoryTest extends TestBase {
         assertThat(events).hasSize(2);
         assertThat(events).extracting(EventDTO::title).containsOnly(event1.title(), eventName);
     }
+
+    @DisplayName("should find all events by organizerId")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
+    void shouldFindAllEventsByOrganizerId() {
+        UUID organizerId = UUID.randomUUID();
+        EventDTO event1 = EventDTOFactory.createDefault().withOrganizerId(organizerId).build();
+        EventDTO event2 = EventDTOFactory.createDefault().withEventId(UUID.randomUUID()).withOrganizerId(organizerId).build();
+        eventRepository.save(event1);
+        eventRepository.save(event2);
+
+        List<EventDTO> events = eventRepository.findAllByOrganizerId(organizerId);
+
+        assertThat(events).hasSize(2);
+        assertThat(events).extracting(EventDTO::organizerId).containsOnly(organizerId);
+    }
 }

@@ -72,4 +72,23 @@ class EventServiceTest {
 
         verify(eventRepository, times(1)).findById(eventId);
     }
+
+    @DisplayName("should return all events by organizerId")
+    @Test
+    void shouldReturnAllEventsByOrganizerId() {
+        UUID organizerId = UUID.randomUUID();
+        List<EventDTO> events = List.of(EventDTOFactory.createDefault().withOrganizerId(organizerId).build(),
+                EventDTOFactory.createDefault().withEventId(UUID.randomUUID()).withOrganizerId(organizerId).build());
+
+        when(eventRepository.findAllByOrganizerId(organizerId)).thenReturn(events);
+
+        List<EventDTO> result = eventService.getAllEventsByOrganizer(organizerId);
+
+        assertThat(result).hasSize(2);
+        assertThat(result).extracting(EventDTO::title).containsExactly("Test Event", "Test Event");
+
+        verify(eventRepository, times(1)).findAllByOrganizerId(organizerId);
+    }
+
+
 }

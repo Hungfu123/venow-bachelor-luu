@@ -44,4 +44,6 @@ public class ContractRepositoryTest extends TestBase {
         assertThat(retrievedContract).isEmpty();
     }
 
+
+
 }
