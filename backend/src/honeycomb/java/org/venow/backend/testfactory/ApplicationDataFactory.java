@@ -1,5 +1,6 @@
 package org.venow.backend.testfactory;
 
+import org.venow.backend.domain.model.Status;
 import org.venow.backend.web.reponse.ApplicationResponse;
 
 import java.util.List;
@@ -63,7 +64,7 @@ public class ApplicationDataFactory {
                 .typeOfBusiness("Software IT")
                 .previousParticipation(true)
                 .message("Looking forward to participating!")
-                .status("IN_PROGRESS")
+                .status(Status.CONTRACT.name())
                 .build();
     }
 

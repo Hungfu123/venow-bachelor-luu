@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.dto.*;
 import org.venow.backend.service.exception.ApplicationNotFoundException;
 import org.venow.backend.service.exception.InvalidInputException;
@@ -144,6 +145,19 @@ public class ContractServiceTest {
 
         assertThat(createdContract.getPrice().getAmountInEuro()).isEqualByComparingTo(BigDecimal.valueOf(0));
         assertThat(createdContract.getBoothNumber()).isEqualTo("A50");
+    }
+
+    @Test
+    @DisplayName("should throw InvalidStatus")
+    void shouldthrowInvalidStatus() throws InvalidStatusException {
+        final ApplicationDTO application = ApplicationDTOFactory.createDefault().withStatus(Status.CONTRACT.name()).build();
+        final UserDTO organizer = UserDTOFactory.createDefault().build();
+        final PriceDto price = new PriceDto(0);
+        when(applicationService.getApplication(application.getApplicationId())).thenReturn(application);
+
+        assertThatThrownBy(() -> contractService.createContract(application.getApplicationId(), organizer.userId(), price, "A50"))
+                .isInstanceOf(InvalidStatusException.class)
+                .hasMessage("Application Status must be in progress");
     }
 
 

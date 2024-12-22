@@ -157,7 +157,7 @@ class OrganizerContractControllerTest extends TestBase {
         String responseBody = response.getBody();
         assertThatJson(responseBody).and(
                 jsonNode -> jsonNode.node("price.amountInEuro").isEqualTo("Price must not be null"),
-                jsonNode -> jsonNode.node("boothNumber").isEqualTo("Stand number must not be empty")
+                jsonNode -> jsonNode.node("boothNumber").isEqualTo("Stand number must not be null")
         );
     }
 
@@ -182,6 +182,21 @@ class OrganizerContractControllerTest extends TestBase {
         );
     }
 
+    @DisplayName("submit on not in progress status application - CONFLICT")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    void submitOnNotInProgressStatusApplication() {
+        ContractRequest request = loadObjectFromJson("/requests/contract-request.json", ContractRequest.class);
 
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}/organizer/{organizerId}/contracts/{applicationId}",
+                        HttpMethod.POST,
+                        new HttpEntity<>(request),
+                        String.class,
+                        port, ORGANIZER_ID, APPLICATION_3.applicationId());
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+
+        assertThat(response.getBody()).isEqualTo("Application Status must be in progress");
+    }
 
 }

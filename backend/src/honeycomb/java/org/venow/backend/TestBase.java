@@ -52,6 +52,7 @@ public abstract class TestBase {
 
     protected static final ApplicationResponse APPLICATION_1 = ApplicationDataFactory.createITApplicationResponse();
     protected static final ApplicationResponse APPLICATION_2 = ApplicationDataFactory.createDefaultApplicationResponse();
+    protected static final ApplicationResponse APPLICATION_3 = ApplicationDataFactory.createOtherOrganizerApplicationResponse();
     @Container
     public static MySQLContainer<?> jdbcDataBaseContainer = new MySQLContainer<>("mysql:latest")
             .withDatabaseName("mydatabase")

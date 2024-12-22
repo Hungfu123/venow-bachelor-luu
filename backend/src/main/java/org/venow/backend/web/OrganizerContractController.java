@@ -76,10 +76,10 @@ public class OrganizerContractController {
             @PathVariable final UUID applicationId,
             @Valid @RequestBody final ContractRequest contractRequest
     ) throws InvalidStatusException {
-        ContractDTO contract = contractService.createContract(applicationId, organizerId, contractRequest.price(), contractRequest.boothNumber());
+        final ContractDTO contract = contractService.createContract(applicationId, organizerId, contractRequest.price(), contractRequest.boothNumber());
         log.info("Contract was created {}", contract.getContractId());
 
-        ContractResponse body = ResponseMapper.mapToContractResponse(contract);
+        final ContractResponse body = ResponseMapper.mapToContractResponse(contract);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
