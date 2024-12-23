@@ -2,6 +2,7 @@ package org.venow.backend.infrastructure;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.venow.backend.domain.model.Role;
 import org.venow.backend.domain.model.User;
 import org.venow.backend.service.UserRepository;
 import org.venow.backend.service.dto.UserDTO;
@@ -25,5 +26,10 @@ public class UserRepositoryImpl implements UserRepository {
     public UserDTO save(UserDTO user) {
         User savedUser = repository.save(UserMapper.mapToEntity(user));
         return UserMapper.mapToDTO(savedUser);
+    }
+
+    @Override
+    public boolean existsByOrganizerId(UUID organizerId) {
+        return repository.existsByUserIdAndRole(organizerId, Role.ORGANIZER);
     }
 }

@@ -1,6 +1,7 @@
 package org.venow.backend.infrastructure;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.venow.backend.domain.model.Role;
 import org.venow.backend.domain.model.User;
 
 import java.util.Optional;
@@ -10,4 +11,5 @@ public interface JpaUserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByUserId(UUID userId);
 
+    boolean existsByUserIdAndRole(UUID organizerId, Role role);
 }

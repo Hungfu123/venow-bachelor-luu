@@ -19,4 +19,7 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found for ID: " + id));
     }
 
+    public boolean existsByOrganizerId(UUID organizerId) {
+        return userRepository.existsByOrganizerId(organizerId);
+    }
 }

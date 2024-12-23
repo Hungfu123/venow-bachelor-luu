@@ -11,18 +11,21 @@ import org.venow.backend.service.dto.*;
 import org.venow.backend.service.exception.ApplicationNotFoundException;
 import org.venow.backend.service.exception.InvalidInputException;
 import org.venow.backend.service.exception.InvalidStatusException;
+import org.venow.backend.service.exception.NotFoundException;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 import org.venow.backend.testdata.ContractDTOFactory;
 import org.venow.backend.testdata.EventDTOFactory;
 import org.venow.backend.testdata.UserDTOFactory;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ContractServiceTest {
@@ -158,7 +161,86 @@ public class ContractServiceTest {
                 .hasMessage("Application Status must be in progress");
     }
 
+    @Test
+    @DisplayName("Organizer sees all their contracts")
+    void shouldReturnAllContractsForOrganizer() {
+        final UUID organizerId = UUID.randomUUID();
+        final EventDTO event1 = EventDTOFactory.createDefault().withOrganizerId(organizerId).build();
+        final EventDTO event2 = EventDTOFactory.createDefault().withOrganizerId(organizerId).build();
+        final ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
+                .withEventId(event1.eventId().toString())
+                .build();
 
+        final ApplicationDTO application2 = ApplicationDTOFactory.createDefault()
+                .withEventId(event1.eventId().toString())
+                .build();
+
+        final ApplicationDTO application3 = ApplicationDTOFactory.createDefault()
+                .withEventId(event2.eventId().toString())
+                .build();
+
+        final UserDTO organizer = UserDTOFactory.createDefault().withUserId(organizerId).build();
+
+        final ContractDTO contract1 = ContractDTOFactory.createDefault()
+                .withOrganizerId(organizerId.toString())
+                .withApplication(application1)
+                .withContractId(UUID.randomUUID().toString())
+                .build();
+
+        final ContractDTO contract2 = ContractDTOFactory.createDefault()
+                .withOrganizerId(organizerId.toString())
+                .withApplication(application2)
+                .withContractId(UUID.randomUUID().toString())
+                .build();
+
+
+        final ContractDTO contract3 = ContractDTOFactory.createDefault()
+                .withOrganizerId(organizerId.toString())
+                .withApplication(application3)
+                .withContractId(UUID.randomUUID().toString())
+                .build();
+
+        when(contractRepository.findAllByOrganizerId(organizerId)).thenReturn(List.of(contract1, contract2, contract3));
+        when(userService.getUserByUserId(organizerId)).thenReturn(organizer);
+        when(eventservice.getEvent(application1.getEventId())).thenReturn(event1);
+        when(eventservice.getEvent(application2.getEventId())).thenReturn(event1);
+        when(eventservice.getEvent(application3.getEventId())).thenReturn(event2);
+        when(applicationService.getApplicationName(application1.getApplicationId())).thenReturn("Test Application");
+        when(applicationService.getApplicationName(application2.getApplicationId())).thenReturn("Test Application");
+        when(applicationService.getApplicationName(application3.getApplicationId())).thenReturn("Test Application");
+
+        List<ContractDTO> contracts = contractService.getAllContractsByOrganizer(organizerId);
+
+        assertThat(contracts).isNotEmpty();
+        assertThat(contracts).hasSize(3);
+        assertThat(contracts.stream().map(ContractDTO::getOrganizerId)).allMatch(id -> id.equals(organizerId));
+        verify(contractRepository).findAllByOrganizerId(organizerId);
+        verify(userService, times(3)).getUserByUserId(organizerId);
+    }
+
+    @Test
+    @DisplayName("Empty contract list for organizer with no contracts")
+    void shouldReturnEmptyListWhenNoContractsFoundForOrganizer() {
+        final UUID organizerId = UUID.randomUUID();
+        when(contractRepository.findAllByOrganizerId(organizerId)).thenReturn(Collections.emptyList());
+
+        List<ContractDTO> contracts = contractService.getAllContractsByOrganizer(organizerId);
+
+        assertThat(contracts).isEmpty();
+        verify(contractRepository).findAllByOrganizerId(organizerId);
+    }
+
+    @Test
+    @DisplayName("Throws exception when organizer not found")
+    void shouldThrowExceptionWhenOrganizerNotFound() {
+        final UUID organizerId = UUID.randomUUID();
+        when(userService.existsByOrganizerId(organizerId)).thenThrow(new NotFoundException("Organizer not found"));
+
+        assertThatThrownBy(() -> contractService.getAllContractsByOrganizer(organizerId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Organizer not found");
+        verifyNoInteractions(contractRepository);
+    }
 
 
 }

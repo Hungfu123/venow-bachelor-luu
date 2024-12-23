@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.dto.*;
+import org.venow.backend.service.exception.DuplicateApplicationException;
 import org.venow.backend.service.exception.InvalidInputException;
 import org.venow.backend.service.exception.InvalidStatusException;
+import org.venow.backend.service.exception.NotFoundException;
 
 import java.util.*;
 
@@ -53,7 +55,9 @@ public class ContractService {
 
 
     public List<ContractDTO> getAllContractsByOrganizer(UUID organizerId) {
-
+        if(userService.existsByOrganizerId(organizerId)){
+            throw new NotFoundException("Organizer ID not found");
+        }
         List<ContractDTO> allByOrganizerId = contractRepository.findAllByOrganizerId(organizerId);
 
         return allByOrganizerId.stream().map(contract -> {

@@ -12,4 +12,5 @@ public interface UserRepository {
 
     UserDTO save(UserDTO user);
 
+    boolean existsByOrganizerId(UUID organizerId);
 }

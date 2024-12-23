@@ -1,13 +1,10 @@
 package org.venow.backend.integration.db;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.TestBase;
-import org.venow.backend.infrastructure.JpaUserRepository;
 import org.venow.backend.infrastructure.UserRepositoryImpl;
 import org.venow.backend.service.dto.UserDTO;
 import org.venow.backend.testdata.UserDTOFactory;
@@ -44,5 +41,37 @@ class UserRepositoryTest extends TestBase {
         Optional<UserDTO> retrievedUser = userRepository.findById(UUID.randomUUID());
 
         assertThat(retrievedUser).isEmpty();
+    }
+
+    @DisplayName("should return true if user exists by organizer ID")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
+    void shouldReturnTrueIfUserExistsByOrganizerId() {
+        UserDTO user = UserDTOFactory.createDefault().build();
+        userRepository.save(user);
+
+        boolean exists = userRepository.existsByOrganizerId(user.userId());
+
+        assertThat(exists).isTrue();
+    }
+
+    @DisplayName("should return false if user does not exist by organizer ID")
+    @Test
+    void shouldReturnFalseIfUserDoesNotExistByOrganizerId() {
+        boolean exists = userRepository.existsByOrganizerId(UUID.randomUUID());
+
+        assertThat(exists).isFalse();
+    }
+
+    @DisplayName("should return false if user is exhibitor")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
+    void shouldReturnFalseIfUserIsExhibitor() {
+        UserDTO user = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
+        userRepository.save(user);
+
+        boolean exists = userRepository.existsByOrganizerId(user.userId());
+
+        assertThat(exists).isFalse();
     }
 }

@@ -9,7 +9,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.venow.backend.domain.model.Status;
-import org.venow.backend.service.*;
+import org.venow.backend.service.ApplicationService;
+import org.venow.backend.service.ContractService;
+import org.venow.backend.service.Eventservice;
+import org.venow.backend.service.UserService;
 import org.venow.backend.service.dto.*;
 import org.venow.backend.service.exception.InvalidStatusException;
 import org.venow.backend.service.exception.NotFoundException;
@@ -21,10 +24,10 @@ import org.venow.backend.web.OrganizerContractController;
 import org.venow.backend.web.reponse.ContractResponse;
 import org.venow.backend.web.request.ContractRequest;
 
+import java.util.List;
 import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -231,5 +234,25 @@ class OrganizerContractControllerTest {
 
 
         assertThat(contentAsString).isEqualTo("Application Status must be in progress");
+    }
+
+    @DisplayName("see all contracts by organizer")
+    @Test
+    void seeAllContractsByOrganizer() throws Exception {
+        final UserDTO organizer = UserDTOFactory.createDefault().build();
+        final ContractDTO contract = ContractDTOFactory.createDefault().build();
+        final ContractDTO contract2 = ContractDTOFactory.createDefault().build();
+
+        List<ContractDTO> contractList = List.of(contract, contract2);
+        when(contractService.getAllContractsByOrganizer(any())).thenReturn(contractList);
+
+        final String contentAsString = mockMvc.perform(get("/organizer/{organizerId}/contracts", organizer.userId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThatJson(contentAsString).isArray().hasSize(2);
     }
 }

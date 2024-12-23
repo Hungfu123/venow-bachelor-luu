@@ -65,4 +65,28 @@ public class UserServiceTest {
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("User not found");
     }
+
+    @DisplayName("should return true if user is an organizer")
+    @Test
+    void shouldReturnTrueIfUserIsOrganizer() {
+        UUID organizerId = UUID.randomUUID();
+
+        when(userRepository.existsByOrganizerId(organizerId)).thenReturn(true);
+
+        boolean result = userService.existsByOrganizerId(organizerId);
+
+        assertThat(result).isTrue();
+    }
+
+    @DisplayName("should return false if user is not an organizer")
+    @Test
+    void shouldReturnFalseIfUserIsNotOrganizer() {
+        UUID nonOrganizerId = UUID.randomUUID();
+
+        when(userRepository.existsByOrganizerId(nonOrganizerId)).thenReturn(false);
+
+        boolean result = userService.existsByOrganizerId(nonOrganizerId);
+
+        assertThat(result).isFalse();
+    }
 }
