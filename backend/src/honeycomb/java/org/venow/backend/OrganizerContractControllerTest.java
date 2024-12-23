@@ -1,5 +1,7 @@
 package org.venow.backend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,8 +12,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
+import org.venow.backend.testfactory.ContractDataFactory;
+import org.venow.backend.web.reponse.ContractResponse;
 import org.venow.backend.web.request.ContractRequest;
 
+import java.util.List;
 import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -156,7 +161,7 @@ class OrganizerContractControllerTest extends TestBase {
 
         String responseBody = response.getBody();
         assertThatJson(responseBody).and(
-                jsonNode -> jsonNode.node("price.amountInEuro").isEqualTo("Price must not be null"),
+                jsonNode -> jsonNode.node("price").isEqualTo("Price must not be null"),
                 jsonNode -> jsonNode.node("boothNumber").isEqualTo("Stand number must not be empty")
         );
     }
@@ -197,6 +202,38 @@ class OrganizerContractControllerTest extends TestBase {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
 
         assertThat(response.getBody()).isEqualTo("Application Status must be in progress");
+    }
+
+    @DisplayName("show all contracts by organizer")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    void showAllContractsByOrganizer() throws JsonProcessingException {
+        List<ContractResponse> expectedContracts = ContractDataFactory.getAllContractResponses();
+
+
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}/organizer/{organizerId}/contracts",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port, "b23e4567-e89b-12d3-a456-426614174002");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        List<ContractResponse> actualResponses = objectMapper.readValue(
+                response.getBody(),
+                new TypeReference<>() {
+                }
+        );
+
+        assertThat(actualResponses)
+                .as("check if response contains expected contracts by organizerId")
+                .hasSize(2)
+                .usingRecursiveComparison()
+                .ignoringFields("price.amountInEuro")
+                .isEqualTo(expectedContracts);
+
+        assertThat(actualResponses.getFirst().price().getAmountInEuro().doubleValue()).isEqualTo(3.0);
+        assertThat(actualResponses.getLast().price().getAmountInEuro().doubleValue()).isEqualTo(3.0);
     }
 
 

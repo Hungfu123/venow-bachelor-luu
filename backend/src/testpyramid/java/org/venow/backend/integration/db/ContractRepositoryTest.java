@@ -3,9 +3,12 @@ package org.venow.backend.integration.db;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.TestBase;
 import org.venow.backend.infrastructure.ContractRepositoryImpl;
+import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.dto.ContractDTO;
+import org.venow.backend.testdata.ApplicationDTOFactory;
 import org.venow.backend.testdata.ContractDTOFactory;
 
 import java.util.Optional;
@@ -20,8 +23,15 @@ public class ContractRepositoryTest extends TestBase {
 
     @DisplayName("should save and retrieve contract by ID")
     @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
     void shouldSaveAndRetrieveContractById() {
-        ContractDTO contract = ContractDTOFactory.createDefault().build();
+        ApplicationDTO application = ApplicationDTOFactory.createDefault()
+                .withId(1L)
+                .withApplicationId("b79a8e9b-7d74-4a5f-93e1-73f451e1ae0a")
+                .withUserId("df333e19-6ed6-4c8b-b86e-ef78943a98a4")
+                .withEventId("45353065-3834-3030-2d65-3239633d3431")
+                .build();
+        ContractDTO contract = ContractDTOFactory.createDefault().withApplication(application).build();
         contractRepository.save(contract);
 
         Optional<ContractDTO> retrievedContract = contractRepository.findById(contract.getContractId());

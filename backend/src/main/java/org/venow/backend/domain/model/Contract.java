@@ -22,8 +22,12 @@ public class Contract {
     @Column(nullable = false, unique = true)
     private final UUID contractId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private final UUID organizerId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "application_id", referencedColumnName = "application_id", nullable = false)
+    private final Application application;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private final String terms;

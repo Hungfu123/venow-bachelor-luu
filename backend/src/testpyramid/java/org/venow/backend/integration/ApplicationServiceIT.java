@@ -12,6 +12,8 @@ import org.venow.backend.service.exception.DuplicateApplicationException;
 import org.venow.backend.infrastructure.ApplicationRepositoryImpl;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -28,7 +30,7 @@ public class ApplicationServiceIT extends TestBase {
     @DisplayName("should create a new application and save to database")
     @Test
     void shouldCreateApplication() {
-        final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
+        final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().withUserId(UUID.randomUUID().toString()).build();
 
         final ApplicationDTO result = applicationservice.createApplication(applicationDTO);
 

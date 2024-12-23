@@ -1,6 +1,4 @@
 {
-  "price": {
-    "amountInEuro": null
-  },
+  "price": null,
   "boothNumber": null
 }

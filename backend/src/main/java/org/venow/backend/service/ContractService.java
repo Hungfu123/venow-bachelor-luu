@@ -8,7 +8,7 @@ import org.venow.backend.service.dto.*;
 import org.venow.backend.service.exception.InvalidInputException;
 import org.venow.backend.service.exception.InvalidStatusException;
 
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -36,6 +36,7 @@ public class ContractService {
         final String applicationName = applicationService.getApplicationName(applicationId);
         final ContractDTO contractDTO = ContractDTO.builder()
                 .contractId(UUID.randomUUID())
+                .application(application)
                 .organizerId(organizerId)
                 .terms("By accepting this contract, you agree to the terms and conditions of the event.")
                 .price(priceDto)
@@ -47,25 +48,42 @@ public class ContractService {
         final ContractDTO savedContract = contractRepository.save(contractDTO);
         log.info("Contract created: {}", savedContract);
 
+        return getContractDTO(organizerId, savedContract, organizer, application, event, applicationName, contractDTO.getTerms(), contractDTO.getStatus(), contractDTO.getPrice());
+    }
+
+
+    public List<ContractDTO> getAllContractsByOrganizer(UUID organizerId) {
+
+        List<ContractDTO> allByOrganizerId = contractRepository.findAllByOrganizerId(organizerId);
+
+        return allByOrganizerId.stream().map(contract -> {
+            final UserDTO organizer = userService.getUserByUserId(organizerId);
+
+            final ApplicationDTO application = contract.getApplication();
+            final EventDTO event = eventservice.getEvent(application.getEventId());
+
+            final String applicationName = applicationService.getApplicationName(application.getApplicationId());
+
+            return getContractDTO(organizerId, contract, organizer, application, event, applicationName, contract.getTerms(), contract.getStatus(), contract.getPrice());
+        }).toList();
+    }
+
+    private ContractDTO getContractDTO(UUID organizerId, ContractDTO contract, UserDTO organizer, ApplicationDTO application, EventDTO event, String applicationName, String terms, String status, PriceDto price) {
         return ContractDTO.builder()
-                .contractId(savedContract.getContractId())
+                .contractId(contract.getContractId())
                 .organizerId(organizerId)
+                .application(application)
                 .applicantName(applicationName)
                 .organizerName(organizer.name())
                 .eventName(event.title())
                 .location(event.location())
                 .startDate(String.valueOf(event.startDate()))
                 .endDate(String.valueOf(event.endDate()))
-                .typeOfBusiness(application.getTypeOfBusiness())
-                .contactInformation(application.getContactInformation())
-                .businessName(application.getBusinessName())
-                .terms(contractDTO.getTerms())
-                .status(contractDTO.getStatus())
-                .price(contractDTO.getPrice())
-                .boothNumber(savedContract.getBoothNumber())
+                .terms(terms)
+                .status(status)
+                .price(price)
+                .boothNumber(contract.getBoothNumber())
                 .organizerEmail(organizer.email())
                 .build();
     }
-
-
 }

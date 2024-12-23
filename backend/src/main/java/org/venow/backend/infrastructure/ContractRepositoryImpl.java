@@ -7,6 +7,7 @@ import org.venow.backend.service.ContractRepository;
 import org.venow.backend.service.dto.ContractDTO;
 import org.venow.backend.service.mapper.ContractMapper;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,5 +29,12 @@ public class ContractRepositoryImpl implements ContractRepository {
     @Override
     public Optional<ContractDTO> findById(final UUID id) {
         return repository.findByContractId(id).map(ContractMapper::toDTO);
+    }
+
+    @Override
+    public List<ContractDTO> findAllByOrganizerId(UUID organizerId) {
+        return repository.findAllByOrganizerId(organizerId).stream()
+                .map(ContractMapper::toDTO)
+                .toList();
     }
 }

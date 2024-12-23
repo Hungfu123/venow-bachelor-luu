@@ -52,7 +52,7 @@ public class UserTestData {
     public static User createOrganizer3() {
         return User.builder()
                 .id(4L)
-                .userId(UUID.fromString("b23e4567-e89b-12d3-a456-426614174002"))
+                .userId(UUID.fromString("df333e19-6ed6-4c8b-b86e-ef78943a98a4"))
                 .email("organizer3@example.com")
                 .role(org.venow.backend.domain.model.Role.ORGANIZER)
                 .build();

@@ -38,6 +38,7 @@ class ApplicationRepositoryTest extends TestBase {
     @Test
     void shouldReturnTrueIfApplicationExistsForUserIdAndEventId() {
         ApplicationDTO application = ApplicationDTOFactory.createDefault()
+                .withUserId(UUID.randomUUID().toString())
                 .build();
 
         applicationRepository.save(application);
@@ -59,7 +60,7 @@ class ApplicationRepositoryTest extends TestBase {
     @DisplayName("should save and retrieve application")
     @Test
     void shouldSaveAndFindApplicationById() {
-        ApplicationDTO application = ApplicationDTOFactory.createDefault().build();
+        ApplicationDTO application = ApplicationDTOFactory.createDefault().withUserId(UUID.randomUUID().toString()).build();
         ApplicationDTO savedApplication = applicationRepository.save(application);
 
         Optional<ApplicationDTO> retrievedApplication = applicationRepository.findById(savedApplication.getApplicationId());
@@ -85,10 +86,12 @@ class ApplicationRepositoryTest extends TestBase {
     void shouldFindAllApplicationsForGivenOrganizerId() {
         UUID organizerId = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
         ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
+                .withUserId(UUID.randomUUID().toString())
                 .withEventId("45353065-3834-3030-2d65-3239633d3431")
                 .build();
 
         ApplicationDTO application2 = ApplicationDTOFactory.createDefault()
+                .withUserId(UUID.randomUUID().toString())
                 .withEventId("17353065-3834-3030-2d65-3239633d3431")
                 .build();
 
@@ -108,7 +111,9 @@ class ApplicationRepositoryTest extends TestBase {
     @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
     void shouldNotFindApplications() {
         UUID organizerId = UUID.fromString("b23e4567-e89b-12d3-a456-426614174002");
+
         ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
+                .withUserId(UUID.randomUUID().toString())
                 .withEventId("45353065-3834-3030-2d65-3239633d3431")
                 .build();
 

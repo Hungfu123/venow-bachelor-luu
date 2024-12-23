@@ -9,13 +9,13 @@ public class ApplicationDTOFactory {
     public static ApplicationDTOWith createDefault() {
         ApplicationDTO defaultApplication = ApplicationDTO.builder()
                 .applicationId(UUID.randomUUID())
-                .userId(UUID.randomUUID())
-                .eventId(UUID.randomUUID())
-                .contactInformation("034023423")
-                .businessName("Luu Business")
-                .typeOfBusiness("Luu Type")
-                .previousParticipation(false)
-                .message("Nimm mich")
+                .userId(UUID.fromString("df333e19-6ed6-4c8b-b86e-ef78943a98a4"))
+                .eventId(UUID.fromString("45353065-3834-3030-2d65-3239633d3431"))
+                .contactInformation("example@example.com")
+                .businessName("Sample Business")
+                .typeOfBusiness("Food Truck")
+                .previousParticipation(true)
+                .message("Looking forward to participating!")
                 .status("IN_PROGRESS")
                 .build();
 
@@ -29,6 +29,10 @@ public class ApplicationDTOFactory {
             this.applicationDTO = applicationDTO;
         }
 
+        public ApplicationDTOWith withId(Long id) {
+            this.applicationDTO = applicationDTO.toBuilder().id(id).build();
+            return this;
+        }
         public ApplicationDTOWith withApplicationId(String applicationId) {
             this.applicationDTO = applicationDTO.toBuilder().applicationId(UUID.fromString(applicationId)).build();
             return this;

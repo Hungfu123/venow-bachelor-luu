@@ -14,7 +14,9 @@ import java.util.UUID;
 @Table(
         name = "applications",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"userId", "eventId"})
+                @UniqueConstraint(columnNames = {"userId", "eventId"}),
+                @UniqueConstraint(columnNames = {"application_id"})
+
         }
 )
 public class Application {
@@ -22,8 +24,8 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private final UUID applicationId;
+    @Column(name = "application_id", nullable = false)
+    private UUID applicationId;
 
     @Column(nullable = false)
     private final UUID userId;

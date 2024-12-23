@@ -60,13 +60,11 @@ public class ContractServiceTest {
 
         assertThat(createdContract.getContractId()).isEqualTo(contract.getContractId());
         assertThat(createdContract.getOrganizerId()).isEqualTo(organizer.userId());
+        assertThat(createdContract.getApplication()).isEqualTo(application);
         assertThat(createdContract.getApplicantName()).isEqualTo("applicantName");
         assertThat(createdContract.getOrganizerName()).isEqualTo(organizer.name());
         assertThat(createdContract.getEventName()).isEqualTo(event.title());
         assertThat(createdContract.getLocation()).isEqualTo(event.location());
-        assertThat(createdContract.getTypeOfBusiness()).isEqualTo(application.getTypeOfBusiness());
-        assertThat(createdContract.getContactInformation()).isEqualTo(application.getContactInformation());
-        assertThat(createdContract.getBusinessName()).isEqualTo(application.getBusinessName());
         assertThat(createdContract.getTerms()).isEqualTo("By accepting this contract, you agree to the terms and conditions of the event.");
         assertThat(createdContract.getPrice().getAmountInEuro()).isEqualTo(contract.getPrice().getAmountInEuro());
         assertThat(createdContract.getBoothNumber()).isEqualTo(contract.getBoothNumber());

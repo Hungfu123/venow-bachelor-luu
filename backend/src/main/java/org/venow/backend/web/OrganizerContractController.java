@@ -48,6 +48,7 @@ public class OrganizerContractController {
         final ContractResponse contractResponse = new ContractResponse(
                 UUID.randomUUID(),
                 organizerId,
+                applicationId,
                 applicantName,
                 organizer.name(),
                 event.title(),
@@ -81,6 +82,17 @@ public class OrganizerContractController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
+
+    @GetMapping("/contracts")
+    public ResponseEntity<List<ContractResponse>> showAllContractsByOrganizer(
+            @PathVariable("organizerId") final UUID organizerId){
+        final List<ContractDTO> allContracts = contractService.getAllContractsByOrganizer(organizerId);
+
+        final List<ContractResponse> body = allContracts.stream().map(ResponseMapper::mapToContractResponse).toList();
+
+        return ResponseEntity.ok(body);
+    }
+
 
 
 }

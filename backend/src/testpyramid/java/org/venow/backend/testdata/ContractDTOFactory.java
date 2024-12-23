@@ -1,5 +1,6 @@
 package org.venow.backend.testdata;
 
+import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.dto.ContractDTO;
 import org.venow.backend.service.dto.PriceDto;
 
@@ -13,15 +14,13 @@ public class ContractDTOFactory {
         ContractDTO defaultContract = ContractDTO.builder()
                 .contractId(UUID.randomUUID())
                 .organizerId(UUID.randomUUID())
+                .application(ApplicationDTOFactory.createDefault().withUserId(UUID.randomUUID().toString()).build())
                 .applicantName("Default Applicant")
                 .organizerName("Default Organizer")
                 .eventName("Default Event")
                 .location("Default Location")
                 .startDate(String.valueOf(LocalDateTime.of(2023, 1, 1, 10, 0)))
                 .endDate(String.valueOf(LocalDateTime.of(2023, 1, 2, 18, 0)))
-                .typeOfBusiness("Default Business Type")
-                .contactInformation("contact@example.com")
-                .businessName("Default Business")
                 .terms("Default terms and conditions.")
                 .price(new PriceDto(5000))
                 .boothNumber("A50")
@@ -46,6 +45,11 @@ public class ContractDTOFactory {
 
         public ContractDTOWith withOrganizerId(String organizerId) {
             this.contractDTO = contractDTO.toBuilder().organizerId(UUID.fromString(organizerId)).build();
+            return this;
+        }
+
+        public ContractDTOWith withApplication(ApplicationDTO application) {
+            this.contractDTO = contractDTO.toBuilder().application(application).build();
             return this;
         }
 
@@ -79,20 +83,6 @@ public class ContractDTOFactory {
             return this;
         }
 
-        public ContractDTOWith withTypeOfBusiness(String typeOfBusiness) {
-            this.contractDTO = contractDTO.toBuilder().typeOfBusiness(typeOfBusiness).build();
-            return this;
-        }
-
-        public ContractDTOWith withContactInformation(String contactInformation) {
-            this.contractDTO = contractDTO.toBuilder().contactInformation(contactInformation).build();
-            return this;
-        }
-
-        public ContractDTOWith withBusinessName(String businessName) {
-            this.contractDTO = contractDTO.toBuilder().businessName(businessName).build();
-            return this;
-        }
 
         public ContractDTOWith withTerms(String terms) {
             this.contractDTO = contractDTO.toBuilder().terms(terms).build();

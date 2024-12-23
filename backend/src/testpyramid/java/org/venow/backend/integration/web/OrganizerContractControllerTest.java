@@ -60,6 +60,7 @@ class OrganizerContractControllerTest {
         final ContractResponse contractDTO = new ContractResponse(
                 application.getApplicationId(),
                 organizer.userId(),
+                application.getApplicationId(),
                 applicationName,
                 organizer.name(),
                 event.title(),

@@ -1,6 +1,4 @@
 {
-  "price": {
-    "amountInEuro": 50.0
-  },
+  "price": 50.0,
   "boothNumber": "A50"
 }

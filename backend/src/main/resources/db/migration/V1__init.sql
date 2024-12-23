@@ -33,8 +33,9 @@ CREATE TABLE applications (
 );
 CREATE TABLE contracts (
                            id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                           contract_id CHAR(36) NOT NULL UNIQUE,
-                           organizer_id CHAR(36) NOT NULL UNIQUE,
+                           contract_id VARCHAR(36) NOT NULL UNIQUE,
+                           organizer_id VARCHAR(36) NOT NULL,
+                           application_id VARCHAR(36) NOT NULL,
                            terms VARCHAR(255) NOT NULL,
                            price INT,
                            booth_number VARCHAR(255),
