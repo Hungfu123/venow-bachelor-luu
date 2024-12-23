@@ -208,6 +208,7 @@ public class ContractServiceTest {
         when(applicationService.getApplicationName(application1.getApplicationId())).thenReturn("Test Application");
         when(applicationService.getApplicationName(application2.getApplicationId())).thenReturn("Test Application");
         when(applicationService.getApplicationName(application3.getApplicationId())).thenReturn("Test Application");
+        when(userService.existsByOrganizerId(organizerId)).thenReturn(true);
 
         List<ContractDTO> contracts = contractService.getAllContractsByOrganizer(organizerId);
 
@@ -223,7 +224,7 @@ public class ContractServiceTest {
     void shouldReturnEmptyListWhenNoContractsFoundForOrganizer() {
         final UUID organizerId = UUID.randomUUID();
         when(contractRepository.findAllByOrganizerId(organizerId)).thenReturn(Collections.emptyList());
-
+        when(userService.existsByOrganizerId(organizerId)).thenReturn(true);
         List<ContractDTO> contracts = contractService.getAllContractsByOrganizer(organizerId);
 
         assertThat(contracts).isEmpty();

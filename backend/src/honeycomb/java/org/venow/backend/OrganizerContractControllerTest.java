@@ -224,7 +224,6 @@ class OrganizerContractControllerTest extends TestBase {
                 new TypeReference<>() {
                 }
         );
-
         assertThat(actualResponses)
                 .as("check if response contains expected contracts by organizerId")
                 .hasSize(2)
@@ -236,6 +235,19 @@ class OrganizerContractControllerTest extends TestBase {
         assertThat(actualResponses.getLast().price().getAmountInEuro().doubleValue()).isEqualTo(3.0);
     }
 
+    @DisplayName("cant show contracts because user is EXHIBITOR - NOT FOUND")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    void showNotFoundExhibitor() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}/organizer/{organizerId}/contracts",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port, "df333e19-6ed6-4c8b-b86e-ef78943a98a4");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
+        assertThat(response.getBody()).isEqualTo("Organizer ID not found");
+    }
 
 }

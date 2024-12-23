@@ -55,7 +55,7 @@ public class ContractService {
 
 
     public List<ContractDTO> getAllContractsByOrganizer(UUID organizerId) {
-        if(userService.existsByOrganizerId(organizerId)){
+        if(!userService.existsByOrganizerId(organizerId)){
             throw new NotFoundException("Organizer ID not found");
         }
         List<ContractDTO> allByOrganizerId = contractRepository.findAllByOrganizerId(organizerId);

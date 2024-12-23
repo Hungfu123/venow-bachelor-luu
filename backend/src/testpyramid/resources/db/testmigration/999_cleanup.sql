@@ -3,3 +3,4 @@
 TRUNCATE TABLE events;
 TRUNCATE TABLE users;
 TRUNCATE TABLE applications;
+TRUNCATE TABLE contracts;
