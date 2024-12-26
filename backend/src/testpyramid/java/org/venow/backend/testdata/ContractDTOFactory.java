@@ -4,7 +4,6 @@ import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.dto.ContractDTO;
 import org.venow.backend.service.dto.PriceDto;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -19,8 +18,8 @@ public class ContractDTOFactory {
                 .organizerName("Default Organizer")
                 .eventName("Default Event")
                 .location("Default Location")
-                .startDate(String.valueOf(LocalDateTime.of(2023, 1, 1, 10, 0)))
-                .endDate(String.valueOf(LocalDateTime.of(2023, 1, 2, 18, 0)))
+                .startDate(LocalDateTime.of(2023, 1, 1, 10, 0).toString())
+                .endDate(LocalDateTime.of(2023, 1, 2, 18, 0).toString())
                 .terms("Default terms and conditions.")
                 .price(new PriceDto(5000))
                 .boothNumber("A50")

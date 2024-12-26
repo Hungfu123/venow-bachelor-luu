@@ -255,4 +255,51 @@ class OrganizerContractControllerTest {
 
         assertThatJson(contentAsString).isArray().hasSize(2);
     }
+
+    @DisplayName("organizer see contract details")
+    @Test
+    void seeContractDetails() throws Exception {
+        final UserDTO organizer = UserDTOFactory.createDefault().build();
+        final ContractDTO contract = ContractDTOFactory.createDefault().build();
+
+        when(contractService.getContractByContractId(contract.getContractId())).thenReturn(contract);
+
+        final String contentAsString = mockMvc.perform(get("/organizer/{organizerId}/contracts/details/{contractId}", organizer.userId(), contract.getContractId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThatJson(contentAsString).and(
+                jsonNode -> jsonNode.node("contractId").isEqualTo(contract.getContractId().toString()),
+                jsonNode -> jsonNode.node("organizerId").isEqualTo(contract.getOrganizerId().toString()),
+                jsonNode -> jsonNode.node("applicationId").isEqualTo(contract.getApplication().getApplicationId().toString()),
+                jsonNode -> jsonNode.node("applicantName").isEqualTo(contract.getApplicantName()),
+                jsonNode -> jsonNode.node("organizerName").isEqualTo(contract.getOrganizerName()),
+                jsonNode -> jsonNode.node("eventName").isEqualTo(contract.getEventName()),
+                jsonNode -> jsonNode.node("location").isEqualTo(contract.getLocation()),
+                jsonNode -> jsonNode.node("startDate").isEqualTo("2023-01-01T10:00:00"),
+                jsonNode -> jsonNode.node("endDate").isEqualTo("2023-01-02T18:00:00"),
+                jsonNode -> jsonNode.node("typeOfBusiness").isEqualTo(contract.getApplication().getTypeOfBusiness()),
+                jsonNode -> jsonNode.node("contactInformation").isEqualTo(contract.getApplication().getContactInformation()),
+                jsonNode -> jsonNode.node("businessName").isEqualTo(contract.getApplication().getBusinessName()),
+                jsonNode -> jsonNode.node("terms").isEqualTo(contract.getTerms()),
+                jsonNode -> jsonNode.node("price").isEqualTo(Double.parseDouble(contract.getPrice().getAmountInEuro().toString())),
+                jsonNode -> jsonNode.node("boothNumber").isEqualTo(contract.getBoothNumber()),
+                jsonNode -> jsonNode.node("status").isEqualTo(contract.getStatus()),
+                jsonNode -> jsonNode.node("organizerEmail").isEqualTo(contract.getOrganizerEmail())
+        );
+    }
+
+    @DisplayName("organizer see contract details when contract not found")
+    @Test
+    void seeContractDetailsWhenContractNotFound() throws Exception {
+        final UserDTO organizer = UserDTOFactory.createDefault().build();
+        when(contractService.getContractByContractId(any())).thenThrow(new NotFoundException("Contract not found"));
+
+        mockMvc.perform(get("/organizer/{organizerId}/contracts/details/{contractId}", organizer.userId(), UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }

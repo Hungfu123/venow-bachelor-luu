@@ -20,6 +20,7 @@ import org.venow.backend.testdata.UserDTOFactory;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -242,6 +243,47 @@ public class ContractServiceTest {
                 .hasMessageContaining("Organizer not found");
         verifyNoInteractions(contractRepository);
     }
+
+    @Test
+    @DisplayName("should return contract by contractId")
+    void shouldReturnContractByContractId() {
+        final UUID contractId = UUID.randomUUID();
+        final ContractDTO contract = ContractDTOFactory.createDefault().withContractId(contractId.toString()).build();
+        when(contractRepository.findById(contractId)).thenReturn(Optional.of(contract));
+        EventDTO event = EventDTOFactory.createDefault().build();
+        UserDTO user = UserDTOFactory.createDefault().build();
+        when(userService.getUserByUserId(contract.getOrganizerId())).thenReturn(user);
+        when(eventservice.getEvent(any())).thenReturn(event);
+        when(applicationService.getApplicationName(any())).thenReturn("Default Applicant");
+
+        ContractDTO foundContract = contractService.getContractByContractId(contractId);
+
+        verify(contractRepository).findById(contractId);
+        assertThat(foundContract.getContractId()).isEqualTo(contract.getContractId());
+        assertThat(foundContract.getOrganizerId()).isEqualTo(contract.getOrganizerId());
+        assertThat(foundContract.getApplication()).isEqualTo(contract.getApplication());
+        assertThat(foundContract.getApplicantName()).isEqualTo(contract.getApplicantName());
+        assertThat(foundContract.getOrganizerName()).isEqualTo(user.name());
+        assertThat(foundContract.getEventName()).isEqualTo(event.title());
+        assertThat(foundContract.getLocation()).isEqualTo(event.location());
+        assertThat(foundContract.getTerms()).isEqualTo(contract.getTerms());
+        assertThat(foundContract.getPrice()).isEqualTo(contract.getPrice());
+        assertThat(foundContract.getBoothNumber()).isEqualTo(contract.getBoothNumber());
+        assertThat(foundContract.getStatus()).isEqualTo(contract.getStatus());
+        assertThat(foundContract.getOrganizerEmail()).isEqualTo(user.email());
+    }
+
+    @Test
+    @DisplayName("should throw exception when contract not found")
+    void shouldThrowExceptionWhenContractNotFound() {
+        final UUID contractId = UUID.randomUUID();
+        when(contractRepository.findById(contractId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> contractService.getContractByContractId(contractId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("Contract ID not found");
+    }
+
 
 
 }
