@@ -5,12 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.dto.*;
-import org.venow.backend.service.exception.DuplicateApplicationException;
 import org.venow.backend.service.exception.InvalidInputException;
 import org.venow.backend.service.exception.InvalidStatusException;
 import org.venow.backend.service.exception.NotFoundException;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -89,5 +89,20 @@ public class ContractService {
                 .boothNumber(contract.getBoothNumber())
                 .organizerEmail(organizer.email())
                 .build();
+    }
+
+    public ContractDTO getContractByContractId(UUID contractId) {
+        return contractRepository.findById(contractId)
+                .map(contract -> {
+                    final UserDTO organizer = userService.getUserByUserId(contract.getOrganizerId());
+
+                    final ApplicationDTO application = contract.getApplication();
+                    final EventDTO event = eventservice.getEvent(application.getEventId());
+
+                    final String applicationName = applicationService.getApplicationName(application.getApplicationId());
+
+                    return getContractDTO(contract.getOrganizerId(), contract, organizer, application, event, applicationName, contract.getTerms(), contract.getStatus(), contract.getPrice());
+                })
+                .orElseThrow(() -> new NotFoundException("Contract ID not found"));
     }
 }

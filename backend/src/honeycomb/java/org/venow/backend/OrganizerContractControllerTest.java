@@ -255,30 +255,43 @@ class OrganizerContractControllerTest extends TestBase {
     @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     void showContractDetails() {
         final ResponseEntity<String> response = restTemplate
-                .exchange("http://localhost:{port}/organizer/{organizerId}/contracts/{contractId}",
+                .exchange("http://localhost:{port}/organizer/{organizerId}/contracts/details/{contractId}",
                         HttpMethod.GET,
                         new HttpEntity<>(null),
                         String.class,
-                        port, "df333e19-6ed6-4c8b-b86e-ef78943a98a4", "b23e4567-e89b-12d3-a456-426614174002");
+                        port, "b23e4567-e89b-12d3-a456-426614174002", "9a330d97-f4fb-4596-ab33-b826a0919272");
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         assertThatJson(response.getBody()).and(
-                jsonNode -> jsonNode.node("contractId").isEqualTo("b23e4567-e89b-12d3-a456-426614174003"),
+                jsonNode -> jsonNode.node("contractId").isEqualTo("9a330d97-f4fb-4596-ab33-b826a0919272"),
                 jsonNode -> jsonNode.node("organizerId").isEqualTo("b23e4567-e89b-12d3-a456-426614174002"),
-                jsonNode -> jsonNode.node("applicantName").isEqualTo("Hung Luu"),
-                jsonNode -> jsonNode.node("organizerName").isEqualTo("Frank Stein"),
-                jsonNode -> jsonNode.node("eventName").isEqualTo("Test"),
-                jsonNode -> jsonNode.node("location").isEqualTo("Test Park"),
+                jsonNode -> jsonNode.node("applicantName").isEqualTo("Khang"),
+                jsonNode -> jsonNode.node("organizerName").isEqualTo("Robert J"),
+                jsonNode -> jsonNode.node("eventName").isEqualTo("Test Event 3"),
+                jsonNode -> jsonNode.node("location").isEqualTo("Mühlheim"),
                 jsonNode -> jsonNode.node("startDate").isEqualTo("2024-06-01T12:00:00"),
                 jsonNode -> jsonNode.node("endDate").isEqualTo("2024-06-01T23:00:00"),
-                jsonNode -> jsonNode.node("typeOfBusiness").isEqualTo("Food Truck"),
-                jsonNode -> jsonNode.node("contactInformation").isEqualTo(""),
-                jsonNode -> jsonNode.node("businessName").isEqualTo("Sample Business"),
-                jsonNode -> jsonNode.node("terms").isEqualTo("By accepting this contract, you agree to the terms and conditions of the event."),
+                jsonNode -> jsonNode.node("typeOfBusiness").isEqualTo("Software IT"),
+                jsonNode -> jsonNode.node("contactInformation").isEqualTo("dfadf@example.com"),
+                jsonNode -> jsonNode.node("businessName").isEqualTo("IT Technik"),
+                jsonNode -> jsonNode.node("terms").isEqualTo("Basic Terms"),
                 jsonNode -> jsonNode.node("price").isEqualTo("3.0"),
-                jsonNode -> jsonNode.node("boothNumber").isEqualTo("A50"),
+                jsonNode -> jsonNode.node("boothNumber").isEqualTo("A10"),
                 jsonNode -> jsonNode.node("status").isEqualTo("CONTRACT"),
-                jsonNode -> jsonNode.node("organizerEmail").isEqualTo("")
+                jsonNode -> jsonNode.node("organizerEmail").isEqualTo("organizer3@example.com")
         );
+    }
+
+    @DisplayName("cant see contract details because contract not found - NOT FOUND")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    void showContractDetailsNotFound() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}/organizer/{organizerId}/contracts/details/{contractId}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port, "b23e4567-e89b-12d3-a456-426614174002", UUID.randomUUID());
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

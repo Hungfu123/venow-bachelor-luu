@@ -17,7 +17,6 @@ import org.venow.backend.service.dto.EventDTO;
 import org.venow.backend.service.dto.UserDTO;
 import org.venow.backend.service.exception.InvalidStatusException;
 import org.venow.backend.web.reponse.ContractResponse;
-import org.venow.backend.web.reponse.EventResponse;
 import org.venow.backend.web.reponse.ResponseMapper;
 import org.venow.backend.web.request.ContractRequest;
 
@@ -36,7 +35,7 @@ public class OrganizerContractController {
     private final ContractService contractService;
 
     @GetMapping("/contracts/{applicationId}")
-    public ResponseEntity<ContractResponse> getContract(
+    public ResponseEntity<ContractResponse> getContractFormular(
             @PathVariable final UUID organizerId,
             @PathVariable final UUID applicationId
     ) {
@@ -91,6 +90,17 @@ public class OrganizerContractController {
         final List<ContractResponse> body = allContracts.stream().map(ResponseMapper::mapToContractResponse).toList();
 
         return ResponseEntity.ok(body);
+    }
+
+    @GetMapping("/contracts/details/{contractId}")
+    public ResponseEntity<ContractResponse> getContractDetailsByOrganizer(
+            @PathVariable final UUID organizerId,
+            @PathVariable final UUID contractId
+    ) {
+        final ContractDTO contract = contractService.getContractByContractId(contractId);
+
+        ContractResponse contractResponse = ResponseMapper.mapToContractResponse(contract);
+        return ResponseEntity.ok(contractResponse);
     }
 
 

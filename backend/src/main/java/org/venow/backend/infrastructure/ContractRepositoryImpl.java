@@ -37,4 +37,5 @@ public class ContractRepositoryImpl implements ContractRepository {
                 .map(ContractMapper::toDTO)
                 .toList();
     }
+
 }
