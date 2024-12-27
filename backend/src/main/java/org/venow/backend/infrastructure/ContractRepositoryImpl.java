@@ -32,7 +32,7 @@ public class ContractRepositoryImpl implements ContractRepository {
     }
 
     @Override
-    public List<ContractDTO> findAllByOrganizerId(UUID organizerId) {
+    public List<ContractDTO> findAllByOrganizerId(final UUID organizerId) {
         return repository.findAllByOrganizerId(organizerId).stream()
                 .map(ContractMapper::toDTO)
                 .toList();

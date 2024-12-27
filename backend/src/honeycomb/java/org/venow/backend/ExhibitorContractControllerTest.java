@@ -1,7 +1,6 @@
 package org.venow.backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.coyote.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.jdbc.Sql;
+import org.venow.backend.web.reponse.ContractResponse;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,22 +23,79 @@ public class ExhibitorContractControllerTest extends TestBase{
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @DisplayName("exhibitor get on contract details")
     @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     public void getContractDetails() {
-        final ResponseEntity<String> response = restTemplate
-                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contracts/details{contractId}",
+        final ResponseEntity<ContractResponse> response = restTemplate
+                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/applications/{applicationId}/contract-details/{contractId}",
                         HttpMethod.GET,
                         new HttpEntity<>(null),
-                        String.class,
-                        port,"123e4567-e89b-12d3-a456-426614174000","45353065-3834-3030-2d65-3239633d3431");
+                        ContractResponse.class,
+                        port,
+                        "af333e19-6ed6-4c8b-b86e-ef78943a98a2"
+                        ,"c3456789-01cd-ef23-4567-8901cdef2346",
+                        "9a330d97-f4fb-4596-ab33-b826a0919272");
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
+        ContractResponse contractResponse = response.getBody();
+        assertThat(contractResponse.contractId()).isEqualTo(UUID.fromString("9a330d97-f4fb-4596-ab33-b826a0919272"));
+        assertThat(contractResponse.organizerId()).isEqualTo(UUID.fromString("b23e4567-e89b-12d3-a456-426614174002"));
+        assertThat(contractResponse.exhibitorId()).isEqualTo(UUID.fromString("af333e19-6ed6-4c8b-b86e-ef78943a98a2"));
+        assertThat(contractResponse.applicationId()).isEqualTo(UUID.fromString("c3456789-01cd-ef23-4567-8901cdef2346"));
+        assertThat(contractResponse.applicantName()).isEqualTo("Khang");
+        assertThat(contractResponse.organizerName()).isEqualTo("Robert J");
+        assertThat(contractResponse.eventName()).isEqualTo("Test Event 3");
+        assertThat(contractResponse.location()).isEqualTo("Mühlheim");
+        assertThat(contractResponse.startDate()).isEqualTo(LocalDateTime.parse("2024-06-01T12:00:00"));
+        assertThat(contractResponse.endDate()).isEqualTo(LocalDateTime.parse("2024-06-01T23:00:00"));
+        assertThat(contractResponse.typeOfBusiness()).isEqualTo("Software IT");
+        assertThat(contractResponse.contactInformation()).isEqualTo("dfadf@example.com");
+        assertThat(contractResponse.businessName()).isEqualTo("IT Technik");
+        assertThat(contractResponse.terms()).isEqualTo("Basic Terms");
+        assertThat(contractResponse.price().getAmountInEuro()).isEqualTo(BigDecimal.valueOf(3));
+        assertThat(contractResponse.boothNumber()).isEqualTo("A10");
+        assertThat(contractResponse.status()).isEqualTo("CONTRACT");
+        assertThat(contractResponse.organizerEmail()).isEqualTo("organizer3@example.com");
     }
+
+    @DisplayName("exhibitor get on contract details - invalid applicationId")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    public void getContractDetails_invalidApplicationId() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/applications/{applicationId}/contract-details/{contractId}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port,
+                        "af333e19-6ed6-4c8b-b86e-ef78943a98a2",
+                        null,
+                        "9a330d97-f4fb-4596-ab33-b826a0919272");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody()).contains("Not Found");
+    }
+
+    @DisplayName("exhibitor get on contract details - mismatched IDs")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    public void getContractDetails_mismatchedIds() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/applications/{applicationId}/contract-details/{contractId}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port,
+                        "af333e19-6ed6-4c8b-b86e-ef78943a98a2",
+                        "c3456789-01cd-ef23-4567-8901cdef2346",
+                        "9a330d97-f4fb-4596-ab33-b826a0919271");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody()).isEqualTo("Contract not found for ID: " + "9a330d97-f4fb-4596-ab33-b826a0919271");
+    }
+
 
 
 

@@ -111,11 +111,20 @@ public class ContractService {
                 .orElseThrow(() -> new NotFoundException("Contract ID not found"));
     }
 
-    public ContractDTO getContractByExhibitor(UUID applicationId, UUID exhibitorId) {
-//        final ApplicationDTO application = applicationService.getApplicationByExhibitor(exhibitorId, applicationId);
-//        final ContractDTO contract = contractRepository.findByApplicationId(applicationId)
-//                .orElseThrow(() -> new NotFoundException("Contract not found"));
 
-        return null;
+
+    public ContractDTO getByApplicationId(UUID applicationId, UUID contractId) {
+        if (applicationId == null) {
+            throw new InvalidInputException("Application ID must not be null");
+        }
+
+        ContractDTO contractDTO = contractRepository.findById(contractId).orElseThrow(() -> new NotFoundException("Contract not found for ID: " + contractId));
+        final UserDTO organizer = userService.getUserByUserId(contractDTO.getOrganizer().userId());
+        final ApplicationDTO application = applicationService.getApplication(applicationId);
+        final EventDTO event = eventservice.getEvent(application.getEventId());
+        final UserDTO exhibitor = userService.getUserByUserId(application.getUserId());
+
+        return getContractDTO(contractDTO, organizer, exhibitor, application, event, exhibitor.name(), contractDTO.getTerms(), contractDTO.getStatus(), contractDTO.getPrice());
     }
+
 }
