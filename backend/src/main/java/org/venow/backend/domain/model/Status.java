@@ -4,5 +4,6 @@ public enum Status {
     REJECTED,
     IN_PROGRESS,
     ACCEPTED,
-    CONTRACT
+    CONTRACT,
+    CONFIRMED
 }
