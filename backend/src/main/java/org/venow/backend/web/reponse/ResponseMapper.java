@@ -39,7 +39,8 @@ public class ResponseMapper {
     public static ContractResponse mapToContractResponse(ContractDTO contract) {
         return ContractResponse.builder()
                 .contractId(contract.getContractId())
-                .organizerId(contract.getOrganizerId())
+                .organizerId(contract.getOrganizer().userId())
+                .exhibitorId(contract.getExhibitor().userId())
                 .applicationId(contract.getApplication().getApplicationId())
                 .applicantName(contract.getApplicantName())
                 .organizerName(contract.getOrganizerName())

@@ -13,7 +13,8 @@ import java.util.UUID;
 public class ContractDTO {
     private final Long id;
     private final UUID contractId;
-    private final UUID organizerId;
+    private final UserDTO organizer;
+    private final UserDTO exhibitor;
     private final ApplicationDTO application;
     private final String applicantName;
     private final String organizerName;

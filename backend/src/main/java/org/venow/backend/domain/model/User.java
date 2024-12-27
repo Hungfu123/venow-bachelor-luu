@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private final Long id;
 
-    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR(36)")
+    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR(36)", name = "user_id")
     private final UUID userId;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")

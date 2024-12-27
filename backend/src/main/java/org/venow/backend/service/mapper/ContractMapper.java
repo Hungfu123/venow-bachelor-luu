@@ -13,7 +13,8 @@ public class ContractMapper {
     public static Contract toEntity(ContractDTO contractDTO) {
         return Contract.builder()
                 .contractId(contractDTO.getContractId())
-                .organizerId(contractDTO.getOrganizerId())
+                .organizer(UserMapper.mapToEntity(contractDTO.getOrganizer()))
+                .exhibitor(UserMapper.mapToEntity(contractDTO.getExhibitor()))
                 .application(ApplicationMapper.mapToEntity(contractDTO.getApplication()))
                 .terms(contractDTO.getTerms())
                 .price(toPrice(contractDTO.getPrice()))
@@ -34,9 +35,12 @@ public class ContractMapper {
     public static ContractDTO toDTO(Contract contract) {
         return ContractDTO.builder()
                 .contractId(contract.getContractId())
+                .organizer(UserMapper.mapToDTO(contract.getOrganizer()))
+                .exhibitor(UserMapper.mapToDTO(contract.getExhibitor()))
                 .application(ApplicationMapper.mapToDTO(contract.getApplication()))
                 .terms(contract.getTerms())
-                .organizerId(contract.getOrganizerId())
+                .organizer(UserMapper.mapToDTO(contract.getOrganizer()))
+                .exhibitor(UserMapper.mapToDTO(contract.getExhibitor()))
                 .price(toPriceDto(contract.getPrice()))
                 .boothNumber(contract.getBoothNumber())
                 .status(contract.getStatus().name())

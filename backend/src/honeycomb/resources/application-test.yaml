@@ -1,5 +1,9 @@
 spring:
   flyway:
     enabled: true
-    locations: classpath:db/testmigration
-    clean-on-validation-error: true
+    locations: classpath:db/migration
+    clean-on-validation-error: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+

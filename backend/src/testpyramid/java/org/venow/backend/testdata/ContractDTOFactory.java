@@ -3,6 +3,7 @@ package org.venow.backend.testdata;
 import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.dto.ContractDTO;
 import org.venow.backend.service.dto.PriceDto;
+import org.venow.backend.service.dto.UserDTO;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -12,7 +13,8 @@ public class ContractDTOFactory {
     public static ContractDTOWith createDefault() {
         ContractDTO defaultContract = ContractDTO.builder()
                 .contractId(UUID.randomUUID())
-                .organizerId(UUID.randomUUID())
+                .organizer(UserDTOFactory.createDefault().build())
+                .exhibitor(UserDTOFactory.createDefault().withRole("EXHIBITOR").build())
                 .application(ApplicationDTOFactory.createDefault().withUserId(UUID.randomUUID().toString()).build())
                 .applicantName("Default Applicant")
                 .organizerName("Default Organizer")
@@ -42,8 +44,13 @@ public class ContractDTOFactory {
             return this;
         }
 
-        public ContractDTOWith withOrganizerId(String organizerId) {
-            this.contractDTO = contractDTO.toBuilder().organizerId(UUID.fromString(organizerId)).build();
+        public ContractDTOWith withOrganizer(UserDTO organizer) {
+            this.contractDTO = contractDTO.toBuilder().organizer(organizer).build();
+            return this;
+        }
+
+        public ContractDTOWith withExhibitor(UserDTO exhibitor) {
+            this.contractDTO = contractDTO.toBuilder().exhibitor(exhibitor).build();
             return this;
         }
 

@@ -22,8 +22,13 @@ public class Contract {
     @Column(nullable = false, unique = true)
     private final UUID contractId;
 
-    @Column(nullable = false)
-    private final UUID organizerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organizer_id", referencedColumnName = "user_id", nullable = false, columnDefinition = "VARCHAR(36)")
+    private final User organizer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exhibitor_id", referencedColumnName = "user_id", nullable = false, columnDefinition = "VARCHAR(36)")
+    private final User exhibitor;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "application_id", referencedColumnName = "application_id", nullable = false)

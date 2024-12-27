@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.venow.backend.domain.model.Status;
+import org.venow.backend.domain.model.User;
 import org.venow.backend.service.dto.*;
 import org.venow.backend.service.exception.InvalidInputException;
 import org.venow.backend.service.exception.InvalidStatusException;
@@ -34,12 +35,14 @@ public class ContractService {
 
         final EventDTO event = eventservice.getEvent(application.getEventId());
         final UserDTO organizer = userService.getUserByUserId(organizerId);
+        final UserDTO exhibitor = userService.getUserByUserId(application.getUserId());
 
         final String applicationName = applicationService.getApplicationName(applicationId);
         final ContractDTO contractDTO = ContractDTO.builder()
                 .contractId(UUID.randomUUID())
                 .application(application)
-                .organizerId(organizerId)
+                .organizer(organizer)
+                .exhibitor(exhibitor)
                 .terms("By accepting this contract, you agree to the terms and conditions of the event.")
                 .price(priceDto)
                 .boothNumber(bootNumber)
@@ -50,7 +53,7 @@ public class ContractService {
         final ContractDTO savedContract = contractRepository.save(contractDTO);
         log.info("Contract created: {}", savedContract);
 
-        return getContractDTO(organizerId, savedContract, organizer, application, event, applicationName, contractDTO.getTerms(), contractDTO.getStatus(), contractDTO.getPrice());
+        return getContractDTO(savedContract, organizer, exhibitor, application, event, applicationName, contractDTO.getTerms(), contractDTO.getStatus(), contractDTO.getPrice());
     }
 
 
@@ -67,15 +70,16 @@ public class ContractService {
             final EventDTO event = eventservice.getEvent(application.getEventId());
 
             final String applicationName = applicationService.getApplicationName(application.getApplicationId());
-
-            return getContractDTO(organizerId, contract, organizer, application, event, applicationName, contract.getTerms(), contract.getStatus(), contract.getPrice());
+            final UserDTO exhibitor = userService.getUserByUserId(application.getUserId());
+            return getContractDTO(contract, organizer, exhibitor, application, event, applicationName, contract.getTerms(), contract.getStatus(), contract.getPrice());
         }).toList();
     }
 
-    private ContractDTO getContractDTO(UUID organizerId, ContractDTO contract, UserDTO organizer, ApplicationDTO application, EventDTO event, String applicationName, String terms, String status, PriceDto price) {
+    private ContractDTO getContractDTO(ContractDTO contract, UserDTO organizer, UserDTO exhibitor, ApplicationDTO application, EventDTO event, String applicationName, String terms, String status, PriceDto price) {
         return ContractDTO.builder()
                 .contractId(contract.getContractId())
-                .organizerId(organizerId)
+                .organizer(organizer)
+                .exhibitor(exhibitor)
                 .application(application)
                 .applicantName(applicationName)
                 .organizerName(organizer.name())
@@ -94,15 +98,24 @@ public class ContractService {
     public ContractDTO getContractByContractId(UUID contractId) {
         return contractRepository.findById(contractId)
                 .map(contract -> {
-                    final UserDTO organizer = userService.getUserByUserId(contract.getOrganizerId());
+                    final UserDTO organizer = userService.getUserByUserId(contract.getOrganizer().userId());
 
                     final ApplicationDTO application = contract.getApplication();
                     final EventDTO event = eventservice.getEvent(application.getEventId());
 
                     final String applicationName = applicationService.getApplicationName(application.getApplicationId());
+                    final UserDTO exhibitor = userService.getUserByUserId(application.getUserId());
 
-                    return getContractDTO(contract.getOrganizerId(), contract, organizer, application, event, applicationName, contract.getTerms(), contract.getStatus(), contract.getPrice());
+                    return getContractDTO(contract, organizer, exhibitor, application, event, applicationName, contract.getTerms(), contract.getStatus(), contract.getPrice());
                 })
                 .orElseThrow(() -> new NotFoundException("Contract ID not found"));
+    }
+
+    public ContractDTO getContractByExhibitor(UUID applicationId, UUID exhibitorId) {
+//        final ApplicationDTO application = applicationService.getApplicationByExhibitor(exhibitorId, applicationId);
+//        final ContractDTO contract = contractRepository.findByApplicationId(applicationId)
+//                .orElseThrow(() -> new NotFoundException("Contract not found"));
+
+        return null;
     }
 }

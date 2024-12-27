@@ -43,10 +43,10 @@ public class OrganizerContractController {
         final String applicantName = applicationService.getApplicationName(applicationId);
         final EventDTO event = eventservice.getEvent(application.getEventId());
         final UserDTO organizer = userService.getUserByUserId(organizerId);
-
         final ContractResponse contractResponse = new ContractResponse(
                 UUID.randomUUID(),
                 organizerId,
+                application.getUserId(),
                 applicationId,
                 applicantName,
                 organizer.name(),

@@ -63,7 +63,7 @@ public class ContractServiceTest {
         ContractDTO createdContract = contractService.createContract(application.getApplicationId(), organizer.userId(), price, "B99");
 
         assertThat(createdContract.getContractId()).isEqualTo(contract.getContractId());
-        assertThat(createdContract.getOrganizerId()).isEqualTo(organizer.userId());
+        assertThat(createdContract.getOrganizer().userId()).isEqualTo(organizer.userId());
         assertThat(createdContract.getApplication()).isEqualTo(application);
         assertThat(createdContract.getApplicantName()).isEqualTo("applicantName");
         assertThat(createdContract.getOrganizerName()).isEqualTo(organizer.name());
@@ -183,20 +183,20 @@ public class ContractServiceTest {
         final UserDTO organizer = UserDTOFactory.createDefault().withUserId(organizerId).build();
 
         final ContractDTO contract1 = ContractDTOFactory.createDefault()
-                .withOrganizerId(organizerId.toString())
+                .withOrganizer(organizer)
                 .withApplication(application1)
                 .withContractId(UUID.randomUUID().toString())
                 .build();
 
         final ContractDTO contract2 = ContractDTOFactory.createDefault()
-                .withOrganizerId(organizerId.toString())
+                .withOrganizer(organizer)
                 .withApplication(application2)
                 .withContractId(UUID.randomUUID().toString())
                 .build();
 
 
         final ContractDTO contract3 = ContractDTOFactory.createDefault()
-                .withOrganizerId(organizerId.toString())
+                .withOrganizer(organizer)
                 .withApplication(application3)
                 .withContractId(UUID.randomUUID().toString())
                 .build();
@@ -215,7 +215,7 @@ public class ContractServiceTest {
 
         assertThat(contracts).isNotEmpty();
         assertThat(contracts).hasSize(3);
-        assertThat(contracts.stream().map(ContractDTO::getOrganizerId)).allMatch(id -> id.equals(organizerId));
+        assertThat(contracts.stream().map(contract -> contract.getOrganizer().userId())).allMatch(id -> id.equals(organizerId));
         verify(contractRepository).findAllByOrganizerId(organizerId);
         verify(userService, times(3)).getUserByUserId(organizerId);
     }
@@ -252,7 +252,7 @@ public class ContractServiceTest {
         when(contractRepository.findById(contractId)).thenReturn(Optional.of(contract));
         EventDTO event = EventDTOFactory.createDefault().build();
         UserDTO user = UserDTOFactory.createDefault().build();
-        when(userService.getUserByUserId(contract.getOrganizerId())).thenReturn(user);
+        when(userService.getUserByUserId(contract.getOrganizer().userId())).thenReturn(user);
         when(eventservice.getEvent(any())).thenReturn(event);
         when(applicationService.getApplicationName(any())).thenReturn("Default Applicant");
 
@@ -260,7 +260,7 @@ public class ContractServiceTest {
 
         verify(contractRepository).findById(contractId);
         assertThat(foundContract.getContractId()).isEqualTo(contract.getContractId());
-        assertThat(foundContract.getOrganizerId()).isEqualTo(contract.getOrganizerId());
+        assertThat(foundContract.getOrganizer().userId()).isEqualTo(user.userId());
         assertThat(foundContract.getApplication()).isEqualTo(contract.getApplication());
         assertThat(foundContract.getApplicantName()).isEqualTo(contract.getApplicantName());
         assertThat(foundContract.getOrganizerName()).isEqualTo(user.name());

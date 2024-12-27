@@ -63,6 +63,7 @@ class OrganizerContractControllerTest {
         final ContractResponse contractDTO = new ContractResponse(
                 application.getApplicationId(),
                 organizer.userId(),
+                application.getUserId(),
                 application.getApplicationId(),
                 applicationName,
                 organizer.name(),
@@ -273,7 +274,7 @@ class OrganizerContractControllerTest {
 
         assertThatJson(contentAsString).and(
                 jsonNode -> jsonNode.node("contractId").isEqualTo(contract.getContractId().toString()),
-                jsonNode -> jsonNode.node("organizerId").isEqualTo(contract.getOrganizerId().toString()),
+                jsonNode -> jsonNode.node("organizerId").isEqualTo(contract.getOrganizer().userId().toString()),
                 jsonNode -> jsonNode.node("applicationId").isEqualTo(contract.getApplication().getApplicationId().toString()),
                 jsonNode -> jsonNode.node("applicantName").isEqualTo(contract.getApplicantName()),
                 jsonNode -> jsonNode.node("organizerName").isEqualTo(contract.getOrganizerName()),

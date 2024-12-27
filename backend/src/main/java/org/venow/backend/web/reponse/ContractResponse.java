@@ -12,6 +12,7 @@ import java.util.UUID;
 public record ContractResponse(
         UUID contractId,
         UUID organizerId,
+        UUID exhibitorId,
         UUID applicationId,
         String applicantName,
         String organizerName,

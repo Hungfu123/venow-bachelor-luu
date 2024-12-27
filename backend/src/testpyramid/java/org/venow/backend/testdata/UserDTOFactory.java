@@ -8,6 +8,7 @@ public class UserDTOFactory {
 
     public static UserDTOWith createDefault() {
         UserDTO defaultUser = UserDTO.builder()
+                .id(1L)
                 .userId(UUID.randomUUID())
                 .name("Luugner")
                 .email("luugner@venow.com")
@@ -25,8 +26,18 @@ public class UserDTOFactory {
             this.userDTO = userDTO;
         }
 
+        public UserDTOWith withId(Long id) {
+            this.userDTO = userDTO.toBuilder().id(id).build();
+            return this;
+        }
+
         public UserDTOWith withUserId(UUID userId) {
             this.userDTO = userDTO.toBuilder().userId(userId).build();
+            return this;
+        }
+
+        public UserDTOWith withName(String name) {
+            this.userDTO = userDTO.toBuilder().name(name).build();
             return this;
         }
 
