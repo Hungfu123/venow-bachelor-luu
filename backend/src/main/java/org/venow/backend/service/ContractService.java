@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.venow.backend.domain.model.Status;
-import org.venow.backend.domain.model.User;
 import org.venow.backend.service.dto.*;
 import org.venow.backend.service.exception.InvalidInputException;
 import org.venow.backend.service.exception.InvalidStatusException;
@@ -113,7 +112,7 @@ public class ContractService {
 
 
 
-    public ContractDTO getByApplicationId(UUID applicationId, UUID contractId) {
+    public ContractDTO getContractByApplicationIdAndContactId(UUID applicationId, UUID contractId) {
         if (applicationId == null) {
             throw new InvalidInputException("Application ID must not be null");
         }

@@ -284,6 +284,87 @@ public class ContractServiceTest {
                 .hasMessage("Contract ID not found");
     }
 
+    @Test
+    @DisplayName("show contract details")
+    void shouldShowContractDetails() {
+        final UUID contractId = UUID.randomUUID();
+        final EventDTO event = EventDTOFactory.createDefault().build();
+        final ApplicationDTO application = ApplicationDTOFactory.createDefault()
+                .withApplicationId(UUID.randomUUID().toString())
+                .withEventId(event.eventId().toString())
+                .build();
+        final UserDTO exhibitor = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
+        final UserDTO organizer = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
+        final ContractDTO contract = ContractDTOFactory.createDefault()
+                .withContractId(contractId.toString())
+                .withApplication(application)
+                .withExhibitor(exhibitor)
+                .withOrganizer(organizer)
+                .build();
+
+        when(contractRepository.findById(contractId)).thenReturn(Optional.of(contract));
+        when(eventservice.getEvent(application.getEventId())).thenReturn(event);
+        when(userService.getUserByUserId(application.getUserId())).thenReturn(exhibitor);
+        when(userService.getUserByUserId(organizer.userId())).thenReturn(organizer);
+        when(applicationService.getApplication(application.getApplicationId())).thenReturn(application);
+
+        ContractDTO contractDetails = contractService.getContractByApplicationIdAndContactId(contract.getApplication().getApplicationId(), contractId);
+
+        assertThat(contractDetails.getContractId()).isEqualTo(contractId);
+        assertThat(contractDetails.getOrganizer().userId()).isEqualTo(organizer.userId());
+        assertThat(contractDetails.getExhibitor().userId()).isEqualTo(exhibitor.userId());
+        assertThat(contractDetails.getApplication().getApplicationId()).isEqualTo(application.getApplicationId());
+        assertThat(contractDetails.getApplicantName()).isEqualTo(exhibitor.name());
+        assertThat(contractDetails.getOrganizerName()).isEqualTo(organizer.name());
+        assertThat(contractDetails.getEventName()).isEqualTo(event.title());
+        assertThat(contractDetails.getLocation()).isEqualTo(event.location());
+        assertThat(contractDetails.getTerms()).isEqualTo(contract.getTerms());
+        assertThat(contractDetails.getPrice().getAmountInEuro()).isEqualTo(contract.getPrice().getAmountInEuro());
+        assertThat(contractDetails.getBoothNumber()).isEqualTo(contract.getBoothNumber());
+        assertThat(contractDetails.getStatus()).isEqualTo(contract.getStatus().toString());
+        assertThat(contractDetails.getOrganizerEmail()).isEqualTo(organizer.email());
+    }
+
+    @Test
+    @DisplayName("should throw InvalidInputException when applicationId is null")
+    void shouldThrowInvalidInputExceptionWhenApplicationIdIsNull() {
+        final UUID contractId = UUID.randomUUID();
+
+        assertThatThrownBy(() -> contractService.getContractByApplicationIdAndContactId(null, contractId))
+                .isInstanceOf(InvalidInputException.class)
+                .hasMessage("Application ID must not be null");
+    }
+
+    @Test
+    @DisplayName("should throw NotFoundException when contractId does not exist")
+    void shouldThrowNotFoundExceptionWhenContractIdDoesNotExist() {
+        final UUID contractId = UUID.randomUUID();
+        final UUID applicationId = UUID.randomUUID();
+
+        when(contractRepository.findById(contractId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> contractService.getContractByApplicationIdAndContactId(applicationId, contractId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("Contract not found for ID: " + contractId);
+    }
+
+    @Test
+    @DisplayName("should throw NotFoundException when applicationId does not exist")
+    void shouldThrowNotFoundExceptionWhenApplicationIdDoesNotExist() {
+        final UUID contractId = UUID.randomUUID();
+        final UUID applicationId = UUID.randomUUID();
+        final ContractDTO contract = ContractDTOFactory.createDefault()
+                .withContractId(contractId.toString())
+                .build();
+
+        when(contractRepository.findById(contractId)).thenReturn(Optional.of(contract));
+        when(applicationService.getApplication(applicationId)).thenThrow(new NotFoundException("Application not found for ID: " + applicationId));
+
+        assertThatThrownBy(() -> contractService.getContractByApplicationIdAndContactId(applicationId, contractId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("Application not found for ID: " + applicationId);
+    }
+
 
 
 }

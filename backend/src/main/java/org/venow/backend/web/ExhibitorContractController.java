@@ -37,7 +37,7 @@ public class ExhibitorContractController {
             @PathVariable("applicationId") final UUID applicationId,
             @PathVariable("contractId") final UUID contractId
     ) {
-        final ContractDTO contractDTO = contractService.getByApplicationId(applicationId, contractId);
+        final ContractDTO contractDTO = contractService.getContractByApplicationIdAndContactId(applicationId, contractId);
 
         return ResponseEntity.ok(ResponseMapper.mapToContractResponse(contractDTO));
     }
