@@ -6,6 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.venow.backend.domain.model.Role;
 import org.venow.backend.service.dto.EventDTO;
 import org.venow.backend.service.exception.NotFoundException;
 import org.venow.backend.infrastructure.EventRepositoryImpl;
@@ -23,10 +25,13 @@ import static org.mockito.Mockito.*;
 class EventServiceTest {
 
     @Mock
-    private EventRepositoryImpl eventRepository;
+    private EventRepository eventRepository;
+    @Mock
+    private UserService userService;
 
     @InjectMocks
     private Eventservice eventService;
+
 
     @DisplayName("should return all events")
     @Test
@@ -80,14 +85,27 @@ class EventServiceTest {
         List<EventDTO> events = List.of(EventDTOFactory.createDefault().withOrganizerId(organizerId).build(),
                 EventDTOFactory.createDefault().withEventId(UUID.randomUUID()).withOrganizerId(organizerId).build());
 
+        when(userService.existsByUserAndRole(organizerId, Role.ORGANIZER)).thenReturn(true);
         when(eventRepository.findAllByOrganizerId(organizerId)).thenReturn(events);
-
-        List<EventDTO> result = eventService.getAllEventsByOrganizer(organizerId);
+        List<EventDTO> result = eventService.getAllEventsByOrganizer(organizerId, Role.ORGANIZER);
 
         assertThat(result).hasSize(2);
         assertThat(result).extracting(EventDTO::title).containsExactly("Test Event", "Test Event");
 
         verify(eventRepository, times(1)).findAllByOrganizerId(organizerId);
+    }
+
+    @DisplayName("should throw NotFoundException if organizerId does not exist")
+    @Test
+    void shouldThrowNotFoundExceptionIfOrganizerIdDoesNotExist() {
+        UUID organizerId = UUID.randomUUID();
+        when(userService.existsByUserAndRole(organizerId, Role.ORGANIZER)).thenReturn(false);
+
+        assertThatThrownBy(() -> eventService.getAllEventsByOrganizer(organizerId, Role.ORGANIZER))
+                .isInstanceOf(NotFoundException.class);
+
+        verify(userService, times(1)).existsByUserAndRole(organizerId, Role.ORGANIZER);
+
     }
 
 

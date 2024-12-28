@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.venow.backend.domain.model.Role;
 import org.venow.backend.service.Eventservice;
 import org.venow.backend.service.dto.EventDTO;
 import org.venow.backend.web.reponse.EventResponse;
@@ -25,7 +26,7 @@ public class OrganizerEventController {
 
     @GetMapping("/events")
     public ResponseEntity<List<EventResponse>> getAllEventsByOrganizer(@PathVariable("organizerId") final UUID organizerId) {
-        final List<EventDTO> allEvents = eventservice.getAllEventsByOrganizer(organizerId);
+        final List<EventDTO> allEvents = eventservice.getAllEventsByOrganizer(organizerId, Role.ORGANIZER);
         log.info("Found all events from organizer{}", organizerId);
         return ResponseEntity.ok(allEvents.stream().map(ResponseMapper::mapToEventResponse).toList());
     }

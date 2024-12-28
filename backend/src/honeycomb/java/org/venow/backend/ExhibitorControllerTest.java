@@ -12,6 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.web.request.ApplicationRequest;
 
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -227,6 +228,18 @@ ExhibitorControllerTest extends TestBase {
                 String.class,
                 port, "df333e19-6ed6-4c8b-b86e-ef78943a98a4", EVENT_ID_1, null);
         assertThat(response.getStatusCode()).as("check if HTTP Status OK").isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("Exhibitor is on Applicant but Not Found")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    void onApplicationDetailPageInvalidInput2() {
+        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:{port}exhibitor/{userId}/event/{eventId}/application/{applicationId}",
+                HttpMethod.GET,
+                new HttpEntity<>(null),
+                String.class,
+                port, "df333e19-6ed6-4c8b-b86e-ef78943a98a4", EVENT_ID_1, UUID.randomUUID());
+        assertThat(response.getStatusCode()).as("check if HTTP Status NOT FOUND").isEqualTo(HttpStatus.NOT_FOUND);
     }
 
 }

@@ -20,8 +20,6 @@ class OrganizerEventControllerTest extends TestBase {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Test
     @DisplayName("should return all events by organizer")
