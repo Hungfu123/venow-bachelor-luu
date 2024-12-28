@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.ApplicationService;
 import org.venow.backend.service.ContractService;
 import org.venow.backend.service.Eventservice;
@@ -17,6 +19,7 @@ import org.venow.backend.service.UserService;
 import org.venow.backend.service.dto.ContractDTO;
 import org.venow.backend.service.dto.PriceDto;
 import org.venow.backend.service.dto.UserDTO;
+import org.venow.backend.service.exception.InvalidStatusException;
 import org.venow.backend.service.exception.NotFoundException;
 import org.venow.backend.testdata.ContractDTOFactory;
 import org.venow.backend.testdata.UserDTOFactory;
@@ -28,8 +31,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -121,6 +126,60 @@ public class ExhibitorContractControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @DisplayName("exhibitor confirm contract")
+    @Test
+    public void confirmContract() throws Exception, InvalidStatusException {
+        UUID contractId = UUID.randomUUID();
+        UUID exhibitorId = UUID.randomUUID();
+
+        mockMvc.perform(put("/exhibitor/{exhibitorId}/contract-details/{contractId}/confirm",
+                        exhibitorId, contractId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(contractService).updateContractStatus(contractId, Status.CONFIRMED);
+
+    }
+
+    @DisplayName("exhibitor confirm contract - contract not found")
+    @Test
+    public void confirmContract_NotFound() throws Exception, InvalidStatusException {
+        UUID contractId = UUID.randomUUID();
+        UUID exhibitorId = UUID.randomUUID();
+
+        doThrow(new NotFoundException("Contract not found"))
+                .when(contractService).updateContractStatus(contractId, Status.CONFIRMED);
+
+        String contentAsString = mockMvc.perform(put("/exhibitor/{exhibitorId}/contract-details/{contractId}/confirm",
+                        exhibitorId, contractId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isNotFound())
+                        .andReturn()
+                        .getResponse()
+                        .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo("Contract not found");
+    }
+
+    @DisplayName("exhibitor confirm contract - invalid status")
+    @Test
+    public void confirmContract_InvalidStatus() throws Exception, InvalidStatusException {
+        UUID contractId = UUID.randomUUID();
+        UUID exhibitorId = UUID.randomUUID();
+
+        doThrow(new InvalidStatusException("Contract status must be CONTRACT"))
+                .when(contractService).updateContractStatus(contractId, Status.CONFIRMED);
+
+        String contentAsString = mockMvc.perform(put("/exhibitor/{exhibitorId}/contract-details/{contractId}/confirm",
+                        exhibitorId, contractId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isConflict())
+                        .andReturn()
+                        .getResponse()
+                        .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo("Contract status must be CONTRACT");
+    }
 
 
 }

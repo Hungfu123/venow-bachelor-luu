@@ -365,6 +365,43 @@ public class ContractServiceTest {
                 .hasMessage("Application not found for ID: " + applicationId);
     }
 
+    @Test
+    @DisplayName("should update contract status")
+    void shouldUpdateContractStatus() throws InvalidStatusException {
+        final UUID contractId = UUID.randomUUID();
+        final ContractDTO contract = ContractDTOFactory.createDefault().build();
+        when(contractRepository.findById(contractId)).thenReturn(Optional.of(contract));
+        when(contractRepository.save(contract)).thenReturn(contract);
+
+        contractService.updateContractStatus(contractId, Status.CONFIRMED);
+
+        assertThat(contract.getStatus()).isEqualTo(Status.CONFIRMED.toString());
+        verify(contractRepository).save(contract);
+    }
+
+    @Test
+    @DisplayName("should throw NotFoundException when contractId does not exist")
+    void shouldThrowNotFoundExceptionWhenContractIdDoesNotExist2() {
+        final UUID contractId = UUID.randomUUID();
+        when(contractRepository.findById(contractId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> contractService.updateContractStatus(contractId, Status.CONFIRMED))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("Contract not found for ID: " + contractId);
+    }
+
+    @Test
+    @DisplayName("should throw InvalidStatusException when contract status is not CONTRACT")
+    void shouldThrowInvalidStatusExceptionWhenContractStatusIsNotContract() {
+        final UUID contractId = UUID.randomUUID();
+        final ContractDTO contract = ContractDTOFactory.createDefault().withStatus("CONFIRMED").build();
+        when(contractRepository.findById(contractId)).thenReturn(Optional.of(contract));
+
+        assertThatThrownBy(() -> contractService.updateContractStatus(contractId, Status.CONFIRMED))
+                .isInstanceOf(InvalidStatusException.class)
+                .hasMessage("Contract status must be CONTRACT");
+    }
+
 
 
 }
