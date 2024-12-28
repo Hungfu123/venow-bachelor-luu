@@ -11,6 +11,7 @@ import org.venow.backend.service.exception.InvalidStatusException;
 import org.venow.backend.web.reponse.ContractResponse;
 import org.venow.backend.web.reponse.ResponseMapper;
 
+import java.util.List;
 import java.util.UUID;
 @Slf4j
 @RestController()
@@ -60,5 +61,14 @@ public class ExhibitorContractController {
         contractService.updateContractStatus(contractId, Status.REJECTED);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("contracts")
+    public ResponseEntity<List<ContractResponse>> getAllContractsByExhibitor(
+            @PathVariable("exhibitorId") final UUID exhibitorId
+    ) {
+        final List<ContractDTO> contractDTOList = contractService.getAllContractsByExhibitor(exhibitorId);
+
+        return ResponseEntity.ok(contractDTOList.stream().map(ResponseMapper::mapToContractResponse).toList());
     }
 }

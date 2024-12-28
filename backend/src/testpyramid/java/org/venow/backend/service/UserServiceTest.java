@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.venow.backend.domain.model.Role;
 import org.venow.backend.infrastructure.UserRepositoryImpl;
 import org.venow.backend.service.dto.UserDTO;
 import org.venow.backend.service.exception.NotFoundException;
@@ -71,9 +72,9 @@ public class UserServiceTest {
     void shouldReturnTrueIfUserIsOrganizer() {
         UUID organizerId = UUID.randomUUID();
 
-        when(userRepository.existsByOrganizerId(organizerId)).thenReturn(true);
+        when(userRepository.existsByUserIdAndRole(organizerId, Role.ORGANIZER)).thenReturn(true);
 
-        boolean result = userService.existsByOrganizerId(organizerId);
+        boolean result = userService.existsByUserAndRole(organizerId, Role.ORGANIZER);
 
         assertThat(result).isTrue();
     }
@@ -83,9 +84,9 @@ public class UserServiceTest {
     void shouldReturnFalseIfUserIsNotOrganizer() {
         UUID nonOrganizerId = UUID.randomUUID();
 
-        when(userRepository.existsByOrganizerId(nonOrganizerId)).thenReturn(false);
+        when(userRepository.existsByUserIdAndRole(nonOrganizerId, Role.EXHIBITOR)).thenReturn(false);
 
-        boolean result = userService.existsByOrganizerId(nonOrganizerId);
+        boolean result = userService.existsByUserAndRole(nonOrganizerId, Role.EXHIBITOR);
 
         assertThat(result).isFalse();
     }

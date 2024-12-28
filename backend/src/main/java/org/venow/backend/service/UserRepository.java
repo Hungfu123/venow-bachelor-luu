@@ -1,6 +1,6 @@
 package org.venow.backend.service;
 
-import org.venow.backend.domain.model.User;
+import org.venow.backend.domain.model.Role;
 import org.venow.backend.service.dto.UserDTO;
 
 import java.util.Optional;
@@ -12,5 +12,6 @@ public interface UserRepository {
 
     UserDTO save(UserDTO user);
 
-    boolean existsByOrganizerId(UUID organizerId);
+    boolean existsByUserIdAndRole(UUID userId, Role role);
+
 }

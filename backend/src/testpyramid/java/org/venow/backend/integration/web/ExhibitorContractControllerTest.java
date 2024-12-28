@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.venow.backend.domain.model.Role;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.ApplicationService;
 import org.venow.backend.service.ContractService;
@@ -27,6 +28,7 @@ import org.venow.backend.web.reponse.ContractResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -297,5 +299,25 @@ public class ExhibitorContractControllerTest {
                         exhibitorId, contractId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @DisplayName("see all contracts by exhibitor")
+    @Test
+    void seeAllContractsByOrganizer() throws Exception {
+        final UserDTO exhibitor = UserDTOFactory.createDefault().withRole(Role.EXHIBITOR.name()).build();
+        final ContractDTO contract = ContractDTOFactory.createDefault().withExhibitor(exhibitor).build();
+        final ContractDTO contract2 = ContractDTOFactory.createDefault().withExhibitor(exhibitor).build();
+
+        List<ContractDTO> contractList = List.of(contract, contract2);
+        when(contractService.getAllContractsByExhibitor(any())).thenReturn(contractList);
+
+        final String contentAsString = mockMvc.perform(get("/exhibitor/{exhibitorId}/contracts", exhibitor.userId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThatJson(contentAsString).isArray().hasSize(2);
     }
 }

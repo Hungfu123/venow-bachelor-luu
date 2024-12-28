@@ -16,4 +16,6 @@ public interface ContractRepository  {
 
     List<ContractDTO> findAllByOrganizerId(UUID organizerId);
 
+    List<ContractDTO> findAllByExhibitorId(UUID exhibitorId);
+
 }

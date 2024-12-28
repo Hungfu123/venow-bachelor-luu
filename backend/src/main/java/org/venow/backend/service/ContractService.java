@@ -5,7 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.venow.backend.domain.model.Role;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.dto.*;
 import org.venow.backend.service.exception.InvalidInputException;
@@ -41,7 +41,6 @@ public class ContractService {
         final UserDTO organizer = userService.getUserByUserId(organizerId);
         final UserDTO exhibitor = userService.getUserByUserId(application.getUserId());
 
-        final String applicationName = applicationService.getApplicationName(applicationId);
         final ContractDTO contractDTO = ContractDTO.builder()
                 .contractId(UUID.randomUUID())
                 .application(application)
@@ -57,12 +56,12 @@ public class ContractService {
         final ContractDTO savedContract = contractRepository.save(contractDTO);
         log.info("Contract created: {}", savedContract);
 
-        return getContractDTO(savedContract, organizer, exhibitor, application, event, applicationName, contractDTO.getTerms(), contractDTO.getStatus(), contractDTO.getPrice());
+        return buildContractDTOTogether(savedContract, organizer, exhibitor, application, event);
     }
 
 
     public List<ContractDTO> getAllContractsByOrganizer(UUID organizerId) {
-        if(!userService.existsByOrganizerId(organizerId)){
+        if(!userService.existsByUserAndRole(organizerId, Role.ORGANIZER)){
             throw new NotFoundException("Organizer ID not found");
         }
         List<ContractDTO> allByOrganizerId = contractRepository.findAllByOrganizerId(organizerId);
@@ -73,27 +72,26 @@ public class ContractService {
             final ApplicationDTO application = contract.getApplication();
             final EventDTO event = eventservice.getEvent(application.getEventId());
 
-            final String applicationName = applicationService.getApplicationName(application.getApplicationId());
             final UserDTO exhibitor = userService.getUserByUserId(application.getUserId());
-            return getContractDTO(contract, organizer, exhibitor, application, event, applicationName, contract.getTerms(), contract.getStatus(), contract.getPrice());
+            return buildContractDTOTogether(contract, organizer, exhibitor, application, event);
         }).toList();
     }
 
-    private ContractDTO getContractDTO(ContractDTO contract, UserDTO organizer, UserDTO exhibitor, ApplicationDTO application, EventDTO event, String applicationName, String terms, String status, PriceDto price) {
+    private ContractDTO buildContractDTOTogether(ContractDTO contract, UserDTO organizer, UserDTO exhibitor, ApplicationDTO application, EventDTO event) {
         return ContractDTO.builder()
                 .contractId(contract.getContractId())
                 .organizer(organizer)
                 .exhibitor(exhibitor)
                 .application(application)
-                .applicantName(applicationName)
+                .applicantName(exhibitor.name())
                 .organizerName(organizer.name())
                 .eventName(event.title())
                 .location(event.location())
                 .startDate(event.startDate().toString())
                 .endDate(event.endDate().toString())
-                .terms(terms)
-                .status(status)
-                .price(price)
+                .terms(contract.getTerms())
+                .status(contract.getStatus())
+                .price(contract.getPrice())
                 .boothNumber(contract.getBoothNumber())
                 .organizerEmail(organizer.email())
                 .build();
@@ -107,10 +105,9 @@ public class ContractService {
                     final ApplicationDTO application = contract.getApplication();
                     final EventDTO event = eventservice.getEvent(application.getEventId());
 
-                    final String applicationName = applicationService.getApplicationName(application.getApplicationId());
                     final UserDTO exhibitor = userService.getUserByUserId(application.getUserId());
 
-                    return getContractDTO(contract, organizer, exhibitor, application, event, applicationName, contract.getTerms(), contract.getStatus(), contract.getPrice());
+                    return buildContractDTOTogether(contract, organizer, exhibitor, application, event);
                 })
                 .orElseThrow(() -> new NotFoundException("Contract ID not found"));
     }
@@ -128,7 +125,7 @@ public class ContractService {
         final EventDTO event = eventservice.getEvent(application.getEventId());
         final UserDTO exhibitor = userService.getUserByUserId(application.getUserId());
 
-        return getContractDTO(contractDTO, organizer, exhibitor, application, event, exhibitor.name(), contractDTO.getTerms(), contractDTO.getStatus(), contractDTO.getPrice());
+        return buildContractDTOTogether(contractDTO, organizer, exhibitor, application, event);
     }
 
     public void updateContractStatus(UUID contractId, Status status) throws InvalidStatusException {
@@ -140,5 +137,22 @@ public class ContractService {
         contractRepository.save(contractDTO);
 
         log.info("Contract status updated: {} with {}", contractId, status);
+    }
+
+    public List<ContractDTO> getAllContractsByExhibitor(UUID exhibitorId) {
+        if(!userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)){
+            throw new NotFoundException("Exhibitor ID not found");
+        }
+        List<ContractDTO> allByExhibitorId = contractRepository.findAllByExhibitorId(exhibitorId);
+
+        return allByExhibitorId.stream().map(contract -> {
+            final UserDTO exhibitor = userService.getUserByUserId(exhibitorId);
+
+            final ApplicationDTO application = contract.getApplication();
+            final EventDTO event = eventservice.getEvent(application.getEventId());
+
+            final UserDTO organizer = userService.getUserByUserId(event.organizerId());
+            return buildContractDTOTogether(contract, organizer, exhibitor, application, event);
+        }).toList();
     }
 }

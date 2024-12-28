@@ -5,16 +5,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.service.ContractRepository;
+import org.venow.backend.testfactory.ContractDataFactory;
 import org.venow.backend.web.reponse.ContractResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -286,4 +289,33 @@ public class ExhibitorContractControllerTest extends TestBase{
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(response.getBody()).contains("Not Found");
     }
+
+    @DisplayName("exhibitor get all contracts")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/005_insert-event-user-application-contracts-exhibitor.sql"})
+    public void getAllContracts() {
+        List<ContractResponse> expectedContracts = ContractDataFactory.getAllContractResponseExhibitor();
+
+        final ResponseEntity<List<ContractResponse>> response = restTemplate
+                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contracts",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        new ParameterizedTypeReference<List<ContractResponse>>() {},
+                        port,
+                        "af333e19-6ed6-4c8b-b86e-ef78943a98a2");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        assertThat(response.getBody())
+                .as("check if response contains expected contracts by exhibitorId")
+                .hasSize(2)
+                .usingRecursiveComparison()
+                .ignoringFields("price.amountInEuro")
+                .isEqualTo(expectedContracts);
+
+        assertThat(response.getBody().getFirst().price().getAmountInEuro().doubleValue()).isEqualTo(3.0);
+        assertThat(response.getBody().getLast().price().getAmountInEuro().doubleValue()).isEqualTo(3.0);
+    }
+
+
 }

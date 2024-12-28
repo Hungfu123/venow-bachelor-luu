@@ -39,5 +39,12 @@ public class ContractRepositoryImpl implements ContractRepository {
                 .toList();
     }
 
+    @Override
+    public List<ContractDTO> findAllByExhibitorId(UUID exhibitorId) {
+        return repository.findAllByExhibitorId(exhibitorId).stream()
+                .map(ContractMapper::toDTO)
+                .toList();
+    }
+
 
 }

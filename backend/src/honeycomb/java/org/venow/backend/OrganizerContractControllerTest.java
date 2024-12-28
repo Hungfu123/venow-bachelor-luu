@@ -225,7 +225,7 @@ class OrganizerContractControllerTest extends TestBase {
                 .as("check if response contains expected contracts by organizerId")
                 .hasSize(2)
                 .usingRecursiveComparison()
-                .ignoringFields("price.amountInEuro", "exhibitorId")
+                .ignoringFields("price.amountInEuro")
                 .isEqualTo(expectedContracts);
 
         assertThat(response.getBody().getFirst().price().getAmountInEuro().doubleValue()).isEqualTo(3.0);

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.TestBase;
+import org.venow.backend.domain.model.Role;
 import org.venow.backend.infrastructure.UserRepositoryImpl;
 import org.venow.backend.service.dto.UserDTO;
 import org.venow.backend.testdata.UserDTOFactory;
@@ -46,11 +47,11 @@ class UserRepositoryTest extends TestBase {
     @DisplayName("should return true if user exists by organizer ID")
     @Test
     @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
-    void shouldReturnTrueIfUserExistsByOrganizerId() {
+    void shouldReturnTrueIfUserExistsByUserIdAndRole() {
         UserDTO user = UserDTOFactory.createDefault().build();
         userRepository.save(user);
 
-        boolean exists = userRepository.existsByOrganizerId(user.userId());
+        boolean exists = userRepository.existsByUserIdAndRole(user.userId(), Role.ORGANIZER);
 
         assertThat(exists).isTrue();
     }
@@ -58,7 +59,7 @@ class UserRepositoryTest extends TestBase {
     @DisplayName("should return false if user does not exist by organizer ID")
     @Test
     void shouldReturnFalseIfUserDoesNotExistByOrganizerId() {
-        boolean exists = userRepository.existsByOrganizerId(UUID.randomUUID());
+        boolean exists = userRepository.existsByUserIdAndRole(UUID.randomUUID(), Role.ORGANIZER);
 
         assertThat(exists).isFalse();
     }
@@ -70,7 +71,7 @@ class UserRepositoryTest extends TestBase {
         UserDTO user = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
         userRepository.save(user);
 
-        boolean exists = userRepository.existsByOrganizerId(user.userId());
+        boolean exists = userRepository.existsByUserIdAndRole(user.userId(), Role.ORGANIZER);
 
         assertThat(exists).isFalse();
     }

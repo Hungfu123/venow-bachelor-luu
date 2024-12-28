@@ -29,7 +29,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean existsByOrganizerId(UUID organizerId) {
-        return repository.existsByUserIdAndRole(organizerId, Role.ORGANIZER);
+    public boolean existsByUserIdAndRole(UUID userId, Role role) {
+        return repository.existsByUserIdAndRole(userId, role);
     }
+
+
 }

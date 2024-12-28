@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.venow.backend.domain.model.Role;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.dto.*;
 import org.venow.backend.service.exception.ApplicationNotFoundException;
@@ -209,7 +210,7 @@ public class ContractServiceTest {
         when(applicationService.getApplicationName(application1.getApplicationId())).thenReturn("Test Application");
         when(applicationService.getApplicationName(application2.getApplicationId())).thenReturn("Test Application");
         when(applicationService.getApplicationName(application3.getApplicationId())).thenReturn("Test Application");
-        when(userService.existsByOrganizerId(organizerId)).thenReturn(true);
+        when(userService.existsByUserAndRole(organizerId, Role.ORGANIZER)).thenReturn(true);
 
         List<ContractDTO> contracts = contractService.getAllContractsByOrganizer(organizerId);
 
@@ -225,7 +226,7 @@ public class ContractServiceTest {
     void shouldReturnEmptyListWhenNoContractsFoundForOrganizer() {
         final UUID organizerId = UUID.randomUUID();
         when(contractRepository.findAllByOrganizerId(organizerId)).thenReturn(Collections.emptyList());
-        when(userService.existsByOrganizerId(organizerId)).thenReturn(true);
+        when(userService.existsByUserAndRole(organizerId, Role.ORGANIZER)).thenReturn(true);
         List<ContractDTO> contracts = contractService.getAllContractsByOrganizer(organizerId);
 
         assertThat(contracts).isEmpty();
@@ -236,7 +237,7 @@ public class ContractServiceTest {
     @DisplayName("Throws exception when organizer not found")
     void shouldThrowExceptionWhenOrganizerNotFound() {
         final UUID organizerId = UUID.randomUUID();
-        when(userService.existsByOrganizerId(organizerId)).thenThrow(new NotFoundException("Organizer not found"));
+        when(userService.existsByUserAndRole(organizerId, Role.ORGANIZER)).thenThrow(new NotFoundException("Organizer not found"));
 
         assertThatThrownBy(() -> contractService.getAllContractsByOrganizer(organizerId))
                 .isInstanceOf(NotFoundException.class)
@@ -424,6 +425,97 @@ public class ContractServiceTest {
         assertThat(contract.getStatus()).isEqualTo(Status.REJECTED.toString());
         verify(contractRepository).save(contract);
     }
+
+    @Test
+    @DisplayName("Exhibitor sees all their contracts")
+    void shouldReturnAllContractsForExhibitor() {
+        final UUID organizerId = UUID.randomUUID();
+        final UUID exhibitorId = UUID.randomUUID();
+
+        final EventDTO event1 = EventDTOFactory.createDefault().withOrganizerId(organizerId).build();
+        final EventDTO event2 = EventDTOFactory.createDefault().withOrganizerId(organizerId).build();
+        final ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
+                .withEventId(event1.eventId().toString())
+                .withUserId(exhibitorId.toString())
+                .build();
+
+        final ApplicationDTO application2 = ApplicationDTOFactory.createDefault()
+                .withEventId(event1.eventId().toString())
+                .withUserId(exhibitorId.toString())
+                .build();
+
+        final ApplicationDTO application3 = ApplicationDTOFactory.createDefault()
+                .withEventId(event2.eventId().toString())
+                .withUserId(exhibitorId.toString())
+                .build();
+
+        final UserDTO organizer = UserDTOFactory.createDefault().withUserId(organizerId).build();
+        final UserDTO exhibitor = UserDTOFactory.createDefault().withUserId(exhibitorId).build();
+
+        final ContractDTO contract1 = ContractDTOFactory.createDefault()
+                .withOrganizer(organizer)
+                .withExhibitor(exhibitor)
+                .withApplication(application1)
+                .withContractId(UUID.randomUUID().toString())
+                .build();
+
+        final ContractDTO contract2 = ContractDTOFactory.createDefault()
+                .withOrganizer(organizer)
+                .withExhibitor(exhibitor)
+                .withApplication(application2)
+                .withContractId(UUID.randomUUID().toString())
+                .build();
+
+
+        final ContractDTO contract3 = ContractDTOFactory.createDefault()
+                .withOrganizer(organizer)
+                .withExhibitor(exhibitor)
+                .withApplication(application3)
+                .withContractId(UUID.randomUUID().toString())
+                .build();
+
+        when(contractRepository.findAllByExhibitorId(exhibitorId)).thenReturn(List.of(contract1, contract2, contract3));
+        when(userService.getUserByUserId(exhibitorId)).thenReturn(exhibitor);
+        when(eventservice.getEvent(application1.getEventId())).thenReturn(event1);
+        when(eventservice.getEvent(application2.getEventId())).thenReturn(event1);
+        when(eventservice.getEvent(application3.getEventId())).thenReturn(event2);
+        when(userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)).thenReturn(true);
+        when(userService.getUserByUserId(event1.organizerId())).thenReturn(organizer);
+        when(userService.getUserByUserId(event2.organizerId())).thenReturn(organizer);
+
+        List<ContractDTO> contracts = contractService.getAllContractsByExhibitor(exhibitorId);
+
+        assertThat(contracts).isNotEmpty();
+        assertThat(contracts).hasSize(3);
+        assertThat(contracts.stream().map(contract -> contract.getExhibitor().userId())).allMatch(id -> id.equals(exhibitorId));
+        verify(contractRepository).findAllByExhibitorId(exhibitorId);
+        verify(userService, times(3)).getUserByUserId(exhibitorId);
+    }
+
+    @Test
+    @DisplayName("Empty contract list for exhbitor with no contracts")
+    void shouldReturnEmptyListWhenNoContractsFoundForExhibitor() {
+        final UUID exhibitorId = UUID.randomUUID();
+        when(contractRepository.findAllByExhibitorId(exhibitorId)).thenReturn(Collections.emptyList());
+        when(userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)).thenReturn(true);
+        List<ContractDTO> contracts = contractService.getAllContractsByExhibitor(exhibitorId);
+
+        assertThat(contracts).isEmpty();
+        verify(contractRepository).findAllByExhibitorId(exhibitorId);
+    }
+
+    @Test
+    @DisplayName("Throws exception when exhibitor not found")
+    void shouldThrowExceptionWhenExhibitorNotFound() {
+        final UUID exhibitorId = UUID.randomUUID();
+        when(userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)).thenThrow(new NotFoundException("Exhibitor not found"));
+
+        assertThatThrownBy(() -> contractService.getAllContractsByExhibitor(exhibitorId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Exhibitor not found");
+        verifyNoInteractions(contractRepository);
+    }
+
 
 
 }
