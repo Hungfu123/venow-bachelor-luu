@@ -51,4 +51,14 @@ public class ExhibitorContractController {
         return ResponseEntity.noContent().build();
     }
 
+
+    @PutMapping("contract-details/{contractId}/reject")
+    public ResponseEntity<Void> rejectContract(
+            @PathVariable("exhibitorId") final UUID exhibitorId,
+            @PathVariable("contractId") final UUID contractId
+    ) throws InvalidStatusException {
+        contractService.updateContractStatus(contractId, Status.REJECTED);
+
+        return ResponseEntity.noContent().build();
+    }
 }

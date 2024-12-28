@@ -163,7 +163,7 @@ public class ExhibitorContractControllerTest {
 
     @DisplayName("exhibitor confirm contract - invalid status")
     @Test
-    public void confirmContract_InvalidStatus() throws Exception, InvalidStatusException {
+    public void confirmContractInvalidStatus() throws Exception, InvalidStatusException {
         UUID contractId = UUID.randomUUID();
         UUID exhibitorId = UUID.randomUUID();
 
@@ -182,4 +182,58 @@ public class ExhibitorContractControllerTest {
     }
 
 
+    @DisplayName("exhibitor reject contract")
+    @Test
+    public void rejectContract() throws Exception, InvalidStatusException {
+        UUID contractId = UUID.randomUUID();
+        UUID exhibitorId = UUID.randomUUID();
+
+        mockMvc.perform(put("/exhibitor/{exhibitorId}/contract-details/{contractId}/reject",
+                        exhibitorId, contractId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(contractService).updateContractStatus(contractId, Status.REJECTED);
+
+    }
+
+    @DisplayName("exhibitor reject contract - contract not found")
+    @Test
+    public void rejectContractNotFound() throws Exception, InvalidStatusException {
+        UUID contractId = UUID.randomUUID();
+        UUID exhibitorId = UUID.randomUUID();
+
+        doThrow(new NotFoundException("Contract not found"))
+                .when(contractService).updateContractStatus(contractId, Status.REJECTED);
+
+        String contentAsString = mockMvc.perform(put("/exhibitor/{exhibitorId}/contract-details/{contractId}/reject",
+                        exhibitorId, contractId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo("Contract not found");
+    }
+
+    @DisplayName("exhibitor reject contract - invalid status")
+    @Test
+    public void rejectContractInvalidStatus() throws Exception, InvalidStatusException {
+        UUID contractId = UUID.randomUUID();
+        UUID exhibitorId = UUID.randomUUID();
+
+        doThrow(new InvalidStatusException("Contract status must be CONTRACT"))
+                .when(contractService).updateContractStatus(contractId, Status.REJECTED);
+
+        String contentAsString = mockMvc.perform(put("/exhibitor/{exhibitorId}/contract-details/{contractId}/reject",
+                        exhibitorId, contractId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo("Contract status must be CONTRACT");
+    }
 }

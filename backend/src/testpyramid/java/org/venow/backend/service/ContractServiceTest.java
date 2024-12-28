@@ -321,7 +321,7 @@ public class ContractServiceTest {
         assertThat(contractDetails.getTerms()).isEqualTo(contract.getTerms());
         assertThat(contractDetails.getPrice().getAmountInEuro()).isEqualTo(contract.getPrice().getAmountInEuro());
         assertThat(contractDetails.getBoothNumber()).isEqualTo(contract.getBoothNumber());
-        assertThat(contractDetails.getStatus()).isEqualTo(contract.getStatus().toString());
+        assertThat(contractDetails.getStatus()).isEqualTo(contract.getStatus());
         assertThat(contractDetails.getOrganizerEmail()).isEqualTo(organizer.email());
     }
 
@@ -366,7 +366,7 @@ public class ContractServiceTest {
     }
 
     @Test
-    @DisplayName("should update contract status")
+    @DisplayName("should update contract status CONFIRMED")
     void shouldUpdateContractStatus() throws InvalidStatusException {
         final UUID contractId = UUID.randomUUID();
         final ContractDTO contract = ContractDTOFactory.createDefault().build();
@@ -388,6 +388,11 @@ public class ContractServiceTest {
         assertThatThrownBy(() -> contractService.updateContractStatus(contractId, Status.CONFIRMED))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Contract not found for ID: " + contractId);
+
+
+        assertThatThrownBy(() -> contractService.updateContractStatus(contractId, Status.REJECTED))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("Contract not found for ID: " + contractId);
     }
 
     @Test
@@ -400,8 +405,25 @@ public class ContractServiceTest {
         assertThatThrownBy(() -> contractService.updateContractStatus(contractId, Status.CONFIRMED))
                 .isInstanceOf(InvalidStatusException.class)
                 .hasMessage("Contract status must be CONTRACT");
+
+        assertThatThrownBy(() -> contractService.updateContractStatus(contractId, Status.REJECTED))
+                .isInstanceOf(InvalidStatusException.class)
+                .hasMessage("Contract status must be CONTRACT");
     }
 
+    @Test
+    @DisplayName("should update contract status REJECTED")
+    void shouldUpdateContractStatusRejected() throws InvalidStatusException {
+        final UUID contractId = UUID.randomUUID();
+        final ContractDTO contract = ContractDTOFactory.createDefault().build();
+        when(contractRepository.findById(contractId)).thenReturn(Optional.of(contract));
+        when(contractRepository.save(contract)).thenReturn(contract);
+
+        contractService.updateContractStatus(contractId, Status.REJECTED);
+
+        assertThat(contract.getStatus()).isEqualTo(Status.REJECTED.toString());
+        verify(contractRepository).save(contract);
+    }
 
 
 }

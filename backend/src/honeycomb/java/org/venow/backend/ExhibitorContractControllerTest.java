@@ -166,5 +166,70 @@ public class ExhibitorContractControllerTest extends TestBase{
         assertThat(rejectedResponse.getBody()).contains("Contract status must be CONTRACT");
     }
 
+    @DisplayName("exhibitor reject contract")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    public void rejectContract() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contract-details/{contractId}/reject",
+                        HttpMethod.PUT,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port,
+                        "af333e19-6ed6-4c8b-b86e-ef78943a98a2",
+                        "9a330d97-f4fb-4596-ab33-b826a0919272");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+        contractRepository.findById(UUID.fromString("9a330d97-f4fb-4596-ab33-b826a0919272"))
+                .ifPresent(contractDTO -> assertThat(contractDTO.getStatus()).isEqualTo("REJECTED"));
+
+    }
+
+    @DisplayName("exhibitor cant find contract - invalid status")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    public void rejectContractInvalidStatus() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contract-details/{contractId}/reject",
+                        HttpMethod.PUT,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port,
+                        "af333e19-6ed6-4c8b-b86e-ef78943a98a2",
+                        "9a330d97-f4fb-4596-ab33-b826a0919271");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody()).contains("Contract not found for ID: " + "9a330d97-f4fb-4596-ab33-b826a0919271");
+    }
+
+    @DisplayName("contract already rejected and accepted - invalid status")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    public void rejectContractInvalidStatusNotContract() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contract-details/{contractId}/reject",
+                        HttpMethod.PUT,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port,
+                        "af333e19-6ed6-4c8b-b86e-ef78943a98a2",
+                        "551f8d69-996d-42c7-8b04-cd9e4ac6aa06");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(response.getBody()).contains("Contract status must be CONTRACT");
+
+        final ResponseEntity<String> rejectedResponse = restTemplate
+                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contract-details/{contractId}/reject",
+                        HttpMethod.PUT,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port,
+                        "af333e19-6ed6-4c8b-b86e-ef78943a98a2",
+                        "9452c6a7-6acc-4208-bbb3-f04396326fc2");
+
+        assertThat(rejectedResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(rejectedResponse.getBody()).contains("Contract status must be CONTRACT");
+    }
 
 }
