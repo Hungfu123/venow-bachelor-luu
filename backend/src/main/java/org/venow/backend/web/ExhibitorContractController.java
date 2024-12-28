@@ -3,12 +3,11 @@ package org.venow.backend.web;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.ContractService;
 import org.venow.backend.service.dto.ContractDTO;
+import org.venow.backend.service.exception.InvalidStatusException;
 import org.venow.backend.web.reponse.ContractResponse;
 import org.venow.backend.web.reponse.ResponseMapper;
 
@@ -40,6 +39,16 @@ public class ExhibitorContractController {
         final ContractDTO contractDTO = contractService.getContractByApplicationIdAndContactId(applicationId, contractId);
 
         return ResponseEntity.ok(ResponseMapper.mapToContractResponse(contractDTO));
+    }
+
+    @PutMapping("contract-details/{contractId}/confirm")
+    public ResponseEntity<Void> confirmContract(
+            @PathVariable("exhibitorId") final UUID exhibitorId,
+            @PathVariable("contractId") final UUID contractId
+    ) throws InvalidStatusException {
+        contractService.updateContractStatus(contractId, Status.CONFIRMED);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

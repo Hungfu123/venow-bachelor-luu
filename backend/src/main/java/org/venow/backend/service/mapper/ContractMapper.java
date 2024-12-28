@@ -12,6 +12,7 @@ public class ContractMapper {
 
     public static Contract toEntity(ContractDTO contractDTO) {
         return Contract.builder()
+                .id(contractDTO.getId())
                 .contractId(contractDTO.getContractId())
                 .organizer(UserMapper.mapToEntity(contractDTO.getOrganizer()))
                 .exhibitor(UserMapper.mapToEntity(contractDTO.getExhibitor()))
@@ -34,6 +35,7 @@ public class ContractMapper {
 
     public static ContractDTO toDTO(Contract contract) {
         return ContractDTO.builder()
+                .id(contract.getId())
                 .contractId(contract.getContractId())
                 .organizer(UserMapper.mapToDTO(contract.getOrganizer()))
                 .exhibitor(UserMapper.mapToDTO(contract.getExhibitor()))

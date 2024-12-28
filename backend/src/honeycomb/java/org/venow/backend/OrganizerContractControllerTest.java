@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -206,33 +207,29 @@ class OrganizerContractControllerTest extends TestBase {
 
     @DisplayName("show all contracts by organizer")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts-first.sql"})
     void showAllContractsByOrganizer() throws JsonProcessingException {
         List<ContractResponse> expectedContracts = ContractDataFactory.getAllContractResponses();
 
 
-        final ResponseEntity<String> response = restTemplate
+        final ResponseEntity<List<ContractResponse>> response = restTemplate
                 .exchange("http://localhost:{port}/organizer/{organizerId}/contracts",
                         HttpMethod.GET,
-                        new HttpEntity<>(null),
-                        String.class,
-                        port, "b23e4567-e89b-12d3-a456-426614174002");
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+                        null,
+                        new ParameterizedTypeReference<List<ContractResponse>>() {},
+                        port,
+                        "b23e4567-e89b-12d3-a456-426614174002");
 
-        List<ContractResponse> actualResponses = objectMapper.readValue(
-                response.getBody(),
-                new TypeReference<>() {
-                }
-        );
-        assertThat(actualResponses)
+
+        assertThat(response.getBody())
                 .as("check if response contains expected contracts by organizerId")
                 .hasSize(2)
                 .usingRecursiveComparison()
                 .ignoringFields("price.amountInEuro", "exhibitorId")
                 .isEqualTo(expectedContracts);
 
-        assertThat(actualResponses.getFirst().price().getAmountInEuro().doubleValue()).isEqualTo(3.0);
-        assertThat(actualResponses.getLast().price().getAmountInEuro().doubleValue()).isEqualTo(3.0);
+        assertThat(response.getBody().getFirst().price().getAmountInEuro().doubleValue()).isEqualTo(3.0);
+        assertThat(response.getBody().getLast().price().getAmountInEuro().doubleValue()).isEqualTo(3.0);
     }
 
     @DisplayName("cant show contracts because user is EXHIBITOR - NOT FOUND")

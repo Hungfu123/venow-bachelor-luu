@@ -1,8 +1,11 @@
 package org.venow.backend.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.dto.*;
 import org.venow.backend.service.exception.InvalidInputException;
@@ -21,6 +24,8 @@ public class ContractService {
     private final UserService userService;
     private final ContractRepository contractRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public ContractDTO createContract(final UUID applicationId, final UUID organizerId, PriceDto priceDto, String bootNumber) throws InvalidStatusException {
         if(applicationId == null || organizerId == null){
@@ -126,4 +131,14 @@ public class ContractService {
         return getContractDTO(contractDTO, organizer, exhibitor, application, event, exhibitor.name(), contractDTO.getTerms(), contractDTO.getStatus(), contractDTO.getPrice());
     }
 
+    public void updateContractStatus(UUID contractId, Status status) throws InvalidStatusException {
+        final ContractDTO contractDTO = contractRepository.findById(contractId).orElseThrow(() -> new NotFoundException("Contract not found for ID: " + contractId));
+        if (!contractDTO.getStatus().equals(Status.CONTRACT.name())) {
+            throw new InvalidStatusException("Contract status must be CONTRACT");
+        }
+        contractDTO.setStatus(status.name());
+        contractRepository.save(contractDTO);
+
+        log.info("Contract status updated: {} with {}", contractId, status);
+    }
 }

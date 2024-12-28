@@ -11,21 +11,21 @@ import java.util.UUID;
 @Builder(toBuilder = true)
 @Setter
 public class ContractDTO {
-    private final Long id;
-    private final UUID contractId;
-    private final UserDTO organizer;
-    private final UserDTO exhibitor;
-    private final ApplicationDTO application;
-    private final String applicantName;
-    private final String organizerName;
-    private final String eventName;
-    private final String location;
-    private final String startDate;
-    private final String endDate;
-    private final String terms;
-    private final PriceDto price;
-    private final String boothNumber;
-    private final String status;
-    private final String organizerEmail;
+    private Long id;
+    private UUID contractId;
+    private UserDTO organizer;
+    private UserDTO exhibitor;
+    private ApplicationDTO application;
+    private String applicantName;
+    private String organizerName;
+    private String eventName;
+    private String location;
+    private String startDate;
+    private String endDate;
+    private String terms;
+    private PriceDto price;
+    private String boothNumber;
+    private String status;
+    private String organizerEmail;
 
 }

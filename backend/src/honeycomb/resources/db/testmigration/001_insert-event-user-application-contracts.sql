@@ -43,4 +43,6 @@ VALUES
 INSERT INTO contracts (contract_id, organizer_id, exhibitor_id, application_id, terms, price, booth_number, status)
 VALUES
     ('9a330d97-f4fb-4596-ab33-b826a0919272', 'b23e4567-e89b-12d3-a456-426614174002', 'af333e19-6ed6-4c8b-b86e-ef78943a98a2','c3456789-01cd-ef23-4567-8901cdef2346', 'Basic Terms', 300, 'A10', 'CONTRACT'),
-    ('34e433de-8d61-48e7-b74d-904ae6de0d2a', 'b23e4567-e89b-12d3-a456-426614174002', 'eb7a9506-25d5-422a-842e-938008c448d6','c3456789-01cd-ef23-4567-8901cdef2348','Basic Terms', 300, 'A10', 'CONTRACT');
+    ('34e433de-8d61-48e7-b74d-904ae6de0d2a', 'b23e4567-e89b-12d3-a456-426614174002', 'eb7a9506-25d5-422a-842e-938008c448d6','c3456789-01cd-ef23-4567-8901cdef2348','Basic Terms', 300, 'A10', 'CONTRACT'),
+    ('551f8d69-996d-42c7-8b04-cd9e4ac6aa06', 'b23e4567-e89b-12d3-a456-426614174002', 'af333e19-6ed6-4c8b-b86e-ef78943a98a3','c3456789-01cd-ef23-4567-8901cdef2345','Basic Terms', 300, 'A10', 'CONFIRMED'),
+    ('9452c6a7-6acc-4208-bbb3-f04396326fc2', 'b23e4567-e89b-12d3-a456-426614174002', 'af333e19-6ed6-4c8b-b86e-ef78943a98a3','c3456789-01cd-ef23-4567-8901cdef2345','Basic Terms', 300, 'A10', 'REJECTED');

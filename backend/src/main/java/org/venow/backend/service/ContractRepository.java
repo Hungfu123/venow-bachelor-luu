@@ -1,5 +1,6 @@
 package org.venow.backend.service;
 
+import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.dto.ContractDTO;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface ContractRepository  {
     Optional<ContractDTO> findById(UUID id);
 
     List<ContractDTO> findAllByOrganizerId(UUID organizerId);
+
 }
