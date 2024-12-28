@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.ApplicationService;
 import org.venow.backend.service.ContractService;
@@ -283,5 +282,20 @@ public class ExhibitorContractControllerTest {
 
                 )
         );
+    }
+
+    @DisplayName("exhibitor get on contract details from All - contract not found")
+    @Test
+    public void getContractDetailsFromAll_NotFound() throws Exception {
+        UUID contractId = UUID.randomUUID();
+        UUID exhibitorId = UUID.randomUUID();
+
+        when(contractService.getContractByContractId(contractId))
+                .thenThrow(new NotFoundException("Contract not found"));
+
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/contracts/details/{contractId}",
+                        exhibitorId, contractId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }

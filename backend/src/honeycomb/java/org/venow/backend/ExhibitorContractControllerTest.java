@@ -270,4 +270,20 @@ public class ExhibitorContractControllerTest extends TestBase{
         assertThat(contractResponse.organizerEmail()).isEqualTo("organizer3@example.com");
     }
 
+    @DisplayName("exhibitor get on contract details - invalid applicationId")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    public void getContractDetailsInvalidContractId() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contract-details/{contractId}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port,
+                        "af333e19-6ed6-4c8b-b86e-ef78943a98a2",
+                        "null");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody()).contains("Not Found");
+    }
 }
