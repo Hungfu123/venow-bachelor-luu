@@ -44,6 +44,7 @@ public class ExhibitorContractControllerTest extends TestBase{
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         ContractResponse contractResponse = response.getBody();
+        assert contractResponse != null;
         assertThat(contractResponse.contractId()).isEqualTo(UUID.fromString("9a330d97-f4fb-4596-ab33-b826a0919272"));
         assertThat(contractResponse.organizerId()).isEqualTo(UUID.fromString("b23e4567-e89b-12d3-a456-426614174002"));
         assertThat(contractResponse.exhibitorId()).isEqualTo(UUID.fromString("af333e19-6ed6-4c8b-b86e-ef78943a98a2"));
@@ -230,6 +231,43 @@ public class ExhibitorContractControllerTest extends TestBase{
 
         assertThat(rejectedResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
         assertThat(rejectedResponse.getBody()).contains("Contract status must be CONTRACT");
+    }
+
+    @DisplayName("exhibitor get on contract details")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    public void getContractDetailsFromAll() {
+        final ResponseEntity<ContractResponse> response = restTemplate
+                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contracts/details/{contractId}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        ContractResponse.class,
+                        port,
+                        "af333e19-6ed6-4c8b-b86e-ef78943a98a2",
+                        "9a330d97-f4fb-4596-ab33-b826a0919272");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        ContractResponse contractResponse = response.getBody();
+        assert contractResponse != null;
+        assertThat(contractResponse.contractId()).isEqualTo(UUID.fromString("9a330d97-f4fb-4596-ab33-b826a0919272"));
+        assertThat(contractResponse.organizerId()).isEqualTo(UUID.fromString("b23e4567-e89b-12d3-a456-426614174002"));
+        assertThat(contractResponse.exhibitorId()).isEqualTo(UUID.fromString("af333e19-6ed6-4c8b-b86e-ef78943a98a2"));
+        assertThat(contractResponse.applicationId()).isEqualTo(UUID.fromString("c3456789-01cd-ef23-4567-8901cdef2346"));
+        assertThat(contractResponse.applicantName()).isEqualTo("Khang");
+        assertThat(contractResponse.organizerName()).isEqualTo("Robert J");
+        assertThat(contractResponse.eventName()).isEqualTo("Test Event 3");
+        assertThat(contractResponse.location()).isEqualTo("Mühlheim");
+        assertThat(contractResponse.startDate()).isEqualTo(LocalDateTime.parse("2024-06-01T12:00:00"));
+        assertThat(contractResponse.endDate()).isEqualTo(LocalDateTime.parse("2024-06-01T23:00:00"));
+        assertThat(contractResponse.typeOfBusiness()).isEqualTo("Software IT");
+        assertThat(contractResponse.contactInformation()).isEqualTo("dfadf@example.com");
+        assertThat(contractResponse.businessName()).isEqualTo("IT Technik");
+        assertThat(contractResponse.terms()).isEqualTo("Basic Terms");
+        assertThat(contractResponse.price().getAmountInEuro()).isEqualTo(BigDecimal.valueOf(3));
+        assertThat(contractResponse.boothNumber()).isEqualTo("A10");
+        assertThat(contractResponse.status()).isEqualTo("CONTRACT");
+        assertThat(contractResponse.organizerEmail()).isEqualTo("organizer3@example.com");
     }
 
 }

@@ -101,6 +101,7 @@ public class ExhibitorContractControllerTest {
                 )
         );
     }
+
     @DisplayName("exhibitor get on contract details - invalid inputs")
     @Test
     public void getContractDetails_InvalidInputs() throws Exception {
@@ -235,5 +236,52 @@ public class ExhibitorContractControllerTest {
                 .getContentAsString();
 
         assertThat(contentAsString).isEqualTo("Contract status must be CONTRACT");
+    }
+
+    @DisplayName("exhibitor get on contract details from All")
+    @Test
+    public void getContractDetailsFromAll() throws Exception {
+
+        final UserDTO organizer = UserDTOFactory.createDefault().build();
+        final ContractDTO contract = ContractDTOFactory.createDefault()
+                .withContractId("9a330d97-f4fb-4596-ab33-b826a0919272")
+                .withOrganizer(organizer)
+                .build();
+
+        when(contractService.getContractByContractId( contract.getContractId())).thenReturn(contract);
+
+        final String contentAsString = mockMvc.perform(get("/exhibitor/{exhibitorId}/contracts/details/{contractId}", organizer.userId(), contract.getContractId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThatJson(
+                contentAsString
+        ).isEqualTo(
+                objectMapper.writeValueAsString(ContractResponse.builder()
+                        .contractId(UUID.fromString("9a330d97-f4fb-4596-ab33-b826a0919272"))
+                        .organizerId(organizer.userId())
+                        .exhibitorId(contract.getExhibitor().userId())
+                        .applicationId(contract.getApplication().getApplicationId())
+                        .applicantName("Default Applicant")
+                        .organizerName("Default Organizer")
+                        .eventName("Default Event")
+                        .location("Default Location")
+                        .startDate(LocalDateTime.parse("2023-01-01T10:00:00"))
+                        .endDate(LocalDateTime.parse("2023-01-02T18:00:00"))
+                        .typeOfBusiness("Food Truck")
+                        .contactInformation("example@example.com")
+                        .businessName("Sample Business")
+                        .terms("Default terms and conditions.")
+                        .price(new PriceDto(BigDecimal.valueOf(50)))
+                        .boothNumber("A50")
+                        .status("CONTRACT")
+                        .organizerEmail("organizer@example.com")
+                        .build()
+
+                )
+        );
     }
 }

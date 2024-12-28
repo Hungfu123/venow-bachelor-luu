@@ -20,15 +20,15 @@ public class ExhibitorContractController {
 
     private final ContractService contractService;
 
-//    @GetMapping("contracts/details/{contractId}")
-//    public ResponseEntity<ContractResponse> getContractDetails(
-//            @PathVariable("exhibitorId") final UUID exhibitorId,
-//            @PathVariable("contractId") final UUID contractId
-//    ) {
-//        final ContractDTO contractDTO = contractService.get(contractId);
-//
-//        return ResponseEntity.ok(ResponseMapper.mapToContractResponse(contractDTO));
-//    }
+    @GetMapping("contracts/details/{contractId}")
+    public ResponseEntity<ContractResponse> getContractDetails(
+            @PathVariable("exhibitorId") final UUID exhibitorId,
+            @PathVariable("contractId") final UUID contractId
+    ) {
+        final ContractDTO contractDTO = contractService.getContractByContractId(contractId);
+
+        return ResponseEntity.ok(ResponseMapper.mapToContractResponse(contractDTO));
+    }
 
     @GetMapping("/applications/{applicationId}/contract-details/{contractId}")
     public ResponseEntity<ContractResponse> getContractDetails(
