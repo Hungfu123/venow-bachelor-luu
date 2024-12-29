@@ -16,7 +16,7 @@ import org.venow.backend.service.exception.NotFoundException;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 import org.venow.backend.testdata.EventDTOFactory;
 import org.venow.backend.testdata.UserDTOFactory;
-import org.venow.backend.web.ExhibitorController;
+import org.venow.backend.web.exhibitor.ExhibitorController;
 import org.venow.backend.web.request.ApplicationRequest;
 
 import java.util.UUID;

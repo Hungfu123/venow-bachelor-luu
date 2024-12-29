@@ -15,7 +15,7 @@ import org.venow.backend.service.exception.InvalidInputException;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.testdata.ApplicationDataFactory;
 import org.venow.backend.testdata.UserTestData;
-import org.venow.backend.web.OrganizerApplicationController;
+import org.venow.backend.web.organizer.OrganizerApplicationController;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package org.venow.backend.web;
+package org.venow.backend.web.organizer;
 
 
 import jakarta.validation.Valid;

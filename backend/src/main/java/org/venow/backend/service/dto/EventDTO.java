@@ -13,6 +13,7 @@ public record EventDTO(UUID eventId,
                        String location,
                        LocalDateTime startDate,
                        LocalDateTime endDate,
+                       String organizerName,
                        UUID organizerId
 ) {
 }

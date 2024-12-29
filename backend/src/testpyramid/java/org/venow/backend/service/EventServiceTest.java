@@ -9,9 +9,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.venow.backend.domain.model.Role;
 import org.venow.backend.service.dto.EventDTO;
+import org.venow.backend.service.dto.UserDTO;
 import org.venow.backend.service.exception.NotFoundException;
 import org.venow.backend.infrastructure.EventRepositoryImpl;
 import org.venow.backend.testdata.EventDTOFactory;
+import org.venow.backend.testdata.UserDTOFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -81,13 +83,15 @@ class EventServiceTest {
     @DisplayName("should return all events by organizerId")
     @Test
     void shouldReturnAllEventsByOrganizerId() {
-        UUID organizerId = UUID.randomUUID();
-        List<EventDTO> events = List.of(EventDTOFactory.createDefault().withOrganizerId(organizerId).build(),
+        final UUID organizerId = UUID.randomUUID();
+        final List<EventDTO> events = List.of(EventDTOFactory.createDefault().withOrganizerId(organizerId).build(),
                 EventDTOFactory.createDefault().withEventId(UUID.randomUUID()).withOrganizerId(organizerId).build());
+        final UserDTO organizer = UserDTOFactory.createDefault().withUserId(organizerId).build();
 
         when(userService.existsByUserAndRole(organizerId, Role.ORGANIZER)).thenReturn(true);
         when(eventRepository.findAllByOrganizerId(organizerId)).thenReturn(events);
-        List<EventDTO> result = eventService.getAllEventsByOrganizer(organizerId, Role.ORGANIZER);
+        when(userService.getUserByUserId(organizerId)).thenReturn(organizer);
+        final List<EventDTO> result = eventService.getAllEventsByOrganizer(organizerId, Role.ORGANIZER);
 
         assertThat(result).hasSize(2);
         assertThat(result).extracting(EventDTO::title).containsExactly("Test Event", "Test Event");
@@ -98,7 +102,7 @@ class EventServiceTest {
     @DisplayName("should throw NotFoundException if organizerId does not exist")
     @Test
     void shouldThrowNotFoundExceptionIfOrganizerIdDoesNotExist() {
-        UUID organizerId = UUID.randomUUID();
+        final UUID organizerId = UUID.randomUUID();
         when(userService.existsByUserAndRole(organizerId, Role.ORGANIZER)).thenReturn(false);
 
         assertThatThrownBy(() -> eventService.getAllEventsByOrganizer(organizerId, Role.ORGANIZER))

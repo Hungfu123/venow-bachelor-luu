@@ -23,7 +23,7 @@ import org.venow.backend.service.exception.InvalidStatusException;
 import org.venow.backend.service.exception.NotFoundException;
 import org.venow.backend.testdata.ContractDTOFactory;
 import org.venow.backend.testdata.UserDTOFactory;
-import org.venow.backend.web.ExhibitorContractController;
+import org.venow.backend.web.exhibitor.ExhibitorContractController;
 import org.venow.backend.web.reponse.ContractResponse;
 
 import java.math.BigDecimal;

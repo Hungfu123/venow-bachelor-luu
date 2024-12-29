@@ -1,4 +1,4 @@
-package org.venow.backend.web;
+package org.venow.backend.web.organizer;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

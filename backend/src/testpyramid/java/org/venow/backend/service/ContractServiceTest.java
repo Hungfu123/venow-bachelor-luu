@@ -58,7 +58,6 @@ public class ContractServiceTest {
         when(eventservice.getEvent(application.getEventId())).thenReturn(event);
         when(userService.getUserByUserId(any())).thenReturn(organizer);
         when(applicationService.getApplication(application.getApplicationId())).thenReturn(application);
-        when(applicationService.getApplicationName(application.getApplicationId())).thenReturn("applicantName");
         when(contractRepository.save(any())).thenReturn(contract);
 
         ContractDTO createdContract = contractService.createContract(application.getApplicationId(), organizer.userId(), price, "B99");
@@ -66,11 +65,11 @@ public class ContractServiceTest {
         assertThat(createdContract.getContractId()).isEqualTo(contract.getContractId());
         assertThat(createdContract.getOrganizer().userId()).isEqualTo(organizer.userId());
         assertThat(createdContract.getApplication()).isEqualTo(application);
-        assertThat(createdContract.getApplicantName()).isEqualTo("applicantName");
+        assertThat(createdContract.getApplicantName()).isEqualTo("Luugner");
         assertThat(createdContract.getOrganizerName()).isEqualTo(organizer.name());
         assertThat(createdContract.getEventName()).isEqualTo(event.title());
         assertThat(createdContract.getLocation()).isEqualTo(event.location());
-        assertThat(createdContract.getTerms()).isEqualTo("By accepting this contract, you agree to the terms and conditions of the event.");
+        assertThat(createdContract.getTerms()).isEqualTo(contract.getTerms());
         assertThat(createdContract.getPrice().getAmountInEuro()).isEqualTo(contract.getPrice().getAmountInEuro());
         assertThat(createdContract.getBoothNumber()).isEqualTo(contract.getBoothNumber());
         assertThat(createdContract.getStatus()).isEqualTo(contract.getStatus());
@@ -137,7 +136,7 @@ public class ContractServiceTest {
         final EventDTO event = EventDTOFactory.createDefault().build();
         final UserDTO organizer = UserDTOFactory.createDefault().build();
         final PriceDto price = new PriceDto(0);
-        final ContractDTO contract = ContractDTOFactory.createDefault().withPrice(1).build();
+        final ContractDTO contract = ContractDTOFactory.createDefault().withPrice(price.getAmountInEuro().intValue()).build();
 
         when(applicationService.getApplication(application.getApplicationId())).thenReturn(application);
         when(eventservice.getEvent(application.getEventId())).thenReturn(event);
@@ -202,14 +201,16 @@ public class ContractServiceTest {
                 .withContractId(UUID.randomUUID().toString())
                 .build();
 
+        final UserDTO exhibitor = UserDTOFactory.createDefault().build();
+        when(userService.getUserByUserId(application1.getUserId())).thenReturn(exhibitor);
+        when(userService.getUserByUserId(application2.getUserId())).thenReturn(exhibitor);
+        when(userService.getUserByUserId(application3.getUserId())).thenReturn(exhibitor);
+
         when(contractRepository.findAllByOrganizerId(organizerId)).thenReturn(List.of(contract1, contract2, contract3));
         when(userService.getUserByUserId(organizerId)).thenReturn(organizer);
         when(eventservice.getEvent(application1.getEventId())).thenReturn(event1);
         when(eventservice.getEvent(application2.getEventId())).thenReturn(event1);
         when(eventservice.getEvent(application3.getEventId())).thenReturn(event2);
-        when(applicationService.getApplicationName(application1.getApplicationId())).thenReturn("Test Application");
-        when(applicationService.getApplicationName(application2.getApplicationId())).thenReturn("Test Application");
-        when(applicationService.getApplicationName(application3.getApplicationId())).thenReturn("Test Application");
         when(userService.existsByUserAndRole(organizerId, Role.ORGANIZER)).thenReturn(true);
 
         List<ContractDTO> contracts = contractService.getAllContractsByOrganizer(organizerId);
@@ -253,9 +254,10 @@ public class ContractServiceTest {
         when(contractRepository.findById(contractId)).thenReturn(Optional.of(contract));
         EventDTO event = EventDTOFactory.createDefault().build();
         UserDTO user = UserDTOFactory.createDefault().build();
+        UserDTO exhibitor = UserDTOFactory.createDefault().build();
+        when(userService.getUserByUserId(contract.getApplication().getUserId())).thenReturn(exhibitor);
         when(userService.getUserByUserId(contract.getOrganizer().userId())).thenReturn(user);
         when(eventservice.getEvent(any())).thenReturn(event);
-        when(applicationService.getApplicationName(any())).thenReturn("Default Applicant");
 
         ContractDTO foundContract = contractService.getContractByContractId(contractId);
 
@@ -263,7 +265,7 @@ public class ContractServiceTest {
         assertThat(foundContract.getContractId()).isEqualTo(contract.getContractId());
         assertThat(foundContract.getOrganizer().userId()).isEqualTo(user.userId());
         assertThat(foundContract.getApplication()).isEqualTo(contract.getApplication());
-        assertThat(foundContract.getApplicantName()).isEqualTo(contract.getApplicantName());
+        assertThat(foundContract.getApplicantName()).isEqualTo(exhibitor.name());
         assertThat(foundContract.getOrganizerName()).isEqualTo(user.name());
         assertThat(foundContract.getEventName()).isEqualTo(event.title());
         assertThat(foundContract.getLocation()).isEqualTo(event.location());

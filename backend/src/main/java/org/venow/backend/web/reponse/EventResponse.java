@@ -12,6 +12,7 @@ public record EventResponse(
         String description,
         String location,
         LocalDateTime startDate,
-        LocalDateTime endDate
+        LocalDateTime endDate,
+        String organizerName
 ) {
 }

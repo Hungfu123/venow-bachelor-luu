@@ -20,7 +20,7 @@ import org.venow.backend.testdata.ApplicationDTOFactory;
 import org.venow.backend.testdata.ContractDTOFactory;
 import org.venow.backend.testdata.EventDTOFactory;
 import org.venow.backend.testdata.UserDTOFactory;
-import org.venow.backend.web.OrganizerContractController;
+import org.venow.backend.web.organizer.OrganizerContractController;
 import org.venow.backend.web.reponse.ContractResponse;
 import org.venow.backend.web.request.ContractRequest;
 

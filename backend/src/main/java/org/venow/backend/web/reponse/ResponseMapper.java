@@ -18,6 +18,7 @@ public class ResponseMapper {
                 .location(event.location())
                 .startDate(event.startDate())
                 .endDate(event.endDate())
+                .organizerName(event.organizerName())
                 .build();
     }
     public static ApplicationResponse mapToApplicationResponse(final ApplicationDTO application) {
