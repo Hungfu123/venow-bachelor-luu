@@ -26,7 +26,7 @@ ExhibitorControllerTest extends TestBase {
 
 
     @Test
-    @DisplayName("exhibitor is on event detail page for an event ")
+    @DisplayName("organizer is on event detail page for an event ")
     @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
     void userGetsOnEventPage() {
         final ResponseEntity<String> response = restTemplate
@@ -35,7 +35,7 @@ ExhibitorControllerTest extends TestBase {
                         HttpMethod.GET,
                         new HttpEntity<>(null),
                         String.class,
-                        port, EXHIBITOR_ID_1, EVENT_ID_1);
+                        port, "123e4567-e89b-12d3-a456-426614174000", EVENT_ID_1);
         assertThat(response.getStatusCode())
                 .as("check if HTTP Status 200 OK")
                 .isEqualTo(HttpStatus.OK);
@@ -48,13 +48,14 @@ ExhibitorControllerTest extends TestBase {
                         json -> json.node("description").isEqualTo(EVENT_1.getDescription()),
                         json -> json.node("location").isEqualTo(EVENT_1.getLocation()),
                         json -> json.node("startDate").isEqualTo(EVENT_1.getStartDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)),
-                        json -> json.node("endDate").isEqualTo(EVENT_1.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                        json -> json.node("endDate").isEqualTo(EVENT_1.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)),
+                        json -> json.node("organizerName").isEqualTo("Robert J")
                 );
 
     }
 
     @Test
-    @DisplayName("exhibitor is on event detail page and gets NotFound ")
+    @DisplayName("organizer is on event detail page and gets NotFound ")
     void userGetsBadRequest() {
         final ResponseEntity<String> response = restTemplate
                 .exchange(
@@ -62,7 +63,7 @@ ExhibitorControllerTest extends TestBase {
                         HttpMethod.GET,
                         new HttpEntity<>(null),
                         String.class,
-                        port, EXHIBITOR_ID_1, null);
+                        port, "b23e4567-e89b-12d3-a456-426614174002", null);
         assertThat(response.getStatusCode())
                 .as("check if HTTP Status NOT FOUND")
                 .isEqualTo(HttpStatus.NOT_FOUND);

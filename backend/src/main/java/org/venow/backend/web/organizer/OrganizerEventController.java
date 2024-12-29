@@ -30,4 +30,13 @@ public class OrganizerEventController {
         log.info("Found all events from organizer{}", organizerId);
         return ResponseEntity.ok(allEvents.stream().map(ResponseMapper::mapToEventResponse).toList());
     }
+
+
+    @GetMapping("/events/{eventId}")
+    public ResponseEntity<EventResponse> getEventDetails(
+            @PathVariable("organizerId") final UUID organizerId,
+            @PathVariable("eventId") final UUID eventId) {
+        final EventDTO eventDTO = eventservice.getEvent(eventId);
+        return ResponseEntity.ok(ResponseMapper.mapToEventResponse(eventDTO));
+    }
 }

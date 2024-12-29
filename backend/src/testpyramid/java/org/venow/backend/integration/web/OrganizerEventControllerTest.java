@@ -74,6 +74,46 @@ public class OrganizerEventControllerTest {
                 .getContentAsString();
 
         assertThat(contentAsString).isEqualTo("OrganizerId not found");
-
     }
+
+    @Test
+    @DisplayName("should return event details")
+    public void test3() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault()
+                .withOrganizerName(testuser.name())
+                .build();
+
+        when(eventService.getEvent(expectedEvent.eventId())).thenReturn(expectedEvent);
+
+        final String contentAsString = mockMvc.perform(get("/organizer/{organizerId}/events/{eventId}", testuser.userId(), expectedEvent.eventId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        EventDTO eventDTO = objectMapper.readValue(contentAsString, EventDTO.class);
+        assertThat(eventDTO).usingRecursiveComparison().ignoringFields("organizerId").isEqualTo(expectedEvent);
+    }
+
+    @Test
+    @DisplayName("cant find event")
+    public void test4() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().withOrganizerId(testuser.userId()).build();
+
+        when(eventService.getEvent(expectedEvent.eventId()))
+                .thenThrow(new NotFoundException("Event not found"));
+
+        final String contentAsString = mockMvc.perform(get("/organizer/{organizerId}/events/{eventId}", testuser.userId(), expectedEvent.eventId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo("Event not found");
+    }
+
 }

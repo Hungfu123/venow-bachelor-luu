@@ -48,6 +48,11 @@ public class EventDTOFactory {
             return this;
         }
 
+        public EventDTOWith withOrganizerName(String organizerName) {
+            this.eventDTO = eventDTO.toBuilder().organizerName(organizerName).build();
+            return this;
+        }
+
         public EventDTO build() {
             return this.eventDTO;
         }

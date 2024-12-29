@@ -55,11 +55,12 @@ class EventServiceTest {
     @Test
     void shouldReturnEventByEventId() {
         UUID eventId = UUID.randomUUID();
-        EventDTO event = EventDTOFactory.createDefault().withEventId(eventId).build();
-
+        final EventDTO event = EventDTOFactory.createDefault().withEventId(eventId).build();
+        final UserDTO organizer = UserDTOFactory.createDefault().withUserId(event.organizerId()).build();
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(event));
+        when(userService.getUserByUserId(event.organizerId())).thenReturn(organizer);
 
-        EventDTO result = eventService.getEvent(eventId);
+        final EventDTO result = eventService.getEvent(eventId);
 
         assertThat(result).isNotNull();
         assertThat(result.title()).isEqualTo("Test Event");
@@ -71,7 +72,7 @@ class EventServiceTest {
     @DisplayName("should throw NotFoundException if eventId does not exist")
     @Test
     void shouldThrowNotFoundExceptionIfEventIdDoesNotExist() {
-        UUID eventId = UUID.randomUUID();
+        final UUID eventId = UUID.randomUUID();
         when(eventRepository.findById(eventId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> eventService.getEvent(eventId))

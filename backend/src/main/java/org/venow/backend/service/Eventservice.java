@@ -23,7 +23,9 @@ public class Eventservice {
     }
 
     public EventDTO getEvent(UUID eventId) {
-        return eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Event not found"));
+        EventDTO event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Event not found"));
+        UserDTO organizer = userService.getUserByUserId(event.organizerId());
+        return new EventDTO(event.eventId(), event.title(), event.description(), event.location(), event.startDate(), event.endDate(), organizer.name(), event.organizerId());
     }
 
     public List<EventDTO> getAllEventsByOrganizer(UUID organizerId, Role role) {
