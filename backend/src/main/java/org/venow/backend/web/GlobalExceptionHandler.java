@@ -1,5 +1,6 @@
 package org.venow.backend.web;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -42,12 +43,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, Object> errors = new HashMap<>();
 
+        ex.getBindingResult().getGlobalErrors().forEach(error -> {
+            errors.put("message", error.getDefaultMessage());
+        });
+
         ex.getBindingResult().getFieldErrors().forEach(error -> {
-            String[] pathParts = error.getField().split("\\.");
-            if (pathParts.length > 1) {
-                Map<String, String> nestedError = new HashMap<>();
-                nestedError.put(pathParts[1], error.getDefaultMessage());
-                errors.put(pathParts[0], nestedError);
+            String[] parts = error.getField().split("\\.");
+            if (parts.length > 1) {
+                String parentField = parts[0];
+                String childField = parts[1];
+                Map<String, String> nestedErrors = (Map<String, String>) errors.getOrDefault(parentField, new HashMap<>());
+                nestedErrors.put(childField, error.getDefaultMessage());
+                errors.put(parentField, nestedErrors);
             } else {
                 errors.put(error.getField(), error.getDefaultMessage());
             }
@@ -60,5 +67,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleInvalidStatusException(InvalidStatusException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
+
+
 }
 

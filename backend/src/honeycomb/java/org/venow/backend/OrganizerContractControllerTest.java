@@ -182,10 +182,11 @@ class OrganizerContractControllerTest extends TestBase {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 
         String responseBody = response.getBody();
-        assertThatJson(responseBody).and(
-                jsonNode -> jsonNode.node("price.amountInEuro").isEqualTo("Price must be greater than 0"),
-                jsonNode -> jsonNode.node("boothNumber").isEqualTo("Stand number must not be empty")
-        );
+        assertThatJson(responseBody)
+                .node("boothNumber").isEqualTo("Stand number must not be empty");
+
+        assertThatJson(responseBody)
+                .node("price.amountInEuro").isEqualTo("Price must be greater than 0");
     }
 
     @DisplayName("submit on not in progress status application - CONFLICT")

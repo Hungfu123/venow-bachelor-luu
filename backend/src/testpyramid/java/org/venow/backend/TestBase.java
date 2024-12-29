@@ -14,7 +14,7 @@ import java.io.IOException;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @AutoConfigureWireMock
-@ActiveProfiles("testpyramid-testpyramid")
+@ActiveProfiles("testpyramid-h2")
 public abstract class TestBase {
 
 
