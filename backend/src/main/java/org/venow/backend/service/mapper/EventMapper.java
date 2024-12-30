@@ -8,6 +8,7 @@ public class EventMapper {
 
     public static EventDTO mapToEventDTO(Event event) {
         return EventDTO.builder()
+                .id(event.getId())
                 .eventId(event.getEventId())
                 .title(event.getTitle())
                 .description(event.getDescription())
@@ -20,6 +21,7 @@ public class EventMapper {
 
     public static Event mapToEntity(EventDTO eventDTO) {
         return Event.builder()
+                .id(eventDTO.id())
                 .eventId(eventDTO.eventId())
                 .title(eventDTO.title())
                 .description(eventDTO.description())

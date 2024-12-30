@@ -45,6 +45,35 @@ public class OrganizerEventController {
         return ResponseEntity.ok(ResponseMapper.mapToEventResponse(eventDTO));
     }
 
+    @GetMapping("/events/edit/{eventId}")
+    public ResponseEntity<EventResponse> editEventFormular(
+            @PathVariable("organizerId") final UUID organizerId,
+            @PathVariable("eventId") final UUID eventId) {
+        final EventDTO eventDTO = eventservice.getEvent(eventId);
+        return ResponseEntity.ok(ResponseMapper.mapToEventResponse(eventDTO));
+    }
+
+    @PostMapping("/events/edit/{eventId}")
+    public ResponseEntity<EventResponse> editEvent(
+            @PathVariable("organizerId") final UUID organizerId,
+            @PathVariable("eventId") final UUID eventId,
+            @Valid @RequestBody final EventRequest request) {
+
+        final EventDTO eventDTO = EventDTO.builder()
+                .eventId(eventId)
+                .title(request.title())
+                .description(request.description())
+                .location(request.location())
+                .startDate(request.startDate())
+                .endDate(request.endDate())
+                .organizerId(organizerId)
+                .build();
+
+        final EventDTO updatedEvent = eventservice.updateEvent(eventDTO, organizerId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseMapper.mapToEventResponse(updatedEvent));
+    }
+
     @GetMapping("/events/create")
     public ResponseEntity<EventResponse> createEventFormular(
             @PathVariable("organizerId") final UUID organizerId) {

@@ -1,7 +1,6 @@
 package org.venow.backend;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.domain.model.User;
+import org.venow.backend.infrastructure.EventRepositoryImpl;
 import org.venow.backend.testfactory.UserTestData;
 import org.venow.backend.web.request.EventRequest;
 
@@ -22,9 +22,41 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 
 class OrganizerEventControllerTest extends TestBase {
+    @Test
+    @DisplayName("organizer edit event")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    void organizerEditEvent() throws Exception {
+        final EventRequest eventRequest = loadObjectFromJson("/requests/event-request.json", EventRequest.class);
+        final User user = UserTestData.createOrganizer1();
+        final ResponseEntity<String> response = restTemplate
+                .exchange(
+                        "http://localhost:{port}/organizer/{organizerId}/events/edit/{eventId}",
+                        HttpMethod.POST,
+                        new HttpEntity<>(eventRequest),
+                        String.class,
+                        port, user.getUserId(), "45353065-3834-3030-2d65-3239633d3431");
+
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Status 200 OK")
+                .isEqualTo(HttpStatus.CREATED);
+
+        assertThatJson(response.getBody())
+                .as("check if response contains expected event details for created event")
+                .and(
+                        json -> json.node("title").isEqualTo("Test Event"),
+                        json -> json.node("description").isEqualTo("Test Description"),
+                        json -> json.node("location").isEqualTo("Test Location"),
+                        json -> json.node("startDate").isEqualTo("2021-12-12T12:00:00"),
+                        json -> json.node("endDate").isEqualTo("2021-12-12T14:00:00"),
+                        json -> json.node("organizerName").isEqualTo("Robert J")
+                );
+    }
+
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private EventRepositoryImpl eventrepository;
 
     @Test
     @DisplayName("should return all events by organizer")
@@ -180,6 +212,64 @@ class OrganizerEventControllerTest extends TestBase {
         ).as("check if response contains expected error message")
                 .and(
                         json -> json.node("message").isEqualTo("End date must be after start date")
+                );
+
+    }
+
+    @Test
+    @DisplayName("organizer edit event with invalid date")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    void organizerEditEventWithInvalidDate() throws Exception {
+        final EventRequest eventRequest = loadObjectFromJson("/requests/event-request-invalid-date.json", EventRequest.class);
+        final User user = UserTestData.createOrganizer1();
+        final ResponseEntity<String> response = restTemplate
+                .exchange(
+                        "http://localhost:{port}/organizer/{organizerId}/events/edit/{eventId}",
+                        HttpMethod.POST,
+                        new HttpEntity<>(eventRequest),
+                        String.class,
+                        port, user.getUserId(), "45353065-3834-3030-2d65-3239633d3431");
+
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Status 400 BAD REQUEST")
+                .isEqualTo(HttpStatus.BAD_REQUEST);
+
+        assertThatJson(
+                response.getBody()
+        ).as("check if response contains expected error message")
+                .and(
+                        json -> json.node("message").isEqualTo("End date must be after start date")
+                );
+
+    }
+
+    @Test
+    @DisplayName("organizer edit event with empty validation")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    void organizerEditEventWithEmpty() throws Exception {
+        final EventRequest eventRequest = loadObjectFromJson("/requests/event-request-empty.json", EventRequest.class);
+        final User user = UserTestData.createOrganizer1();
+        final ResponseEntity<String> response = restTemplate
+                .exchange(
+                        "http://localhost:{port}/organizer/{organizerId}/events/edit/{eventId}",
+                        HttpMethod.POST,
+                        new HttpEntity<>(eventRequest),
+                        String.class,
+                        port, user.getUserId(), "45353065-3834-3030-2d65-3239633d3431");
+
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Status 400 BAD REQUEST")
+                .isEqualTo(HttpStatus.BAD_REQUEST);
+
+        assertThatJson(
+                response.getBody()
+        ).as("check if response contains expected error message")
+                .and(
+                        json -> json.node("title").isEqualTo("darf nicht leer sein"),
+                        json -> json.node("description").isEqualTo("darf nicht leer sein"),
+                        json -> json.node("description").isEqualTo("darf nicht leer sein"),
+                        json -> json.node("startDate").isEqualTo("darf nicht null sein"),
+                        json -> json.node("endDate").isEqualTo("darf nicht null sein")
                 );
 
     }

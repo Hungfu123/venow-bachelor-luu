@@ -147,6 +147,42 @@ class EventServiceTest {
         verify(userService, times(1)).existsByUserAndRole(organizerId, Role.ORGANIZER);
     }
 
+    @DisplayName("should update an event")
+    @Test
+    void shouldUpdateEvent() {
+        final UUID organizerId = UUID.randomUUID();
+        final UserDTO organizer = UserDTOFactory.createDefault().withUserId(organizerId).build();
+        final EventDTO event = EventDTOFactory.createDefault().withOrganizerId(organizerId).withOrganizerName(organizer.name()).build();
+        final EventDTO retrievedEvent = EventDTOFactory.createDefault().withEventId(event.eventId()).withOrganizerId(organizerId).build();
+
+        when(userService.existsByUserAndRole(organizerId, Role.ORGANIZER)).thenReturn(true);
+        when(userService.getUserByUserId(organizerId)).thenReturn(organizer);
+        when(eventRepository.findById(event.eventId())).thenReturn(Optional.of(retrievedEvent));
+        when(eventRepository.save(event)).thenReturn(event);
+
+        final EventDTO result = eventService.updateEvent(event, organizerId);
+
+        assertThat(result).isNotNull();
+        assertThat(result.title()).isEqualTo("Test Event");
+        assertThat(result.description()).isEqualTo("Test Description");
+
+        verify(eventRepository, times(1)).save(event);
+    }
+
+    @DisplayName("should throw NotFoundException if organizerId does not exist")
+    @Test
+    void shouldThrowNotFoundExceptionIfOrganizerIdDoesNotExistByUpdate() {
+        final UUID organizerId = UUID.randomUUID();
+        final EventDTO event = EventDTOFactory.createDefault().build();
+
+        when(userService.existsByUserAndRole(organizerId, Role.ORGANIZER)).thenReturn(false);
+
+        assertThatThrownBy(() -> eventService.updateEvent(event, organizerId))
+                .isInstanceOf(NotFoundException.class);
+
+        verify(userService, times(1)).existsByUserAndRole(organizerId, Role.ORGANIZER);
+    }
+
 
 
 }

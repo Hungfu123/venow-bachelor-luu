@@ -233,5 +233,91 @@ public class OrganizerEventControllerTest {
                 .andExpect(jsonPath("$.message").value("End date must be after start date"));
     }
 
+    @Test
+    @DisplayName("edit an event")
+    public void test8() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().withOrganizerName(testuser.name()).build();
+        final String eventRequest = objectMapper.writeValueAsString(new EventRequest("Test Event", "Test Description", "Duesseldorf", LocalDateTime.parse("2024-01-01T08:02"), LocalDateTime.parse("2024-01-03T08:02")));
 
+        when(eventService.updateEvent(any(),any())).thenReturn(expectedEvent);
+
+        final String contentAsString = mockMvc.perform(post("/organizer/{organizerId}/events/edit/{eventId}", testuser.userId(), expectedEvent.eventId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(eventRequest))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        final EventDTO eventDTO = objectMapper.readValue(contentAsString, EventDTO.class);
+        assertThat(eventDTO).usingRecursiveComparison().ignoringFields("organizerId").isEqualTo(expectedEvent);
+    }
+
+    @Test
+    @DisplayName("cant find organizerId")
+    public void test9() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().withOrganizerName(testuser.name()).build();
+        final String eventRequest = objectMapper.writeValueAsString(new EventRequest("Test Event", "Test Description", "Duesseldorf", LocalDateTime.parse("2024-01-01T08:02"), LocalDateTime.parse("2024-01-03T08:02")));
+
+        when(eventService.updateEvent(any(),any()))
+                .thenThrow(new NotFoundException("OrganizerId not found"));
+
+        final String contentAsString = mockMvc.perform(post("/organizer/{organizerId}/events/edit/{eventId}", testuser.userId(), expectedEvent.eventId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(eventRequest))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo("OrganizerId not found");
+    }
+
+    @Test
+    @DisplayName("Validation fails when mandatory fields are missing")
+    public void test10() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().withOrganizerName(testuser.name()).build();
+        final String invalidEventRequest = objectMapper.writeValueAsString(
+                new EventRequest("", "", "", null, null)
+        );
+
+        mockMvc.perform(post("/organizer/{organizerId}/events/edit/{eventId}", testuser.userId(), expectedEvent.eventId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidEventRequest))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.title").exists())
+                .andExpect(jsonPath("$.title").value("must not be empty"))
+                .andExpect(jsonPath("$.description").exists())
+                .andExpect(jsonPath("$.description").value("must not be empty"))
+                .andExpect(jsonPath("$.location").exists())
+                .andExpect(jsonPath("$.location").value("must not be empty"))
+                .andExpect(jsonPath("$.startDate").exists())
+                .andExpect(jsonPath("$.startDate").value("must not be null"))
+                .andExpect(jsonPath("$.endDate").exists())
+                .andExpect(jsonPath("$.endDate").value("must not be null"));
+    }
+
+    @Test
+    @DisplayName("Validation fails when endDate is before startDate")
+    public void test11() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().withOrganizerName(testuser.name()).build();
+        final String invalidEventRequest = objectMapper.writeValueAsString(
+                new EventRequest("Test Event", "Test Description", "Hoehle",
+                        LocalDateTime.of(2024, 1, 2, 10, 0),
+                        LocalDateTime.of(2024, 1, 1, 10, 0))
+        );
+
+        when(eventService.updateEvent(any(),any())).thenReturn(expectedEvent);
+
+        mockMvc.perform(post("/organizer/{organizerId}/events/edit/{eventId}", testuser.userId(), expectedEvent.eventId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidEventRequest))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.message").value("End date must be after start date"));
+    }
 }

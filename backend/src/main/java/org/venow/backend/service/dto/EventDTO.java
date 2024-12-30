@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder(toBuilder = true)
-public record EventDTO(UUID eventId,
+public record EventDTO( Long id, UUID eventId,
                        String title,
                        String description,
                        String location,
