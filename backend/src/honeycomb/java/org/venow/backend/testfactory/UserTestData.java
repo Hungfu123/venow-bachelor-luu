@@ -37,6 +37,7 @@ public class UserTestData {
                 .id(2L)
                 .userId(UUID.fromString("123e4567-e89b-12d3-a456-426614174000"))
                 .email("organizer1@example.com")
+                .name("Organizer 1")
                 .role(org.venow.backend.domain.model.Role.ORGANIZER)
                 .build();
     }
@@ -46,6 +47,7 @@ public class UserTestData {
                 .id(3L)
                 .userId(UUID.fromString("b23e4567-e89b-12d3-a456-426614174001"))
                 .email("organizer2@example.com")
+                .name("Organizer 2")
                 .role(org.venow.backend.domain.model.Role.ORGANIZER)
                 .build();
     }

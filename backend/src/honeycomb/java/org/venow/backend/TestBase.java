@@ -1,6 +1,7 @@
 package org.venow.backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
@@ -32,6 +33,7 @@ public abstract class TestBase {
     protected static final User USER_EXHIBITOR_3 = UserTestData.createExhibitor3();
     protected static final User USER_EXHIBITOR_2 = UserTestData.createExhibitor2();
     protected static final User USER_ORGANIZER_1 = UserTestData.createOrganizer2();
+    protected static final User USER_ORGANIZER_2 = UserTestData.createOrganizer2();
 
     protected static final Event EVENT_1 = new Event(
             null,
@@ -74,6 +76,7 @@ public abstract class TestBase {
     protected <T> T loadObjectFromJson(String jsonFilePath, Class<T> targetType) {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
             return mapper.readValue(new ClassPathResource(jsonFilePath).getFile(), targetType);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load JSON file for " + targetType.getSimpleName(), e);

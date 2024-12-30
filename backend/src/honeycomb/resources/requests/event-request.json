@@ -1,0 +1,7 @@
+{
+  "title": "Test Event",
+  "description":"Test Description",
+  "location": "Test Location",
+  "startDate": "2021-12-12T12:00:00",
+  "endDate": "2021-12-12T14:00:00"
+}

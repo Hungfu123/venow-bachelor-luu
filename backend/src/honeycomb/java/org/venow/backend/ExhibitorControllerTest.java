@@ -26,7 +26,7 @@ ExhibitorControllerTest extends TestBase {
 
 
     @Test
-    @DisplayName("organizer is on event detail page for an event ")
+    @DisplayName("exhibitor is on event detail page for an event ")
     @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
     void userGetsOnEventPage() {
         final ResponseEntity<String> response = restTemplate
@@ -55,7 +55,7 @@ ExhibitorControllerTest extends TestBase {
     }
 
     @Test
-    @DisplayName("organizer is on event detail page and gets NotFound ")
+    @DisplayName("exhibitor is on event detail page and gets NotFound ")
     void userGetsBadRequest() {
         final ResponseEntity<String> response = restTemplate
                 .exchange(
