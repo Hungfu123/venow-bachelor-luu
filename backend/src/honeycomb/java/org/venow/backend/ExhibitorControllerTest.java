@@ -31,7 +31,7 @@ ExhibitorControllerTest extends TestBase {
     void userGetsOnEventPage() {
         final ResponseEntity<String> response = restTemplate
                 .exchange(
-                        "http://localhost:{port}exhibitor/{userId}/event/{eventId}",
+                        "http://localhost:{port}exhibitor/{userId}/events/{eventId}",
                         HttpMethod.GET,
                         new HttpEntity<>(null),
                         String.class,
@@ -75,7 +75,7 @@ ExhibitorControllerTest extends TestBase {
     public void test() {
         ResponseEntity<String> response =
                 restTemplate.exchange(
-                        "http://localhost:{port}exhibitor/{exhibitorId}/event",
+                        "http://localhost:{port}exhibitor/{exhibitorId}/events",
                         HttpMethod.GET,
                         new HttpEntity<>(null),
                         String.class,
@@ -98,7 +98,7 @@ ExhibitorControllerTest extends TestBase {
     @DisplayName("exhibitor gets on application for eventId")
     void applicationGetsOnApplicationPage() {
         final ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:{port}exhibitor/{exhibitorId}/event/{eventId}/application",
+                "http://localhost:{port}exhibitor/{exhibitorId}/events/{eventId}/application",
                 HttpMethod.GET,
                 new HttpEntity<>(null),
                 String.class,
@@ -116,7 +116,7 @@ ExhibitorControllerTest extends TestBase {
         ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
 
         final ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:{port}exhibitor/{userId}/event/{eventId}/application",
+                "http://localhost:{port}exhibitor/{userId}/events/{eventId}/application",
                 HttpMethod.POST,
                 new HttpEntity<>(requestBody),
                 String.class,
@@ -146,7 +146,7 @@ ExhibitorControllerTest extends TestBase {
         ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
 
         final ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:{port}exhibitor/{userId}/event/{eventId}/application",
+                "http://localhost:{port}exhibitor/{userId}/events/{eventId}/application",
                 HttpMethod.POST,
                 new HttpEntity<>(requestBody),
                 String.class,
@@ -168,7 +168,7 @@ ExhibitorControllerTest extends TestBase {
 
         ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
 
-        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:{port}exhibitor/{userId}/event/{eventId}/application",
+        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:{port}exhibitor/{userId}/events/{eventId}/application",
                         HttpMethod.POST,
                 new HttpEntity<>(requestBody),
                 String.class,
@@ -190,7 +190,7 @@ ExhibitorControllerTest extends TestBase {
     @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
     void onApplicationDetailPage() {
         final ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
-        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:{port}exhibitor/{userId}/event/{eventId}/application/{applicationId}",
+        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:{port}exhibitor/{userId}/events/{eventId}/application/{applicationId}",
                 HttpMethod.GET,
                 new HttpEntity<>(requestBody),
                 String.class,

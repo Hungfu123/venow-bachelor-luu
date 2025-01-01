@@ -71,6 +71,7 @@ public abstract class TestBase {
         registry.add("spring.datasource.username", jdbcDataBaseContainer::getUsername);
         registry.add("spring.datasource.password", jdbcDataBaseContainer::getPassword);
         registry.add("spring.datasource.driver-class-name", jdbcDataBaseContainer::getDriverClassName);
+
     }
 
     protected <T> T loadObjectFromJson(String jsonFilePath, Class<T> targetType) {

@@ -51,7 +51,7 @@ class ExhibitorControllerTest {
         final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
         when(eventservice.getEvent(any())).thenReturn(expectedEvent);
 
-        mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}", testuser.userId(), expectedEvent.eventId()))
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/events/{eventId}", testuser.userId(), expectedEvent.eventId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.eventId").exists())
                 .andExpect(jsonPath("$.title").value("Test Event"))
@@ -63,7 +63,7 @@ class ExhibitorControllerTest {
     @DisplayName("cant get specific Event - BadRequest")
     @Test
     void cantGetEventId() throws Exception {
-        mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}", null, UUID.randomUUID()))
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/events/{eventId}", null, UUID.randomUUID()))
                 .andExpect(status().isNotFound());
 
     }
@@ -75,7 +75,7 @@ class ExhibitorControllerTest {
         final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
         when(eventservice.getEvent(any())).thenReturn(expectedEvent);
 
-        mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}/application", testuser.userId(), expectedEvent.eventId()))
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/events/{eventId}/application", testuser.userId(), expectedEvent.eventId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(""));
 
@@ -86,7 +86,7 @@ class ExhibitorControllerTest {
     void exhibitorCantGetApplicationDetails() throws Exception {
         final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
 
-        mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}/application", null, expectedEvent.eventId()))
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/events/{eventId}/application", null, expectedEvent.eventId()))
                 .andExpect(status().isNotFound());
     }
 
@@ -102,7 +102,7 @@ class ExhibitorControllerTest {
         final ApplicationDTO expectedApplicationDTO = ApplicationDTOFactory.createDefault().build();
         when(applicationservice.createApplication(any())).thenReturn(expectedApplicationDTO);
 
-        mockMvc.perform(post("/exhibitor/{exhibitorId}/event/{eventId}/application", testuser.userId(), expectedEvent.eventId())
+        mockMvc.perform(post("/exhibitor/{exhibitorId}/events/{eventId}/application", testuser.userId(), expectedEvent.eventId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(applicationRequest)))
                 .andExpect(status().isCreated())
@@ -119,7 +119,7 @@ class ExhibitorControllerTest {
         final UserDTO testuser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
         final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
 
-        mockMvc.perform(post("/exhibitor/{exhibitorId}/event/{eventId}/application", testuser.userId(), expectedEvent.eventId())
+        mockMvc.perform(post("/exhibitor/{exhibitorId}/events/{eventId}/application", testuser.userId(), expectedEvent.eventId())
                         .content(""))
                 .andExpect(status().isBadRequest());
     }
@@ -133,7 +133,7 @@ class ExhibitorControllerTest {
         when(applicationservice.getApplication(any())).thenReturn(expectedApplication);
         when(eventservice.getEvent(any())).thenReturn(expectedEvent);
 
-        String contentAsString = mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}/application/{applicationId}", testuser.userId(), expectedEvent.eventId(), expectedApplication.getApplicationId())
+        String contentAsString = mockMvc.perform(get("/exhibitor/{exhibitorId}/events/{eventId}/application/{applicationId}", testuser.userId(), expectedEvent.eventId(), expectedApplication.getApplicationId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -154,7 +154,7 @@ class ExhibitorControllerTest {
         final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
         when(applicationservice.getApplication(any())).thenThrow(new NotFoundException("Application not found"));
 
-        String contentAsString = mockMvc.perform(get("/exhibitor/{exhibitorId}/event/{eventId}/application/{applicationId}", testuser.userId(), expectedEvent.eventId(), UUID.randomUUID())
+        String contentAsString = mockMvc.perform(get("/exhibitor/{exhibitorId}/events/{eventId}/application/{applicationId}", testuser.userId(), expectedEvent.eventId(), UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andReturn()

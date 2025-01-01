@@ -28,7 +28,7 @@ public class ExhibitorController {
     private final Eventservice eventservice;
     private final ApplicationService applicationservice;
 
-    @GetMapping("/event/{eventId}")
+    @GetMapping("/events/{eventId}")
     public ResponseEntity<EventResponse> getEventDetails(
             @PathVariable("exhibitorId") final UUID exhibitorId,
             @PathVariable("eventId") final UUID eventId) {
@@ -37,14 +37,14 @@ public class ExhibitorController {
         return ResponseEntity.ok(mapToEventResponse(eventDTO));
     }
 
-    @GetMapping("/event")
+    @GetMapping("/events")
     public ResponseEntity<List<EventResponse>> getAllEvents(@PathVariable("exhibitorId") final UUID exhibitorId) {
         final List<EventDTO> allEvents = eventservice.getAllEvents();
         log.info("Found all events");
         return ResponseEntity.ok(allEvents.stream().map(ResponseMapper::mapToEventResponse).toList());
     }
 
-    @GetMapping("/event/{eventId}/application")
+    @GetMapping("/events/{eventId}/application")
     public ResponseEntity<ApplicationResponse> getApplicationDetails(
             @PathVariable("eventId") final UUID eventId,
             @PathVariable("exhibitorId") final UUID exhibitorId
@@ -59,7 +59,7 @@ public class ExhibitorController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/event/{eventId}/application/{applicationId}")
+    @GetMapping("/events/{eventId}/application/{applicationId}")
     public ResponseEntity<ApplicationResponse> getApplicationDetails(
             @PathVariable("eventId") final UUID eventId,
             @PathVariable("exhibitorId") final UUID exhibitorId,
@@ -70,7 +70,7 @@ public class ExhibitorController {
         return ResponseEntity.ok(ResponseMapper.mapToApplicationResponse(applicationDTO));
     }
 
-    @PostMapping("/event/{eventId}/application")
+    @PostMapping("/events/{eventId}/application")
     public ResponseEntity<ApplicationResponse> applyForEvent(
             @PathVariable("exhibitorId") final UUID exhibitorId,
             @PathVariable("eventId") final UUID eventId,

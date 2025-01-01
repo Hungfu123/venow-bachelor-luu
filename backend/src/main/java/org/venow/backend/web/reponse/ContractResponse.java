@@ -2,7 +2,6 @@ package org.venow.backend.web.reponse;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import org.venow.backend.service.dto.PriceDto;
 
 import java.time.LocalDateTime;
