@@ -13,6 +13,7 @@ public record EventResponse(
         String location,
         LocalDateTime startDate,
         LocalDateTime endDate,
-        String organizerName
+        String organizerName,
+        Integer booths
 ) {
 }

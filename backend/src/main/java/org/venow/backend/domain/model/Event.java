@@ -37,6 +37,9 @@ public class Event {
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private final LocalDateTime endDate;
 
+    @Column(nullable = false, columnDefinition = "INT UNSIGNED")
+    private final Integer booths;
+
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private final UUID organizerId;
 

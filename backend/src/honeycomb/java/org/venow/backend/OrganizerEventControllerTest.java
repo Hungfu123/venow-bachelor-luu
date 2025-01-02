@@ -22,6 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 
 class OrganizerEventControllerTest extends TestBase {
+    @Autowired
+    private TestRestTemplate restTemplate;
+
     @Test
     @DisplayName("organizer edit event")
     @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
@@ -48,15 +51,10 @@ class OrganizerEventControllerTest extends TestBase {
                         json -> json.node("location").isEqualTo("Test Location"),
                         json -> json.node("startDate").isEqualTo("2021-12-12T12:00:00"),
                         json -> json.node("endDate").isEqualTo("2021-12-12T14:00:00"),
-                        json -> json.node("organizerName").isEqualTo("Robert J")
+                        json -> json.node("organizerName").isEqualTo("Robert J"),
+                        json ->json.node("booths").isEqualTo(50)
                 );
     }
-
-    @Autowired
-    private TestRestTemplate restTemplate;
-
-    @Autowired
-    private EventRepositoryImpl eventrepository;
 
     @Test
     @DisplayName("should return all events by organizer")
@@ -108,7 +106,8 @@ class OrganizerEventControllerTest extends TestBase {
                         json -> json.node("location").isEqualTo(EVENT_1.getLocation()),
                         json -> json.node("startDate").isEqualTo(EVENT_1.getStartDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)),
                         json -> json.node("organizerName").isEqualTo("Robert J"),
-                        json -> json.node("endDate").isEqualTo(EVENT_1.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                        json -> json.node("endDate").isEqualTo(EVENT_1.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)),
+                        json -> json.node("booths").isEqualTo(EVENT_1.getBooths())
                 );
 
     }
@@ -154,7 +153,8 @@ class OrganizerEventControllerTest extends TestBase {
                         json -> json.node("location").isEqualTo("Test Location"),
                         json -> json.node("startDate").isEqualTo("2021-12-12T12:00:00"),
                         json -> json.node("endDate").isEqualTo("2021-12-12T14:00:00"),
-                        json -> json.node("organizerName").isEqualTo("Robert J")
+                        json -> json.node("organizerName").isEqualTo("Robert J"),
+                        json -> json.node("booths").isEqualTo(50)
                 );
     }
 
@@ -184,7 +184,8 @@ class OrganizerEventControllerTest extends TestBase {
                         json -> json.node("description").isEqualTo("darf nicht leer sein"),
                         json -> json.node("description").isEqualTo("darf nicht leer sein"),
                         json -> json.node("startDate").isEqualTo("darf nicht null sein"),
-                        json -> json.node("endDate").isEqualTo("darf nicht null sein")
+                        json -> json.node("endDate").isEqualTo("darf nicht null sein"),
+                        json -> json.node("booths").isEqualTo("darf nicht null sein")
                 );
 
     }
@@ -269,7 +270,8 @@ class OrganizerEventControllerTest extends TestBase {
                         json -> json.node("description").isEqualTo("darf nicht leer sein"),
                         json -> json.node("description").isEqualTo("darf nicht leer sein"),
                         json -> json.node("startDate").isEqualTo("darf nicht null sein"),
-                        json -> json.node("endDate").isEqualTo("darf nicht null sein")
+                        json -> json.node("endDate").isEqualTo("darf nicht null sein"),
+                        json -> json.node("booths").isEqualTo("darf nicht null sein")
                 );
 
     }

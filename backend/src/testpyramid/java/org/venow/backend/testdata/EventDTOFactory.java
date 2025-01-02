@@ -15,6 +15,7 @@ public class EventDTOFactory {
                 .startDate(LocalDateTime.of(2024,1,1,8,2))
                 .endDate(LocalDateTime.of(2024,1,3,8,2))
                 .location("Duesseldorf")
+                .booths(50)
                 .organizerId(UUID.randomUUID())
                 .build();
 
@@ -50,6 +51,12 @@ public class EventDTOFactory {
 
         public EventDTOWith withOrganizerName(String organizerName) {
             this.eventDTO = eventDTO.toBuilder().organizerName(organizerName).build();
+            return this;
+        }
+
+
+        public EventDTOWith withBooths(Integer booths) {
+            this.eventDTO = eventDTO.toBuilder().booths(booths).build();
             return this;
         }
 

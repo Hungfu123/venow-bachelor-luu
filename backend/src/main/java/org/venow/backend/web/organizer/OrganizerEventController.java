@@ -67,6 +67,7 @@ public class OrganizerEventController {
                 .startDate(request.startDate())
                 .endDate(request.endDate())
                 .organizerId(organizerId)
+                .booths(request.booths())
                 .build();
 
         final EventDTO updatedEvent = eventservice.updateEvent(eventDTO, organizerId);
@@ -92,6 +93,7 @@ public class OrganizerEventController {
                 .location(request.location())
                 .startDate(request.startDate())
                 .endDate(request.endDate())
+                .booths(request.booths())
                 .organizerId(organizerId)
                 .build();
 

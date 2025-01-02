@@ -43,6 +43,7 @@ public abstract class TestBase {
             "Test Park",
             LocalDateTime.of(2024, 6, 1, 12, 0),
             LocalDateTime.of(2024, 6, 1, 23, 0),
+            50,
             UUID.fromString("123e4567-e89b-12d3-a456-426614174000")
     );
 

@@ -16,6 +16,7 @@ public class EventMapper {
                 .startDate(event.getStartDate())
                 .endDate(event.getEndDate())
                 .organizerId(event.getOrganizerId())
+                .booths(event.getBooths())
                 .build();
     }
 
@@ -29,6 +30,7 @@ public class EventMapper {
                 .startDate(eventDTO.startDate())
                 .endDate(eventDTO.endDate())
                 .organizerId(eventDTO.organizerId())
+                .booths(eventDTO.booths())
                 .build();
     }
 }

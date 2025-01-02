@@ -25,7 +25,7 @@ public class Eventservice {
     public EventDTO getEvent(final UUID eventId) {
         final EventDTO event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Event not found"));
         final UserDTO organizer = userService.getUserByUserId(event.organizerId());
-        return new EventDTO(event.id(), event.eventId(), event.title(), event.description(), event.location(), event.startDate(), event.endDate(), organizer.name(), event.organizerId());
+        return new EventDTO(event.id(), event.eventId(), event.title(), event.description(), event.location(), event.startDate(), event.endDate(), organizer.name(),event.booths(), event.organizerId());
     }
 
     public List<EventDTO> getAllEventsByOrganizer(final UUID organizerId,final Role role) {
@@ -35,7 +35,7 @@ public class Eventservice {
 
         return eventRepository.findAllByOrganizerId(organizerId).stream().map(event -> {
             UserDTO organizer = userService.getUserByUserId(event.organizerId());
-            return new EventDTO(event.id(), event.eventId(), event.title(), event.description(), event.location(), event.startDate(), event.endDate(), organizer.name(), event.organizerId());
+            return new EventDTO(event.id(), event.eventId(), event.title(), event.description(), event.location(), event.startDate(), event.endDate(), organizer.name(), event.booths(),event.organizerId());
 
         }).toList();
     }
@@ -47,7 +47,17 @@ public class Eventservice {
         final UserDTO organizer = userService.getUserByUserId(organizerId);
         final EventDTO savedEvent = eventRepository.save(event);
 
-        return EventDTO.builder().eventId(savedEvent.eventId()).title(savedEvent.title()).description(savedEvent.description()).location(savedEvent.location()).startDate(savedEvent.startDate()).endDate(savedEvent.endDate()).organizerName(organizer.name()).organizerId(savedEvent.organizerId()).build();
+        return EventDTO.builder()
+                .eventId(savedEvent.eventId())
+                .title(savedEvent.title())
+                .description(savedEvent.description())
+                .location(savedEvent.location())
+                .startDate(savedEvent.startDate())
+                .endDate(savedEvent.endDate())
+                .organizerName(organizer.name())
+                .organizerId(savedEvent.organizerId())
+                .booths(savedEvent.booths())
+                .build();
     }
 
     public EventDTO updateEvent(EventDTO event, UUID organizerId) {
@@ -65,10 +75,11 @@ public class Eventservice {
                 .startDate(event.startDate())
                 .endDate(event.endDate())
                 .organizerName(organizer.name())
+                .booths(event.booths())
                 .organizerId(event.organizerId()).build();
 
         final EventDTO updatedEvent = eventRepository.save(eventNew);
-        return  new EventDTO(updatedEvent.id(), updatedEvent.eventId(), updatedEvent.title(), updatedEvent.description(), updatedEvent.location(), updatedEvent.startDate(), updatedEvent.endDate(), organizer.name(), updatedEvent.organizerId());
+        return  new EventDTO(updatedEvent.id(), updatedEvent.eventId(), updatedEvent.title(), updatedEvent.description(), updatedEvent.location(), updatedEvent.startDate(), updatedEvent.endDate(), organizer.name(), updatedEvent.booths(),updatedEvent.organizerId());
     }
 
 }

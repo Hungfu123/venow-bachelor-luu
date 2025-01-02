@@ -144,6 +144,7 @@ public class OrganizerEventControllerTest {
         assertThat(eventDTO.endDate()).isNull();
         assertThat(eventDTO.organizerName()).isNull();
         assertThat(eventDTO.organizerId()).isNull();
+        assertThat(eventDTO.booths()).isNull();
     }
 
     @Test
@@ -151,7 +152,7 @@ public class OrganizerEventControllerTest {
     public void test6() throws Exception {
         final UserDTO testuser = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
         final EventDTO expectedEvent = EventDTOFactory.createDefault().withOrganizerName(testuser.name()).build();
-        final String eventRequest = objectMapper.writeValueAsString(new EventRequest("Test Event", "Test Description", "Duesseldorf", LocalDateTime.parse("2024-01-01T08:02"), LocalDateTime.parse("2024-01-03T08:02")));
+        final String eventRequest = objectMapper.writeValueAsString(new EventRequest("Test Event", "Test Description", "Duesseldorf", LocalDateTime.parse("2024-01-01T08:02"), LocalDateTime.parse("2024-01-03T08:02"), 50));
 
         when(eventService.createEvent(any(),any())).thenReturn(expectedEvent);
 
@@ -171,7 +172,7 @@ public class OrganizerEventControllerTest {
     @DisplayName("cant find organizerId")
     public void test7() throws Exception {
         final UserDTO testuser = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
-        final String eventRequest = objectMapper.writeValueAsString(new EventRequest("Test Event", "Test Description", "Duesseldorf", LocalDateTime.parse("2024-01-01T08:02"), LocalDateTime.parse("2024-01-03T08:02")));
+        final String eventRequest = objectMapper.writeValueAsString(new EventRequest("Test Event", "Test Description", "Duesseldorf", LocalDateTime.parse("2024-01-01T08:02"), LocalDateTime.parse("2024-01-03T08:02"),50));
 
         when(eventService.createEvent(any(),any()))
                 .thenThrow(new NotFoundException("OrganizerId not found"));
@@ -192,7 +193,7 @@ public class OrganizerEventControllerTest {
     public void testValidationFailsForMissingFields() throws Exception {
         final UserDTO testuser = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
         final String invalidEventRequest = objectMapper.writeValueAsString(
-                new EventRequest("", "", "", null, null)
+                new EventRequest("", "", "", null, null, null)
         );
 
         mockMvc.perform(post("/organizer/{organizerId}/events/create", testuser.userId())
@@ -208,7 +209,9 @@ public class OrganizerEventControllerTest {
                 .andExpect(jsonPath("$.startDate").exists())
                 .andExpect(jsonPath("$.startDate").value("must not be null"))
                 .andExpect(jsonPath("$.endDate").exists())
-                .andExpect(jsonPath("$.endDate").value("must not be null"));
+                .andExpect(jsonPath("$.endDate").value("must not be null"))
+                .andExpect(jsonPath("$.booths").exists())
+                .andExpect(jsonPath("$.booths").value("must not be null"));
     }
 
     @Test
@@ -219,7 +222,7 @@ public class OrganizerEventControllerTest {
         final String invalidEventRequest = objectMapper.writeValueAsString(
                 new EventRequest("Test Event", "Test Description", "Hoehle",
                         LocalDateTime.of(2024, 1, 2, 10, 0),
-                        LocalDateTime.of(2024, 1, 1, 10, 0))
+                        LocalDateTime.of(2024, 1, 1, 10, 0),50)
                 );
 
         when(eventService.createEvent(any(),any())).thenReturn(expectedEvent);
@@ -238,7 +241,7 @@ public class OrganizerEventControllerTest {
     public void test8() throws Exception {
         final UserDTO testuser = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
         final EventDTO expectedEvent = EventDTOFactory.createDefault().withOrganizerName(testuser.name()).build();
-        final String eventRequest = objectMapper.writeValueAsString(new EventRequest("Test Event", "Test Description", "Duesseldorf", LocalDateTime.parse("2024-01-01T08:02"), LocalDateTime.parse("2024-01-03T08:02")));
+        final String eventRequest = objectMapper.writeValueAsString(new EventRequest("Test Event", "Test Description", "Duesseldorf", LocalDateTime.parse("2024-01-01T08:02"), LocalDateTime.parse("2024-01-03T08:02"), 50));
 
         when(eventService.updateEvent(any(),any())).thenReturn(expectedEvent);
 
@@ -259,7 +262,7 @@ public class OrganizerEventControllerTest {
     public void test9() throws Exception {
         final UserDTO testuser = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
         final EventDTO expectedEvent = EventDTOFactory.createDefault().withOrganizerName(testuser.name()).build();
-        final String eventRequest = objectMapper.writeValueAsString(new EventRequest("Test Event", "Test Description", "Duesseldorf", LocalDateTime.parse("2024-01-01T08:02"), LocalDateTime.parse("2024-01-03T08:02")));
+        final String eventRequest = objectMapper.writeValueAsString(new EventRequest("Test Event", "Test Description", "Duesseldorf", LocalDateTime.parse("2024-01-01T08:02"), LocalDateTime.parse("2024-01-03T08:02"), 50));
 
         when(eventService.updateEvent(any(),any()))
                 .thenThrow(new NotFoundException("OrganizerId not found"));
@@ -281,7 +284,7 @@ public class OrganizerEventControllerTest {
         final UserDTO testuser = UserDTOFactory.createDefault().withUserId(UUID.randomUUID()).build();
         final EventDTO expectedEvent = EventDTOFactory.createDefault().withOrganizerName(testuser.name()).build();
         final String invalidEventRequest = objectMapper.writeValueAsString(
-                new EventRequest("", "", "", null, null)
+                new EventRequest("", "", "", null, null, null)
         );
 
         mockMvc.perform(post("/organizer/{organizerId}/events/edit/{eventId}", testuser.userId(), expectedEvent.eventId())
@@ -297,7 +300,9 @@ public class OrganizerEventControllerTest {
                 .andExpect(jsonPath("$.startDate").exists())
                 .andExpect(jsonPath("$.startDate").value("must not be null"))
                 .andExpect(jsonPath("$.endDate").exists())
-                .andExpect(jsonPath("$.endDate").value("must not be null"));
+                .andExpect(jsonPath("$.endDate").value("must not be null"))
+                .andExpect(jsonPath("$.booths").exists())
+                .andExpect(jsonPath("$.booths").value("must not be null"));
     }
 
     @Test
@@ -308,7 +313,8 @@ public class OrganizerEventControllerTest {
         final String invalidEventRequest = objectMapper.writeValueAsString(
                 new EventRequest("Test Event", "Test Description", "Hoehle",
                         LocalDateTime.of(2024, 1, 2, 10, 0),
-                        LocalDateTime.of(2024, 1, 1, 10, 0))
+                        LocalDateTime.of(2024, 1, 1, 10, 0),
+                        50)
         );
 
         when(eventService.updateEvent(any(),any())).thenReturn(expectedEvent);

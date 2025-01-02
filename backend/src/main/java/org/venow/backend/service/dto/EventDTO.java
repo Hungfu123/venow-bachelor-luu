@@ -14,6 +14,7 @@ public record EventDTO( Long id, UUID eventId,
                        LocalDateTime startDate,
                        LocalDateTime endDate,
                        String organizerName,
+                       Integer booths,
                        UUID organizerId
 ) {
 }

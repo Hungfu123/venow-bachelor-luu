@@ -12,6 +12,7 @@ public record EventRequest (
         @NotEmpty String description,
         @NotEmpty String location,
         @NotNull LocalDateTime startDate,
-        @NotNull LocalDateTime endDate
+        @NotNull LocalDateTime endDate,
+        @NotNull Integer booths
 ){
 }
