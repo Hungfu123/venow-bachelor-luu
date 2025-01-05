@@ -1,0 +1,90 @@
+/* Container */
+.layout-container {
+    @apply flex h-screen bg-gray-100;
+}
+
+/* Sidebar */
+#default-sidebar {
+    @apply fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#F7F8F9] text-[#3E3E3E] border-r border-gray-300;
+}
+
+#default-sidebar h2 {
+    @apply text-lg font-semibold text-center pb-3 mt-6 text-[#3E3E3E];
+}
+
+#default-sidebar ul {
+    @apply space-y-2 mt-6;
+}
+
+#default-sidebar ul li {
+    @apply pl-4;
+}
+
+.sidebar-link {
+    @apply flex items-center text-[#3E3E3E] font-normal;
+}
+
+.sidebar-link:hover {
+    @apply text-[#544DC9] font-extrabold;
+}
+
+.sidebar-icon {
+    @apply w-5 h-5 text-[#3E3E3E];
+}
+
+.sidebar-icon:hover {
+    @apply text-[#544DC9];
+}
+
+.sidebar-link span {
+    @apply ms-3;
+}
+
+/* Header */
+header {
+    @apply fixed top-0 left-64 right-0 flex justify-between items-center p-3 bg-white;
+}
+
+header span {
+    @apply text-lg font-semibold text-[#3E3E3E];
+}
+
+.add-event-button {
+    @apply flex items-center gap-2 px-4 py-2 text-sm font-normal text-white bg-[#7D75FF] rounded-lg hover:bg-[#6B66E1];
+}
+
+.add-event-button {
+    @apply flex items-center px-4 py-2 bg-[#7D75FF] text-white rounded-lg hover:bg-[#6c66e0];
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.add-event-button:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.add-event-button span {
+    @apply text-white;
+    @apply ml-2;
+    font-size: 0.8rem;
+}
+
+.add-event-icon {
+    @apply w-4 h-4 text-white;
+}
+
+/* HR Styling */
+.header-hr {
+    @apply border-gray-300 w-full fixed top-16 z-40;
+    left: 0;
+    height: 1px;
+}
+
+/* Main Content */
+.main-content {
+    @apply flex flex-col flex-1 pt-16 bg-[#F7F8F9];
+}
+
+.main-content main {
+    @apply flex-1 p-4;
+}
