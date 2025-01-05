@@ -1,6 +1,8 @@
 package org.venow.backend.infrastructure;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.venow.backend.domain.model.Event;
 
 import java.util.List;
@@ -14,5 +16,6 @@ public interface JpaEventRepository extends JpaRepository<Event, UUID> {
 
     List<Event> findAllByOrganizerId(UUID organizerId);
 
-    List<Event> findAllByTitleContainingIgnoreCase(String title);
+    @Query("SELECT e FROM events e WHERE UPPER(e.title) LIKE CONCAT('%', UPPER(:title), '%')")
+    List<Event> findAllByTitleContainingIgnoreCase(@Param("title") String title);
 }

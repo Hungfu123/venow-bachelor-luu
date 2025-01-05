@@ -40,14 +40,14 @@ class EventServiceTest {
     void shouldReturnAllEvents() {
         List<EventDTO> events = List.of(EventDTOFactory.createDefault().build(),
                 EventDTOFactory.createDefault().withEventId(UUID.randomUUID()).build());
-
+        final UserDTO organizer = UserDTOFactory.createDefault().build();
         when(eventRepository.findAll()).thenReturn(events);
-
+        when(userService.getUserByUserId(any())).thenReturn(organizer);
         List<EventDTO> result = eventService.getAllEvents();
 
         assertThat(result).hasSize(2);
         assertThat(result).extracting(EventDTO::title).containsExactly("Test Event", "Test Event");
-
+        assertThat(result).extracting(EventDTO::organizerName).containsExactly(organizer.name(), organizer.name());
         verify(eventRepository, times(1)).findAll();
     }
 

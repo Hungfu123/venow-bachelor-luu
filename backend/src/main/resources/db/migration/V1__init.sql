@@ -7,7 +7,7 @@ CREATE TABLE events
     location     VARCHAR(255) NOT NULL,
     start_date   TIMESTAMP    NOT NULL,
     end_date     TIMESTAMP    NOT NULL,
-    booths       INT UNSIGNED   NOT NULL,
+    booths       INT    NOT NULL,
     organizer_id VARCHAR(36)     NOT NULL
 );
 CREATE TABLE users (
