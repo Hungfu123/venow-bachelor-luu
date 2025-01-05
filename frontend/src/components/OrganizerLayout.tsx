@@ -5,12 +5,15 @@ const OrganizerLayout = () => {
 
     return (
         <div className="layout">
-            <aside className="sidebar">
-                <h2>Organizer</h2>
+            <aside
+                id="default-sidebar"
+                className="fixed top-0 left-0 z-40 w-64 h-screen bg-gray-800 text-white"
+                aria-label="Sidebar"
+            ><h2>Organizer</h2>
                 <nav>
                     <ul>
                         <li>
-                            <Link to={`/organizer/${organizerId}/events`}>My Events</Link>
+                        <Link to={`/organizer/${organizerId}/events`}>My Events</Link>
                         </li>
                         <li>
                             <Link to={`/organizer/${organizerId}/events/create`}>Create Event</Link>
