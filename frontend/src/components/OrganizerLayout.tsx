@@ -56,7 +56,7 @@ const OrganizerLayout = () => {
 
             {/* Header */}
             <header>
-                <span>Welcome, Organizer</span>
+                <span>Hallo, Organizer</span>
                 <Link
                     to={`/organizer/${organizerId}/events/create`}
                     className="add-event-button"
