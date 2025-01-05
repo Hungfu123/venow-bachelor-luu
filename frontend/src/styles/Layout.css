@@ -26,6 +26,7 @@
 
 .sidebar-link:hover {
     @apply text-[#544DC9] font-extrabold;
+    background-color: #E5E4FC;
 }
 
 .sidebar-icon {
