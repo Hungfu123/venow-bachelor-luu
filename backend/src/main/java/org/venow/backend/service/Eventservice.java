@@ -19,7 +19,11 @@ public class Eventservice {
     private final UserService userService;
 
     public List<EventDTO> getAllEvents() {
-        return eventRepository.findAll();
+
+        return eventRepository.findAll().stream().map(event -> {
+            UserDTO organizer = userService.getUserByUserId(event.organizerId());
+            return new EventDTO(event.id(), event.eventId(), event.title(), event.description(), event.location(), event.startDate(), event.endDate(), organizer.name(), event.booths(),event.organizerId());
+        }).toList();
 
     }
 
