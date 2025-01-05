@@ -243,6 +243,111 @@ ExhibitorControllerTest extends TestBase {
         assertThat(response.getStatusCode()).as("check if HTTP Status NOT FOUND").isEqualTo(HttpStatus.NOT_FOUND);
     }
 
+    @Test
+    @DisplayName("should return 1 event by query events")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    public void test7() {
+
+        String query = "Test";
+
+        ResponseEntity<String> response =
+                restTemplate.exchange(
+                        "http://localhost:{port}exhibitor/{exhibitorId}/events?query={query}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port, USER_EXHIBITOR_3.getUserId(), query);
+
+        assertThat(response.getStatusCode()).as("Checking for status code").isEqualTo(HttpStatus.OK);
+
+        assertThatJson(response.getBody())
+                .as("Checking for events")
+                .isArray()
+                .hasSize(1)
+                .extracting("eventId", "title")
+                .containsExactly(
+                        tuple("45353065-3834-3030-2d65-3239633d3431", "Test")
+                );
+    }
+
+    @Test
+    @DisplayName("should return 1 event by query events")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    public void test8() {
+
+        String query = "Thi";
+
+        ResponseEntity<String> response =
+                restTemplate.exchange(
+                        "http://localhost:{port}exhibitor/{exhibitorId}/events?query={query}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port, USER_EXHIBITOR_3.getUserId(), query);
+
+        assertThat(response.getStatusCode()).as("Checking for status code").isEqualTo(HttpStatus.OK);
+
+        assertThatJson(response.getBody())
+                .as("Checking for events")
+                .isArray()
+                .hasSize(1)
+                .extracting("eventId", "title", "description", "location", "startDate", "endDate", "organizerName", "booths")
+                .containsExactly(
+                        tuple("35353065-3834-3030-2d65-3239622d3432", "Thiens Schmackofatz", "A conference for tech enthusiasts", "Convention Center", "2024-07-15T09:00:00", "2024-07-15T17:00:00", "Zig Arette", 50)
+                );
+    }
+
+    @Test
+    @DisplayName("should return 2 event by query events")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    public void test9() {
+
+        String query = "";
+
+        ResponseEntity<String> response =
+                restTemplate.exchange(
+                        "http://localhost:{port}exhibitor/{exhibitorId}/events?query={query}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port, USER_EXHIBITOR_3.getUserId(), query);
+
+        assertThat(response.getStatusCode()).as("Checking for status code").isEqualTo(HttpStatus.OK);
+
+        assertThatJson(response.getBody())
+                .as("Checking for events")
+                .isArray()
+                .hasSize(2)
+                .extracting("eventId", "title", "description", "location", "startDate", "endDate", "organizerName", "booths")
+                .containsExactly(
+                        tuple("45353065-3834-3030-2d65-3239633d3431", "Test", "Ablblalball", "Test Park", "2024-06-01T12:00:00", "2024-06-01T23:00:00", "Robert J", 50),
+                        tuple("35353065-3834-3030-2d65-3239622d3432", "Thiens Schmackofatz", "A conference for tech enthusiasts", "Convention Center", "2024-07-15T09:00:00", "2024-07-15T17:00:00", "Zig Arette", 50)
+                );
+    }
+
+    @Test
+    @DisplayName("should return no events cause of 1 querylength")
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    public void test10() {
+
+        String query = "e";
+
+        ResponseEntity<String> response =
+                restTemplate.exchange(
+                        "http://localhost:{port}exhibitor/{exhibitorId}/events?query={query}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port, USER_EXHIBITOR_3.getUserId(), query);
+
+        assertThat(response.getStatusCode()).as("Checking for status code").isEqualTo(HttpStatus.OK);
+
+        assertThatJson(response.getBody())
+                .as("Checking for events if empty")
+                .isArray()
+                .isEmpty();
+    }
+
 }
 
 

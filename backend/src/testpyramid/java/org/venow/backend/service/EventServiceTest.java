@@ -51,6 +51,46 @@ class EventServiceTest {
         verify(eventRepository, times(1)).findAll();
     }
 
+    @DisplayName("should return all events by search title")
+    @Test
+    void shouldReturnAllEventsBySearchTitle() {
+        final String query = "Test";
+        final List<EventDTO> events = List.of(EventDTOFactory.createDefault().withTitle("Test Event").build(),
+                EventDTOFactory.createDefault().withEventId(UUID.randomUUID()).withTitle("Test Event 2").build());
+        final UserDTO organizer = UserDTOFactory.createDefault().build();
+        when(eventRepository.findAllByTitleContaining(query)).thenReturn(events);
+        when(userService.getUserByUserId(any())).thenReturn(organizer);
+        final List<EventDTO> result = eventService.getEventsBySearchTitle(query);
+
+        assertThat(result).hasSize(2);
+        assertThat(result).extracting(EventDTO::title).containsExactly("Test Event", "Test Event 2");
+        assertThat(result).extracting(EventDTO::organizerName).containsExactly(organizer.name(), organizer.name());
+        verify(eventRepository, times(1)).findAllByTitleContaining(query);
+    }
+
+    @DisplayName("should return an empty list if search title is less than 3 characters")
+    @Test
+    void shouldReturnEmptyListIfSearchTitleIsLessThan3Characters() {
+        final String query = "Te";
+        final List<EventDTO> result = eventService.getEventsBySearchTitle(query);
+
+        assertThat(result).isEmpty();
+
+        verifyNoInteractions(eventRepository);
+    }
+
+    @DisplayName("should return an empty list if search title is less than 3 characters")
+    @Test
+    void shouldReturnEmptyListIfSearchTitleIsLessThan3Characters2() {
+        final String query = "T";
+        final List<EventDTO> result = eventService.getEventsBySearchTitle(query);
+
+        assertThat(result).isEmpty();
+
+        verifyNoInteractions(eventRepository);
+    }
+
+
     @DisplayName("should return an event by eventId")
     @Test
     void shouldReturnEventByEventId() {
@@ -182,6 +222,7 @@ class EventServiceTest {
 
         verify(userService, times(1)).existsByUserAndRole(organizerId, Role.ORGANIZER);
     }
+
 
 
 

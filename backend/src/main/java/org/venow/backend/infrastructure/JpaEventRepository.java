@@ -13,4 +13,6 @@ public interface JpaEventRepository extends JpaRepository<Event, UUID> {
     List<Event> findAll();
 
     List<Event> findAllByOrganizerId(UUID organizerId);
+
+    List<Event> findAllByTitleContainingIgnoreCase(String title);
 }

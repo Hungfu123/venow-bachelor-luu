@@ -7,6 +7,7 @@ import org.venow.backend.service.dto.EventDTO;
 import org.venow.backend.service.dto.UserDTO;
 import org.venow.backend.service.exception.NotFoundException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,4 +83,27 @@ public class Eventservice {
         return  new EventDTO(updatedEvent.id(), updatedEvent.eventId(), updatedEvent.title(), updatedEvent.description(), updatedEvent.location(), updatedEvent.startDate(), updatedEvent.endDate(), organizer.name(), updatedEvent.booths(),updatedEvent.organizerId());
     }
 
-}
+    public List<EventDTO> getEventsBySearchTitle(String query) {
+        if (query.length() < 3) {
+            return Collections.emptyList();
+        }
+        return eventRepository.findAllByTitleContaining(query).stream()
+                .map(event ->
+                        EventDTO.builder()
+                                .eventId(
+                                        event.eventId())
+                                .title(event.title())
+                                .description(event.description())
+                                .location(event.location())
+                                .startDate(event.startDate())
+                                .endDate(event.endDate())
+                                .organizerId(event.organizerId())
+                                .organizerName(userService.getUserByUserId(event.organizerId()).name())
+                                .booths(event.booths())
+                                .build())
+                .toList();
+    }
+
+    }
+
+

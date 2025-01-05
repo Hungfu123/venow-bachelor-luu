@@ -39,4 +39,9 @@ public class EventRepositoryImpl implements EventRepository {
         return repository.findAllByOrganizerId(organizerId).stream().map(EventMapper::mapToEventDTO).toList();
     }
 
+    @Override
+    public List<EventDTO> findAllByTitleContaining(String title) {
+        return repository.findAllByTitleContainingIgnoreCase(title).stream().map(EventMapper::mapToEventDTO).toList();
+    }
+
 }

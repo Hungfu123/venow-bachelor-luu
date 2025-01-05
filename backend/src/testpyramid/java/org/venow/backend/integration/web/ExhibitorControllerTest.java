@@ -19,6 +19,8 @@ import org.venow.backend.testdata.UserDTOFactory;
 import org.venow.backend.web.exhibitor.ExhibitorController;
 import org.venow.backend.web.request.ApplicationRequest;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,6 +60,68 @@ class ExhibitorControllerTest {
                 .andExpect(jsonPath("$.description").value("Test Description"));
 
         verify(eventservice, times(1)).getEvent(any());
+    }
+
+    @DisplayName("get all Events by searching title")
+    @Test
+    void getAllEventsBySearchTitle() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
+        final EventDTO expectedEvent2 = EventDTOFactory.createDefault().withTitle("Ok").build();
+        when(eventservice.getEventsBySearchTitle(any())).thenReturn(List.of(expectedEvent, expectedEvent2));
+
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/events?query={query}", testuser.userId(), "Test"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].eventId").exists())
+                .andExpect(jsonPath("$[0].title").value("Test Event"))
+                .andExpect(jsonPath("$[0].description").value("Test Description"))
+                .andExpect(jsonPath("$[1].eventId").exists())
+                .andExpect(jsonPath("$[1].title").value("Ok"))
+                .andExpect(jsonPath("$[1].description").value("Test Description"));
+
+        verify(eventservice, times(1)).getEventsBySearchTitle(any());
+    }
+
+    @DisplayName("get all Events by not giving one letter in query")
+    @Test
+    void getAllEvents() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
+        when(eventservice.getEventsBySearchTitle(any())).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/events?query={query}", testuser.userId(), "T"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @DisplayName("get all Events by not giving two letter in query")
+    @Test
+    void getAllEvents2() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
+        when(eventservice.getEventsBySearchTitle(any())).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/events?query={query}", testuser.userId(), "Te"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @DisplayName("get all Events by not gicing query")
+    @Test
+    void getAllEventsByQuery() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
+        final EventDTO expectedEvent2 = EventDTOFactory.createDefault().withTitle("Ok").build();
+        when(eventservice.getEventsBySearchTitle(any())).thenReturn(List.of(expectedEvent, expectedEvent2));
+
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/events?query={query}", testuser.userId(), "Test"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].eventId").exists())
+                .andExpect(jsonPath("$[0].title").value("Test Event"))
+                .andExpect(jsonPath("$[0].description").value("Test Description"))
+                .andExpect(jsonPath("$[1].eventId").exists())
+                .andExpect(jsonPath("$[1].title").value("Ok"))
+                .andExpect(jsonPath("$[1].description").value("Test Description"));
+
+        verify(eventservice, times(1)).getEventsBySearchTitle(any());
     }
 
     @DisplayName("cant get specific Event - BadRequest")

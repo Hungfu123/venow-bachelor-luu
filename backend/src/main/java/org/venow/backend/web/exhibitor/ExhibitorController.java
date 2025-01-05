@@ -38,11 +38,19 @@ public class ExhibitorController {
     }
 
     @GetMapping("/events")
-    public ResponseEntity<List<EventResponse>> getAllEvents(@PathVariable("exhibitorId") final UUID exhibitorId) {
-        final List<EventDTO> allEvents = eventservice.getAllEvents();
-        log.info("Found all events");
+    public ResponseEntity<List<EventResponse>> getAllEvents(@PathVariable("exhibitorId") final UUID exhibitorId,
+                                                            @RequestParam(value = "query", required = false) final String query) {
+        final List<EventDTO> allEvents;
+    if(query == null || query.isBlank()) {
+        allEvents = eventservice.getAllEvents();
+            return ResponseEntity.ok(allEvents.stream().map(ResponseMapper::mapToEventResponse).toList());
+    } else {
+        allEvents = eventservice.getEventsBySearchTitle(query);
         return ResponseEntity.ok(allEvents.stream().map(ResponseMapper::mapToEventResponse).toList());
     }
+    }
+
+
 
     @GetMapping("/events/{eventId}/application")
     public ResponseEntity<ApplicationResponse> getApplicationDetails(

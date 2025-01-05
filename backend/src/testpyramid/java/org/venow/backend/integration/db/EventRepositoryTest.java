@@ -75,4 +75,29 @@ class EventRepositoryTest extends TestBase {
         assertThat(events).hasSize(2);
         assertThat(events).extracting(EventDTO::organizerId).containsOnly(organizerId);
     }
+
+    @DisplayName("should find all events by title containing")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
+    void shouldFindAllEventsByTitleContaining() {
+        String query = "Tech";
+        EventDTO event1 = EventDTOFactory.createDefault().withTitle("Tech Expo").build();
+        EventDTO event2 = EventDTOFactory.createDefault().withEventId(UUID.randomUUID()).withTitle("Tech Summit").build();
+        eventRepository.save(event1);
+        eventRepository.save(event2);
+
+        List<EventDTO> events = eventRepository.findAllByTitleContaining(query);
+
+        assertThat(events).hasSize(2);
+        assertThat(events).extracting(EventDTO::title).containsOnly(event1.title(), event2.title());
+    }
+
+    @DisplayName("query is empty")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
+    void queryIsEmpty() {
+        String query = "";
+        List<EventDTO> events = eventRepository.findAllByTitleContaining(query);
+        assertThat(events).isEmpty();
+    }
 }
