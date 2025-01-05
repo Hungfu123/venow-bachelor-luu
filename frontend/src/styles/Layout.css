@@ -1,91 +1,91 @@
 /* Container */
 .layout-container {
-    @apply flex h-screen bg-gray-100;
+    @apply flex h-screen bg-gray-100; /* Layout: Flex-Container für Sidebar und Hauptinhalt */
 }
 
 /* Sidebar */
 #default-sidebar {
-    @apply fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#F7F8F9] text-[#3E3E3E] border-r border-gray-300;
+    @apply fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#F7F8F9] text-[#3E3E3E] border-r border-gray-300; /* Sidebar: Position, Farbe und vertikale Linie */
 }
 
 #default-sidebar h2 {
-    @apply text-lg font-semibold text-center pb-3 mt-6 text-[#3E3E3E];
+    @apply text-lg font-semibold text-center pb-3 mt-6 text-[#3E3E3E]; /* Sidebar-Titel: Styling und Abstand */
 }
 
 #default-sidebar ul {
-    @apply space-y-2 mt-6;
+    @apply space-y-2 mt-6; /* Liste: Vertikaler Abstand zwischen Items */
 }
 
 #default-sidebar ul li {
-    @apply pl-4;
+    @apply pl-4; /* Liste: Padding von links für Items */
 }
 
 .sidebar-link {
-    @apply flex items-center text-[#3E3E3E] font-normal;
+    @apply flex items-center text-[#3E3E3E] font-normal rounded-lg transition-all duration-200; /* Link: Standard-Styling für Text und Layout */
 }
 
 .sidebar-link:hover {
-    @apply text-[#544DC9] font-extrabold;
-    background-color: #E5E4FC;
+    @apply text-[#544DC9] font-normal; /* Hover: Textfarbe */
+    background-color: #E5E4FC; /* Hover: Hintergrundfarbe */
+    padding: 0.75rem 1.25rem; /* Vergrößert den äußeren Rand beim Hover */
+    margin: 0 -0.5rem; /* Rand nach links und rechts, um den Effekt deutlicher zu machen */
+    border-radius: 0.5rem; /* Abgerundete Ecken beim Hover */
 }
 
 .sidebar-icon {
-    @apply w-5 h-5 text-[#3E3E3E];
+    @apply w-5 h-5 text-[#3E3E3E]; /* Icon: Standardgröße und Farbe */
 }
 
-.sidebar-icon:hover {
-    @apply text-[#544DC9];
+/* Icons ändern Farbe auch bei Hover auf Link */
+.sidebar-link:hover .sidebar-icon {
+    @apply text-[#544DC9]; /* Icon: Farbe bei Hover */
 }
 
 .sidebar-link span {
-    @apply ms-3;
+    @apply ms-3; /* Text: Abstand zwischen Icon und Text */
 }
 
 /* Header */
 header {
-    @apply fixed top-0 left-64 right-0 flex justify-between items-center p-3 bg-white;
+    @apply fixed top-0 left-64 right-0 flex justify-between items-center p-3 bg-white; /* Header: Position, Hintergrund und Layout */
 }
 
 header span {
-    @apply text-lg font-semibold text-[#3E3E3E];
+    @apply text-lg font-semibold text-[#3E3E3E]; /* Header-Text: Styling */
 }
 
+/* Add Event Button */
 .add-event-button {
-    @apply flex items-center gap-2 px-4 py-2 text-sm font-normal text-white bg-[#7D75FF] rounded-lg hover:bg-[#6B66E1];
-}
-
-.add-event-button {
-    @apply flex items-center px-4 py-2 bg-[#7D75FF] text-white rounded-lg hover:bg-[#6c66e0];
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    transition: box-shadow 0.2s ease-in-out;
+    @apply flex items-center px-3 py-1 bg-[#7D75FF] text-white rounded-lg hover:bg-[#6c66e0]; /* Button: Kompaktes Styling */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Button: Schatten */
+    transition: box-shadow 0.2s ease-in-out; /* Button: Übergangseffekt */
 }
 
 .add-event-button:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Button: Hover-Schatten */
 }
 
 .add-event-button span {
-    @apply text-white;
-    @apply ml-2;
-    font-size: 0.8rem;
+    @apply text-white ml-2; /* Button-Text: Abstand und Farbe */
+    font-size: 0.8rem; /* Button-Text: Schriftgröße */
 }
 
 .add-event-icon {
-    @apply w-4 h-4 text-white;
+    @apply w-4 h-4 text-white; /* Button-Icon: Größe und Farbe */
 }
 
 /* HR Styling */
 .header-hr {
-    @apply border-gray-300 w-full fixed top-16 z-40;
+    @apply border-gray-300 w-full fixed top-16 z-40; /* HR: Position und Farbe */
     left: 0;
-    height: 1px;
+    height: 1px; /* HR: Höhe */
 }
 
 /* Main Content */
 .main-content {
-    @apply flex flex-col flex-1 pt-16 bg-[#F7F8F9];
+    @apply flex flex-col flex-1 pt-16 bg-[#F7F8F9]; /* Hauptinhalt: Layout und Hintergrund */
 }
 
 .main-content main {
-    @apply flex-1 p-4;
+    @apply flex-1 p-4; /* Hauptinhalt: Padding */
 }
