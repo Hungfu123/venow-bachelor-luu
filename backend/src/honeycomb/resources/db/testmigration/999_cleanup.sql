@@ -1,8 +1,5 @@
-SET FOREIGN_KEY_CHECKS = 0;
+DELETE FROM contracts;
+DELETE FROM applications;
+DELETE FROM events;
+DELETE FROM users;
 
-TRUNCATE TABLE applications;
-TRUNCATE TABLE events;
-TRUNCATE TABLE contracts;
-TRUNCATE TABLE users;
-
-SET FOREIGN_KEY_CHECKS = 1;

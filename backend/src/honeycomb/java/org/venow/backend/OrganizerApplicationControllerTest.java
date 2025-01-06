@@ -59,7 +59,8 @@ class OrganizerApplicationControllerTest extends TestBase {
 
         assertThat(actualResponses)
                 .as("check if response contains expected applications by organizerId")
-                .containsExactlyInAnyOrderElementsOf(expectedRespones);
+                .usingRecursiveComparison().ignoringFields("id")
+                .isEqualTo(expectedRespones);
 
     }
 
@@ -140,6 +141,8 @@ class OrganizerApplicationControllerTest extends TestBase {
 
         assertThat(actualResponses)
                 .as("check if response contains expected applications by organizerId")
+                .usingRecursiveComparison()
+                .ignoringFields("id")
                 .isEqualTo(APPLICATION_1);
     }
 
