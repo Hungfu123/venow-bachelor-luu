@@ -2,12 +2,16 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.5'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'jacoco'
 }
 
 ext {
 	springCloudVersion = "2023.0.3"
 }
 
+jacoco {
+	toolVersion = "0.8.10"
+}
 group = 'org.venow'
 version = '0.0.1-SNAPSHOT'
 
@@ -112,4 +116,38 @@ tasks.named('check') {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.register("jacocoHoneycombReport", JacocoReport) {
+	dependsOn honeycombTest // Task für Honeycomb-Tests
+
+	executionData.setFrom(fileTree(buildDir).include("jacoco/honeycombTest.exec"))
+
+	sourceDirectories.setFrom(sourceSets.main.allSource.srcDirs)
+	classDirectories.setFrom(sourceSets.main.output)
+	additionalSourceDirs.setFrom(sourceSets.honeycomb.allSource.srcDirs)
+
+	reports {
+		html.required.set(true)
+		xml.required.set(true)
+		csv.required.set(false)
+		html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/honeycomb"))
+	}
+}
+
+tasks.register("jacocoTestPyramidReport", JacocoReport) {
+	dependsOn testPyramidTest // Task für Test Pyramid-Tests
+
+	executionData.setFrom(fileTree(buildDir).include("jacoco/testPyramidTest.exec"))
+
+	sourceDirectories.setFrom(sourceSets.main.allSource.srcDirs)
+	classDirectories.setFrom(sourceSets.main.output)
+	additionalSourceDirs.setFrom(sourceSets.testpyramid.allSource.srcDirs)
+
+	reports {
+		html.required.set(true)
+		xml.required.set(true)
+		csv.required.set(false)
+		html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/testpyramid"))
+	}
 }
