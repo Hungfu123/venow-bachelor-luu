@@ -23,9 +23,32 @@ class ApplicationRepositoryTest extends TestBase {
     @Autowired
     private ApplicationRepositoryImpl applicationRepository;
 
-    @Autowired
-    private UserRepository userRepository;
 
+    @DisplayName("saving one application and should find all applications by 4")
+    @Test
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
+    void shouldFindAllApplicationsForGivenOrganizerId() {
+        UUID organizerId = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
+        ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
+                .withUserId(UUID.randomUUID().toString())
+                .withEventId("45353065-3834-3030-2d65-3239633d3431")
+                .build();
+
+        ApplicationDTO application2 = ApplicationDTOFactory.createDefault()
+                .withUserId(UUID.randomUUID().toString())
+                .withEventId("17353065-3834-3030-2d65-3239633d3431")
+                .build();
+
+        ApplicationDTO savedApplication1= applicationRepository.save(application1);
+        ApplicationDTO savedApplication2 = applicationRepository.save(application2);
+
+        List<ApplicationDTO> applications = applicationRepository.getAllApplicationsByOrganizer(organizerId);
+
+        assertThat(applications)
+                .hasSize(4)
+                .contains(savedApplication1)
+                .doesNotContain(savedApplication2);
+    }
 
     @DisplayName("should fail to save Application without requiredField")
     @Test
@@ -84,31 +107,7 @@ class ApplicationRepositoryTest extends TestBase {
         assertThat(retrievedApplication).isEmpty();
     }
 
-    @DisplayName("saving one application and should find all applications by 4")
-    @Test
-    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
-    void shouldFindAllApplicationsForGivenOrganizerId() {
-        UUID organizerId = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
-        ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
-                .withUserId(UUID.randomUUID().toString())
-                .withEventId("45353065-3834-3030-2d65-3239633d3431")
-                .build();
 
-        ApplicationDTO application2 = ApplicationDTOFactory.createDefault()
-                .withUserId(UUID.randomUUID().toString())
-                .withEventId("17353065-3834-3030-2d65-3239633d3431")
-                .build();
-
-        ApplicationDTO savedApplication1= applicationRepository.save(application1);
-        ApplicationDTO savedApplication2 = applicationRepository.save(application2);
-
-        List<ApplicationDTO> applications = applicationRepository.getAllApplicationsByOrganizer(organizerId);
-
-        assertThat(applications)
-                .hasSize(4)
-                .contains(savedApplication1)
-                .doesNotContain(savedApplication2);
-    }
 
     @DisplayName("should not find applications")
     @Test
@@ -123,7 +122,6 @@ class ApplicationRepositoryTest extends TestBase {
         ApplicationDTO application2 = ApplicationDTOFactory.createDefault()
                 .withEventId("17353065-3834-3030-2d65-3239633d3431")
                 .build();
-        userRepository.findById(application2.getUserId());
         applicationRepository.save(application1);
         applicationRepository.save(application2);
 

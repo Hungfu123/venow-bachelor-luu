@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.TestBase;
 import org.venow.backend.infrastructure.ContractRepositoryImpl;
-import org.venow.backend.service.UserRepository;
 import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.dto.ContractDTO;
 import org.venow.backend.service.dto.UserDTO;
@@ -25,8 +24,6 @@ public class ContractRepositoryTest extends TestBase {
     @Autowired
     private ContractRepositoryImpl contractRepository;
 
-    @Autowired
-    private UserRepository userrepository;
 
     @DisplayName("should save and retrieve contract by ID")
     @Test
@@ -53,7 +50,7 @@ public class ContractRepositoryTest extends TestBase {
                 .withName("Misty Exi")
                 .withRole("EXHIBITOR")
                 .build();
-        userrepository.findById(organizer.userId());
+
         ContractDTO contract = ContractDTOFactory.createDefault().withApplication(application).withOrganizer(organizer).withExhibitor(exhibitor).build();
         contractRepository.save(contract);
 

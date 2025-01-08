@@ -32,7 +32,7 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@DirtiesContext
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @Slf4j
