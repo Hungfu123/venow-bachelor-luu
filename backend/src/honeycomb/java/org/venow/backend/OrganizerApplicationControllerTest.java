@@ -37,7 +37,7 @@ class OrganizerApplicationControllerTest extends TestBase {
 
     @DisplayName("get all Applications by an organizer")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void organizerSeeAllHisApplication() throws JsonProcessingException {
         final List<ApplicationResponse> expectedRespones = List.of(ApplicationDataFactory.createDefaultApplicationResponse(),ApplicationDataFactory.createConsultingApplicationResponse(), ApplicationDataFactory.createITApplicationResponse());
 
@@ -66,7 +66,7 @@ class OrganizerApplicationControllerTest extends TestBase {
 
     @DisplayName("Organizer has no applications")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void organizerHasNoApplications() throws JsonProcessingException {
         final ResponseEntity<String> response = restTemplate.exchange(
                 "http://localhost:{port}organizer/{organizerId}/applications",
@@ -119,7 +119,7 @@ class OrganizerApplicationControllerTest extends TestBase {
 
     @Test
     @DisplayName("should see an application by organizer")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void shouldSeeAnApplicationByOrganizer() throws JsonProcessingException {
 
 
@@ -192,7 +192,7 @@ class OrganizerApplicationControllerTest extends TestBase {
 
     @Test
     @DisplayName("reject application and has status rejected")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void rejectApplication() throws JsonProcessingException {
 
         final ResponseEntity<String> response = restTemplate.exchange(
@@ -224,7 +224,7 @@ class OrganizerApplicationControllerTest extends TestBase {
 
     @Test
     @DisplayName("reject application already rejected")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/002_reject_application.sql"})
+    @Sql(scripts = { "/db/testmigration/002_reject_application.sql"})
     void rejectApplicationAlreadyRejected() throws JsonProcessingException {
 
         final ResponseEntity<String> response = restTemplate.exchange(

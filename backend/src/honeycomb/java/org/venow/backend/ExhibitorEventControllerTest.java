@@ -27,7 +27,7 @@ ExhibitorEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("exhibitor is on event detail page for an event ")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     void userGetsOnEventPage() {
         final ResponseEntity<String> response = restTemplate
                 .exchange(
@@ -71,7 +71,7 @@ ExhibitorEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("should return all 2 events")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     public void test() {
         ResponseEntity<String> response =
                 restTemplate.exchange(
@@ -97,7 +97,7 @@ ExhibitorEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("should return 1 event by query events")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     public void test7() {
 
         String query = "Test";
@@ -124,7 +124,7 @@ ExhibitorEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("should return 1 event by query events")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     public void test8() {
 
         String query = "Thi";
@@ -151,7 +151,7 @@ ExhibitorEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("should return 2 event by query events")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     public void test9() {
 
         String query = "";
@@ -179,7 +179,7 @@ ExhibitorEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("should return no events cause of 1 querylength")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     public void test10() {
 
         String query = "e";

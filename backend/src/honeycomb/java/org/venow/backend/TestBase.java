@@ -2,6 +2,11 @@ package org.venow.backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import groovy.util.logging.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
@@ -13,18 +18,24 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.venow.backend.domain.model.*;
+import org.venow.backend.domain.model.Event;
+import org.venow.backend.domain.model.User;
 import org.venow.backend.testfactory.ApplicationDataFactory;
 import org.venow.backend.testfactory.UserTestData;
 import org.venow.backend.web.reponse.ApplicationResponse;
 
+import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @DirtiesContext
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
+@Slf4j
 @AutoConfigureWireMock
 @ActiveProfiles("test")
 public abstract class TestBase {
@@ -57,6 +68,32 @@ public abstract class TestBase {
     protected static final ApplicationResponse APPLICATION_1 = ApplicationDataFactory.createITApplicationResponse();
     protected static final ApplicationResponse APPLICATION_2 = ApplicationDataFactory.createDefaultApplicationResponse();
     protected static final ApplicationResponse APPLICATION_3 = ApplicationDataFactory.createOtherOrganizerApplicationResponse();
+    private static final Logger log = LoggerFactory.getLogger(TestBase.class);
+
+
+    @AfterEach
+    void cleanDatabase(@Autowired DataSource dataSource) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            cleanDatabaseForTestcontainers(connection);
+        }
+    }
+
+    private void cleanDatabaseForTestcontainers(Connection connection) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("SET FOREIGN_KEY_CHECKS = 0");
+
+            statement.execute("TRUNCATE TABLE contracts");
+            statement.execute("TRUNCATE TABLE events");
+            statement.execute("TRUNCATE TABLE users");
+            statement.execute("TRUNCATE TABLE applications");
+            log.info("Database cleaned up for Testcontainers.");
+        } catch (SQLException e) {
+            log.error("Failed to clean database for Testcontainers: " + e.getMessage());
+            throw e;
+        }
+    }
+
+
     @Container
     public static MySQLContainer<?> jdbcDataBaseContainer = new MySQLContainer<>("mysql:latest")
             .withDatabaseName("mydatabase")

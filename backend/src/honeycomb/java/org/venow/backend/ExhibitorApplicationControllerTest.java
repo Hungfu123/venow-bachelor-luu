@@ -38,7 +38,7 @@ ExhibitorApplicationControllerTest extends TestBase {
 
     @Test
     @DisplayName("exhibitor apply for an event")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     void exhibitorApplyForEventPage() {
 
         ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
@@ -68,7 +68,7 @@ ExhibitorApplicationControllerTest extends TestBase {
 
     @Test
     @DisplayName("exhibitor apply for the same event again - CONFLICTED")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void exhibitorApplyForSameEventAgain() {
 
         ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
@@ -91,7 +91,7 @@ ExhibitorApplicationControllerTest extends TestBase {
 
     @Test
     @DisplayName("another exhibitor apply for the same event")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void anotherExhibitorApplyForSameEvent() {
 
         ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
@@ -115,7 +115,7 @@ ExhibitorApplicationControllerTest extends TestBase {
 
     @Test
     @DisplayName("Exhibitor is on Applicant")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void onApplicationDetailPage() {
         final ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:{port}exhibitor/{userId}/events/{eventId}/application/{applicationId}",
@@ -137,7 +137,7 @@ ExhibitorApplicationControllerTest extends TestBase {
 
     @Test
     @DisplayName("Exhibitor is on Applicant but not Found")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void onApplicationDetailPageNotFound() {
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:{port}exhibitor/{userId}/event/{eventId}/application/{applicationId}",
                 HttpMethod.GET,
@@ -149,7 +149,7 @@ ExhibitorApplicationControllerTest extends TestBase {
 
     @Test
     @DisplayName("Exhibitor is on Applicant but Not Found")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void onApplicationDetailPageInvalidInput() {
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:{port}exhibitor/{userId}/event/{eventId}/application/{applicationId}",
                 HttpMethod.GET,
@@ -161,7 +161,7 @@ ExhibitorApplicationControllerTest extends TestBase {
 
     @Test
     @DisplayName("Exhibitor is on Applicant but Not Found")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void onApplicationDetailPageInvalidInput2() {
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:{port}exhibitor/{userId}/event/{eventId}/application/{applicationId}",
                 HttpMethod.GET,

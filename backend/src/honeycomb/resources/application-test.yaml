@@ -1,7 +1,7 @@
 spring:
   flyway:
     enabled: true
-    locations: classpath:db/migration
+    locations: classpath:db/migration/schema
     clean-on-validation-error: false
   jpa:
     hibernate:

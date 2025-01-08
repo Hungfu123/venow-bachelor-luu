@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.TestBase;
+import org.venow.backend.service.UserRepository;
 import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.infrastructure.ApplicationRepositoryImpl;
 import org.venow.backend.testdata.ApplicationDTOFactory;
@@ -21,6 +22,9 @@ class ApplicationRepositoryTest extends TestBase {
 
     @Autowired
     private ApplicationRepositoryImpl applicationRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     @DisplayName("should fail to save Application without requiredField")
@@ -82,7 +86,7 @@ class ApplicationRepositoryTest extends TestBase {
 
     @DisplayName("saving one application and should find all applications by 4")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void shouldFindAllApplicationsForGivenOrganizerId() {
         UUID organizerId = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
         ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
@@ -108,7 +112,6 @@ class ApplicationRepositoryTest extends TestBase {
 
     @DisplayName("should not find applications")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
     void shouldNotFindApplications() {
         UUID organizerId = UUID.fromString("b23e4567-e89b-12d3-a456-426614174002");
 
@@ -120,7 +123,7 @@ class ApplicationRepositoryTest extends TestBase {
         ApplicationDTO application2 = ApplicationDTOFactory.createDefault()
                 .withEventId("17353065-3834-3030-2d65-3239633d3431")
                 .build();
-
+        userRepository.findById(application2.getUserId());
         applicationRepository.save(application1);
         applicationRepository.save(application2);
 

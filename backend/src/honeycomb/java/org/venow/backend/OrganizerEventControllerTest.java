@@ -27,7 +27,7 @@ class OrganizerEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("organizer edit event")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     void organizerEditEvent() throws Exception {
         final EventRequest eventRequest = loadObjectFromJson("/requests/event-request.json", EventRequest.class);
         final User user = UserTestData.createOrganizer1();
@@ -58,7 +58,7 @@ class OrganizerEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("should return all events by organizer")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void shouldReturnAllEventsByOrganizer() {
         final ResponseEntity<String> response =
                 restTemplate.exchange(
@@ -84,7 +84,7 @@ class OrganizerEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("organizer is on event detail page for an event ")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     void userGetsOnEventPage() {
         final ResponseEntity<String> response = restTemplate
                 .exchange(
@@ -129,7 +129,7 @@ class OrganizerEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("organizer create event")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     void organizerCreateEvent() throws Exception {
         final EventRequest eventRequest = loadObjectFromJson("/requests/event-request.json", EventRequest.class);
         final User user = UserTestData.createOrganizer1();
@@ -160,7 +160,7 @@ class OrganizerEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("organizer create event with empty validation")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     void organizerCreateEventWithEmpty() throws Exception {
         final EventRequest eventRequest = loadObjectFromJson("/requests/event-request-empty.json", EventRequest.class);
         final User user = UserTestData.createOrganizer1();
@@ -192,7 +192,7 @@ class OrganizerEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("organizer create event with invalid date")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     void organizerCreateEventWithInvalidDate() throws Exception {
         final EventRequest eventRequest = loadObjectFromJson("/requests/event-request-invalid-date.json", EventRequest.class);
         final User user = UserTestData.createOrganizer1();
@@ -219,7 +219,7 @@ class OrganizerEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("organizer edit event with invalid date")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     void organizerEditEventWithInvalidDate() throws Exception {
         final EventRequest eventRequest = loadObjectFromJson("/requests/event-request-invalid-date.json", EventRequest.class);
         final User user = UserTestData.createOrganizer1();
@@ -246,7 +246,7 @@ class OrganizerEventControllerTest extends TestBase {
 
     @Test
     @DisplayName("organizer edit event with empty validation")
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/000_init.sql"})
+    @Sql(scripts = { "/db/testmigration/000_init.sql"})
     void organizerEditEventWithEmpty() throws Exception {
         final EventRequest eventRequest = loadObjectFromJson("/requests/event-request-empty.json", EventRequest.class);
         final User user = UserTestData.createOrganizer1();

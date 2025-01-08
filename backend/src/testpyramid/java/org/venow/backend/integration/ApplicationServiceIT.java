@@ -42,7 +42,7 @@ public class ApplicationServiceIT extends TestBase {
 
     @DisplayName("should not create a new application when exhibitor already applied to the same event")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void shouldNotCreateApplicationWhenExhibitorAlreadyApplied() {
 
         final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault()
@@ -57,7 +57,7 @@ public class ApplicationServiceIT extends TestBase {
 
     @DisplayName("another application of another user on the same event should be created ")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void shouldCreateAnotherApplicationForSameEvent() {
 
         final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault()
