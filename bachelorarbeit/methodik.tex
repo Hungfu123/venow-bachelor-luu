@@ -8,9 +8,43 @@ Für die Testpyramide wurde eine \texttt{TestBase}-Klasse erstellt, die mithilfe
 
 Das Honeycomb-Modell fokussiert sich ausschliesslich auf Integrationstests. Mithilfe von \texttt{Testcontainers} wird eine MySQL-Datenbank in einem Docker-Container bereitgestellt, die mit realistischen Anwendungsdaten und einem konsistenten Schema typische Produktionsszenarien simuliert. Die \texttt{TestBase}-Klasse stellt sicher, dass die benötigte Datenbankumgebung effizient und automatisiert erfolgt.
 
-Nach Abschluss der Testszenarien wird ein neues Feature implementiert, um die Anpassungsfähigkeit und Robustheit der Strategien zu bewerten. Die dabei gewonnenen Erkenntnisse bilden die Grundlage für die spätere Analyse im Hinblick auf Effizienz und Wartbarkeit.
-
+Die Laufzeit der Tests wird für jedes Feature gemessen, wobei ein Mittelwert aus insgesamt zehn Durchläufen berechnet wird. Dieser Ansatz ermöglicht eine präzise Analyse der durchschnittlichen Laufzeit der Testszenarien. Zur Überprüfung der Testabdeckung wird das Tool \texttt{JaCoCo} eingesetzt. Dieses Werkzeug liefert detaillierte Einblicke in die Testabdeckung der beiden Teststrategien, indem die Ergebnisse aus den separaten Ordnern für \texttt{Honeycomb} und \texttt{Testpyramide} ausgewertet werden.
 
 \subsection{Tests für spezifische Anwendungsfälle}
 
-\subsection{Datenanalyse und empirische Auswertung}
+Die Tests für spezifische Anwendungsfälle wurden entwickelt, um die Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb-Modell} unter vergleichbaren Bedingungen zu analysieren. Die Anwendungsfälle umfassen den Bewerbungsprozess, das Vertragsmanagement und das Eventmanagement. Das Vertragsmanagement bildet dabei den zentralen und umfangreichsten Aspekt, da es zahlreiche Beziehungen zu anderen Entitäten wie Benutzer, Bewerbung und Event umfasst. Jeder Anwendungsfall wird separat beschrieben, und die Testmethodik wird für beide Strategien detailliert erläutert.
+
+\subsubsection{Bewerbungsprozess}
+Der Bewerbungsprozess bildet den Einstieg in den Workflow und dient dazu, die grundlegenden Funktionalitäten der Anwendung zu prüfen. Er umfasst die Erstellung und Validierung von Bewerbungen sowie die Speicherung relevanter Daten.
+
+Im Rahmen der \texttt{Testpyramide} werden Servicetests als Unit-Tests durchgeführt, um die Logik und die Verarbeitung der Daten zu validieren. Controller-Tests und Repository-Tests fungieren als Integrationstests. Controller-Tests prüfen die HTTP-Endpunkte und deren Abhängigkeit von der \texttt{WebMvcTest}-Umgebung, während Repository-Tests die Interaktionen mit der Datenbank analysieren. Die Tests nutzen sowohl die H2-Datenbank für schnelle Durchläufe als auch eine MySQL-Datenbank mithilfe von \texttt{Testcontainers} für realistischere Tests.
+
+Das \texttt{Honeycomb-Modell} konzentriert sich ausschliesslich auf Integrationstests. Es simuliert den gesamten Bewerbungsprozess als End-to-End-Szenario unter realistischen Bedingungen. Dabei wird eine MySQL-Datenbank mit \texttt{Testcontainers} bereitgestellt, um die tatsächliche Interaktion zwischen den Systemkomponenten abzubilden.
+
+\subsubsection{Vertragsmanagement}
+Das Vertragsmanagement ist der zentrale Anwendungsfall und integraler Bestandteil der Anwendung. Es kombiniert Informationen aus verschiedenen Modulen wie Benutzer, Bewerbung und Event zu einem konsolidierten Vertrag.
+
+Die \texttt{Testpyramide} wird auch hier durch eine Kombination aus Unit-Tests, Controller-Tests und Repository-Tests umgesetzt. Servicetests prüfen die interne Logik für die Verarbeitung der Vertragsdaten. Controller-Tests validieren die HTTP-Endpunkte und deren Integration mit der Serviceschicht, während Repository-Tests die Speicherung und den Abruf von Vertragsdaten sowohl in der H2- als auch in der MySQL-Datenbank prüfen.
+
+Das \texttt{Honeycomb-Modell} bildet das Vertragsmanagement mithilfe von Integrationstests vollständig ab. Dabei werden die Datenbankoperationen und die Interaktionen zwischen den Modulen in einer produktionsnahen Umgebung simuliert.
+
+\subsubsection{Eventmanagement}
+Das Eventmanagement erweitert den Workflow um die Erstellung, Bearbeitung und Verwaltung von Veranstaltungen. Es integriert die vorherigen Module und bildet komplexere Datenbankoperationen ab.
+
+In der \texttt{Testpyramide} werden Servicetests zur Validierung der Geschäftslogik, beispielsweise für die Berechnung der Teilnehmerkapazitäten, eingesetzt. Controller-Tests prüfen die HTTP-Schnittstellen für die Verwaltung der Veranstaltungen, und Repository-Tests validieren die Verknüpfung von Events und Teilnehmern in der Datenbank.
+
+Das \texttt{Honeycomb-Modell} testet das Eventmanagement als gesamtes End-to-End-Szenario. Dabei wird das Zusammenspiel der Module sowie die Interaktion mit der Datenbank unter produktionsähnlichen Bedingungen analysiert.
+
+\subsubsection{Benutzererstellung}
+
+Die Benutzererstellung ist eng mit den Prozessen für Login und Registrierung verbunden. Benutzer werden automatisch erstellt, sobald sich ein neuer Nutzer registriert. Während der Registrierung hat der Benutzer die Möglichkeit, seine Rolle selbst zu wählen, beispielsweise \texttt{Exhibitor} oder \texttt{Organizer}. Diese Rolle definiert die Berechtigungen und den Zugriff des Benutzers innerhalb der Anwendung.
+
+Dieser Anwendungsfall wird implementiert, nachdem das Frontend und die grundlegenden Features der Anwendung fertiggestellt sind. Sobald die Benutzererstellung abgeschlossen ist, wird sie in die Tests integriert und methodisch analysiert, um sicherzustellen, dass die Erstellung und Verwaltung von Benutzerdaten sowie die selbstgewählte Zuweisung von Rollen korrekt funktionieren.
+\vspace{\baselineskip}
+
+
+Die Testszenarien wurden so gewählt, dass sie die Unterschiede zwischen der \texttt{Testpyramide} und dem \texttt{Honeycomb-Modell} in praxisnahen Anwendungsfällen verdeutlichen. Der Bewerbungsprozess dient als Basis für die Teststrategie, während das Vertragsmanagement aufgrund seiner hohen Komplexität im Fokus steht. Das Eventmanagement erweitert den Workflow und bildet die Integration der Module ab. Diese Methodik legt die Grundlage für die spätere Analyse und den Vergleich der beiden Strategien.
+
+
+
+
