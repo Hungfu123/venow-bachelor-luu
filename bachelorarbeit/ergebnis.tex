@@ -1,10 +1,80 @@
 \section{Durchführung und Ergebnisse}
 
 \subsection{Vergleich der Teststrategien anhand spezifischer Anwendungsfälle}
+Die beiden Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb-Modell} wurden anhand praxisnaher Anwendungsfälle evaluiert. Die Analyse umfasst den Bewerbungsprozess, das Vertragsmanagement und das Eventmanagement. Die Ergebnisse werden auf Basis der Laufzeitmessungen, der Anzahl durchgeführter Tests sowie der Testabdeckung verglichen.
+
 \subsubsection{Bewerbungsprozess}
+Im Bewerbungsprozess zeigte sich, dass die \texttt{Testpyramide} durch die Verwendung der H2-Datenbank schnellere Testlaufzeiten ermöglicht, während das \texttt{Honeycomb-Modell} durch Integrationstests in einer realistischen Umgebung überzeugt. Die Ergebnisse sind in Tabelle~\ref{tab:bewerbungsprozess} zusammengefasst.
+
+\begin{table}[h]
+	\centering
+	\caption{Laufzeiten und Testanzahl im Bewerbungsprozess}
+	\label{tab:bewerbungsprozess}
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\textbf{Modell} & \textbf{Test Typ} & \textbf{Laufzeit} & \textbf{Anzahl der Tests} & \textbf{Datenbank} \\ \hline
+		Honeycomb       & Integration       & \textbf{1 s 582 ms}            & 18                        & Testcontainer MySQL \\ \hline
+		Testpyramide    & Alle              & \textbf{1 s 516 ms}            & 47                        & H2                 \\ \hline
+	\end{tabular}
+\end{table}
+
 \subsubsection{Vertragsmanagement}
-\subsection{Veranstaltungsmanagement}
-\subsubsection{Benutzererstellung}
+Das Vertragsmanagement, als zentraler und komplexester Anwendungsfall, zeigt deutliche Unterschiede zwischen den Strategien. Während das \texttt{Honeycomb-Modell} durch seine Nähe zur Produktionsumgebung punktet, ermöglicht die \texttt{Testpyramide} detaillierte und isolierte Tests in verschiedenen Schichten. Tabelle~\ref{tab:vertragsmanagement} gibt einen Überblick über die Ergebnisse.
+
+\begin{table}[h]
+	\centering
+	\caption{Laufzeiten und Testanzahl im Vertragsmanagement}
+	\label{tab:vertragsmanagement}
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\textbf{Modell} & \textbf{Test Typ} & \textbf{Laufzeit} & \textbf{Anzahl der Tests} & \textbf{Datenbank} \\ \hline
+		Honeycomb       & Integration       & \textbf{2 s 724 ms}            & 42                        & Testcontainer MySQL \\ \hline
+		Testpyramide    & Alle              & \textbf{2 s 173 ms}            & 106                       & H2                 \\ \hline
+	\end{tabular}
+\end{table}
+
+\subsubsection{Eventmanagement}
+Im Eventmanagement werden die Integration verschiedener Module und die Verwaltung komplexer Datenbankoperationen getestet. Hier zeigt sich, dass die Laufzeit beim \texttt{Honeycomb-Modell} höher ausfällt, während die \texttt{Testpyramide} durch granulare Tests überzeugt.
+
+\begin{table}[h]
+	\centering
+	\caption{Laufzeiten und Testanzahl im Eventmanagement}
+	\label{tab:eventmanagement}
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\textbf{Modell} & \textbf{Test Typ} & \textbf{Laufzeit} & \textbf{Anzahl der Tests} & \textbf{Datenbank} \\ \hline
+		Honeycomb       & Integration       & \textbf{3 s 753 ms}            & 58                        & Testcontainer MySQL \\ \hline
+		Testpyramide    & Alle              & \textbf{2 s 334 ms}            & 143                       & H2                 \\ \hline
+	\end{tabular}
+\end{table}
+
+\subsection{Zusammenfassung der Testabdeckung mit JaCoCo}
+Um die Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb-Modell} hinsichtlich ihrer Abdeckung zu bewerten, wurde das Tool \texttt{JaCoCo} verwendet. Dieses Werkzeug ermöglicht eine detaillierte Analyse der Testabdeckung auf verschiedenen Ebenen, wie Anweisungen (Instructions), Verzweigungen (Branches) und Klassen (Classes). Die Ergebnisse der Analyse sind in Tabelle~\ref{tab:jacoco-ergebnisse} dargestellt.
+
+\begin{table}[h]
+	\centering
+	\caption{Testabdeckung mit JaCoCo für Honeycomb-Modell und Testpyramide}
+	\label{tab:jacoco-ergebnisse}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Metrik}       & \textbf{Honeycomb} & \textbf{Testpyramide} \\ \hline
+		Instructions          & 91 \%             & 94 \%                 \\ \hline
+		Branches              & 65 \%             & 80 \%                 \\ \hline
+		Lines                 & 91 \% (Missed: 51) & 94 \% (Missed: 35)    \\ \hline
+		Methods               & 87.6 \%           & 91.1 \%               \\ \hline
+		Classes               & 98 \%             & 100 \%                \\ \hline
+	\end{tabular}
+\end{table}
+
+Die Ergebnisse zeigen, dass beide Teststrategien eine hohe Testabdeckung erreichen, insbesondere bei den Metriken \texttt{Instructions} und \texttt{Classes}. Die \texttt{Testpyramide} erzielt in fast allen Metriken bessere Werte. Besonders in der Branch-Coverage sind die Unterschiede deutlich, da die \texttt{Testpyramide} spezifische Verzweigungen und Sonderfälle in der Business-Logik präziser testet.
+
+Das \texttt{Honeycomb-Modell} zeigt hingegen eine bemerkenswerte Effizienz, da es mit weniger Tests eine ähnlich hohe Abdeckung in den zentralen Metriken \texttt{Instructions} (91~\%) und \texttt{Classes} (98~\%) erreicht. Dies verdeutlicht, dass das \texttt{Honeycomb-Modell} besonders bei der Validierung des Gesamtverhaltens der Anwendung seine Stärke entfaltet, während die \texttt{Testpyramide} für detaillierte Analysen und die Fehlersuche in isolierten Modulen besser geeignet ist.
+
+\subsubsection{Interpretation der Ergebnisse}
+Die Mutation Coverage zeigt, dass
+
 \subsection{Vergleich der Datenbanklösungen}
-\subsubsection{H2 vs. produktionsnahe Datenbanken (Testcontainers)}
+Der Vergleich zwischen der H2-Datenbank und der MySQL-Datenbank mithilfe von \texttt{Testcontainers} zeigt, dass H2 durch ihre Geschwindigkeit bei isolierten Tests punktet, während MySQL realistischere Ergebnisse in produktionsnahen Szenarien liefert. Beide Ansätze ergänzen sich je nach Zielsetzung.
+
 \subsection{Zusammenfassung der Ergebnisse}
+Die Ergebnisse zeigen, dass beide Strategien ihre spezifischen Stärken haben. Das \texttt{Honeycomb-Modell} ist besonders bei komplexen End-to-End-Szenarien und der Überprüfung des Gesamtverhaltens von Vorteil, während die \texttt{Testpyramide} durch ihre Geschwindigkeit und detaillierte Fehlersuche in isolierten Tests überzeugt. Die H2-Datenbank eignet sich hervorragend für schnelle Iterationen, während MySQL-Testcontainer unverzichtbar für realitätsnahe Tests sind.
