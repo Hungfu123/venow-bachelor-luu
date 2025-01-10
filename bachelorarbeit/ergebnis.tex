@@ -70,8 +70,24 @@ Die Ergebnisse zeigen, dass beide Teststrategien eine hohe Testabdeckung erreich
 
 Das \texttt{Honeycomb-Modell} zeigt hingegen eine bemerkenswerte Effizienz, da es mit weniger Tests eine ähnlich hohe Abdeckung in den zentralen Metriken \texttt{Instructions} (91~\%) und \texttt{Classes} (98~\%) erreicht. Dies verdeutlicht, dass das \texttt{Honeycomb-Modell} besonders bei der Validierung des Gesamtverhaltens der Anwendung seine Stärke entfaltet, während die \texttt{Testpyramide} für detaillierte Analysen und die Fehlersuche in isolierten Modulen besser geeignet ist.
 
-\subsubsection{Interpretation der Ergebnisse}
-Die Mutation Coverage zeigt, dass
+\subsection{Mutation Testing mit PITest}
+Um die Effektivität der Tests weiter zu bewerten, wurde das Werkzeug \texttt{PITest} für Mutation Testing eingesetzt. Im Gegensatz zu \texttt{JaCoCo}, das nur die Testabdeckung analysiert, generiert \texttt{PITest} Mutationen im Code, um zu prüfen, ob die bestehenden Tests in der Lage sind, diese Mutationen zu erkennen und entsprechende Fehler zu melden. Dies bietet eine tiefere Einblicke in die Qualität und Aussagekraft der Tests.
+
+\subsubsection{Ergebnisse der Mutation Tests}
+Die Ergebnisse des Mutation Testing sind in Tabelle~\ref{tab:pittest-ergebnisse} dargestellt. Die Mutation Coverage beschreibt den Prozentsatz der Mutationen, die von den Tests erkannt wurden.
+
+\begin{table}[h]
+	\centering
+	\caption{Ergebnisse des Mutation Testing mit PITest}
+	\label{tab:pittest-ergebnisse}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Teststrategie} & \textbf{Mutation Coverage} & \textbf{Nicht erkannte Mutationen} \\ \hline
+		Honeycomb              & XX \%                      & X                                 \\ \hline
+		Testpyramide           & XX \%                      & X                                 \\ \hline
+	\end{tabular}
+\end{table}
+
 
 \subsection{Vergleich der Datenbanklösungen}
 Der Vergleich zwischen der H2-Datenbank und der MySQL-Datenbank mithilfe von \texttt{Testcontainers} zeigt, dass H2 durch ihre Geschwindigkeit bei isolierten Tests punktet, während MySQL realistischere Ergebnisse in produktionsnahen Szenarien liefert. Beide Ansätze ergänzen sich je nach Zielsetzung.
