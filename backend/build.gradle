@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.3.5'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'jacoco'
+	id 'info.solidsoft.pitest' version '1.15.0'
 }
 
 ext {
@@ -42,6 +43,10 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.assertj:assertj-core:3.24.2'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
+
 
 
 }
@@ -150,4 +155,25 @@ tasks.register("jacocoTestPyramidReport", JacocoReport) {
 		csv.required.set(false)
 		html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/testpyramid"))
 	}
+}
+
+pitest {
+	targetClasses = ['org.venow.backend.*'] // Zielklassen für Mutation Testing
+	targetTests = ['org.venow.backend.*'] // Testklassen aus beiden SourceSets
+	timeoutConstInMillis = 20000 // 20 Sekunden
+	features = ['+auto_threads']
+//	enableDefaultIncrementalAnalysis = true
+//	sourceSets = [sourceSets.honeycomb]
+//	mainSourceSets
+	junit5PluginVersion = '1.2.1'
+//	targetTests = ['^.*Test$']
+//	mainSourceSets = [sourceSets.main]
+//	testSourceSets = [sourceSets.honeycomb] // Verknüpfung der beiden Testordner
+
+	// Zusätzliche Konfiguration, falls nötig
+	verbose = true
+	threads = 6
+
+//	outputFormats = ['HTML', 'XML'] // Ausgabeformate der Berichte
+//	timestampedReports = false // Deaktiviere timestamped Reports, um Berichte zu überschreiben
 }
