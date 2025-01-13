@@ -1,25 +1,28 @@
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useParams, useLocation } from "react-router-dom";
 import "../styles/layout.css";
-import {ReactComponent  as EventsIcon}  from "../assets/events-icon.svg";
-import {ReactComponent as ApplicationsIcon}  from "../assets/applications-icon.svg";
-import {ReactComponent  as ContractsIcon}  from "../assets/contracts-icon.svg";
-import {ReactComponent  as LogoutIcon}  from "../assets/profile-icon.svg";
+import { ReactComponent as EventsIcon } from "../assets/events-icon.svg";
+import { ReactComponent as ApplicationsIcon } from "../assets/applications-icon.svg";
+import { ReactComponent as ContractsIcon } from "../assets/contracts-icon.svg";
+import { ReactComponent as LogoutIcon } from "../assets/profile-icon.svg";
 
 const OrganizerLayout = () => {
-
     const { organizerId } = useParams();
+    const location = useLocation();
 
     return (
         <div className="layout-container">
             {/* Sidebar */}
-            <aside id="default-sidebar" aria-label="Sidebar">
+            <aside id="default-sidebar" >
                 <div className="sidebar-content">
                     <h2>Venow</h2>
                     <ul>
                         <li className="group">
                             <Link
                                 to={`/organizer/${organizerId}/events`}
-                                className="sidebar-link">
+                                className={`sidebar-link ${
+                                    location.pathname === `/organizer/${organizerId}/events` ? "active" : ""
+                                }`}
+                            >
                                 <EventsIcon className="sidebar-icon" />
                                 <span>Meine Events</span>
                             </Link>
@@ -27,23 +30,29 @@ const OrganizerLayout = () => {
                         <li className="group">
                             <Link
                                 to={`/organizer/${organizerId}/applications`}
-                                className="sidebar-link">
-                                <ApplicationsIcon className="sidebar-icon"/>
+                                className={`sidebar-link ${
+                                    location.pathname === `/organizer/${organizerId}/applications` ? "active" : ""
+                                }`}
+                            >
+                                <ApplicationsIcon className="sidebar-icon" />
                                 <span>Bewerbungen</span>
                             </Link>
                         </li>
                         <li className="group">
                             <Link
                                 to={`/organizer/${organizerId}/contracts`}
-                                className="sidebar-link">
-                                <ContractsIcon className="sidebar-icon"/>
+                                className={`sidebar-link ${
+                                    location.pathname === `/organizer/${organizerId}/contracts` ? "active" : ""
+                                }`}
+                            >
+                                <ContractsIcon className="sidebar-icon" />
                                 <span>Verträge</span>
                             </Link>
                         </li>
                     </ul>
                     <div className="logout">
                         <Link to="/logout" className="sidebar-link">
-                            <LogoutIcon className="sidebar-icon"/>
+                            <LogoutIcon className="sidebar-icon" />
                             <span>Abmelden</span>
                         </Link>
                     </div>

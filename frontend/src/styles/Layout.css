@@ -35,11 +35,18 @@
 }
 
 .sidebar-link {
-    @apply flex items-center text-[#3E3E3E] text-lg font-normal rounded-lg transition-all duration-200;
-    letter-spacing: 0.5px; /* Leichter Abstand zwischen den Buchstaben */
-    word-spacing: 1px; /* Abstand zwischen den Wörtern */
-    padding: 0.75rem 1rem; /* Zusätzliche Innenabstände für die Links */
-    line-height: 1.5rem; /* Gleiche vertikale Ausrichtung wie Icon */
+    padding: 1rem 1rem;
+    text-decoration: none;
+    color: #3E3E3E;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.sidebar-link.active {
+    background-color: #E5E4FC;
+    color: #544DC9;
+    font-weight: bold;
 }
 
 .sidebar-link:hover {
@@ -57,7 +64,6 @@
     display: inline-block;
 }
 
-/* Icons ändern Farbe auch bei Hover auf Link */
 .sidebar-link:hover .sidebar-icon {
     @apply text-[#544DC9]; /* Icon: Farbe bei Hover */
 }
@@ -90,7 +96,8 @@ header span {
 }
 
 .add-event-button:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Button: Hover-Schatten */
+    /*box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); !* Button: Hover-Schatten *!*/
+    transform: scale(1.1); /* Button vergrößern */
 }
 
 .add-event-button span {
@@ -114,13 +121,12 @@ header span {
  /*Main Content */
 .main-content {
     @apply flex flex-col flex-1 bg-[#F7F8F9];
-    padding: 0; /* Entfernt jegliches Padding */
-    margin-top: 1rem;
-    margin-left: 3rem; /* Entfernt jegliche Außenabstände */
-
-    width:100%; /* Verkleinert die Breite entsprechend der Sidebar */
+    padding-top: 2rem;
+    padding-left: 14rem;
+    padding-right: 0;
+    width:100%;
 }
 
-.main-content main {
-    @apply flex-1 p-4; /* Hauptinhalt: Padding */
-}
+/*.main-content main {*/
+/*    @apply flex-1 p-4; !* Hauptinhalt: Padding *!*/
+/*}*/
