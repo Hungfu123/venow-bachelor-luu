@@ -1,15 +1,29 @@
 /* Container */
-.layout-container {
-    @apply flex h-screen bg-gray-100; /* Layout: Flex-Container für Sidebar und Hauptinhalt */
-}
+/*.layout-container {*/
+/*    display: flex;*/
+/*    width: 100%;*/
+/*}*/
 
 /* Sidebar */
+.sidebar-content {
+    @apply flex flex-col h-full; /* Inhalt der Sidebar als Flex-Container */
+}
+
+.sidebar-links {
+    @apply flex flex-col space-y-2 mt-6; /* Liste oben anordnen */
+}
+
+.logout {
+    @apply mt-auto mb-6 pl-4; /* "Abmelden" an das Ende der Sidebar */
+}
+
 #default-sidebar {
-    @apply fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#F7F8F9] text-[#3E3E3E] border-r border-gray-300; /* Sidebar: Position, Farbe und vertikale Linie */
+    @apply fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#F7F8F9] text-[#3E3E3E] border-r border-gray-300; /* Sidebar: Breite auf w-48 reduziert */
 }
 
 #default-sidebar h2 {
-    @apply text-lg font-semibold text-center pb-3 mt-6 text-[#3E3E3E]; /* Sidebar-Titel: Styling und Abstand */
+    @apply text-xl font-semibold text-center pb-3 mt-6 text-[#3E3E3E];
+    letter-spacing: 1px; /* Abstand zwischen den Buchstaben */
 }
 
 #default-sidebar ul {
@@ -21,19 +35,26 @@
 }
 
 .sidebar-link {
-    @apply flex items-center text-[#3E3E3E] font-normal rounded-lg transition-all duration-200; /* Link: Standard-Styling für Text und Layout */
+    @apply flex items-center text-[#3E3E3E] text-lg font-normal rounded-lg transition-all duration-200;
+    letter-spacing: 0.5px; /* Leichter Abstand zwischen den Buchstaben */
+    word-spacing: 1px; /* Abstand zwischen den Wörtern */
+    padding: 0.75rem 1rem; /* Zusätzliche Innenabstände für die Links */
+    line-height: 1.5rem; /* Gleiche vertikale Ausrichtung wie Icon */
 }
 
 .sidebar-link:hover {
     @apply text-[#544DC9] font-normal; /* Hover: Textfarbe */
     background-color: #E5E4FC; /* Hover: Hintergrundfarbe */
-    padding: 0.75rem 1.25rem; /* Vergrößert den äußeren Rand beim Hover */
+    font-weight: bold;
+    padding: 1rem 3rem; /* Vergrößert den äußeren Rand beim Hover */
     margin: 0 -0.5rem; /* Rand nach links und rechts, um den Effekt deutlicher zu machen */
     border-radius: 0.5rem; /* Abgerundete Ecken beim Hover */
 }
 
 .sidebar-icon {
-    @apply w-5 h-5 text-[#3E3E3E]; /* Icon: Standardgröße und Farbe */
+    @apply w-6 h-6 text-[#3E3E3E]; /* Icon: Standardgröße und Farbe */
+    margin-right: 0.5rem; /* Abstand zwischen Icon und Text */
+    display: inline-block;
 }
 
 /* Icons ändern Farbe auch bei Hover auf Link */
@@ -42,16 +63,23 @@
 }
 
 .sidebar-link span {
-    @apply ms-3; /* Text: Abstand zwischen Icon und Text */
+    @apply ms-3; /* Abstand zwischen Icon und Text */
+    font-size: 1rem; /* Schriftgröße erhöhen */
+    letter-spacing: 0.5px; /* Leichter Abstand zwischen den Buchstaben */
 }
 
 /* Header */
 header {
-    @apply fixed top-0 left-64 right-0 flex justify-between items-center p-3 bg-white; /* Header: Position, Hintergrund und Layout */
+    @apply fixed top-0 left-64 right-0 flex justify-between items-center bg-white; /* Header: Position, Hintergrund und Layout */
+    height: 4rem; /* Gleiche Höhe wie die HR-Linie */
+    padding: 0 1rem; /* Entfernt vertikales Padding und fügt horizontales hinzu */
+    z-index: 50; /* Stellt sicher, dass es über anderen Inhalten liegt */
 }
 
 header span {
-    @apply text-lg font-semibold text-[#3E3E3E]; /* Header-Text: Styling */
+    @apply text-xl font-semibold text-[#3E3E3E]; /* Größere Schrift und stärkere Gewichtung */
+    letter-spacing: 1px; /* Abstand zwischen Buchstaben */
+    word-spacing: 3px; /* Abstand zwischen Wörtern */
 }
 
 /* Add Event Button */
@@ -71,7 +99,9 @@ header span {
 }
 
 .add-event-icon {
-    @apply w-4 h-4 text-white; /* Button-Icon: Größe und Farbe */
+    @apply w-6 h-6 text-white; /* Button-Icon: Größe und Farbe */
+    margin-right: 0.5rem; /* Abstand zwischen Icon und Text */
+    display: inline-block;
 }
 
 /* HR Styling */
@@ -81,9 +111,14 @@ header span {
     height: 1px; /* HR: Höhe */
 }
 
-/* Main Content */
+ /*Main Content */
 .main-content {
-    @apply flex flex-col flex-1 pt-16 bg-[#F7F8F9]; /* Hauptinhalt: Layout und Hintergrund */
+    @apply flex flex-col flex-1 bg-[#F7F8F9];
+    padding: 0; /* Entfernt jegliches Padding */
+    margin-top: 1rem;
+    margin-left: 3rem; /* Entfernt jegliche Außenabstände */
+
+    width:100%; /* Verkleinert die Breite entsprechend der Sidebar */
 }
 
 .main-content main {

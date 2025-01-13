@@ -1,0 +1,119 @@
+/* General Container */
+.events-container {
+    padding: 2rem;
+    background-color: #ffffff;
+    width: 100%;
+    margin: 0;
+}
+
+.events-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #3E3E3E;
+    text-align: left;
+}
+
+/* Grid Layout */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Drei Spalten */
+    gap: 1.5rem; /* Abstand zwischen den Karten */
+    width: 100%;
+}
+
+/* Event Card */
+.event-card {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /* Vertikales Layout */
+    height: 100%; /* Gleiche Höhe für alle Karten */
+    padding: 10px 10px 0; /* Padding oben und seitlich */
+    border: 1px solid #ccc;
+    min-height: 230px; /* Maximale Höhe */
+    overflow-y: auto; /* Mindesthöhe */
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Übergangseffekt */
+    cursor: pointer; /* Zeigt an, dass die Karte klickbar ist */
+}
+.event-card:hover {
+    transform: translateY(-10px); /* Leichtes Anheben */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Schatten verstärken */
+}
+/* Header */
+.event-header {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 0.7rem;
+}
+
+.eventOrganizerName {
+    padding-left: 1rem;
+    margin-top: 0; /* Kein zusätzlicher Abstand nach oben */
+    margin-bottom: 0.5rem;
+
+}
+
+.event-header h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #3E3E3E;
+    margin: 0;
+}
+
+.edit-button {
+    @apply w-6 h-6 text-[#3E3E3E];
+    /* Icon: Standardgröße und Farbe */
+    margin-right: 0.5rem;
+    transition: transform 0.3s ease, color 0.3s ease; /* Weiche Übergänge */
+}
+
+.edit-button:hover {
+    color: #544DC9; /* Hover-Farbe */
+    transform: scale(1.2); /* Größer bei Hover */
+    cursor: pointer;
+}
+
+/* Details */
+.event-details {
+    flex-grow: 1; /* Füllt den verfügbaren Platz */
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.event-details p {
+    font-size: 0.9rem;
+    margin: 0.3rem 0;
+    color: #3E3E3E;
+}
+
+
+/* Footer */
+
+.view-button {
+    display: block;
+    background: #7D75FF;
+    color: #fff;
+    border: none;
+    border-radius: 0 0 0.5rem 0.5rem; /* Abrundung der unteren Ecken */
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+    width: calc(100% + 20px); /* Gleiche Breite wie die Karte */
+    margin: 0 -10px; /* Gleicher Rand wie das Padding der Karte */
+    font-weight: normal;
+    transition: background-color 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+}
+
+.view-button:hover {
+    background-color: #E5E4FC; /* Hintergrundfarbe bei Hover */
+    color: #544DC9; /* Schriftfarbe bei Hover */
+    font-weight: bold; /* Fettgedruckt bei Hover */
+}

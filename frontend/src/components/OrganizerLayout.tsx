@@ -1,56 +1,52 @@
 import { Link, Outlet, useParams } from "react-router-dom";
 import "../styles/layout.css";
+import {ReactComponent  as EventsIcon}  from "../assets/events-icon.svg";
+import {ReactComponent as ApplicationsIcon}  from "../assets/applications-icon.svg";
+import {ReactComponent  as ContractsIcon}  from "../assets/contracts-icon.svg";
+import {ReactComponent  as LogoutIcon}  from "../assets/profile-icon.svg";
 
 const OrganizerLayout = () => {
+
     const { organizerId } = useParams();
 
     return (
         <div className="layout-container">
             {/* Sidebar */}
             <aside id="default-sidebar" aria-label="Sidebar">
-                <div>
+                <div className="sidebar-content">
                     <h2>Venow</h2>
                     <ul>
                         <li className="group">
                             <Link
                                 to={`/organizer/${organizerId}/events`}
-                                className="sidebar-link"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 22 21"
-                                    className="sidebar-icon"
-                                >
-                                    <path
-                                        d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
-                                    <path
-                                        d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
-                                </svg>
+                                className="sidebar-link">
+                                <EventsIcon className="sidebar-icon" />
                                 <span>Meine Events</span>
                             </Link>
                         </li>
                         <li className="group">
                             <Link
-                                to={`/organizer/${organizerId}/events/create`}
-                                className="sidebar-link"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 18 18"
-                                    className="sidebar-icon"
-                                >
-                                    <path
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        d="M9 1v16M1 9h16"
-                                    />
-                                </svg>
-                                <span>Create Event</span>
+                                to={`/organizer/${organizerId}/applications`}
+                                className="sidebar-link">
+                                <ApplicationsIcon className="sidebar-icon"/>
+                                <span>Bewerbungen</span>
+                            </Link>
+                        </li>
+                        <li className="group">
+                            <Link
+                                to={`/organizer/${organizerId}/contracts`}
+                                className="sidebar-link">
+                                <ContractsIcon className="sidebar-icon"/>
+                                <span>Verträge</span>
                             </Link>
                         </li>
                     </ul>
+                    <div className="logout">
+                        <Link to="/logout" className="sidebar-link">
+                            <LogoutIcon className="sidebar-icon"/>
+                            <span>Abmelden</span>
+                        </Link>
+                    </div>
                 </div>
             </aside>
 
@@ -78,16 +74,15 @@ const OrganizerLayout = () => {
             </header>
 
             {/* HR Line */}
-            <hr className="header-hr"/>
+            <hr className="header-hr" />
 
             {/* Main Content */}
             <div className="main-content">
                 <main>
-                    <Outlet/>
+                    <Outlet />
                 </main>
             </div>
         </div>
-
     );
 };
 
