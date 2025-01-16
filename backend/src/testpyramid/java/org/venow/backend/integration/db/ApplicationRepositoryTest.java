@@ -130,4 +130,24 @@ class ApplicationRepositoryTest extends TestBase {
 
     }
 
+    @DisplayName("should return event name")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    void shouldReturnEventName() {
+        UUID eventId = UUID.fromString("45353065-3834-3030-2d65-3239633d3431");
+        String eventName = applicationRepository.getEventName(eventId);
+
+        assertThat(eventName).isEqualTo("Test");
+    }
+
+    @DisplayName("should return null if event not found")
+    @Test
+    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    void shouldReturnNullIfEventNotFound() {
+        UUID eventId = UUID.randomUUID();
+        String eventName = applicationRepository.getEventName(eventId);
+
+        assertThat(eventName).isNull();
+    }
+
 }

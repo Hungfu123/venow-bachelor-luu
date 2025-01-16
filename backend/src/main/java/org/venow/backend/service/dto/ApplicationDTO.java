@@ -16,6 +16,7 @@ public class ApplicationDTO {
     private UUID applicationId;
     private UUID userId;
     private UUID eventId;
+    private String eventTitle;
     private String contactInformation;
     private String businessName;
     private String typeOfBusiness;

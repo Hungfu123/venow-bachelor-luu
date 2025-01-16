@@ -87,6 +87,7 @@ class ExhibitorApplicationControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.applicationId").value(expectedApplicationDTO.getApplicationId().toString()))
                 .andExpect(jsonPath("$.eventId").value(expectedApplicationDTO.getEventId().toString()))
+                .andExpect(jsonPath("$.eventTitle").value(expectedApplicationDTO.getEventTitle()))
                 .andExpect(jsonPath("$.userId").value(expectedApplicationDTO.getUserId().toString()))
                 .andExpect(jsonPath("$.businessName").value(expectedApplicationDTO.getBusinessName()))
                 .andExpect(jsonPath("$.status").value(expectedApplicationDTO.getStatus()));

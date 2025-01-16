@@ -10,6 +10,7 @@ public record ApplicationResponse(
         UUID applicationId,
         UUID userId,
         UUID eventId,
+        String eventTitle,
         String contactInformation,
         String businessName,
         String typeOfBusiness,

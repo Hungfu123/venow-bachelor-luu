@@ -16,4 +16,5 @@ public interface ApplicationRepository {
 
     List<ApplicationDTO> getAllApplicationsByOrganizer(UUID organizerId);
 
+    String getEventName(UUID eventId);
 }

@@ -32,12 +32,19 @@ public class ApplicationService {
 
         final ApplicationDTO savedApplication = applicationRepository.save(applicationDTO);
         log.info("application created: {}", savedApplication);
+        savedApplication.setEventTitle(applicationRepository.getEventName(savedApplication.getEventId()));
         return savedApplication;
     }
 
     public List<ApplicationDTO> getAllApplicationsByOrganizer(final UUID organizerId) {
 
-        return applicationRepository.getAllApplicationsByOrganizer(organizerId);
+        return applicationRepository.getAllApplicationsByOrganizer(organizerId).stream()
+                .map(
+                        applicationDTO -> {
+                            applicationDTO.setEventTitle(applicationRepository.getEventName(applicationDTO.getEventId()));
+                            return applicationDTO;
+                        }
+                ).toList();
     }
 
     public ApplicationDTO getApplication(final UUID applicationId) {
@@ -45,8 +52,12 @@ public class ApplicationService {
             throw new InvalidInputException("Application ID must not be null");
         }
 
-        return applicationRepository.findById(applicationId)
+        final ApplicationDTO applicationDTO = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new NotFoundException("Application not found for ID: " + applicationId));
+
+        final String eventName = applicationRepository.getEventName(applicationDTO.getEventId());
+        applicationDTO.setEventTitle(eventName);
+        return applicationDTO;
     }
 
 
@@ -56,7 +67,9 @@ public class ApplicationService {
             throw new AlreadyRejectedException("Application already rejected");
         }
         applicationDTO.setStatus(Status.REJECTED.name());
-        return applicationRepository.save(applicationDTO);
+        ApplicationDTO savedApplication = applicationRepository.save(applicationDTO);
+        savedApplication.setEventTitle(applicationRepository.getEventName(applicationDTO.getEventId()));
+        return savedApplication;
     }
 
     public ApplicationDTO acceptApplication(final UUID applicationId) {
@@ -65,6 +78,7 @@ public class ApplicationService {
             throw new AlreadyRejectedException("Application already accepted or rejected");
         }
         applicationDTO.setStatus(Status.ACCEPTED.name());
+        applicationDTO.setEventTitle(applicationRepository.getEventName(applicationDTO.getEventId()));
         return applicationRepository.save(applicationDTO);
     }
 

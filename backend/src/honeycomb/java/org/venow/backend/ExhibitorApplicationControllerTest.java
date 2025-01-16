@@ -60,6 +60,7 @@ ExhibitorApplicationControllerTest extends TestBase {
                         json -> json.node("applicationId").isNotNull(),
                         json -> json.node("userId").isEqualTo(EXHIBITOR_ID_1.toString()),
                         json -> json.node("eventId").isEqualTo(EVENT_ID_1.toString()),
+                        json -> json.node("eventTitle").isEqualTo("Test"),
                         json -> json.node("contactInformation").isEqualTo("example@example.com"),
                         json -> json.node("businessName").isEqualTo("Sample Business"),
                         json -> json.node("status").isEqualTo("IN_PROGRESS")
@@ -108,6 +109,7 @@ ExhibitorApplicationControllerTest extends TestBase {
                 json -> json.node("applicationId").isNotNull(),
                 json -> json.node("userId").isEqualTo(EXHIBITOR_ID_2.toString()),
                 json -> json.node("eventId").isEqualTo(EVENT_ID_1.toString()),
+                json -> json.node("eventTitle").isEqualTo("Test"),
                 json -> json.node("contactInformation").isEqualTo("example@example.com"),
                 json -> json.node("businessName").isEqualTo("Sample Business"),
                 json -> json.node("status").isEqualTo("IN_PROGRESS"));
@@ -129,6 +131,7 @@ ExhibitorApplicationControllerTest extends TestBase {
                 json -> json.node("applicationId").isEqualTo("b79a8e9b-7d74-4a5f-93e1-73f451e1ae0a"),
                 json -> json.node("userId").isEqualTo(EXHIBITOR_ID_1.toString()),
                 json -> json.node("eventId").isEqualTo(EVENT_ID_1.toString()),
+                json -> json.node("eventTitle").isEqualTo("Test"),
                 json -> json.node("contactInformation").isEqualTo("example@example.com"),
                 json -> json.node("businessName").isEqualTo("Sample Business"),
                 json -> json.node("message").isEqualTo("Looking forward to participating!"),

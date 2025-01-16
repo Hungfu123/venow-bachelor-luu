@@ -11,6 +11,7 @@ public class ApplicationDTOFactory {
                 .applicationId(UUID.randomUUID())
                 .userId(UUID.fromString("df333e19-6ed6-4c8b-b86e-ef78943a98a4"))
                 .eventId(UUID.fromString("45353065-3834-3030-2d65-3239633d3431"))
+                .eventTitle("Test")
                 .contactInformation("example@example.com")
                 .businessName("Sample Business")
                 .typeOfBusiness("Food Truck")

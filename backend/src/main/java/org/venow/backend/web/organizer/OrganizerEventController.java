@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @Slf4j
 @RestController()
 @AllArgsConstructor
@@ -33,7 +34,8 @@ public class OrganizerEventController {
     public ResponseEntity<List<EventResponse>> getAllEventsByOrganizer(@PathVariable("organizerId") final UUID organizerId) {
         final List<EventDTO> allEvents = eventservice.getAllEventsByOrganizer(organizerId, Role.ORGANIZER);
         log.info("Found all events from organizer{}", organizerId);
-        return ResponseEntity.ok(allEvents.stream().map(ResponseMapper::mapToEventResponse).toList());
+        List<EventResponse> list = allEvents.stream().map(ResponseMapper::mapToEventResponse).toList();
+        return ResponseEntity.ok(list);
     }
 
 

@@ -44,6 +44,10 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
         return repository.findAllByOrganizerIdFromEvent(organizerId).stream().map(ApplicationMapper::mapToDTO).toList();
     }
 
+    @Override
+    public String getEventName(UUID eventId) {
+        return repository.findEventNameByEventId(eventId);
+    }
 
 
 }

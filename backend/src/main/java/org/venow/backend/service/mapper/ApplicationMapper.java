@@ -38,19 +38,5 @@ public class ApplicationMapper {
     }
 
 
-    public static ApplicationResponse toResponse(Application application) {
-        return new ApplicationResponse(
-                application.getId(),
-                application.getApplicationId(),
-                application.getUserId(),
-                application.getEventId(),
-                application.getContactInformation(),
-                application.getBusinessName(),
-                application.getTypeOfBusiness(),
-                application.isPreviousParticipation(),
-                application.getMessage(),
-                application.getStatus().toString()
-        );
-    }
 }
 
