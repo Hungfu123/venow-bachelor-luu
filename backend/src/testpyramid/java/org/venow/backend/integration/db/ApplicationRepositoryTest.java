@@ -7,9 +7,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.TestBase;
-import org.venow.backend.service.UserRepository;
-import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.infrastructure.ApplicationRepositoryImpl;
+import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 
 import java.util.List;
@@ -195,7 +194,7 @@ class ApplicationRepositoryTest extends TestBase {
 
     @DisplayName("should return event name")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = {"/db/testmigration/001_insert-event-user-application.sql"})
     void shouldReturnEventName() {
         UUID eventId = UUID.fromString("45353065-3834-3030-2d65-3239633d3431");
         String eventName = applicationRepository.getEventName(eventId);
@@ -205,7 +204,7 @@ class ApplicationRepositoryTest extends TestBase {
 
     @DisplayName("should return null if event not found")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = {"/db/testmigration/001_insert-event-user-application.sql"})
     void shouldReturnNullIfEventNotFound() {
         UUID eventId = UUID.randomUUID();
         String eventName = applicationRepository.getEventName(eventId);
