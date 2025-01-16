@@ -21,7 +21,7 @@ import java.sql.Statement;
 @Slf4j
 @Testcontainers
 @AutoConfigureWireMock
-@ActiveProfiles("testpyramid-h2")
+@ActiveProfiles("testpyramid-testcontainer")
 public abstract class TestBase {
 
 

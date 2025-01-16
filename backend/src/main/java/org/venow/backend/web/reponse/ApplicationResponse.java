@@ -11,6 +11,7 @@ public record ApplicationResponse(
         UUID userId,
         UUID eventId,
         String eventTitle,
+        String exhibitorName,
         String contactInformation,
         String businessName,
         String typeOfBusiness,

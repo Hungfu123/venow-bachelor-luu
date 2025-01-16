@@ -58,7 +58,7 @@ public class ApplicationServiceTest {
         final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
         when(applicationRepository.existsByUserIdAndEventId(any(), any())).thenReturn(false);
         when(applicationRepository.save(any())).thenReturn(applicationDTO);
-
+        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
         assertThat(service.createApplication(applicationDTO)).isEqualTo(applicationDTO);
     }
     @Test
@@ -89,7 +89,7 @@ public class ApplicationServiceTest {
         final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
         when(applicationRepository.existsByUserIdAndEventId(any(), any())).thenReturn(false);
         when(applicationRepository.save(any())).thenReturn(applicationDTO);
-
+        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
         final ApplicationDTO result = service.createApplication(applicationDTO);
 
         assertThat(result.getStatus()).isEqualTo("IN_PROGRESS");
@@ -109,7 +109,7 @@ public class ApplicationServiceTest {
         when(applicationRepository.existsByUserIdAndEventId(user.userId(), event1.eventId())).thenReturn(false);
         when(applicationRepository.existsByUserIdAndEventId(user.userId(), event2.eventId())).thenReturn(false);
         when(applicationRepository.save(any())).thenReturn(applicationDTO1).thenReturn(applicationDTO2);
-
+        when(userService.getUserByUserId(user.userId())).thenReturn(user);
         final ApplicationDTO result1 = service.createApplication(applicationDTO1);
         final ApplicationDTO result2 = service.createApplication(applicationDTO2);
 
@@ -132,7 +132,10 @@ public class ApplicationServiceTest {
 
         when(applicationRepository.getAllApplicationsByOrganizer(any()))
                 .thenReturn(expectedApplications);
-
+        when(userService.getUserByUserId(any()))
+                .thenReturn(UserDTOFactory.createDefault().build());
+        when(applicationRepository.getEventName(any()))
+                .thenReturn("Event");
         final List<ApplicationDTO> result = service.getAllApplicationsByOrganizer(any());
 
         assertThat(result)
@@ -164,7 +167,8 @@ public class ApplicationServiceTest {
 
         when(applicationRepository.findById(any()))
                 .thenReturn(Optional.ofNullable(application1));
-
+        when(userService.getUserByUserId(any()))
+                .thenReturn(UserDTOFactory.createDefault().build());
 
         assert application1 != null;
         final ApplicationDTO application = service.getApplication(application1.getApplicationId());
@@ -203,7 +207,7 @@ public class ApplicationServiceTest {
                 .thenReturn(applicationDTO1);
 
         when(applicationRepository.save(any())).thenReturn(applicationDTO);
-
+        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
         final ApplicationDTO app = service.rejectApplication(applicationDTO1.get().getApplicationId());
 
         assertThat(app.getStatus()).isEqualTo("REJECTED");
@@ -217,6 +221,7 @@ public class ApplicationServiceTest {
         final Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
         when(applicationRepository.findById(any()))
                 .thenReturn(applicationDTO1);
+        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
 
         assertThatThrownBy(() -> service.rejectApplication(applicationDTO1.get().getApplicationId()))
                 .isInstanceOf(AlreadyRejectedException.class)
@@ -233,7 +238,7 @@ public class ApplicationServiceTest {
                 .thenReturn(applicationDTO1);
 
         when(applicationRepository.save(any())).thenReturn(applicationDTO);
-
+        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
         final ApplicationDTO app = service.acceptApplication(applicationDTO1.get().getApplicationId());
 
         assertThat(app.getStatus()).isEqualTo(Status.ACCEPTED.toString());
@@ -247,7 +252,7 @@ public class ApplicationServiceTest {
         final Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
         when(applicationRepository.findById(any()))
                 .thenReturn(applicationDTO1);
-
+        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
         assertThatThrownBy(() -> service.acceptApplication(applicationDTO1.get().getApplicationId()))
                 .isInstanceOf(AlreadyRejectedException.class)
                 .hasMessageContaining("Application already accepted or rejected");
@@ -261,7 +266,7 @@ public class ApplicationServiceTest {
         final Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
         when(applicationRepository.findById(any()))
                 .thenReturn(applicationDTO1);
-
+        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
         assertThatThrownBy(() -> service.acceptApplication(applicationDTO1.get().getApplicationId()))
                 .isInstanceOf(AlreadyRejectedException.class)
                 .hasMessageContaining("Application already accepted or rejected");
@@ -275,7 +280,7 @@ public class ApplicationServiceTest {
         final Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
         when(applicationRepository.findById(any()))
                 .thenReturn(applicationDTO1);
-
+        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
         assertThatThrownBy(() -> service.acceptApplication(applicationDTO1.get().getApplicationId()))
                 .isInstanceOf(AlreadyRejectedException.class)
                 .hasMessageContaining("Application already accepted or rejected");
@@ -329,7 +334,9 @@ public class ApplicationServiceTest {
 
         when(applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, eventId))
                 .thenReturn(expectedApplications);
-
+        when(userService.getUserByUserId(any()))
+                .thenReturn(UserDTO.builder().userId(UUID.randomUUID()).name("User 1").build())
+                .thenReturn(UserDTO.builder().userId(UUID.randomUUID()).name("User 2").build());
         List<ApplicationDTO> result = service.getAllApplicationsByOrganizerAndEventId(organizerId, eventId);
 
         assertThat(result)
@@ -368,6 +375,17 @@ public class ApplicationServiceTest {
     @Test
     @DisplayName("Should throw exception when event ID is null")
     void shouldThrowExceptionWhenEventIdIsNull2() {
+        UUID organizerId = UUID.randomUUID();
+        when(applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, null))
+                .thenThrow(new IllegalArgumentException("Organizer ID and Event ID must not be null"));
+        assertThatThrownBy(() -> service.getAllApplicationsByOrganizerAndEventId(organizerId, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Organizer ID and Event ID must not be null");
+    }
+
+    @Test
+    @DisplayName("Should throw exception when event ID is null")
+    void shouldThrowExceptionWhenEventIdIsNull3() {
         UUID organizerId = UUID.randomUUID();
         when(applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, null))
                 .thenThrow(new IllegalArgumentException("Organizer ID and Event ID must not be null"));

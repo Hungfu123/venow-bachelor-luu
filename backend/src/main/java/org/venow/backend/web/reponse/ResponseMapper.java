@@ -29,6 +29,7 @@ public class ResponseMapper {
                 .userId(application.getUserId())
                 .eventId(application.getEventId())
                 .eventTitle(application.getEventTitle())
+                .exhibitorName(application.getExhibitorName())
                 .contactInformation(application.getContactInformation())
                 .businessName(application.getBusinessName())
                 .typeOfBusiness(application.getTypeOfBusiness())

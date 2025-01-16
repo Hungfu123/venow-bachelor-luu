@@ -215,6 +215,7 @@ class OrganizerApplicationControllerTest extends TestBase {
                 json -> json.node("userId").isEqualTo("af333e19-6ed6-4c8b-b86e-ef78943a98a3"),
                 json -> json.node("eventId").isEqualTo(EVENT_ID_1.toString()),
                 json -> json.node("eventTitle").isEqualTo("Test"),
+                json -> json.node("exhibitorName").isEqualTo("Andre Radler"),
                 json -> json.node("contactInformation").isEqualTo("dfadf@example.com"),
                 json -> json.node("businessName").isEqualTo("IT Technik"),
                 json -> json.node("status").isEqualTo("REJECTED"));
@@ -268,6 +269,8 @@ class OrganizerApplicationControllerTest extends TestBase {
                         app.get("applicationId"),
                         app.get("userId"),
                         app.get("eventId"),
+                        app.get("eventTitle"),
+                        app.get("exhibitorName"),
                         app.get("contactInformation"),
                         app.get("businessName"),
                         app.get("typeOfBusiness"),
@@ -276,9 +279,9 @@ class OrganizerApplicationControllerTest extends TestBase {
                         app.get("status")
                 )
         ).containsExactlyInAnyOrder(
-                tuple(3, "c3456789-01cd-ef23-4567-8901cdef2345", "af333e19-6ed6-4c8b-b86e-ef78943a98a3", "45353065-3834-3030-2d65-3239633d3431", "dfadf@example.com", "IT Technik", "Software IT", true, "Looking forward to participating!", "IN_PROGRESS"),
-                tuple(2, "b79a8e9b-7d74-4a5f-93e1-73f451e1ae0b", "af333e19-6ed6-4c8b-b86e-ef78943a98a2", "45353065-3834-3030-2d65-3239633d3431", "dfadf@example.com", "Luu Consults", "Consulting", true, "Looking forward to participating!", "IN_PROGRESS"),
-                tuple(1, "b79a8e9b-7d74-4a5f-93e1-73f451e1ae0a", "df333e19-6ed6-4c8b-b86e-ef78943a98a4", "45353065-3834-3030-2d65-3239633d3431", "example@example.com", "Sample Business", "Food Truck", true, "Looking forward to participating!", "IN_PROGRESS")
+                tuple(3, "c3456789-01cd-ef23-4567-8901cdef2345", "af333e19-6ed6-4c8b-b86e-ef78943a98a3", "45353065-3834-3030-2d65-3239633d3431","Test", "Andre Radler", "dfadf@example.com", "IT Technik", "Software IT", true, "Looking forward to participating!", "IN_PROGRESS"),
+                tuple(2, "b79a8e9b-7d74-4a5f-93e1-73f451e1ae0b", "af333e19-6ed6-4c8b-b86e-ef78943a98a2", "45353065-3834-3030-2d65-3239633d3431","Test", "Khang","dfadf@example.com", "Luu Consults", "Consulting", true, "Looking forward to participating!", "IN_PROGRESS"),
+                tuple(1, "b79a8e9b-7d74-4a5f-93e1-73f451e1ae0a", "df333e19-6ed6-4c8b-b86e-ef78943a98a4", "45353065-3834-3030-2d65-3239633d3431","Test", "Hung Luu","example@example.com", "Sample Business", "Food Truck", true, "Looking forward to participating!", "IN_PROGRESS")
         );
     }
 
@@ -346,6 +349,27 @@ class OrganizerApplicationControllerTest extends TestBase {
         assertThat(response.getBody())
                 .as("check if response contains error message")
                 .contains("Invalid UUID string: invalid-organizer-id");
+    }
+
+    @Test
+    @DisplayName("Organizer sees error for null")
+    void organizerSeesErrorForNull() {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}/organizer/{organizerId}/events/{eventId}/applications",
+                HttpMethod.GET,
+                new HttpEntity<>(null),
+                String.class,
+                port,
+                null,
+                null);
+
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Status is BAD REQUEST")
+                .isEqualTo(HttpStatus.NOT_FOUND);
+
+        assertThat(response.getBody())
+                .as("check if response contains error message")
+                .contains("Not Found");
     }
 
 

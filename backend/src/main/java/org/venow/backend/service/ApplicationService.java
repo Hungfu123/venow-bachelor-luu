@@ -29,10 +29,10 @@ public class ApplicationService {
         if (applicationRepository.existsByUserIdAndEventId(applicationDTO.getUserId(), applicationDTO.getEventId())) {
             throw new DuplicateApplicationException("User has already applied for this event.");
         }
-
         final ApplicationDTO savedApplication = applicationRepository.save(applicationDTO);
         log.info("application created: {}", savedApplication);
         savedApplication.setEventTitle(applicationRepository.getEventName(savedApplication.getEventId()));
+        savedApplication.setExhibitorName(userService.getUserByUserId(applicationDTO.getUserId()).name());
         return savedApplication;
     }
 
@@ -42,6 +42,7 @@ public class ApplicationService {
                 .map(
                         applicationDTO -> {
                             applicationDTO.setEventTitle(applicationRepository.getEventName(applicationDTO.getEventId()));
+                            applicationDTO.setExhibitorName(userService.getUserByUserId(applicationDTO.getUserId()).name());
                             return applicationDTO;
                         }
                 ).toList();
@@ -54,9 +55,9 @@ public class ApplicationService {
 
         final ApplicationDTO applicationDTO = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new NotFoundException("Application not found for ID: " + applicationId));
-
         final String eventName = applicationRepository.getEventName(applicationDTO.getEventId());
         applicationDTO.setEventTitle(eventName);
+        applicationDTO.setExhibitorName(userService.getUserByUserId(applicationDTO.getUserId()).name());
         return applicationDTO;
     }
 
@@ -69,6 +70,7 @@ public class ApplicationService {
         applicationDTO.setStatus(Status.REJECTED.name());
         ApplicationDTO savedApplication = applicationRepository.save(applicationDTO);
         savedApplication.setEventTitle(applicationRepository.getEventName(applicationDTO.getEventId()));
+        savedApplication.setExhibitorName(userService.getUserByUserId(applicationDTO.getUserId()).name());
         return savedApplication;
     }
 
@@ -78,8 +80,10 @@ public class ApplicationService {
             throw new AlreadyRejectedException("Application already accepted or rejected");
         }
         applicationDTO.setStatus(Status.ACCEPTED.name());
+        ApplicationDTO savedApplication = applicationRepository.save(applicationDTO);
         applicationDTO.setEventTitle(applicationRepository.getEventName(applicationDTO.getEventId()));
-        return applicationRepository.save(applicationDTO);
+        applicationDTO.setExhibitorName(userService.getUserByUserId(applicationDTO.getUserId()).name());
+        return savedApplication;
     }
 
     public String getApplicationName(UUID applicationId) {
@@ -90,6 +94,14 @@ public class ApplicationService {
 
     public List<ApplicationDTO> getAllApplicationsByOrganizerAndEventId(UUID organizerId, UUID eventId) {
 
-        return applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, eventId);
+        return applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, eventId)
+                .stream()
+                .map(
+                        applicationDTO -> {
+                            applicationDTO.setEventTitle(applicationRepository.getEventName(applicationDTO.getEventId()));
+                            applicationDTO.setExhibitorName(userService.getUserByUserId(applicationDTO.getUserId()).name());
+                            return applicationDTO;
+                        }
+                ).toList();
     }
 }

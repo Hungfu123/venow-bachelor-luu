@@ -40,9 +40,7 @@ ExhibitorApplicationControllerTest extends TestBase {
     @DisplayName("exhibitor apply for an event")
     @Sql(scripts = { "/db/testmigration/000_init.sql"})
     void exhibitorApplyForEventPage() {
-
         ApplicationRequest requestBody = loadObjectFromJson("/requests/applicationrequest.json", ApplicationRequest.class);
-
         final ResponseEntity<String> response = restTemplate.exchange(
                 "http://localhost:{port}exhibitor/{userId}/events/{eventId}/application",
                 HttpMethod.POST,
@@ -61,6 +59,7 @@ ExhibitorApplicationControllerTest extends TestBase {
                         json -> json.node("userId").isEqualTo(EXHIBITOR_ID_1.toString()),
                         json -> json.node("eventId").isEqualTo(EVENT_ID_1.toString()),
                         json -> json.node("eventTitle").isEqualTo("Test"),
+                        json -> json.node("exhibitorName").isEqualTo(""),
                         json -> json.node("contactInformation").isEqualTo("example@example.com"),
                         json -> json.node("businessName").isEqualTo("Sample Business"),
                         json -> json.node("status").isEqualTo("IN_PROGRESS")
@@ -110,6 +109,7 @@ ExhibitorApplicationControllerTest extends TestBase {
                 json -> json.node("userId").isEqualTo(EXHIBITOR_ID_2.toString()),
                 json -> json.node("eventId").isEqualTo(EVENT_ID_1.toString()),
                 json -> json.node("eventTitle").isEqualTo("Test"),
+                json -> json.node("exhibitorName").isEqualTo("Frank Reich"),
                 json -> json.node("contactInformation").isEqualTo("example@example.com"),
                 json -> json.node("businessName").isEqualTo("Sample Business"),
                 json -> json.node("status").isEqualTo("IN_PROGRESS"));
@@ -132,6 +132,7 @@ ExhibitorApplicationControllerTest extends TestBase {
                 json -> json.node("userId").isEqualTo(EXHIBITOR_ID_1.toString()),
                 json -> json.node("eventId").isEqualTo(EVENT_ID_1.toString()),
                 json -> json.node("eventTitle").isEqualTo("Test"),
+                json -> json.node("exhibitorName").isEqualTo("Hung Luu"),
                 json -> json.node("contactInformation").isEqualTo("example@example.com"),
                 json -> json.node("businessName").isEqualTo("Sample Business"),
                 json -> json.node("message").isEqualTo("Looking forward to participating!"),
