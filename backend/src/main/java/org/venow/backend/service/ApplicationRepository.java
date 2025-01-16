@@ -16,4 +16,5 @@ public interface ApplicationRepository {
 
     List<ApplicationDTO> getAllApplicationsByOrganizer(UUID organizerId);
 
+    List<ApplicationDTO> getAllApplicationsByOrganizerAndEventId(UUID organizerId, UUID eventId);
 }

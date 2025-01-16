@@ -15,4 +15,7 @@ public interface JpaApplicationRepository extends JpaRepository<Application, UUI
 
     @Query("SELECT a FROM applications a JOIN events e ON a.eventId = e.eventId WHERE e.organizerId =:organizerId")
     List<Application> findAllByOrganizerIdFromEvent (UUID organizerId);
+
+    @Query("SELECT a FROM applications a JOIN events e ON a.eventId = e.eventId WHERE e.organizerId =:organizerId AND e.eventId =:eventId")
+    List<Application> findAllByOrganizerIdAndEventId(UUID organizerId, UUID eventId);
 }

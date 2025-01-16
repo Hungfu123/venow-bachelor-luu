@@ -69,8 +69,13 @@ public class ApplicationService {
     }
 
     public String getApplicationName(UUID applicationId) {
-        ApplicationDTO applicationDTO = getApplication(applicationId);
-        UserDTO user = userService.getUserByUserId(applicationDTO.getUserId());
+        final ApplicationDTO applicationDTO = getApplication(applicationId);
+        final UserDTO user = userService.getUserByUserId(applicationDTO.getUserId());
         return user.name();
+    }
+
+    public List<ApplicationDTO> getAllApplicationsByOrganizerAndEventId(UUID organizerId, UUID eventId) {
+
+        return applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, eventId);
     }
 }

@@ -3,6 +3,7 @@ package org.venow.backend;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,13 @@ import org.venow.backend.testfactory.ApplicationDataFactory;
 import org.venow.backend.web.reponse.ApplicationResponse;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
+import static org.springframework.boot.context.properties.bind.Bindable.mapOf;
 
 class OrganizerApplicationControllerTest extends TestBase {
 
@@ -240,5 +244,108 @@ class OrganizerApplicationControllerTest extends TestBase {
         String errorMessage = response.getBody();
         assertThat(errorMessage).isEqualTo("Application already rejected");
     }
+
+    @Test
+    @DisplayName("Organizer can see application on event")
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
+    void organizerCanSeeApplicationOnEvent() {
+        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:{port}organizer/{organizerId}/events/{eventId}/applications",
+                HttpMethod.GET,
+                new HttpEntity<>(null),
+                String.class,
+                port, "123e4567-e89b-12d3-a456-426614174000", "45353065-3834-3030-2d65-3239633d3431");
+        assertThat(response.getStatusCode()).as("check if HTTP Status OK").isEqualTo(HttpStatus.OK);
+
+        assertThat(response.getBody())
+                .as("check if response contains application")
+                .contains("applicationId");
+        List<Map<String, Object>> applications = JsonPath.parse(response.getBody()).read("$[*]");
+
+        assertThat(applications).extracting(
+                app -> tuple(
+                        app.get("id"),
+                        app.get("applicationId"),
+                        app.get("userId"),
+                        app.get("eventId"),
+                        app.get("contactInformation"),
+                        app.get("businessName"),
+                        app.get("typeOfBusiness"),
+                        app.get("previousParticipation"),
+                        app.get("message"),
+                        app.get("status")
+                )
+        ).containsExactlyInAnyOrder(
+                tuple(3, "c3456789-01cd-ef23-4567-8901cdef2345", "af333e19-6ed6-4c8b-b86e-ef78943a98a3", "45353065-3834-3030-2d65-3239633d3431", "dfadf@example.com", "IT Technik", "Software IT", true, "Looking forward to participating!", "IN_PROGRESS"),
+                tuple(2, "b79a8e9b-7d74-4a5f-93e1-73f451e1ae0b", "af333e19-6ed6-4c8b-b86e-ef78943a98a2", "45353065-3834-3030-2d65-3239633d3431", "dfadf@example.com", "Luu Consults", "Consulting", true, "Looking forward to participating!", "IN_PROGRESS"),
+                tuple(1, "b79a8e9b-7d74-4a5f-93e1-73f451e1ae0a", "df333e19-6ed6-4c8b-b86e-ef78943a98a4", "45353065-3834-3030-2d65-3239633d3431", "example@example.com", "Sample Business", "Food Truck", true, "Looking forward to participating!", "IN_PROGRESS")
+        );
+    }
+
+    @Test
+    @DisplayName("Organizer can see application on event but it is empty")
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql" })
+    void organizerCanSeeApplicationOnEvent2() {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}/organizer/{organizerId}/events/{eventId}/applications",
+                HttpMethod.GET,
+                new HttpEntity<>(null),
+                String.class,
+                port,
+                "123e4567-e89b-12d3-a456-426614174000",
+                "67353065-3834-3030-2d65-3239633d3432");
+
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Status is OK")
+                .isEqualTo(HttpStatus.OK);
+
+        List<Map<String, Object>> applications = JsonPath.parse(response.getBody()).read("$[*]");
+
+        assertThat(applications)
+                .as("check if applications list is empty")
+                .isEmpty();
+    }
+
+    @Test
+    @DisplayName("Organizer sees error for invalid event ID")
+    void organizerSeesErrorForInvalidEventId() {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}/organizer/{organizerId}/events/{eventId}/applications",
+                HttpMethod.GET,
+                new HttpEntity<>(null),
+                String.class,
+                port,
+                "123e4567-e89b-12d3-a456-426614174000",
+                "invalid-event-id");
+
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Status is BAD REQUEST")
+                .isEqualTo(HttpStatus.BAD_REQUEST);
+
+        assertThat(response.getBody())
+                .as("check if response contains error message")
+                .contains("Invalid UUID string: invalid-event-id");
+    }
+
+    @Test
+    @DisplayName("Organizer sees error for invalid organizer ID")
+    void organizerSeesErrorForInvalidOrganizerId() {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}/organizer/{organizerId}/events/{eventId}/applications",
+                HttpMethod.GET,
+                new HttpEntity<>(null),
+                String.class,
+                port,
+                "invalid-organizer-id",
+                "45353065-3834-3030-2d65-3239633d3431");
+
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Status is BAD REQUEST")
+                .isEqualTo(HttpStatus.BAD_REQUEST);
+
+        assertThat(response.getBody())
+                .as("check if response contains error message")
+                .contains("Invalid UUID string: invalid-organizer-id");
+    }
+
 
 }

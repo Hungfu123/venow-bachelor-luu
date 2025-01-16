@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.jdbc.Sql;
 import org.venow.backend.TestBase;
 import org.venow.backend.service.UserRepository;
@@ -130,5 +131,66 @@ class ApplicationRepositoryTest extends TestBase {
         assertThat(applications).isEmpty();
 
     }
+
+    @DisplayName("should return all applications for given organizer and event id")
+    @Test
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
+    void shouldReturnAllApplicationsForGivenOrganizerAndEventId() {
+        UUID organizerId = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
+        UUID eventId = UUID.fromString("45353065-3834-3030-2d65-3239633d3431");
+
+        ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
+                .withUserId(UUID.randomUUID().toString())
+                .withEventId(eventId.toString())
+                .build();
+
+        ApplicationDTO application2 = ApplicationDTOFactory.createDefault()
+                .withUserId(UUID.randomUUID().toString())
+                .withEventId(eventId.toString())
+                .build();
+
+        ApplicationDTO savedApplication1= applicationRepository.save(application1);
+        ApplicationDTO savedApplication2 = applicationRepository.save(application2);
+
+        List<ApplicationDTO> applications = applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, eventId);
+
+        assertThat(applications)
+                .hasSize(5)
+                .contains(savedApplication1, savedApplication2);
+    }
+
+    @DisplayName("should return empty list if no applications found for given organizer and event id")
+    @Test
+    void shouldReturnEmptyListIfNoApplicationsFoundForGivenOrganizerAndEventId() {
+        UUID organizerId = UUID.randomUUID();
+        UUID eventId = UUID.randomUUID();
+
+        List<ApplicationDTO> applications = applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, eventId);
+
+        assertThat(applications).isEmpty();
+    }
+
+    @DisplayName("Should throw exception when organizer ID is null")
+    @Test
+    void shouldThrowExceptionWhenOrganizerIdIsNull() {
+        UUID eventId = UUID.randomUUID();
+
+        assertThatThrownBy(() -> applicationRepository.getAllApplicationsByOrganizerAndEventId(null, eventId))
+                .isInstanceOf(InvalidDataAccessApiUsageException.class)
+                .hasMessageContaining("Organizer ID must not be null");
+    }
+
+    @DisplayName("Should throw exception when event ID is null")
+    @Test
+    void shouldThrowExceptionWhenEventIdIsNull() {
+        UUID organizerId = UUID.randomUUID();
+
+        assertThatThrownBy(() -> applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, null))
+                .isInstanceOf(InvalidDataAccessApiUsageException.class)
+                .hasMessageContaining("Event ID must not be null");
+    }
+
+
+
 
 }
