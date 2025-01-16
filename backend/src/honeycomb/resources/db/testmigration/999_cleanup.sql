@@ -1,5 +1,6 @@
-DELETE FROM contracts;
-DELETE FROM applications;
-DELETE FROM events;
-DELETE FROM users;
+SET FOREIGN_KEY_CHECKS = 0;
 
+TRUNCATE TABLE contracts;
+TRUNCATE TABLE events;
+TRUNCATE TABLE users;
+TRUNCATE TABLE applications;

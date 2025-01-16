@@ -32,7 +32,7 @@ public class ExhibitorContractControllerTest extends TestBase{
 
     @DisplayName("exhibitor get on contract details")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     public void getContractDetails() {
         final ResponseEntity<ContractResponse> response = restTemplate
                 .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/applications/{applicationId}/contract-details/{contractId}",
@@ -70,7 +70,7 @@ public class ExhibitorContractControllerTest extends TestBase{
 
     @DisplayName("exhibitor get on contract details - invalid applicationId")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     public void getContractDetailsInvalidApplicationId() {
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/applications/{applicationId}/contract-details/{contractId}",
@@ -88,7 +88,7 @@ public class ExhibitorContractControllerTest extends TestBase{
 
     @DisplayName("exhibitor get on contract details - mismatched IDs")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     public void getContractDetailsMismatchedIds() {
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/applications/{applicationId}/contract-details/{contractId}",
@@ -106,7 +106,7 @@ public class ExhibitorContractControllerTest extends TestBase{
 
     @DisplayName("exhibitor confirm contract")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     public void confirmContract() {
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contract-details/{contractId}/confirm",
@@ -126,7 +126,7 @@ public class ExhibitorContractControllerTest extends TestBase{
 
     @DisplayName("exhibitor cant find contract - invalid status")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     public void confirmContractInvalidStatus() {
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contract-details/{contractId}/confirm",
@@ -143,7 +143,7 @@ public class ExhibitorContractControllerTest extends TestBase{
 
     @DisplayName("contracted already accepted - invalid status")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     public void confirmContractInvalidStatusNotContract() {
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contract-details/{contractId}/confirm",
@@ -172,7 +172,7 @@ public class ExhibitorContractControllerTest extends TestBase{
 
     @DisplayName("exhibitor reject contract")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     public void rejectContract() {
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contract-details/{contractId}/reject",
@@ -192,7 +192,7 @@ public class ExhibitorContractControllerTest extends TestBase{
 
     @DisplayName("exhibitor cant find contract - invalid status")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     public void rejectContractInvalidStatus() {
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contract-details/{contractId}/reject",
@@ -209,7 +209,7 @@ public class ExhibitorContractControllerTest extends TestBase{
 
     @DisplayName("contract already rejected and accepted - invalid status")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     public void rejectContractInvalidStatusNotContract() {
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contract-details/{contractId}/reject",
@@ -238,7 +238,7 @@ public class ExhibitorContractControllerTest extends TestBase{
 
     @DisplayName("exhibitor get on contract details")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     public void getContractDetailsFromAll() {
         final ResponseEntity<ContractResponse> response = restTemplate
                 .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contracts/details/{contractId}",
@@ -275,7 +275,7 @@ public class ExhibitorContractControllerTest extends TestBase{
 
     @DisplayName("exhibitor get on contract details - invalid applicationId")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     public void getContractDetailsInvalidContractId() {
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/contract-details/{contractId}",
@@ -292,7 +292,7 @@ public class ExhibitorContractControllerTest extends TestBase{
 
     @DisplayName("exhibitor get all contracts")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/005_insert-event-user-application-contracts-exhibitor.sql"})
+    @Sql(scripts = { "/db/testmigration/005_insert-event-user-application-contracts-exhibitor.sql"})
     public void getAllContracts() {
         List<ContractResponse> expectedContracts = ContractDataFactory.getAllContractResponseExhibitor();
 

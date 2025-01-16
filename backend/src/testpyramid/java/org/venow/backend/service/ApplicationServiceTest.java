@@ -296,6 +296,85 @@ public class ApplicationServiceTest {
         assertThat(applicationName).isEqualTo(user.name());
     }
 
+    @Test
+    @DisplayName("Should return all applications for a given organizer and event")
+    void shouldReturnAllApplicationsForOrganizerAndEvent() {
+        UUID organizerId = UUID.randomUUID();
+        UUID eventId = UUID.randomUUID();
+
+        List<ApplicationDTO> expectedApplications = List.of(
+                ApplicationDTO.builder()
+                        .id(1L)
+                        .applicationId(UUID.randomUUID())
+                        .userId(UUID.randomUUID())
+                        .eventId(eventId)
+                        .businessName("Business 1")
+                        .typeOfBusiness("Type 1")
+                        .previousParticipation(true)
+                        .message("Message 1")
+                        .status("IN_PROGRESS")
+                        .build(),
+                ApplicationDTO.builder()
+                        .id(2L)
+                        .applicationId(UUID.randomUUID())
+                        .userId(UUID.randomUUID())
+                        .eventId(eventId)
+                        .businessName("Business 2")
+                        .typeOfBusiness("Type 2")
+                        .previousParticipation(false)
+                        .message("Message 2")
+                        .status("IN_PROGRESS")
+                        .build()
+        );
+
+        when(applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, eventId))
+                .thenReturn(expectedApplications);
+
+        List<ApplicationDTO> result = service.getAllApplicationsByOrganizerAndEventId(organizerId, eventId);
+
+        assertThat(result)
+                .isNotNull()
+                .hasSize(2)
+                .containsExactlyInAnyOrderElementsOf(expectedApplications);
+    }
+
+    @Test
+    @DisplayName("Should return empty list when no applications are found for organizer and event")
+    void shouldReturnEmptyListWhenNoApplicationsFound() {
+        UUID organizerId = UUID.randomUUID();
+        UUID eventId = UUID.randomUUID();
+
+        when(applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, eventId))
+                .thenReturn(List.of());
+
+        List<ApplicationDTO> result = service.getAllApplicationsByOrganizerAndEventId(organizerId, eventId);
+
+        assertThat(result)
+                .isNotNull()
+                .isEmpty();
+    }
+
+    @Test
+    @DisplayName("Should throw exception when organizer ID is null")
+    void shouldThrowExceptionWhenOrganizerIdIsNull() {
+        UUID eventId = UUID.randomUUID();
+        when(applicationRepository.getAllApplicationsByOrganizerAndEventId(null, eventId))
+                .thenThrow(new IllegalArgumentException("Organizer ID and Event ID must not be null"));
+        assertThatThrownBy(() -> service.getAllApplicationsByOrganizerAndEventId(null, eventId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Organizer ID and Event ID must not be null");
+    }
+
+    @Test
+    @DisplayName("Should throw exception when event ID is null")
+    void shouldThrowExceptionWhenEventIdIsNull2() {
+        UUID organizerId = UUID.randomUUID();
+        when(applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, null))
+                .thenThrow(new IllegalArgumentException("Organizer ID and Event ID must not be null"));
+        assertThatThrownBy(() -> service.getAllApplicationsByOrganizerAndEventId(organizerId, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Organizer ID and Event ID must not be null");
+    }
 
 
 

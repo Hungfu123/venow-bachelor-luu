@@ -33,7 +33,7 @@ class OrganizerContractControllerTest extends TestBase {
 
     @DisplayName("get on contract formular page und see contract response")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void getFormularContract() {
 
         final ResponseEntity<String> response = restTemplate
@@ -99,7 +99,7 @@ class OrganizerContractControllerTest extends TestBase {
 
     @DisplayName("submit contract formular and create contract")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void submitContractAndCreateContract() {
         ContractRequest request = loadObjectFromJson("/requests/contract-request.json", ContractRequest.class);
 
@@ -133,7 +133,7 @@ class OrganizerContractControllerTest extends TestBase {
 
     @DisplayName("submitWithoutRequest - BAD REQUEST")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void submitWithoutRequest() {
 
         final ResponseEntity<String> response = restTemplate
@@ -148,7 +148,7 @@ class OrganizerContractControllerTest extends TestBase {
 
     @DisplayName("submit with validation - BAD REQUEST")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void submitWithValidation() {
         ContractRequest request = loadObjectFromJson("/requests/contract-request-null.json", ContractRequest.class);
 
@@ -169,7 +169,7 @@ class OrganizerContractControllerTest extends TestBase {
 
     @DisplayName("submit with validation empty booth number and price must be greater than 0 - BAD REQUEST")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void subWIthValidationEmpty() {
         ContractRequest request = loadObjectFromJson("/requests/contract-request-empty.json", ContractRequest.class);
 
@@ -191,7 +191,7 @@ class OrganizerContractControllerTest extends TestBase {
 
     @DisplayName("submit on not in progress status application - CONFLICT")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void submitOnNotInProgressStatusApplication() {
         ContractRequest request = loadObjectFromJson("/requests/contract-request.json", ContractRequest.class);
 
@@ -208,7 +208,7 @@ class OrganizerContractControllerTest extends TestBase {
 
     @DisplayName("show all contracts by organizer")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts-first.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts-first.sql"})
     void showAllContractsByOrganizer() throws JsonProcessingException {
         List<ContractResponse> expectedContracts = ContractDataFactory.getAllContractResponses();
 
@@ -235,7 +235,7 @@ class OrganizerContractControllerTest extends TestBase {
 
     @DisplayName("cant show contracts because user is EXHIBITOR - NOT FOUND")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     void showNotFoundExhibitor() {
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}/organizer/{organizerId}/contracts",
@@ -250,7 +250,7 @@ class OrganizerContractControllerTest extends TestBase {
 
     @DisplayName("organizer see contract details")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     void showContractDetails() {
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}/organizer/{organizerId}/contracts/details/{contractId}",
@@ -282,7 +282,7 @@ class OrganizerContractControllerTest extends TestBase {
 
     @DisplayName("cant see contract details because contract not found - NOT FOUND")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
     void showContractDetailsNotFound() {
         final ResponseEntity<String> response = restTemplate
                 .exchange("http://localhost:{port}/organizer/{organizerId}/contracts/details/{contractId}",

@@ -10,6 +10,7 @@ import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.ApplicationService;
 import org.venow.backend.service.exception.InvalidInputException;
 import org.venow.backend.web.reponse.ApplicationResponse;
+import org.venow.backend.web.reponse.ResponseMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,6 @@ public class OrganizerApplicationController {
     public ResponseEntity<List<ApplicationResponse>> getallApplicationsByOrganizer(
             @PathVariable("organizerId") final UUID organizerId) {
         final List<ApplicationDTO> allApplication = applicationservice.getAllApplicationsByOrganizer(organizerId);
-        log.info("Found application {}", allApplication.stream().map(ApplicationDTO::getApplicationId).toList());
         return ResponseEntity.ok(allApplication.stream()
                 .collect(
                         ArrayList::new,
@@ -67,6 +67,16 @@ public class OrganizerApplicationController {
         final ApplicationDTO applicationDTO = applicationservice.acceptApplication(applicationId);
         log.info("Application was accepted {}", applicationDTO.getApplicationId());
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToApplicationResponse(applicationDTO));
+    }
+
+    @GetMapping("/events/{eventId}/applications")
+    public ResponseEntity<List<ApplicationResponse>> getApplicationsByEvent(
+            @PathVariable("organizerId") final UUID organizerId,
+            @PathVariable("eventId") final UUID eventId) {
+        final List<ApplicationDTO> applications = applicationservice.getAllApplicationsByOrganizerAndEventId(organizerId,eventId);
+        return ResponseEntity.ok(applications.stream()
+                .map(ResponseMapper::mapToApplicationResponse)
+                .toList());
     }
 }
 

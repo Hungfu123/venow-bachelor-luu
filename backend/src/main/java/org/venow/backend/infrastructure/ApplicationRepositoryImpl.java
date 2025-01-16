@@ -48,6 +48,21 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     public String getEventName(UUID eventId) {
         return repository.findEventNameByEventId(eventId);
     }
+    @Override
+    public List<ApplicationDTO> getAllApplicationsByOrganizerAndEventId(UUID organizerId, UUID eventId) {
+        if (organizerId == null) {
+            throw new IllegalArgumentException("Organizer ID must not be null");
+        }
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event ID must not be null");
+        }
+
+        return repository.findAllByOrganizerIdAndEventId(organizerId, eventId)
+                .stream()
+                .map(ApplicationMapper::mapToDTO)
+                .toList();
+    }
+
 
 
 }

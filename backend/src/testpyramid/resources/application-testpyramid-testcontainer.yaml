@@ -4,7 +4,7 @@ spring:
     url: jdbc:tc:mysql:8.0.33:///testdb
   flyway:
     enabled: true
-    locations: classpath:db/migration
+    locations: classpath:db/migration/schema
   jpa:
     hibernate:
       ddl-auto: none

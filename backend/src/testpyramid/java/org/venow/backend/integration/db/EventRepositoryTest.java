@@ -46,7 +46,6 @@ class EventRepositoryTest extends TestBase {
 
     @DisplayName("should find all events")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
     void shouldFindAllEventsByName() {
         String eventName = "Tech Expo";
         EventDTO event1 = EventDTOFactory.createDefault().build();
@@ -62,7 +61,6 @@ class EventRepositoryTest extends TestBase {
 
     @DisplayName("should find all events by organizerId")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
     void shouldFindAllEventsByOrganizerId() {
         UUID organizerId = UUID.randomUUID();
         EventDTO event1 = EventDTOFactory.createDefault().withOrganizerId(organizerId).build();
@@ -78,7 +76,6 @@ class EventRepositoryTest extends TestBase {
 
     @DisplayName("should find all events by title containing")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
     void shouldFindAllEventsByTitleContaining() {
         String query = "Tech";
         EventDTO event1 = EventDTOFactory.createDefault().withTitle("Tech Expo").build();
@@ -94,7 +91,6 @@ class EventRepositoryTest extends TestBase {
 
     @DisplayName("query is empty")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
     void queryIsEmpty() {
         String query = "";
         List<EventDTO> events = eventRepository.findAllByTitleContaining(query);

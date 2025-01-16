@@ -24,9 +24,10 @@ public class ContractRepositoryTest extends TestBase {
     @Autowired
     private ContractRepositoryImpl contractRepository;
 
+
     @DisplayName("should save and retrieve contract by ID")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void shouldSaveAndRetrieveContractById() {
         ApplicationDTO application = ApplicationDTOFactory.createDefault()
                 .withId(1L)
@@ -75,7 +76,7 @@ public class ContractRepositoryTest extends TestBase {
 
     @DisplayName("should return all contracts by organizer")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql", "/db/testmigration/001_insert-event-user-application.sql"})
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
     void shouldReturnTrueIfContractExistsByApplicationId() {
         ApplicationDTO application = ApplicationDTOFactory.createDefault()
                 .withId(1L)

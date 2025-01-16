@@ -22,9 +22,11 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(OrganizerApplicationController.class)
@@ -270,5 +272,94 @@ class OrganizerApplicationControllerTest {
         assertThat(contentAsString).isEqualTo("Application already accepted or rejected");
     }
 
+    @Test
+    @DisplayName("Organizer can see applications on event")
+    void organizerCanSeeApplicationsOnEvent() throws Exception {
+        final List<ApplicationDTO> expectedApplications = List.of(
+                ApplicationDTO.builder()
+                        .id(3L)
+                        .applicationId(UUID.fromString("c3456789-01cd-ef23-4567-8901cdef2345"))
+                        .userId(UUID.fromString("af333e19-6ed6-4c8b-b86e-ef78943a98a3"))
+                        .eventId(UUID.fromString("45353065-3834-3030-2d65-3239633d3431"))
+                        .contactInformation("dfadf@example.com")
+                        .businessName("IT Technik")
+                        .typeOfBusiness("Software IT")
+                        .previousParticipation(true)
+                        .message("Looking forward to participating!")
+                        .status("IN_PROGRESS")
+                        .build(),
+                ApplicationDTO.builder()
+                        .id(2L)
+                        .applicationId(UUID.fromString("b79a8e9b-7d74-4a5f-93e1-73f451e1ae0b"))
+                        .userId(UUID.fromString("df333e19-6ed6-4c8b-b86e-ef78943a98a4"))
+                        .eventId(UUID.fromString("45353065-3834-3030-2d65-3239633d3431"))
+                        .contactInformation("dfadf@example.com")
+                        .businessName("Luu Consults")
+                        .typeOfBusiness("Consulting")
+                        .previousParticipation(true)
+                        .message("Looking forward to participating!")
+                        .status("IN_PROGRESS")
+                        .build(),
+                ApplicationDTO.builder()
+                        .id(1L)
+                        .applicationId(UUID.fromString("a79a8e9b-7d74-4a5f-93e1-73f451e1ae0a"))
+                        .userId(UUID.fromString("df333e19-6ed6-4c8b-b86e-ef78943a98a4"))
+                        .eventId(UUID.fromString("45353065-3834-3030-2d65-3239633d3431"))
+                        .contactInformation("example@example.com")
+                        .businessName("Sample Business")
+                        .typeOfBusiness("Food Truck")
+                        .previousParticipation(true)
+                        .message("Looking forward to participating!")
+                        .status("IN_PROGRESS")
+                        .build()
+        );
+
+        when(applicationService.getAllApplicationsByOrganizerAndEventId(any(), any())).thenReturn(expectedApplications);
+
+        mockMvc.perform(get("/organizer/{organizerId}/events/{eventId}/applications",
+                        "123e4567-e89b-12d3-a456-426614174000", "45353065-3834-3030-2d65-3239633d3431")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(new ObjectMapper().writeValueAsString(expectedApplications)));
+    }
+
+    @Test
+    @DisplayName("Organizer can see application on event but it is empty")
+    void organizerCanSeeApplicationOnEvent2() throws Exception {
+        when(applicationService.getAllApplicationsByOrganizerAndEventId(any(), any())).thenReturn(List.of());
+
+        mockMvc.perform(get("/organizer/{organizerId}/events/{eventId}/applications",
+                        "123e4567-e89b-12d3-a456-426614174000", "67353065-3834-3030-2d65-3239633d3432")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
+    }
+
+    @Test
+    @DisplayName("Organizer sees error for invalid event ID")
+    void organizerSeesErrorForInvalidEventId() throws Exception {
+        when(applicationService.getAllApplicationsByOrganizerAndEventId(any(), any()))
+                .thenThrow(new IllegalArgumentException("Invalid event ID"));
+
+        mockMvc.perform(get("/organizer/{organizerId}/events/{eventId}/applications",
+                        "123e4567-e89b-12d3-a456-426614174000", "invalid-event-id")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Invalid UUID string: invalid-event-id"));
+    }
+
+
+    @Test
+    @DisplayName("Organizer sees error for invalid organizer ID")
+    void organizerSeesErrorForInvalidOrganizerId() throws Exception {
+        when(applicationService.getAllApplicationsByOrganizerAndEventId(any(), any()))
+                .thenThrow(new IllegalArgumentException("Invalid organizer ID"));
+
+        mockMvc.perform(get("/organizer/{organizerId}/events/{eventId}/applications",
+                        "invalid-organizer-id", "45353065-3834-3030-2d65-3239633d3431")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Invalid UUID string: invalid-organizer-id"));
+    }
 }
 

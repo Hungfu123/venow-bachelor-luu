@@ -46,7 +46,7 @@ class UserRepositoryTest extends TestBase {
 
     @DisplayName("should return true if user exists by organizer ID")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
+    
     void shouldReturnTrueIfUserExistsByUserIdAndRole() {
         UserDTO user = UserDTOFactory.createDefault().build();
         userRepository.save(user);
@@ -66,7 +66,6 @@ class UserRepositoryTest extends TestBase {
 
     @DisplayName("should return false if user is exhibitor")
     @Test
-    @Sql(scripts = {"/db/testmigration/999_cleanup.sql"})
     void shouldReturnFalseIfUserIsExhibitor() {
         UserDTO user = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
         userRepository.save(user);
