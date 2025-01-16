@@ -1,5 +1,5 @@
-const OrganizerAllAPplicationsOnEvent = () => {
-    return <h1>OrganizerAllAPplicationsOnEvent</h1>
+const OrganizerAllApplicationsOnEvent = () => {
+    return <h1>OrganizerAllApplicationsOnEvent</h1>
 }
 
-export default OrganizerAllAPplicationsOnEvent;
+export default OrganizerAllApplicationsOnEvent;
