@@ -92,7 +92,7 @@ header span {
 .add-event-button {
     @apply flex items-center px-3 py-1 bg-[#7D75FF] text-white rounded-lg hover:bg-[#6c66e0]; /* Button: Kompaktes Styling */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Button: Schatten */
-    transition: box-shadow 0.2s ease-in-out; /* Button: Übergangseffekt */
+    transition: box-shadow 1s ease-in-out; /* Button: Übergangseffekt */
 }
 
 .add-event-button:hover {
@@ -125,6 +125,7 @@ header span {
     padding-left: 14rem;
     padding-right: 0;
     width:100%;
+    background-color: white;
 }
 
 /*.main-content main {*/

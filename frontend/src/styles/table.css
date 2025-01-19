@@ -1,0 +1,141 @@
+/* Container */
+.table-container {
+    padding: 2rem;
+    background-color: #ffffff;
+    width: 100%;
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* Titel */
+.table-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #3E3E3E;
+    text-align: left;
+    margin-left: 1rem;
+}
+
+/* Tabelle */
+.T-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: #3E3E3E;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #C0C0C0;
+}
+
+/* Tabellenkopf */
+.T-table thead {
+    background-color: #F7F8F9;
+    display: table-header-group;
+    border-bottom: 2px solid #C0C0C0;
+}
+
+/* Abrundung für die obersten Ecken */
+.T-table thead tr:first-child th:first-child {
+    border-top-left-radius: 8px;
+}
+.T-table thead tr:first-child th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.T-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: bold;
+    color: #3E3E3E;
+}
+
+/* Tabellenzeilen */
+.T-table tbody {
+    display: table-row-group; /* ✅ Verhindert Konflikte mit `thead` */
+}
+
+/* Klickbare Zeilen */
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.clickable-row:hover td{
+    background-color: #E5E4FC;
+    transform: scale(1.01);
+}
+
+/* Tabellenzellen */
+.T-table td {
+    padding: 1rem;
+    text-align: left;
+    background-color: #fff;
+}
+
+/* Entfernt vertikale Linien */
+.T-table th,
+.T-table td {
+    border-right: none;
+}
+
+/* Ablehnen-Button */
+.reject-button {
+    background-color: #7D75FF;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.reject-button:hover {
+    background-color: #544DC9;
+    transform: scale(1.1);
+}
+
+/* Verhindert, dass der Button beim Klicken mit der Zeile interagiert */
+.reject-button:focus {
+    outline: none;
+}
+/* 🔴 Fehler-Banner */
+.error-banner {
+    background-color: #ffebeb;
+    color: #b30000;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ff4d4d;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Rotes Kästchen über der Tabelle */
+.error-overlay {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    background-color: #ffebeb;
+    color: #b30000;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ff4d4d;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 10;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeOut 5s ease-in-out forwards;
+}
+
+/* Fade-Out Animation für automatisches Verschwinden */
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}

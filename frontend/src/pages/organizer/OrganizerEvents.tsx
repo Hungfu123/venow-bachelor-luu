@@ -12,17 +12,14 @@ const OrganizerEvents = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        console.log("📢 useEffect läuft! OrganizerId:", organizerId);
         if (!organizerId) {
             console.error("Organizer ID fehlt!");
             return;
         }
 
-        console.log("⏳ API-Request an:", `http://localhost:8080/organizer/${organizerId}/events`);
         axios
             .get<Event[]>(`http://localhost:8080/organizer/${organizerId}/events`)
             .then((response) => {
-                console.log("✅ API-Antwort:", response.data);
                 setEvents(response.data);
                 setLoading(false);
             })
