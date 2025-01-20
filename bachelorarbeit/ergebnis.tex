@@ -1,10 +1,10 @@
 \section{Durchführung und Ergebnisse}
 
 \subsection{Vergleich der Teststrategien anhand spezifischer Anwendungsfälle}
-Die beiden Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb-Modell} wurden anhand praxisnaher Anwendungsfälle evaluiert. Die Analyse umfasst den Bewerbungsprozess, das Vertragsmanagement und das Eventmanagement. Die Ergebnisse werden auf Basis der Laufzeitmessungen, der Anzahl durchgeführter Tests sowie der Testabdeckung verglichen.
+Die beiden Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb-Modell} wurden anhand praxisnaher Anwendungsfälle evaluiert. Die Analyse umfasst den Bewerbungsprozess, das Vertragsmanagement und das Eventmanagement. Die Messungen (Laufzeit, Anzahl durchgeführter Tests) sowie die Testabdeckung (vgl. Abschnitte \ref{tab:jacoco-ergebnisse} und \ref{tab:pitest-detailed-logs}) wurden in einer einheitlichen Testumgebung durchgeführt, um die Ergebnisse vergleichbar zu halten. 
 
 \subsubsection{Bewerbungsprozess}
-Im Bewerbungsprozess zeigte sich, dass die \texttt{Testpyramide} durch die Verwendung der H2-Datenbank schnellere Testlaufzeiten ermöglicht, während das \texttt{Honeycomb-Modell} durch Integrationstests in einer realistischen Umgebung überzeugt. Die Ergebnisse sind in Tabelle~\ref{tab:bewerbungsprozess} zusammengefasst.
+Im Bewerbungsprozess zeigte sich, dass die \texttt{Testpyramide} durch die Verwendung einer H2-Datenbank geringere Laufzeiten aufweist, während das \texttt{Honeycomb-Modell} mehr Zeit in Integrationspfade investiert und dabei MySQL-Testcontainer nutzt. Die Ergebnisse sind in Tabelle \ref{tab:bewerbungsprozess} dargestellt.
 
 \begin{table}[h]
 	\centering
@@ -12,14 +12,19 @@ Im Bewerbungsprozess zeigte sich, dass die \texttt{Testpyramide} durch die Verwe
 	\label{tab:bewerbungsprozess}
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		\textbf{Modell} & \textbf{Test Typ} & \textbf{Laufzeit} & \textbf{Anzahl der Tests} & \textbf{Datenbank} \\ \hline
-		Honeycomb       & Integration       & \textbf{1 s 582 ms}            & 18                        & Testcontainer MySQL \\ \hline
-		Testpyramide    & Alle              & \textbf{1 s 516 ms}            & 47                        & H2                 \\ \hline
+		\textbf{Modell} & \textbf{Test Typ} & \textbf{Laufzeit} & \textbf{Anzahl der Tests} & \textbf{Datenbank} \\
+		\hline
+		Honeycomb       & Integration       & \textbf{1 s 582 ms} & 18  & Testcontainer MySQL \\
+		\hline
+		Testpyramide    & Alle              & \textbf{1 s 876 ms} & 44  & H2 \\
+		\hline
+		Testpyramide    & Alle              & \textbf{3 s 408 ms} & 44  & Testcontainer MySQL \\
+		\hline
 	\end{tabular}
 \end{table}
 
 \subsubsection{Vertragsmanagement}
-Das Vertragsmanagement, als zentraler und komplexester Anwendungsfall, zeigt deutliche Unterschiede zwischen den Strategien. Während das \texttt{Honeycomb-Modell} durch seine Nähe zur Produktionsumgebung punktet, ermöglicht die \texttt{Testpyramide} detaillierte und isolierte Tests in verschiedenen Schichten. Tabelle~\ref{tab:vertragsmanagement} gibt einen Überblick über die Ergebnisse.
+Das Vertragsmanagement, als zentraler und vergleichsweise aufwendiger Anwendungsfall, zeigt deutliche Unterschiede zwischen den Strategien. Tabelle \ref{tab:vertragsmanagement} veranschaulicht, dass das \texttt{Honeycomb-Modell} infolge umfangreicher Integrationstests mit MySQL länger läuft, während die \texttt{Testpyramide} kürzere Zeiten bei einer größeren Testanzahl verzeichnet.
 
 \begin{table}[h]
 	\centering
@@ -27,14 +32,19 @@ Das Vertragsmanagement, als zentraler und komplexester Anwendungsfall, zeigt deu
 	\label{tab:vertragsmanagement}
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		\textbf{Modell} & \textbf{Test Typ} & \textbf{Laufzeit} & \textbf{Anzahl der Tests} & \textbf{Datenbank} \\ \hline
-		Honeycomb       & Integration       & \textbf{2 s 724 ms}            & 42                        & Testcontainer MySQL \\ \hline
-		Testpyramide    & Alle              & \textbf{2 s 173 ms}            & 106                       & H2                 \\ \hline
+		\textbf{Modell} & \textbf{Test Typ} & \textbf{Laufzeit} & \textbf{Anzahl der Tests} & \textbf{Datenbank} \\
+		\hline
+		Honeycomb       & Integration       & \textbf{9 s 835 ms} & 48  & Testcontainer MySQL \\
+		\hline
+		Testpyramide    & Alle              & \textbf{2 s 565 ms} & 103 & H2 \\
+		\hline
+		Testpyramide    & Alle              & \textbf{3 s 757 ms} & 103 & Testcontainer MySQL \\
+		\hline
 	\end{tabular}
 \end{table}
 
 \subsubsection{Eventmanagement}
-Im Eventmanagement werden die Integration verschiedener Module und die Verwaltung komplexer Datenbankoperationen getestet. Hier zeigt sich, dass die Laufzeit beim \texttt{Honeycomb-Modell} höher ausfällt, während die \texttt{Testpyramide} durch granulare Tests überzeugt.
+Beim Eventmanagement werden komplexe Datenbankvorgänge und mehrere miteinander interagierende Module getestet. Tabelle \ref{tab:eventmanagement} belegt, dass das \texttt{Honeycomb-Modell} im Integrationsmodus nochmals mehr Laufzeit benötigt als die \texttt{Testpyramide}, die wiederum mit einer H2-Datenbank besonders schnelle Durchläufe erzielt.
 
 \begin{table}[h]
 	\centering
@@ -42,14 +52,19 @@ Im Eventmanagement werden die Integration verschiedener Module und die Verwaltun
 	\label{tab:eventmanagement}
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		\textbf{Modell} & \textbf{Test Typ} & \textbf{Laufzeit} & \textbf{Anzahl der Tests} & \textbf{Datenbank} \\ \hline
-		Honeycomb       & Integration       & \textbf{3 s 753 ms}            & 58                        & Testcontainer MySQL \\ \hline
-		Testpyramide    & Alle              & \textbf{2 s 334 ms}            & 143                       & H2                 \\ \hline
+		\textbf{Modell} & \textbf{Test Typ} & \textbf{Laufzeit} & \textbf{Anzahl der Tests} & \textbf{Datenbank} \\
+		\hline
+		Honeycomb       & Integration       & \textbf{12 s 939 ms} & 58  & Testcontainer MySQL \\
+		\hline
+		Testpyramide    & Alle              & \textbf{2 s 858 ms}  & 140 & H2 \\
+		\hline
+		Testpyramide    & Alle              & \textbf{7 s 428 ms}  & 140 & Testcontainer MySQL \\
+		\hline
 	\end{tabular}
 \end{table}
 
 \subsection{Zusammenfassung der Testabdeckung mit JaCoCo}
-Um die Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb-Modell} hinsichtlich ihrer Abdeckung zu bewerten, wurde das Tool \texttt{JaCoCo} verwendet. Dieses Werkzeug ermöglicht eine detaillierte Analyse der Testabdeckung auf verschiedenen Ebenen, wie Anweisungen (Instructions), Verzweigungen (Branches) und Klassen (Classes). Die Ergebnisse der Analyse sind in Tabelle~\ref{tab:jacoco-ergebnisse} dargestellt.
+Um die Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb-Modell} hinsichtlich ihrer Abdeckung zu bewerten, wurde das Tool \texttt{JaCoCo} eingesetzt. Es erfasst verschiedene Metriken (z.\,B. \texttt{Instructions}, \texttt{Branches}, \texttt{Methods} und \texttt{Classes}) und ermöglicht eine Differenzierung, wie viele Teile des Codes (in Zeilen und Verzweigungen) von den Tests durchlaufen werden. Die Resultate sind in Tabelle \ref{tab:jacoco-ergebnisse} zu sehen.
 
 \begin{table}[h]
 	\centering
@@ -58,39 +73,115 @@ Um die Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb-Modell} hinsic
 	\begin{tabular}{|l|l|l|}
 		\hline
 		\textbf{Metrik}       & \textbf{Honeycomb} & \textbf{Testpyramide} \\ \hline
-		Instructions          & 91 \%             & 94 \%                 \\ \hline
-		Branches              & 65 \%             & 80 \%                 \\ \hline
+		Instructions          & 91 \%              & 94 \%                 \\ \hline
+		Branches              & 65 \%              & 80 \%                 \\ \hline
 		Lines                 & 91 \% (Missed: 51) & 94 \% (Missed: 35)    \\ \hline
-		Methods               & 87.6 \%           & 91.1 \%               \\ \hline
-		Classes               & 98 \%             & 100 \%                \\ \hline
+		Methods               & 87.6 \%            & 91.1 \%               \\ \hline
+		Classes               & 98 \%              & 100 \%                \\ \hline
 	\end{tabular}
 \end{table}
 
-Die Ergebnisse zeigen, dass beide Teststrategien eine hohe Testabdeckung erreichen, insbesondere bei den Metriken \texttt{Instructions} und \texttt{Classes}. Die \texttt{Testpyramide} erzielt in fast allen Metriken bessere Werte. Besonders in der Branch-Coverage sind die Unterschiede deutlich, da die \texttt{Testpyramide} spezifische Verzweigungen und Sonderfälle in der Business-Logik präziser testet.
-
-Das \texttt{Honeycomb-Modell} zeigt hingegen eine bemerkenswerte Effizienz, da es mit weniger Tests eine ähnlich hohe Abdeckung in den zentralen Metriken \texttt{Instructions} (91~\%) und \texttt{Classes} (98~\%) erreicht. Dies verdeutlicht, dass das \texttt{Honeycomb-Modell} besonders bei der Validierung des Gesamtverhaltens der Anwendung seine Stärke entfaltet, während die \texttt{Testpyramide} für detaillierte Analysen und die Fehlersuche in isolierten Modulen besser geeignet ist.
+Die Messungen zeigen, dass beide Ansätze eine insgesamt hohe Codeabdeckung erzielen. Während die \texttt{Testpyramide} in den meisten Metriken leicht vorn liegt (z.\,B. \texttt{Branches}, \texttt{Methods}), stellt das \texttt{Honeycomb-Modell} mit weniger Tests eine ebenfalls hohe Abdeckung sicher, vor allem in \texttt{Instructions} (91\,\%) und \texttt{Classes} (98\,\%).
 
 \subsection{Mutation Testing mit PITest}
-Um die Effektivität der Tests weiter zu bewerten, wurde das Werkzeug \texttt{PITest} für Mutation Testing eingesetzt. Im Gegensatz zu \texttt{JaCoCo}, das nur die Testabdeckung analysiert, generiert \texttt{PITest} Mutationen im Code, um zu prüfen, ob die bestehenden Tests in der Lage sind, diese Mutationen zu erkennen und entsprechende Fehler zu melden. Dies bietet eine tiefere Einblicke in die Qualität und Aussagekraft der Tests.
+Zur Beurteilung, wie gut die Tests nicht nur \emph{Code ausführen}, sondern auch \emph{Fehler aufdecken} können, kam \texttt{PITest} zum Einsatz. Dieses Werkzeug generiert Mutationen (z.\,B. veränderte Return-Werte oder Negation von Bedingungen), um zu prüfen, ob sie von den Tests entdeckt und „getötet“ werden.
 
 \subsubsection{Ergebnisse der Mutation Tests}
-Die Ergebnisse des Mutation Testing sind in Tabelle~\ref{tab:pittest-ergebnisse} dargestellt. Die Mutation Coverage beschreibt den Prozentsatz der Mutationen, die von den Tests erkannt wurden.
+Tabelle \ref{tab:pitest-detailed-logs} zeigt exemplarisch, wie viele Mutationen (\texttt{Gen.}) pro Mutator erzeugt, getötet (\texttt{Killed}) und u.\,U. ohne Abdeckung (\texttt{NoCov}) geblieben sind. Überlebende Mutationen (\texttt{Surv.}) geben Aufschluss über mögliche Lücken in den existierenden Tests. 
+
+\begin{table}[h!]
+	\centering
+	\caption{Detaillierte PITest-Log-Daten im Vergleich (Honeycomb vs.\ Testpyramide)}
+	\label{tab:pitest-detailed-logs}
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|l||c|c|c|c|c||c|c|c|c|c|}
+			\hline
+			\multirow{2}{*}{\textbf{Mutator}} 
+			& \multicolumn{5}{c||}{\textbf{Honeycomb-Modell}} 
+			& \multicolumn{5}{c|}{\textbf{Testpyramide}} \\
+			\cline{2-11}
+			& \textbf{Gen.} & \textbf{Killed(\%)} & \textbf{Surv.} & \textbf{TOut} & \textbf{NoCov} 
+			& \textbf{Gen.} & \textbf{Killed(\%)} & \textbf{Surv.} & \textbf{TOut} & \textbf{NoCov} \\
+			\hline
+			\textbf{ConditionalsBoundary} & 2 & 2 (100\,\%) & 0 & 2 & 0 
+			& 2 & 1 (50\,\%)  & 1 & 0 & 0 \\
+			\textbf{PrimitiveReturns}     & 1 & 1 (100\,\%) & 0 & 1 & 0
+			& 1 & 1 (100\,\%) & 0 & 0 & 0 \\
+			\textbf{VoidMethodCall}       & 9 & 8 (89\,\%)  & 0 & 6 & 1
+			& 9 & 8 (89\,\%)  & 1 & 0 & 0 \\
+			\textbf{BooleanTrueReturnVals}& 4 & 4 (100\,\%) & 0 & 4 & 0
+			& 4 & 4 (100\,\%) & 0 & 0 & 0 \\
+			\textbf{NullReturnVals}       & 78 & 68 (87\,\%) & 0 & 61 & 10
+			& 78 & 72 (92\,\%) & 0 & 3 & 6 \\
+			\textbf{EmptyObjectReturnVals}& 19 & 19 (100\,\%) & 0 & 19 & 0
+			& 19 & 18 (95\,\%)  & 0 & 2 & 1 \\
+			\textbf{BooleanFalseReturnVals} & 5 & 5 (100\,\%) & 0 & 5 & 0
+			& 5 & 4 (80\,\%)  & 1 & 0 & 0 \\
+			\textbf{NegateConditionals}     & 33 & 31 (94\,\%) & 0 & 31 & 2
+			& 33 & 33 (100\,\%)& 0 & 1 & 0 \\
+			\hline
+		\end{tabular}
+	}
+\end{table}
+
+\paragraph{Zusammenfassung der wichtigsten Kennzahlen}
+\begin{itemize}
+	\item \textbf{Honeycomb-Modell:}
+	\begin{itemize}
+		\item Generierte Mutationen: 151
+		\item Getötete Mutationen: 138 (91\,\%)
+		\item Mutationen ohne Abdeckung (NO\_COVERAGE): 13
+		\item Line Coverage (mutierte Klassen): 92\,\% (495/537)
+		\item Test Strength: 100\,\% (alle abgedeckten Mutationen wurden getötet)
+		\item Timeouts: 129
+		\item Gesamtlaufzeit: ca. 52 Minuten 21 Sekunden
+	\end{itemize}
+	\item \textbf{Testpyramide:}
+	\begin{itemize}
+		\item Generierte Mutationen: 151
+		\item Getötete Mutationen: 141 (93\,\%)
+		\item Mutationen ohne Abdeckung (NO\_COVERAGE): 7
+		\item Line Coverage (mutierte Klassen): 94\,\% (507/537)
+		\item Test Strength: 98\,\% (141/144 abgedeckte Mutationen wurden getötet)
+		\item Timeouts: 6
+		\item Gesamtlaufzeit: ca. 5 Minuten 25 Sekunden
+	\end{itemize}
+\end{itemize}
 
 \begin{table}[h]
 	\centering
-	\caption{Ergebnisse des Mutation Testing mit PITest}
+	\caption{Kompakte Gegenüberstellung der Hauptmetriken (Honeycomb vs.\ Testpyramide)}
 	\label{tab:pittest-ergebnisse}
-	\begin{tabular}{|l|l|l|}
+	\begin{tabular}{|l|c|c|}
 		\hline
-		\textbf{Teststrategie} & \textbf{Mutation Coverage} & \textbf{Nicht erkannte Mutationen} \\ \hline
-		Honeycomb              & XX \%                      & X                                 \\ \hline
-		Testpyramide           & XX \%                      & X                                 \\ \hline
+		\textbf{Metrik} & \textbf{Honeycomb} & \textbf{Testpyramide} \\
+		\hline
+		Line Coverage (mutierte Klassen) & 92\,\% (495/537) & 94\,\% (507/537) \\
+		\hline
+		Mutation Coverage & 91\,\% (138/151) & 93\,\% (141/151) \\
+		\hline
+		Mutationen ohne Abdeckung (NO\_COVERAGE) & 13 & 7 \\
+		\hline
+		Überlebende Mutationen (SURVIVED) & 0 & 3 \\
+		\hline
+		Test Strength & 100\,\% (138/138) & 98\,\% (141/144) \\
+		\hline
+		Timeouts & 129 & 6 \\
+		\hline
+		Tests pro Mutation & 0{,}01 & 1{,}08 \\
+		\hline
+		Gesamtlaufzeit & 52 Min 21 Sek & 5 Min 25 Sek \\
+		\hline
 	\end{tabular}
 \end{table}
 
+\subsubsection{Zusammenfassung der Mutation-Testergebnisse}
+Die in Tabelle \ref{tab:pittest-ergebnisse} aufgeführten Metriken machen deutlich, dass beide Strategien eine hohe Mutation Coverage aufweisen. Das \texttt{Honeycomb-Modell} benötigt jedoch mehr Zeit (rund 52 Minuten) und verzeichnet 129 Timeouts. Die \texttt{Testpyramide} führt zwar mehr Einzeltests aus, schliesst ihre Durchläufe jedoch in knapp 5\,Minuten ab und weist deutlich weniger Timeouts auf. 
 
 \subsection{Vergleich der Datenbanklösungen}
-Der Vergleich zwischen der H2-Datenbank und der MySQL-Datenbank mithilfe von \texttt{Testcontainers} zeigt, dass H2 durch ihre Geschwindigkeit bei isolierten Tests punktet, während MySQL realistischere Ergebnisse in produktionsnahen Szenarien liefert. Beide Ansätze ergänzen sich je nach Zielsetzung.
+Der Einsatz einer H2-Datenbank führt zu \emph{kürzeren} Testlaufzeiten und ist in vielen Fällen für Unit- und (kleinere) Integrationstests ausreichend schnell. Testcontainer-basierte MySQL-Instanzen bilden hingegen \emph{produktionsnähere Bedingungen} ab, was jedoch in komplexeren Szenarien höhere Laufzeiten und potenziell mehr Timeouts nach sich zieht. Beide Ansätze können je nach Zielsetzung miteinander kombiniert werden, um ein ausgewogenes Verhältnis aus Geschwindigkeit und Realitätsnähe zu erreichen.
 
 \subsection{Zusammenfassung der Ergebnisse}
-Die Ergebnisse zeigen, dass beide Strategien ihre spezifischen Stärken haben. Das \texttt{Honeycomb-Modell} ist besonders bei komplexen End-to-End-Szenarien und der Überprüfung des Gesamtverhaltens von Vorteil, während die \texttt{Testpyramide} durch ihre Geschwindigkeit und detaillierte Fehlersuche in isolierten Tests überzeugt. Die H2-Datenbank eignet sich hervorragend für schnelle Iterationen, während MySQL-Testcontainer unverzichtbar für realitätsnahe Tests sind.
+Die durchgeführten Tests in den drei Anwendungsfällen – Bewerbungsprozess, Vertragsmanagement und Eventmanagement – zeigen, dass das \texttt{Honeycomb-Modell} und die \texttt{Testpyramide} jeweils charakteristische Laufzeiten, Testumfänge und Abdeckungswerte aufweisen. Anhand der JaCoCo-Metriken (Tabelle \ref{tab:jacoco-ergebnisse}) ist erkennbar, dass beide Strategien hohe Codeabdeckung liefern, wobei die \texttt{Testpyramide} in den meisten Kennzahlen (z.\,B. Branch-Coverage) noch etwas weiter reicht. Die Messungen mit \texttt{PITest} (Tabellen \ref{tab:pitest-detailed-logs} und \ref{tab:pittest-ergebnisse}) bestätigen, dass beide Ansätze Mutationen effektiv erkennen und töten können, wenngleich sich \emph{Laufzeit} und \emph{Anzahl der Timeouts} deutlich unterscheiden. 
+
+H2 ermöglicht bei vielen Tests eine sehr kurze Durchlaufzeit, während MySQL-Testcontainer realistischere Datenbankszenarien und damit umfassendere Integrationsprüfungen erlauben. In allen drei Fällen (Bewerbungsprozess, Vertragsmanagement, Eventmanagement) waren die Laufzeiten beim \texttt{Honeycomb-Modell} länger, häufig bei vergleichsweise wenigen Tests. Die \texttt{Testpyramide} zeigte mehr Einzeltests und kürzere Gesamtdauer, insbesondere mit H2. Somit bleibt festzuhalten, dass beide Strategien je nach Einsatzzweck – \emph{Realitätsnähe} versus \emph{Schnelligkeit und Detailtiefe} – sinnvoll eingesetzt werden können.
