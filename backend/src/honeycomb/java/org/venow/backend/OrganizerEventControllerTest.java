@@ -16,6 +16,7 @@ import org.venow.backend.testfactory.UserTestData;
 import org.venow.backend.web.request.EventRequest;
 
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -275,5 +276,62 @@ class OrganizerEventControllerTest extends TestBase {
                 );
 
     }
+
+    @Test
+    @DisplayName("should return 404 NotFound if organizer does not exist when fetching events")
+    void getAllEventsByOrganizer_organizerNotFound() {
+        final UUID invalidOrganizerId = UUID.randomUUID();
+
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}/organizer/{organizerId}/events",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port,
+                invalidOrganizerId
+        );
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody()).contains("ORGANIZERId not found");
+    }
+
+    @Test
+    @DisplayName("should return 404 NotFound if organizer does not exist when creating event")
+    void createEvent_organizerNotFound() throws Exception {
+        final EventRequest eventRequest = loadObjectFromJson("/requests/event-request.json", EventRequest.class);
+        final UUID invalidOrganizerId = UUID.randomUUID();
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}/organizer/{organizerId}/events/create",
+                HttpMethod.POST,
+                new HttpEntity<>(eventRequest),
+                String.class,
+                port,
+                invalidOrganizerId
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody()).contains("OrganizerId not found");
+    }
+
+    @Test
+    @DisplayName("should return 404 NotFound if organizer does not exist when updating event")
+    void updateEvent_organizerNotFound() throws Exception {
+        final EventRequest eventRequest = loadObjectFromJson("/requests/event-request.json", EventRequest.class);
+        final UUID invalidOrganizerId = UUID.randomUUID();
+        final String validEventId = "45353065-3834-3030-2d65-3239633d3431";
+
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}/organizer/{organizerId}/events/edit/{eventId}",
+                HttpMethod.POST,  // oder PUT, je nach deiner Implementierung
+                new HttpEntity<>(eventRequest),
+                String.class,
+                port,
+                invalidOrganizerId,
+                validEventId
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody()).contains("OrganizerId not found");
+    }
+
 
 }

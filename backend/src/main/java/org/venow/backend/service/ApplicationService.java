@@ -76,13 +76,13 @@ public class ApplicationService {
 
     public ApplicationDTO acceptApplication(final UUID applicationId) {
         final ApplicationDTO applicationDTO = getApplication(applicationId);
-        if(applicationDTO.getStatus().equals(Status.ACCEPTED.name()) || applicationDTO.getStatus().equals(Status.REJECTED.name())){
+        if(applicationDTO.getStatus().equals(Status.CONTRACT.name()) || applicationDTO.getStatus().equals(Status.REJECTED.name())){
             throw new AlreadyRejectedException("Application already accepted or rejected");
         }
-        applicationDTO.setStatus(Status.ACCEPTED.name());
+        applicationDTO.setStatus(Status.CONTRACT.name());
         ApplicationDTO savedApplication = applicationRepository.save(applicationDTO);
-        applicationDTO.setEventTitle(applicationRepository.getEventName(applicationDTO.getEventId()));
-        applicationDTO.setExhibitorName(userService.getUserByUserId(applicationDTO.getUserId()).name());
+        savedApplication.setEventTitle(applicationRepository.getEventName(applicationDTO.getEventId()));
+        savedApplication.setExhibitorName(userService.getUserByUserId(applicationDTO.getUserId()).name());
         return savedApplication;
     }
 

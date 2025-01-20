@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import static org.venow.backend.web.reponse.ResponseMapper.mapToApplicationResponse;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @Slf4j
 @RestController
 @AllArgsConstructor

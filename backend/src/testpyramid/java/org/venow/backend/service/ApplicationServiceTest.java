@@ -241,14 +241,14 @@ public class ApplicationServiceTest {
         when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
         final ApplicationDTO app = service.acceptApplication(applicationDTO1.get().getApplicationId());
 
-        assertThat(app.getStatus()).isEqualTo(Status.ACCEPTED.toString());
+        assertThat(app.getStatus()).isEqualTo(Status.CONTRACT.toString());
     }
 
     @Test
     @DisplayName("organizer accept already accepted application")
     void organizerAcceptAlreadyAcceptedApplication() {
         final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
-        applicationDTO.setStatus("ACCEPTED");
+        applicationDTO.setStatus("CONTRACT");
         final Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
         when(applicationRepository.findById(any()))
                 .thenReturn(applicationDTO1);
@@ -276,7 +276,7 @@ public class ApplicationServiceTest {
     @DisplayName("organizer reject already accepted application")
     void organizerRejectAlreadyAcceptedApplication() {
         final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
-        applicationDTO.setStatus("ACCEPTED");
+        applicationDTO.setStatus("CONTRACT");
         final Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
         when(applicationRepository.findById(any()))
                 .thenReturn(applicationDTO1);
@@ -394,6 +394,18 @@ public class ApplicationServiceTest {
                 .hasMessageContaining("Organizer ID and Event ID must not be null");
     }
 
+    @Test
+    @DisplayName("createApplication - should throw InvalidInputException if userId or eventId is null")
+    void createApplicationWithNullShouldThrowException() {
+        // GIVEN
+        ApplicationDTO invalidAppDto = ApplicationDTOFactory.createDefault().build();
+        invalidAppDto.setUserId(null);
+        invalidAppDto.setEventId(null);
+
+        assertThatThrownBy(() -> service.createApplication(invalidAppDto))
+                .isInstanceOf(InvalidInputException.class)
+                .hasMessage("User ID and Event ID must not be null");
+    }
 
 
 

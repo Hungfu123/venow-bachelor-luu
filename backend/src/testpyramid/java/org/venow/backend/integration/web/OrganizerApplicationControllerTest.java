@@ -197,7 +197,7 @@ class OrganizerApplicationControllerTest {
     @Test
     void organizeAcceptApplication() throws Exception {
         ApplicationDTO applicationDTO = ApplicationDataFactory.createDefaultApplicationDTO();
-        applicationDTO.setStatus("ACCEPTED");
+        applicationDTO.setStatus("CONTRACT");
         when(applicationService.acceptApplication(any()))
                 .thenReturn(applicationDTO);
 
@@ -212,7 +212,7 @@ class OrganizerApplicationControllerTest {
 
         ApplicationDTO actualResponse = objectMapper.readValue(contentAsString, ApplicationDTO.class);
 
-        assertThat(actualResponse.getStatus()).isEqualTo(Status.ACCEPTED.toString());
+        assertThat(actualResponse.getStatus()).isEqualTo(Status.CONTRACT.toString());
     }
 
     @DisplayName("organizer accept application which is already rejected")

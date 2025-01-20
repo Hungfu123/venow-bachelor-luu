@@ -125,6 +125,34 @@ public class ContractRepositoryTest extends TestBase {
         assertThat(contractDTOList).hasSize(2);
     }
 
+    @Test
+    @DisplayName("should return all contracts by exhibitor (data from SQL script)")
+    @Sql(scripts = { "/db/testmigration/005_insert-event-user-application-contracts-exhibitor.sql" })
+    void shouldReturnAllContractsByExhibitor_fromSql() {
+        final UUID exhibitorId = UUID.fromString("af333e19-6ed6-4c8b-b86e-ef78943a98a2");
+
+        final List<ContractDTO> contractsFound = contractRepository.findAllByExhibitorId(exhibitorId);
+
+        assertThat(contractsFound).hasSize(2);
+
+        assertThat(contractsFound)
+                .extracting(ContractDTO::getContractId)
+                .containsExactlyInAnyOrder(
+                        UUID.fromString("9a330d97-f4fb-4596-ab33-b826a0919272"),
+                        UUID.fromString("9452c6a7-6acc-4208-bbb3-f04396326fc2")
+                );
+    }
+
+
+    @Test
+    @DisplayName("should return empty list if exhibitor has no contracts")
+    void shouldReturnEmptyListIfExhibitorHasNoContracts() {
+        final UUID exhibitorIdWithoutContracts = UUID.randomUUID();
+        final List<ContractDTO> contractsFound =
+                contractRepository.findAllByExhibitorId(exhibitorIdWithoutContracts);
+        assertThat(contractsFound).isEmpty();
+    }
+
 
 
 }

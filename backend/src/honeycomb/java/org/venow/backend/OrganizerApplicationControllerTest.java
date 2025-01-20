@@ -13,9 +13,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
+import org.venow.backend.infrastructure.ApplicationRepositoryImpl;
 import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.exception.NotFoundException;
-import org.venow.backend.infrastructure.ApplicationRepositoryImpl;
 import org.venow.backend.testfactory.ApplicationDataFactory;
 import org.venow.backend.web.reponse.ApplicationResponse;
 
@@ -26,7 +26,6 @@ import java.util.UUID;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
-import static org.springframework.boot.context.properties.bind.Bindable.mapOf;
 
 class OrganizerApplicationControllerTest extends TestBase {
 
@@ -370,6 +369,47 @@ class OrganizerApplicationControllerTest extends TestBase {
         assertThat(response.getBody())
                 .as("check if response contains error message")
                 .contains("Not Found");
+    }
+
+    @Test
+    @DisplayName("should accept application and set status to ACCEPTED")
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql"})
+    void acceptApplicationSuccessfully() throws JsonProcessingException {
+        ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}/organizer/{organizerId}/applications/{applicationId}/accept",
+                HttpMethod.POST,
+                null,
+                String.class,
+                port,
+                ORGANIZER_ID.toString(),
+                APPLICATION_1.applicationId()
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+        assertThatJson(response.getBody()).and(
+                json -> json.node("applicationId").isEqualTo(APPLICATION_1.applicationId().toString()),
+                json -> json.node("exhibitorName").isEqualTo("Andre Radler"),
+                json -> json.node("eventTitle").isEqualTo("Test"),
+                json -> json.node("status").isEqualTo("CONTRACT")
+        );
+    }
+
+    @Test
+    @DisplayName("should return CONFLICT if application is already accepted or rejected")
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql" })
+    void acceptApplicationAlreadyAccepted() {
+        ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}/organizer/{organizerId}/applications/{applicationId}/accept",
+                HttpMethod.POST,
+                null,
+                String.class,
+                port,
+                "b23e4567-e89b-12d3-a456-426614174001",
+                "c3456789-01cd-ef23-4567-8901cdef2346"
+        );
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(response.getBody()).contains("Application already accepted or rejected");
     }
 
 

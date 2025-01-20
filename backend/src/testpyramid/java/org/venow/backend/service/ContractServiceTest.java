@@ -518,6 +518,31 @@ public class ContractServiceTest {
         verifyNoInteractions(contractRepository);
     }
 
+    @Test
+    @DisplayName("should throw NotFoundException if returns false for ORGANIZER")
+    void getAllContractsByOrganizer_notFoundIfNotOrganizer() {
+        final UUID organizerId = UUID.randomUUID();
+        when(userService.existsByUserAndRole(organizerId, Role.ORGANIZER)).thenReturn(false);
+
+        assertThatThrownBy(() -> contractService.getAllContractsByOrganizer(organizerId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("Organizer ID not found");
+
+        verifyNoInteractions(contractRepository);
+    }
+
+    @Test
+    @DisplayName("should throw NotFoundException if returns false for EXHIBITOR")
+    void getAllContractsByExhibitor_notFoundIfNotExhibitor() {
+        final UUID exhibitorId = UUID.randomUUID();
+        when(userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)).thenReturn(false);
+
+        assertThatThrownBy(() -> contractService.getAllContractsByExhibitor(exhibitorId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("Exhibitor ID not found");
+
+        verifyNoInteractions(contractRepository);
+    }
 
 
 }
