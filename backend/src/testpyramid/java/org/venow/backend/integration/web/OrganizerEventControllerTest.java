@@ -40,8 +40,6 @@ public class OrganizerEventControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private DateRangeValidator dateRangeValidator;
 
     @MockBean
     private Eventservice eventService;
