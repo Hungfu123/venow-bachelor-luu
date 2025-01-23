@@ -173,6 +173,10 @@ pitest {
 	def testSourceSetName = project.hasProperty("testSourceSet") ? project.getProperty("testSourceSet") : "testpyramid"
 	testSourceSets = [sourceSets[testSourceSetName]]
 	reportDir.set(layout.buildDirectory.dir("reports/pitest/${testSourceSetName}"))
+
+	outputFormats = ['HTML', 'XML', 'CSV']
+	exportLineCoverage = true
+
 }
 
 tasks.register("pitestHoneycomb") {
@@ -180,8 +184,10 @@ tasks.register("pitestHoneycomb") {
 	description = "Run PIT mutation tests for Honeycomb strategy"
 
 	doLast {
+		def gradleExecutable = System.getProperty("os.name").toLowerCase().contains("win") ? "gradlew.bat" : "./gradlew"
+
 		exec {
-			executable = "gradlew"
+			executable = gradleExecutable
 			args = ["pitest", "-PtestSourceSet=honeycomb"]
 		}
 	}
