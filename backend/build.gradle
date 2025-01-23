@@ -1,8 +1,12 @@
+import info.solidsoft.gradle.pitest.PitestTask
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.5'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'jacoco'
+	id 'info.solidsoft.pitest' version '1.15.0'
+
 }
 
 ext {
@@ -43,6 +47,8 @@ dependencies {
 	testImplementation 'org.assertj:assertj-core:3.24.2'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
 
 }
 tasks.withType(Copy) {
@@ -111,7 +117,9 @@ task testPyramidTest(type: Test) {
 }
 
 tasks.named('check') {
-	dependsOn 'honeycombTest', 'testPyramidTest'
+	dependsOn 'honeycombTest', 'testPyramidTest' // JUnit Tests
+	dependsOn 'jacocoTestPyramidReport', 'jacocoHoneycombReport' // JaCoCo Coverage Reports
+	dependsOn 'pitest', 'pitestHoneycomb' // Mutation Testing (PIT)
 }
 
 tasks.named('test') {
@@ -149,5 +157,32 @@ tasks.register("jacocoTestPyramidReport", JacocoReport) {
 		xml.required.set(true)
 		csv.required.set(false)
 		html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/testpyramid"))
+	}
+}
+
+pitest {
+	targetClasses = ['org.venow.backend.*']
+	targetTests = ['org.venow.backend.*']
+	timeoutConstInMillis = 30000
+	features = ['+auto_threads']
+	testSourceSets = [sourceSets.testpyramid]
+	junit5PluginVersion = '1.2.1'
+	mainSourceSets = [sourceSets.main]
+	verbose = true
+	threads = 6
+	def testSourceSetName = project.hasProperty("testSourceSet") ? project.getProperty("testSourceSet") : "testpyramid"
+	testSourceSets = [sourceSets[testSourceSetName]]
+	reportDir.set(layout.buildDirectory.dir("reports/pitest/${testSourceSetName}"))
+}
+
+tasks.register("pitestHoneycomb") {
+	group = "verification"
+	description = "Run PIT mutation tests for Honeycomb strategy"
+
+	doLast {
+		exec {
+			executable = "gradlew"
+			args = ["pitest", "-PtestSourceSet=honeycomb"]
+		}
 	}
 }
