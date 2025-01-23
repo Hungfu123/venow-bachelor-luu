@@ -8,15 +8,14 @@ public class DateRangeValidator implements ConstraintValidator<StartDateIsBefore
 
     @Override
     public boolean isValid(EventRequest request, ConstraintValidatorContext context) {
-        if(request.startDate() == null || request.endDate() == null) {
+        if (request.startDate() == null || request.endDate() == null) {
             return true;
         }
 
         if (!request.startDate().isBefore(request.endDate())) {
-            context.disableDefaultConstraintViolation(); // Standardfehlermeldung deaktivieren
             context.buildConstraintViolationWithTemplate("End date must be after start date")
-                    .addConstraintViolation(); // Eigene Fehlermeldung hinzufügen
-            return false; // Validierung schlägt fehl
+                    .addConstraintViolation();
+            return false;
         }
 
         return true;

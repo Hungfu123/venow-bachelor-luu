@@ -46,6 +46,8 @@ public class UserServiceTest {
 
     }
 
+
+
     @DisplayName("should return empty optional if user is not found")
     @Test
     void shouldReturnEmptyOptionalIfUserNotFound() {
@@ -60,12 +62,14 @@ public class UserServiceTest {
     void shouldThrowNotFoundExceptionIfUserNotFound() {
         UUID nonExistentId = UUID.randomUUID();
 
-        when(userRepository.findById(nonExistentId).isEmpty()).thenThrow(new NotFoundException("User not found"));
+        when(userRepository.findById(nonExistentId))
+                .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.getUserByUserId(nonExistentId))
                 .isInstanceOf(NotFoundException.class)
-                .hasMessage("User not found");
+                .hasMessage("User not found for ID: " + nonExistentId);
     }
+
 
     @DisplayName("should return true if user is an organizer")
     @Test

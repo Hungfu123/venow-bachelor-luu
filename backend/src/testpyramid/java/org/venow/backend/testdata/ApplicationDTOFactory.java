@@ -12,6 +12,7 @@ public class ApplicationDTOFactory {
                 .userId(UUID.fromString("df333e19-6ed6-4c8b-b86e-ef78943a98a4"))
                 .eventId(UUID.fromString("45353065-3834-3030-2d65-3239633d3431"))
                 .eventTitle("Test")
+                .exhibitorName("Testuser")
                 .contactInformation("example@example.com")
                 .businessName("Sample Business")
                 .typeOfBusiness("Food Truck")
@@ -46,6 +47,16 @@ public class ApplicationDTOFactory {
 
         public ApplicationDTOWith withEventId(String eventId) {
             this.applicationDTO = applicationDTO.toBuilder().eventId(UUID.fromString(eventId)).build();
+            return this;
+        }
+
+        public ApplicationDTOWith withEventTitle(String eventTitle) {
+            this.applicationDTO = applicationDTO.toBuilder().eventTitle(eventTitle).build();
+            return this;
+        }
+
+        public ApplicationDTOWith withExhibitorName(String exhibitorName) {
+            this.applicationDTO = applicationDTO.toBuilder().exhibitorName(exhibitorName).build();
             return this;
         }
 

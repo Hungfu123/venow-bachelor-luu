@@ -3,6 +3,7 @@ package org.venow.backend.service;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -26,6 +27,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,14 +55,26 @@ public class ApplicationServiceTest {
     }
 
     @Test
-    @DisplayName("should create a new application successfully when no duplicate exists")
+    @DisplayName("should create a new application successfully and set eventTitle and exhibitorName")
     void shouldCreateApplicationSuccessfully() {
         final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
+        final ApplicationDTO savedApplication = ApplicationDTOFactory.createDefault()
+                .withEventTitle("Test Event")
+                .withExhibitorName("Test User")
+                .build();
+
         when(applicationRepository.existsByUserIdAndEventId(any(), any())).thenReturn(false);
-        when(applicationRepository.save(any())).thenReturn(applicationDTO);
-        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
-        assertThat(service.createApplication(applicationDTO)).isEqualTo(applicationDTO);
+        when(applicationRepository.save(any())).thenReturn(savedApplication);
+        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().withName("Test User").build());
+        when(applicationRepository.getEventName(any())).thenReturn("Test Event");
+
+        ApplicationDTO result = service.createApplication(applicationDTO);
+
+        assertThat(result).isEqualTo(savedApplication);
+        assertThat(result.getEventTitle()).isEqualTo("Test Event");
+        assertThat(result.getExhibitorName()).isEqualTo("Test User");
     }
+
     @Test
     @DisplayName("Should throw exception when eventId is null")
     void shouldThrowExceptionWhenEventIdIsNull() {
@@ -118,30 +132,48 @@ public class ApplicationServiceTest {
     }
 
     @Test
-    @DisplayName("organizer gets all applications")
+    @DisplayName("should retrieve all applications by organizer and set eventTitle and exhibitorName")
     void organizerGetsAllApplications() {
+        final UUID organizerId = UUID.randomUUID();
+        final UUID eventId1 = UUID.randomUUID();
+        final UUID eventId2 = UUID.randomUUID();
+        final UUID userId1 = UUID.randomUUID();
+        final UUID userId2 = UUID.randomUUID();
+
         final ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
-                .withEventId(UUID.randomUUID().toString())
+                .withApplicationId(UUID.randomUUID().toString())
+                .withUserId(userId1.toString())
+                .withEventId(eventId1.toString())
                 .build();
 
         final ApplicationDTO application2 = ApplicationDTOFactory.createDefault()
-                .withEventId(UUID.randomUUID().toString())
+                .withApplicationId(UUID.randomUUID().toString())
+                .withUserId(userId2.toString())
+                .withEventId(eventId2.toString())
                 .build();
 
-        final List<ApplicationDTO> expectedApplications = List.of(application1, application2);
+        final List<ApplicationDTO> mockApplications = List.of(application1, application2);
 
-        when(applicationRepository.getAllApplicationsByOrganizer(any()))
-                .thenReturn(expectedApplications);
-        when(userService.getUserByUserId(any()))
-                .thenReturn(UserDTOFactory.createDefault().build());
-        when(applicationRepository.getEventName(any()))
-                .thenReturn("Event");
-        final List<ApplicationDTO> result = service.getAllApplicationsByOrganizer(any());
+        when(applicationRepository.getAllApplicationsByOrganizer(organizerId)).thenReturn(mockApplications);
+        when(userService.getUserByUserId(userId1)).thenReturn(UserDTOFactory.createDefault().withName("User One").build());
+        when(userService.getUserByUserId(userId2)).thenReturn(UserDTOFactory.createDefault().withName("User Two").build());
+        when(applicationRepository.getEventName(eventId1)).thenReturn("Event One");
+        when(applicationRepository.getEventName(eventId2)).thenReturn("Event Two");
 
-        assertThat(result)
-                .isNotNull()
-                .hasSize(2)
-                .containsExactly(application1, application2);
+        final List<ApplicationDTO> result = service.getAllApplicationsByOrganizer(organizerId);
+
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getEventTitle()).isEqualTo("Event One");
+        assertThat(result.get(0).getExhibitorName()).isEqualTo("User One");
+        assertThat(result.get(1).getEventTitle()).isEqualTo("Event Two");
+        assertThat(result.get(1).getExhibitorName()).isEqualTo("User Two");
+
+        final ArgumentCaptor<ApplicationDTO> captor = ArgumentCaptor.forClass(ApplicationDTO.class);
+        verify(applicationRepository).getAllApplicationsByOrganizer(organizerId);
+        verify(userService).getUserByUserId(userId1);
+        verify(userService).getUserByUserId(userId2);
+        verify(applicationRepository).getEventName(eventId1);
+        verify(applicationRepository).getEventName(eventId2);
     }
 
     @Test
@@ -159,22 +191,33 @@ public class ApplicationServiceTest {
     }
 
     @Test
-    @DisplayName("organizer gets application")
-    void organizerGetsApplications() throws InvalidInputException {
-        final ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
-                .withEventId(UUID.randomUUID().toString())
+    @DisplayName("should retrieve application by ID and set eventTitle and exhibitorName")
+    void organizerGetsApplication() {
+        UUID applicationId = UUID.randomUUID();
+        UUID eventId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
+
+        ApplicationDTO application = ApplicationDTOFactory.createDefault()
+                .withApplicationId(applicationId.toString())
+                .withUserId(userId.toString())
+                .withEventId(eventId.toString())
                 .build();
 
-        when(applicationRepository.findById(any()))
-                .thenReturn(Optional.ofNullable(application1));
-        when(userService.getUserByUserId(any()))
-                .thenReturn(UserDTOFactory.createDefault().build());
+        UserDTO user = UserDTOFactory.createDefault().withName("Test User").build();
+        String eventName = "Test Event";
 
-        assert application1 != null;
-        final ApplicationDTO application = service.getApplication(application1.getApplicationId());
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.of(application));
+        when(userService.getUserByUserId(userId)).thenReturn(user);
+        when(applicationRepository.getEventName(eventId)).thenReturn(eventName);
 
-        assertThat(application).isEqualTo(application1);
+        ApplicationDTO result = service.getApplication(applicationId);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getApplicationId()).isEqualTo(applicationId);
+        assertThat(result.getEventTitle()).isEqualTo(eventName);
+        assertThat(result.getExhibitorName()).isEqualTo("Test User");
     }
+
 
     @Test
     @DisplayName("organizer gets Error getting application")
@@ -198,20 +241,34 @@ public class ApplicationServiceTest {
     }
 
     @Test
-    @DisplayName("organizer reject application")
+    @DisplayName("should reject application and set eventTitle and exhibitorName")
     void organizerRejectApplication() {
+        UUID applicationId = UUID.randomUUID();
+        UUID eventId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
 
-        final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
-        final Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
-        when(applicationRepository.findById(any()))
-                .thenReturn(applicationDTO1);
+        ApplicationDTO application = ApplicationDTOFactory.createDefault()
+                .withApplicationId(applicationId.toString())
+                .withUserId(userId.toString())
+                .withEventId(eventId.toString())
+                .withStatus(Status.IN_PROGRESS.name())
+                .build();
 
-        when(applicationRepository.save(any())).thenReturn(applicationDTO);
-        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
-        final ApplicationDTO app = service.rejectApplication(applicationDTO1.get().getApplicationId());
+        UserDTO user = UserDTOFactory.createDefault().withName("Reject User").build();
+        String eventName = "Reject Event";
 
-        assertThat(app.getStatus()).isEqualTo("REJECTED");
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.of(application));
+        when(applicationRepository.save(any(ApplicationDTO.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(userService.getUserByUserId(userId)).thenReturn(user);
+        when(applicationRepository.getEventName(eventId)).thenReturn(eventName);
+
+        ApplicationDTO result = service.rejectApplication(applicationId);
+
+        assertThat(result.getStatus()).isEqualTo(Status.REJECTED.name());
+        assertThat(result.getEventTitle()).isEqualTo(eventName);
+        assertThat(result.getExhibitorName()).isEqualTo("Reject User");
     }
+
     @Test
     @DisplayName("organizer reject already rejected application")
     void organizerRejectAlreadyRejectedApplication() {
@@ -229,20 +286,28 @@ public class ApplicationServiceTest {
     }
 
     @Test
-    @DisplayName("organizer accept application")
+    @DisplayName("organizer accept application and set eventTitle and exhibitorName")
     void organizerAcceptApplication() {
-
         final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
-        final Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
-        when(applicationRepository.findById(any()))
-                .thenReturn(applicationDTO1);
+        final ApplicationDTO savedApplication = ApplicationDTOFactory.createDefault()
+                .withStatus(Status.CONTRACT.toString())
+                .withEventTitle("Accepted Event")
+                .withExhibitorName("Accepted User")
+                .build();
+        final Optional<ApplicationDTO> applicationDTOOptional = Optional.of(applicationDTO);
 
-        when(applicationRepository.save(any())).thenReturn(applicationDTO);
-        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
-        final ApplicationDTO app = service.acceptApplication(applicationDTO1.get().getApplicationId());
+        when(applicationRepository.findById(any())).thenReturn(applicationDTOOptional);
+        when(applicationRepository.save(any())).thenReturn(savedApplication);
+        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().withName("Accepted User").build());
+        when(applicationRepository.getEventName(any())).thenReturn("Accepted Event");
 
-        assertThat(app.getStatus()).isEqualTo(Status.CONTRACT.toString());
+        ApplicationDTO result = service.acceptApplication(applicationDTO.getApplicationId());
+
+        assertThat(result.getStatus()).isEqualTo(Status.CONTRACT.toString());
+        assertThat(result.getEventTitle()).isEqualTo("Accepted Event");
+        assertThat(result.getExhibitorName()).isEqualTo("Accepted User");
     }
+
 
     @Test
     @DisplayName("organizer accept already accepted application")
@@ -287,63 +352,63 @@ public class ApplicationServiceTest {
     }
 
     @Test
-    @DisplayName("get application name from user")
+    @DisplayName("should retrieve the exhibitor name for a given application ID")
     void getApplicationNameFromUser() {
-        final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
-        final Optional<ApplicationDTO> applicationDTO1 = Optional.of(applicationDTO);
-        final UserDTO user = UserDTOFactory.createDefault().build();
+        UUID applicationId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
 
-        when(applicationRepository.findById(any()))
-                .thenReturn(applicationDTO1);
-        when(userService.getUserByUserId(applicationDTO1.get().getUserId())).thenReturn(user);
-        final String applicationName = service.getApplicationName(applicationDTO1.get().getApplicationId());
+        ApplicationDTO application = ApplicationDTOFactory.createDefault()
+                .withApplicationId(applicationId.toString())
+                .withUserId(userId.toString())
+                .build();
 
-        assertThat(applicationName).isEqualTo(user.name());
+        UserDTO user = UserDTOFactory.createDefault().withName("Exhibitor Name").build();
+
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.of(application));
+        when(userService.getUserByUserId(userId)).thenReturn(user);
+
+        String exhibitorName = service.getApplicationName(applicationId);
+
+        assertThat(exhibitorName).isEqualTo("Exhibitor Name");
     }
 
+
     @Test
-    @DisplayName("Should return all applications for a given organizer and event")
+    @DisplayName("should retrieve all applications by organizer and event ID and set eventTitle and exhibitorName")
     void shouldReturnAllApplicationsForOrganizerAndEvent() {
         UUID organizerId = UUID.randomUUID();
         UUID eventId = UUID.randomUUID();
+        UUID userId1 = UUID.randomUUID();
+        UUID userId2 = UUID.randomUUID();
 
-        List<ApplicationDTO> expectedApplications = List.of(
-                ApplicationDTO.builder()
-                        .id(1L)
-                        .applicationId(UUID.randomUUID())
-                        .userId(UUID.randomUUID())
-                        .eventId(eventId)
-                        .businessName("Business 1")
-                        .typeOfBusiness("Type 1")
-                        .previousParticipation(true)
-                        .message("Message 1")
-                        .status("IN_PROGRESS")
-                        .build(),
-                ApplicationDTO.builder()
-                        .id(2L)
-                        .applicationId(UUID.randomUUID())
-                        .userId(UUID.randomUUID())
-                        .eventId(eventId)
-                        .businessName("Business 2")
-                        .typeOfBusiness("Type 2")
-                        .previousParticipation(false)
-                        .message("Message 2")
-                        .status("IN_PROGRESS")
-                        .build()
-        );
+        ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
+                .withApplicationId(UUID.randomUUID().toString())
+                .withUserId(userId1.toString())
+                .withEventId(eventId.toString())
+                .build();
 
-        when(applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, eventId))
-                .thenReturn(expectedApplications);
-        when(userService.getUserByUserId(any()))
-                .thenReturn(UserDTO.builder().userId(UUID.randomUUID()).name("User 1").build())
-                .thenReturn(UserDTO.builder().userId(UUID.randomUUID()).name("User 2").build());
+        ApplicationDTO application2 = ApplicationDTOFactory.createDefault()
+                .withApplicationId(UUID.randomUUID().toString())
+                .withUserId(userId2.toString())
+                .withEventId(eventId.toString())
+                .build();
+
+        List<ApplicationDTO> mockApplications = List.of(application1, application2);
+
+        when(applicationRepository.getAllApplicationsByOrganizerAndEventId(organizerId, eventId)).thenReturn(mockApplications);
+        when(userService.getUserByUserId(userId1)).thenReturn(UserDTOFactory.createDefault().withName("User One").build());
+        when(userService.getUserByUserId(userId2)).thenReturn(UserDTOFactory.createDefault().withName("User Two").build());
+        when(applicationRepository.getEventName(eventId)).thenReturn("Specific Event");
+
         List<ApplicationDTO> result = service.getAllApplicationsByOrganizerAndEventId(organizerId, eventId);
 
-        assertThat(result)
-                .isNotNull()
-                .hasSize(2)
-                .containsExactlyInAnyOrderElementsOf(expectedApplications);
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getEventTitle()).isEqualTo("Specific Event");
+        assertThat(result.get(0).getExhibitorName()).isEqualTo("User One");
+        assertThat(result.get(1).getEventTitle()).isEqualTo("Specific Event");
+        assertThat(result.get(1).getExhibitorName()).isEqualTo("User Two");
     }
+
 
     @Test
     @DisplayName("Should return empty list when no applications are found for organizer and event")
@@ -397,7 +462,6 @@ public class ApplicationServiceTest {
     @Test
     @DisplayName("createApplication - should throw InvalidInputException if userId or eventId is null")
     void createApplicationWithNullShouldThrowException() {
-        // GIVEN
         ApplicationDTO invalidAppDto = ApplicationDTOFactory.createDefault().build();
         invalidAppDto.setUserId(null);
         invalidAppDto.setEventId(null);
@@ -407,8 +471,42 @@ public class ApplicationServiceTest {
                 .hasMessage("User ID and Event ID must not be null");
     }
 
+    @Test
+    @DisplayName("should set eventTitle and exhibitorName when creating application")
+    void shouldSetEventTitleAndExhibitorName() {
+        final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
+        final ApplicationDTO savedApplication = ApplicationDTOFactory.createDefault().build();
+
+        when(applicationRepository.existsByUserIdAndEventId(any(), any())).thenReturn(false);
+        when(applicationRepository.save(any())).thenReturn(savedApplication);
+        when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().build());
+        when(applicationRepository.getEventName(any())).thenReturn("Test");
+
+        service.createApplication(applicationDTO);
+
+        ArgumentCaptor<ApplicationDTO> applicationCaptor = ArgumentCaptor.forClass(ApplicationDTO.class);
+        verify(applicationRepository).save(applicationCaptor.capture());
+
+        ApplicationDTO capturedApplication = applicationCaptor.getValue();
+        assertThat(capturedApplication.getEventTitle()).isEqualTo("Test");
+        assertThat(capturedApplication.getExhibitorName()).isEqualTo("Testuser");
+    }
 
 
+    @Test
+    @DisplayName("should create application and set eventTitle and exhibitorName")
+    void shouldCreateApplicationAndSetFields() {
+        final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
 
+        when(applicationRepository.existsByUserIdAndEventId(any(), any())).thenReturn(false);
+        when(applicationRepository.save(any())).thenReturn(applicationDTO);
+        when(userService.getUserByUserId(applicationDTO.getUserId())).thenReturn(UserDTOFactory.createDefault().withName("Test User").build());
+        when(applicationRepository.getEventName(applicationDTO.getEventId())).thenReturn("Test Event");
+
+        ApplicationDTO result = service.createApplication(applicationDTO);
+
+        assertThat(result.getEventTitle()).isEqualTo("Test Event");
+        assertThat(result.getExhibitorName()).isEqualTo("Test User");
+    }
 
 }
