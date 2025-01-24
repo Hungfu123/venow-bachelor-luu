@@ -367,5 +367,30 @@ class EventServiceTest {
         List<UUID> capturedOrganizerIds = organizerIdCaptor.getAllValues();
         assertThat(capturedOrganizerIds).containsExactly(organizerId1, organizerId2);
     }
+    @Test
+    @DisplayName("Should return empty list when query is less than 3 characters")
+    void shouldReturnEmptyListForShortQuery() {
+        assertThat(eventService.getEventsBySearchTitle("")).isEmpty();
+        assertThat(eventService.getEventsBySearchTitle("a")).isEmpty();
+        assertThat(eventService.getEventsBySearchTitle("ab")).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Should return results when query is at least 3 characters")
+    void shouldReturnResultsForValidQuery() {
+        String validQuery = "eve";
+        List<EventDTO> events = List.of(
+                EventDTO.builder().eventId(UUID.randomUUID()).title("Event 1").build(),
+                EventDTO.builder().eventId(UUID.randomUUID()).title("Event 2").build()
+        );
+
+        when(eventRepository.findAllByTitleContaining(validQuery)).thenReturn(events);
+        when(userService.getUserByUserId(any())).thenReturn(UserDTO.builder().userId(UUID.randomUUID()).name("Organizer").build());
+
+        List<EventDTO> result = eventService.getEventsBySearchTitle(validQuery);
+
+        assertThat(result).hasSize(2);
+        verify(eventRepository).findAllByTitleContaining(validQuery);
+    }
 
 }
