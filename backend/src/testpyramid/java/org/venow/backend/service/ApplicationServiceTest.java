@@ -57,22 +57,23 @@ public class ApplicationServiceTest {
     @DisplayName("should create a new application successfully and set eventTitle and exhibitorName")
     void shouldCreateApplicationSuccessfully() {
         final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
-        final ApplicationDTO savedApplication = ApplicationDTOFactory.createDefault()
-                .withEventTitle("Test Event")
-                .withExhibitorName("Test User")
-                .build();
+        final ApplicationDTO savedApplication = ApplicationDTOFactory.createDefault().build();
 
         when(applicationRepository.existsByUserIdAndEventId(any(), any())).thenReturn(false);
-        when(applicationRepository.save(any())).thenReturn(savedApplication);
         when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().withName("Test User").build());
         when(applicationRepository.getEventName(any())).thenReturn("Test Event");
+        when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        final ApplicationDTO result = service.createApplication(applicationDTO);
+        ApplicationDTO result = service.createApplication(applicationDTO);
 
-        assertThat(result).isEqualTo(savedApplication);
-        assertThat(result.getEventTitle()).isEqualTo("Test Event");
-        assertThat(result.getExhibitorName()).isEqualTo("Test User");
+        ArgumentCaptor<ApplicationDTO> captor = ArgumentCaptor.forClass(ApplicationDTO.class);
+        verify(applicationRepository).save(captor.capture());
+
+        ApplicationDTO capturedApplication = captor.getValue();
+        assertThat(capturedApplication.getEventTitle()).isEqualTo("Test Event");
+        assertThat(capturedApplication.getExhibitorName()).isEqualTo("Test User");
     }
+
 
     @Test
     @DisplayName("Should throw exception when eventId is null")
@@ -510,19 +511,28 @@ public class ApplicationServiceTest {
         String eventName = "Accepted Event";
 
         when(applicationRepository.findById(applicationId)).thenReturn(Optional.of(application));
-        when(applicationRepository.save(any(ApplicationDTO.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(userService.getUserByUserId(userId)).thenReturn(user);
         when(applicationRepository.getEventName(eventId)).thenReturn(eventName);
+        when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         ApplicationDTO result = service.acceptApplication(applicationId);
+
+        ArgumentCaptor<ApplicationDTO> captor = ArgumentCaptor.forClass(ApplicationDTO.class);
+        verify(applicationRepository).save(captor.capture());
+
+        ApplicationDTO capturedApplication = captor.getValue();
+        assertThat(capturedApplication.getStatus()).isEqualTo(Status.CONTRACT.name());
+        assertThat(capturedApplication.getEventTitle()).isEqualTo("Accepted Event");
+        assertThat(capturedApplication.getExhibitorName()).isEqualTo("Accepted User");
 
         assertThat(result.getStatus()).isEqualTo(Status.CONTRACT.name());
         assertThat(result.getEventTitle()).isEqualTo("Accepted Event");
         assertThat(result.getExhibitorName()).isEqualTo("Accepted User");
     }
 
+
     @Test
-    @DisplayName("Should reject application and ensure eventTitle and exhibitorName are set")
+    @DisplayName("should reject application and ensure eventTitle and exhibitorName are set")
     void rejectApplicationShouldSetFields() {
         UUID applicationId = UUID.randomUUID();
         UUID eventId = UUID.randomUUID();
@@ -539,16 +549,25 @@ public class ApplicationServiceTest {
         String eventName = "Rejected Event";
 
         when(applicationRepository.findById(applicationId)).thenReturn(Optional.of(application));
-        when(applicationRepository.save(any(ApplicationDTO.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(userService.getUserByUserId(userId)).thenReturn(user);
         when(applicationRepository.getEventName(eventId)).thenReturn(eventName);
+        when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         ApplicationDTO result = service.rejectApplication(applicationId);
+
+        ArgumentCaptor<ApplicationDTO> captor = ArgumentCaptor.forClass(ApplicationDTO.class);
+        verify(applicationRepository).save(captor.capture());
+
+        ApplicationDTO capturedApplication = captor.getValue();
+        assertThat(capturedApplication.getStatus()).isEqualTo(Status.REJECTED.name());
+        assertThat(capturedApplication.getEventTitle()).isEqualTo("Rejected Event");
+        assertThat(capturedApplication.getExhibitorName()).isEqualTo("Rejected User");
 
         assertThat(result.getStatus()).isEqualTo(Status.REJECTED.name());
         assertThat(result.getEventTitle()).isEqualTo("Rejected Event");
         assertThat(result.getExhibitorName()).isEqualTo("Rejected User");
     }
+
 
 
 }
