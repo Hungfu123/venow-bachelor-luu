@@ -7,6 +7,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.dto.EventDTO;
 import org.venow.backend.service.dto.UserDTO;
@@ -14,8 +15,6 @@ import org.venow.backend.service.exception.AlreadyRejectedException;
 import org.venow.backend.service.exception.DuplicateApplicationException;
 import org.venow.backend.service.exception.InvalidInputException;
 import org.venow.backend.service.exception.NotFoundException;
-import org.venow.backend.domain.model.Status;
-import org.venow.backend.infrastructure.ApplicationRepositoryImpl;
 import org.venow.backend.testdata.ApplicationDTOFactory;
 import org.venow.backend.testdata.EventDTOFactory;
 import org.venow.backend.testdata.UserDTOFactory;
@@ -494,19 +493,62 @@ public class ApplicationServiceTest {
 
 
     @Test
-    @DisplayName("should create application and set eventTitle and exhibitorName")
-    void shouldCreateApplicationAndSetFields() {
-        final ApplicationDTO applicationDTO = ApplicationDTOFactory.createDefault().build();
+    @DisplayName("Should accept application and ensure eventTitle, exhibitorName, and status are set")
+    void acceptApplicationShouldSetFields() {
+        UUID applicationId = UUID.randomUUID();
+        UUID eventId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
 
-        when(applicationRepository.existsByUserIdAndEventId(any(), any())).thenReturn(false);
-        when(applicationRepository.save(any())).thenReturn(applicationDTO);
-        when(userService.getUserByUserId(applicationDTO.getUserId())).thenReturn(UserDTOFactory.createDefault().withName("Test User").build());
-        when(applicationRepository.getEventName(applicationDTO.getEventId())).thenReturn("Test Event");
+        ApplicationDTO application = ApplicationDTOFactory.createDefault()
+                .withApplicationId(applicationId.toString())
+                .withUserId(userId.toString())
+                .withEventId(eventId.toString())
+                .withStatus(Status.IN_PROGRESS.name())
+                .build();
 
-        ApplicationDTO result = service.createApplication(applicationDTO);
+        UserDTO user = UserDTOFactory.createDefault().withName("Accepted User").build();
+        String eventName = "Accepted Event";
 
-        assertThat(result.getEventTitle()).isEqualTo("Test Event");
-        assertThat(result.getExhibitorName()).isEqualTo("Test User");
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.of(application));
+        when(applicationRepository.save(any(ApplicationDTO.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(userService.getUserByUserId(userId)).thenReturn(user);
+        when(applicationRepository.getEventName(eventId)).thenReturn(eventName);
+
+        ApplicationDTO result = service.acceptApplication(applicationId);
+
+        assertThat(result.getStatus()).isEqualTo(Status.CONTRACT.name());
+        assertThat(result.getEventTitle()).isEqualTo("Accepted Event");
+        assertThat(result.getExhibitorName()).isEqualTo("Accepted User");
     }
+
+    @Test
+    @DisplayName("Should reject application and ensure eventTitle and exhibitorName are set")
+    void rejectApplicationShouldSetFields() {
+        UUID applicationId = UUID.randomUUID();
+        UUID eventId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
+
+        ApplicationDTO application = ApplicationDTOFactory.createDefault()
+                .withApplicationId(applicationId.toString())
+                .withUserId(userId.toString())
+                .withEventId(eventId.toString())
+                .withStatus(Status.IN_PROGRESS.name())
+                .build();
+
+        UserDTO user = UserDTOFactory.createDefault().withName("Rejected User").build();
+        String eventName = "Rejected Event";
+
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.of(application));
+        when(applicationRepository.save(any(ApplicationDTO.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(userService.getUserByUserId(userId)).thenReturn(user);
+        when(applicationRepository.getEventName(eventId)).thenReturn(eventName);
+
+        ApplicationDTO result = service.rejectApplication(applicationId);
+
+        assertThat(result.getStatus()).isEqualTo(Status.REJECTED.name());
+        assertThat(result.getEventTitle()).isEqualTo("Rejected Event");
+        assertThat(result.getExhibitorName()).isEqualTo("Rejected User");
+    }
+
 
 }
