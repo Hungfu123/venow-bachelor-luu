@@ -67,7 +67,7 @@ public class ApplicationServiceTest {
         when(userService.getUserByUserId(any())).thenReturn(UserDTOFactory.createDefault().withName("Test User").build());
         when(applicationRepository.getEventName(any())).thenReturn("Test Event");
 
-        ApplicationDTO result = service.createApplication(applicationDTO);
+        final ApplicationDTO result = service.createApplication(applicationDTO);
 
         assertThat(result).isEqualTo(savedApplication);
         assertThat(result.getEventTitle()).isEqualTo("Test Event");

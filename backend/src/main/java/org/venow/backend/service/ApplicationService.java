@@ -31,8 +31,10 @@ public class ApplicationService {
         }
         final ApplicationDTO savedApplication = applicationRepository.save(applicationDTO);
         log.info("application created: {}", savedApplication);
-        savedApplication.setEventTitle(applicationRepository.getEventName(savedApplication.getEventId()));
-        savedApplication.setExhibitorName(userService.getUserByUserId(applicationDTO.getUserId()).name());
+        final String eventName = applicationRepository.getEventName(savedApplication.getEventId());
+        savedApplication.setEventTitle(eventName);
+        final UserDTO userByUserId = userService.getUserByUserId(savedApplication.getUserId());
+        savedApplication.setExhibitorName(userByUserId.name());
         return savedApplication;
     }
 
@@ -69,8 +71,9 @@ public class ApplicationService {
         }
         applicationDTO.setStatus(Status.REJECTED.name());
         ApplicationDTO savedApplication = applicationRepository.save(applicationDTO);
-        savedApplication.setEventTitle(applicationRepository.getEventName(applicationDTO.getEventId()));
-        savedApplication.setExhibitorName(userService.getUserByUserId(applicationDTO.getUserId()).name());
+        final String eventName = applicationRepository.getEventName(applicationDTO.getEventId());
+        savedApplication.setEventTitle(eventName);
+        savedApplication.setExhibitorName(userService.getUserByUserId(savedApplication.getUserId()).name());
         return savedApplication;
     }
 
@@ -80,9 +83,11 @@ public class ApplicationService {
             throw new AlreadyRejectedException("Application already accepted or rejected");
         }
         applicationDTO.setStatus(Status.CONTRACT.name());
-        ApplicationDTO savedApplication = applicationRepository.save(applicationDTO);
-        savedApplication.setEventTitle(applicationRepository.getEventName(applicationDTO.getEventId()));
-        savedApplication.setExhibitorName(userService.getUserByUserId(applicationDTO.getUserId()).name());
+        final ApplicationDTO savedApplication = applicationRepository.save(applicationDTO);
+        final String eventName = applicationRepository.getEventName(applicationDTO.getEventId());
+        savedApplication.setEventTitle(eventName);
+        final UserDTO userByUserId = userService.getUserByUserId(applicationDTO.getUserId());
+        savedApplication.setExhibitorName(userByUserId.name());
         return savedApplication;
     }
 
