@@ -1,0 +1,57 @@
+/* Container-Styling */
+.container {
+    max-width: 90rem;
+    margin: 0 auto;
+    border: none}
+
+/* Card-Styling */
+.card-container {
+    box-shadow: none !important;
+    border: none !important;
+    background-color: transparent !important;
+}
+
+/* Überschrift */
+.heading {
+    text-align: left;
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+/* Formular */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+/* Standard-Border für TextFields */
+.textfield-container .MuiOutlinedInput-notchedOutline {
+    border-color: #D1D5DB;
+}
+
+/* Hover-Border */
+.textfield-container:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #7D75FF !important;
+}
+
+/* Fokus-Border */
+.textfield-container.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #7D75FF !important;
+}
+
+/* Fokus-Label */
+.textfield-container .MuiInputLabel-root.Mui-focused {
+    color: #7D75FF !important;
+}
+
+/* Submit Button */
+.submit-button {
+    background-color: #7D75FF !important;
+    color: white !important;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 8px;
+}

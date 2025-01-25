@@ -62,7 +62,10 @@ const OrganizerEvents = () => {
                         <div className="event-details mt-4 text-gray-600">
                             <div className="flex justify-between">
                                 <strong>Datum:</strong>
-                                <span>{new Date(event.startDate).toLocaleDateString()} - {new Date(event.endDate).toLocaleDateString()}</span>
+                                <span>
+                                    {new Date(event.startDate).toLocaleDateString()} -{" "}
+                                    {new Date(event.endDate).toLocaleDateString()}
+                                </span>
                             </div>
                             <div className="flex justify-between">
                                 <strong>Veranstaltungsort:</strong>
@@ -75,9 +78,9 @@ const OrganizerEvents = () => {
                         </div>
                         <div className="event-footer">
                             <Link
-                                to={`/organizer/${organizerId}/events/${event.eventId}/applications`} // KORREKTE URL für Bewerbungen
+                                to={`/organizer/${organizerId}/events/${event.eventId}/applications`}
                                 className="view-button"
-                                onClick={(e) => e.stopPropagation()} // Verhindert Karten-Navigation
+                                onClick={(e) => e.stopPropagation()}
                             >
                                 Bewerbungen ansehen
                             </Link>
