@@ -3,6 +3,7 @@ package org.venow.backend.service;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -223,7 +224,173 @@ class EventServiceTest {
         verify(userService, times(1)).existsByUserAndRole(organizerId, Role.ORGANIZER);
     }
 
+    @DisplayName("should return all events by search title and set organizerName correctly")
+    @Test
+    void shouldReturnAllEventsBySearchTitleWithCorrectOrganizerName() {
+        final String query = "Test";
+        final UUID organizerId1 = UUID.randomUUID();
+        final UUID organizerId2 = UUID.randomUUID();
+
+        final EventDTO event1 = EventDTOFactory.createDefault()
+                .withTitle("Test Event")
+                .withOrganizerId(organizerId1)
+                .build();
+
+        final EventDTO event2 = EventDTOFactory.createDefault()
+                .withTitle("Test Event 2")
+                .withOrganizerId(organizerId2)
+                .build();
+
+        final List<EventDTO> events = List.of(event1, event2);
+
+        final UserDTO organizer1 = UserDTOFactory.createDefault()
+                .withUserId(organizerId1)
+                .withName("Organizer One")
+                .build();
+
+        final UserDTO organizer2 = UserDTOFactory.createDefault()
+                .withUserId(organizerId2)
+                .withName("Organizer Two")
+                .build();
+
+        when(eventRepository.findAllByTitleContaining(query)).thenReturn(events);
+        when(userService.getUserByUserId(organizerId1)).thenReturn(organizer1);
+        when(userService.getUserByUserId(organizerId2)).thenReturn(organizer2);
+
+        final List<EventDTO> result = eventService.getEventsBySearchTitle(query);
+
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).title()).isEqualTo("Test Event");
+        assertThat(result.get(0).organizerName()).isEqualTo("Organizer One");
+        assertThat(result.get(1).title()).isEqualTo("Test Event 2");
+        assertThat(result.get(1).organizerName()).isEqualTo("Organizer Two");
+
+        verify(eventRepository, times(1)).findAllByTitleContaining(query);
+        verify(userService, times(1)).getUserByUserId(organizerId1);
+        verify(userService, times(1)).getUserByUserId(organizerId2);
+    }
+    @DisplayName("should return empty list if search title is less than 3 characters and not interact with repository")
+    @Test
+    void shouldReturnEmptyListIfSearchTitleIsLessThan3CharactersAndNotInteractWithRepository() {
+        final String query = "Te";
+
+        final List<EventDTO> result = eventService.getEventsBySearchTitle(query);
+
+        assertThat(result).isEmpty();
+
+        verifyNoInteractions(eventRepository);
+        verifyNoInteractions(userService);
+    }
+
+    @DisplayName("should return empty list when no events match the search title")
+    @Test
+    void shouldReturnEmptyListWhenNoEventsMatchSearchTitle() {
+        final String query = "NonExistent";
+        final List<EventDTO> events = List.of(); // Keine Events gefunden
+
+        when(eventRepository.findAllByTitleContaining(query)).thenReturn(events);
+
+        final List<EventDTO> result = eventService.getEventsBySearchTitle(query);
+
+        assertThat(result).isEmpty();
+
+        verify(eventRepository, times(1)).findAllByTitleContaining(query);
+        verifyNoMoreInteractions(userService);
+    }
+    @DisplayName("should return empty list if search title is empty and not interact with repository")
+    @Test
+    void shouldReturnEmptyListIfSearchTitleIsEmptyAndNotInteractWithRepository() {
+        final String query = "";
+
+        final List<EventDTO> result = eventService.getEventsBySearchTitle(query);
+
+        assertThat(result).isEmpty();
+
+        verifyNoInteractions(eventRepository);
+        verifyNoInteractions(userService);
+    }
+
+    @DisplayName("should throw NullPointerException if search title is null")
+    @Test
+    void shouldThrowExceptionIfSearchTitleIsNull() {
+        final String query = null;
+
+        assertThatThrownBy(() -> eventService.getEventsBySearchTitle(query))
+                .isInstanceOf(NullPointerException.class);
+
+        verifyNoInteractions(eventRepository);
+        verifyNoInteractions(userService);
+    }
 
 
+    @DisplayName("should set organizerName correctly for each event using ArgumentCaptor")
+    @Test
+    void shouldSetOrganizerNameCorrectlyUsingArgumentCaptor() {
+        final String query = "Test";
+        final UUID organizerId1 = UUID.randomUUID();
+        final UUID organizerId2 = UUID.randomUUID();
+
+        final EventDTO event1 = EventDTOFactory.createDefault()
+                .withTitle("Test Event")
+                .withOrganizerId(organizerId1)
+                .build();
+
+        final EventDTO event2 = EventDTOFactory.createDefault()
+                .withTitle("Test Event 2")
+                .withOrganizerId(organizerId2)
+                .build();
+
+        final List<EventDTO> events = List.of(event1, event2);
+
+        final UserDTO organizer1 = UserDTOFactory.createDefault()
+                .withUserId(organizerId1)
+                .withName("Organizer One")
+                .build();
+
+        final UserDTO organizer2 = UserDTOFactory.createDefault()
+                .withUserId(organizerId2)
+                .withName("Organizer Two")
+                .build();
+
+        when(eventRepository.findAllByTitleContaining(query)).thenReturn(events);
+        when(userService.getUserByUserId(any())).thenReturn(organizer1, organizer2);
+
+        final List<EventDTO> result = eventService.getEventsBySearchTitle(query);
+
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).organizerName()).isEqualTo("Organizer One");
+        assertThat(result.get(1).organizerName()).isEqualTo("Organizer Two");
+
+        ArgumentCaptor<UUID> organizerIdCaptor = ArgumentCaptor.forClass(UUID.class);
+        verify(userService, times(2)).getUserByUserId(organizerIdCaptor.capture());
+
+        List<UUID> capturedOrganizerIds = organizerIdCaptor.getAllValues();
+        assertThat(capturedOrganizerIds).containsExactly(organizerId1, organizerId2);
+    }
+    @Test
+    @DisplayName("Should return empty list when query is less than 3 characters")
+    void shouldReturnEmptyListForShortQuery() {
+        assertThat(eventService.getEventsBySearchTitle("")).isEmpty();
+        assertThat(eventService.getEventsBySearchTitle("a")).isEmpty();
+        assertThat(eventService.getEventsBySearchTitle("ab")).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Should return results when query is at least 3 characters")
+    void shouldReturnResultsForValidQuery() {
+        String validQuery = "eve";
+        List<EventDTO> events = List.of(
+                EventDTO.builder().eventId(UUID.randomUUID()).title("Event 1").build(),
+                EventDTO.builder().eventId(UUID.randomUUID()).title("Event 2").build()
+        );
+
+        when(eventRepository.findAllByTitleContaining(validQuery)).thenReturn(events);
+        when(userService.getUserByUserId(any())).thenReturn(UserDTO.builder().userId(UUID.randomUUID()).name("Organizer").build());
+
+        List<EventDTO> result = eventService.getEventsBySearchTitle(validQuery);
+
+        assertThat(result).hasSize(2);
+        verify(eventRepository).findAllByTitleContaining(validQuery);
+    }
 
 }
