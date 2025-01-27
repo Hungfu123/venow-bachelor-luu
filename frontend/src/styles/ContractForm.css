@@ -1,0 +1,52 @@
+.contract-form-container {
+    max-width: 60rem;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.contract-card {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: none;
+    padding: 1rem;
+}
+
+.contract-title {
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.contract-section {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.section-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.detail-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.detail-row strong {
+    width: 180px; /* Label-Breite */
+    color: #555;
+}
+
+.price-input, .standplatz-input {
+    margin-bottom: 1rem;
+}
+
+.create-contract-button {
+    background-color: #7D75FF !important;
+    color: white !important;
+    font-weight: bold !important;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+    text-transform: none !important;
+    font-size: 1rem;
+}

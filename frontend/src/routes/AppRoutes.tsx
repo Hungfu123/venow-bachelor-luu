@@ -33,7 +33,7 @@ const AppRoutes = () => {
                 {/*Contracts*/}
                 <Route path="contracts" element={<OrganizerContracts/>} />
                 <Route path="contracts/:applicationId" element={<OrganizerContractFormular/>} />
-                <Route path="contracts/detail/:contractId" element={<OrganizerContractDetails/>} />
+                <Route path="contracts/details/:contractId" element={<OrganizerContractDetails/>} />
             </Route>
 
             {/* Exhibitor Routes */}

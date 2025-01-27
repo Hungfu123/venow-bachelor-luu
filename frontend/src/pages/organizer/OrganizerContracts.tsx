@@ -30,7 +30,7 @@ const OrganizerContracts = () => {
     },[organizerId])
 
     const handleRowClick = (contractId: string) => {
-        navigate(`/organizer/${organizerId}/contracts/${contractId}`)
+        navigate(`/organizer/${organizerId}/contracts/details/${contractId}`)
     };
 
     if(loading) return <div>Lade Verträge...</div>

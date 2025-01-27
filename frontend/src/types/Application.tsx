@@ -5,6 +5,7 @@ export interface Application {
     contactInformation: string,
     businessName: string,
     typeOfBusiness: string,
+    previousParticipation: boolean,
     message: string,
     status: string
 }
