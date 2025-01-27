@@ -73,7 +73,7 @@ const OrganizerAllApplicationsOnEvent = () => {
 
     return (
         <div className="table-container">
-            <h1 className="table-title">Bewerbungsübersicht</h1>
+            <h1 className="table-title">Bewerbungsübersicht von einem Event</h1>
 
             {errorMessage && <div className="error-overlay">{errorMessage}</div>}
 
