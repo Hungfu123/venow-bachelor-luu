@@ -38,16 +38,16 @@ const OrganizerEvents = () => {
     if (error) return <div>{error}</div>;
 
     return (
-        <div className="events-container">
-            <h1 className="events-title">Veranstaltungsübersicht</h1>
+        <div className="grid-events-container">
+            <h1 className="grid-events-title">Veranstaltungsübersicht</h1>
             <div className="grid-container">
                 {events.map((event) => (
                     <Link
                         to={`/organizer/${organizerId}/events/${event.eventId}`} // Dynamische Route basierend auf Organizer-ID und Event-ID
                         key={event.eventId}
-                        className="event-card bg-white rounded-lg shadow-md border border-gray-300 p-4 transition-transform duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1 cursor-pointer"
+                        className="grid-event-card bg-white rounded-lg shadow-md border border-gray-300 p-4 transition-transform duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1 cursor-pointer"
                     >
-                        <div className="event-header flex justify-between items-center">
+                        <div className="grid-event-header flex justify-between items-center">
                             <h2 className="text-lg font-bold text-gray-800">{event.title}</h2>
                             <Link
                                 to={`/organizer/${organizerId}/events/edit/${event.eventId}`}
@@ -56,10 +56,10 @@ const OrganizerEvents = () => {
                                 <EditPenIcon className="edit-button" />
                             </Link>
                         </div>
-                        <div className="eventOrganizerName mt-2 text-gray-600">
+                        <div className="grid-eventOrganizerName mt-2 text-gray-600">
                             <p>{event.organizerName}</p>
                         </div>
-                        <div className="event-details mt-4 text-gray-600">
+                        <div className="grid-event-details mt-4 text-gray-600">
                             <div className="flex justify-between">
                                 <strong>Datum:</strong>
                                 <span>

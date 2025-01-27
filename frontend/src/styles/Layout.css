@@ -6,32 +6,32 @@
 
 /* Sidebar */
 .sidebar-content {
-    @apply flex flex-col h-full; /* Inhalt der Sidebar als Flex-Container */
+    @apply flex flex-col h-full;
 }
 
 .sidebar-links {
-    @apply flex flex-col space-y-2 mt-6; /* Liste oben anordnen */
+    @apply flex flex-col space-y-2 mt-6;
 }
 
 .logout {
-    @apply mt-auto mb-6 pl-4; /* "Abmelden" an das Ende der Sidebar */
+    @apply mt-auto mb-6 pl-4;
 }
 
 #default-sidebar {
-    @apply fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#F7F8F9] text-[#3E3E3E] border-r border-gray-300; /* Sidebar: Breite auf w-48 reduziert */
+    @apply fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#F7F8F9] text-[#3E3E3E] border-r border-gray-300;
 }
 
 #default-sidebar h2 {
     @apply text-xl font-semibold text-center pb-3 mt-6 text-[#3E3E3E];
-    letter-spacing: 1px; /* Abstand zwischen den Buchstaben */
+    letter-spacing: 1px;
 }
 
 #default-sidebar ul {
-    @apply space-y-2 mt-6; /* Liste: Vertikaler Abstand zwischen Items */
+    @apply space-y-2 mt-6;
 }
 
 #default-sidebar ul li {
-    @apply pl-4; /* Liste: Padding von links für Items */
+    @apply pl-4;
 }
 
 .sidebar-link {
@@ -50,72 +50,75 @@
 }
 
 .sidebar-link:hover {
-    @apply text-[#544DC9] font-normal; /* Hover: Textfarbe */
-    background-color: #E5E4FC; /* Hover: Hintergrundfarbe */
+    @apply text-[#544DC9] font-normal;
+    background-color: #E5E4FC;
     font-weight: bold;
-    padding: 1rem 3rem; /* Vergrößert den äußeren Rand beim Hover */
-    margin: 0 -0.5rem; /* Rand nach links und rechts, um den Effekt deutlicher zu machen */
-    border-radius: 0.5rem; /* Abgerundete Ecken beim Hover */
+    padding: 1rem 3rem;
+    margin: 0 -0.5rem;
+    border-radius: 0.5rem;
 }
 
 .sidebar-icon {
-    @apply w-6 h-6 text-[#3E3E3E]; /* Icon: Standardgröße und Farbe */
-    margin-right: 0.5rem; /* Abstand zwischen Icon und Text */
+    @apply w-6 h-6 text-[#3E3E3E];
+    margin-right: 0.5rem;
     display: inline-block;
 }
 
 .sidebar-link:hover .sidebar-icon {
-    @apply text-[#544DC9]; /* Icon: Farbe bei Hover */
+    @apply text-[#544DC9];
 }
 
 .sidebar-link span {
-    @apply ms-3; /* Abstand zwischen Icon und Text */
-    font-size: 1rem; /* Schriftgröße erhöhen */
-    letter-spacing: 0.5px; /* Leichter Abstand zwischen den Buchstaben */
+    @apply ms-3;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
 }
 
 /* Header */
 header {
-    @apply fixed top-0 left-64 right-0 flex justify-between items-center bg-white; /* Header: Position, Hintergrund und Layout */
-    height: 4rem; /* Gleiche Höhe wie die HR-Linie */
-    padding: 0 1rem; /* Entfernt vertikales Padding und fügt horizontales hinzu */
-    z-index: 50; /* Stellt sicher, dass es über anderen Inhalten liegt */
+    @apply fixed top-0 left-64 right-0 flex justify-between items-center bg-white;
+    height: 4rem;
+    padding: 0 1rem;
+    z-index: 50;
 }
 
 header span {
-    @apply text-xl font-semibold text-[#3E3E3E]; /* Größere Schrift und stärkere Gewichtung */
-    letter-spacing: 1px; /* Abstand zwischen Buchstaben */
-    word-spacing: 3px; /* Abstand zwischen Wörtern */
+    @apply text-xl font-semibold text-[#3E3E3E];
+    letter-spacing: 1px;
+    word-spacing: 3px;
 }
 
 /* Add Event Button */
 .add-event-button {
-    @apply flex items-center px-3 py-1 bg-[#7D75FF] text-white rounded-lg hover:bg-[#6c66e0]; /* Button: Kompaktes Styling */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Button: Schatten */
-    transition: box-shadow 1s ease-in-out; /* Button: Übergangseffekt */
+    @apply flex items-center px-3 py-1 bg-[#7D75FF] text-white rounded-lg hover:bg-[#6c66e0];
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 1s ease-in-out;
+    font-weight: bold;
 }
 
 .add-event-button:hover {
-    /*box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); !* Button: Hover-Schatten *!*/
-    transform: scale(1.1); /* Button vergrößern */
+    transform: scale(1.1);
+    font-weight: bold;
 }
 
 .add-event-button span {
-    @apply text-white ml-2; /* Button-Text: Abstand und Farbe */
-    font-size: 0.8rem; /* Button-Text: Schriftgröße */
+    @apply text-white ml-2;
+    font-size: 0.8rem;
+    font-weight: bold;
+    font-family: Arial;
 }
 
 .add-event-icon {
-    @apply w-6 h-6 text-white; /* Button-Icon: Größe und Farbe */
-    margin-right: 0.5rem; /* Abstand zwischen Icon und Text */
+    @apply w-6 h-6 text-white;
+    margin-right: 0.5rem;
     display: inline-block;
 }
 
 /* HR Styling */
 .header-hr {
-    @apply border-gray-300 w-full fixed top-16 z-40; /* HR: Position und Farbe */
+    @apply border-gray-300 w-full fixed top-16 z-40;
     left: 0;
-    height: 1px; /* HR: Höhe */
+    height: 1px;
 }
 
  /*Main Content */

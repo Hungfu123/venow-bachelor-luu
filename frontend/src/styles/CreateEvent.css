@@ -51,7 +51,15 @@
 .submit-button {
     background-color: #7D75FF !important;
     color: white !important;
-    font-weight: bold;
+    font-weight: bold !important;
     padding: 12px;
     border-radius: 8px;
+    margin-top: 1.5rem;
+    text-transform: none !important;
+    font-size: 1rem;
+}
+
+.submit-button:hover{
+    background-color: #544DC9 !important;
+    font-weight: bolder !important;
 }

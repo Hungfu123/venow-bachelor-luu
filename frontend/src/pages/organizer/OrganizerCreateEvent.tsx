@@ -5,7 +5,6 @@ import axios from "axios";
 import "../../styles/CreateEvent.css";
 
 const OrganizerCreateEvent = () => {
-    console.log("Rendering OrganizerCreateEvent");
     const { organizerId } = useParams();
     const { control, handleSubmit, formState: { errors } } = useForm<FieldValues>();
     const navigate = useNavigate();
@@ -25,7 +24,7 @@ const OrganizerCreateEvent = () => {
         };
 
         try {
-            const response = await axios.post(apiUrl, eventRequest);
+            await axios.post(apiUrl, eventRequest);
 
             navigate(`/organizer/${organizerId}/events`)
             alert("Veranstaltung erfolgreich erstellt!");
