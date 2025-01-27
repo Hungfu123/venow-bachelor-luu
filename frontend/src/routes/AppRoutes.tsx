@@ -17,6 +17,7 @@ import ExhibitorEventToApply from "../pages/exhibitor/ExhibitorEventToApply.tsx"
 import ExhibitorContracts from "../pages/exhibitor/ExhibitorContracts.tsx";
 import ExhibitorContractDetail from "../pages/exhibitor/ExhibitorContractDetail.tsx";
 import ExhibitorContractDetailApplication from "../pages/exhibitor/ExhibitorContractDetailApplication.tsx";
+import OrganizerAllApplicationsOnEvent from "../pages/organizer/OrganizerAllApplicationsOnEvent.tsx";
 
 const AppRoutes = () => {
     return (
@@ -28,8 +29,9 @@ const AppRoutes = () => {
                 <Route path="events/edit/:eventId" element={<OrganizerEditEventDetail />} />
                 <Route path="events/create" element={<OrganizerCreateEvent />} />
                 {/*Application*/}
+                <Route path="events/:eventId/applications" element={<OrganizerAllApplicationsOnEvent />}/>
                 <Route path="applications" element={<OrganizerApplications />} />
-                <Route path="applications/:applicationId" element={<OrganizerApplicationsDetail />} />
+                <Route path="applications/:applicationId" element={<OrganizerApplicationsDetail/> }/>
                 {/*Contracts*/}
                 <Route path="contracts" element={<OrganizerContracts/>} />
                 <Route path="contracts/:applicationId" element={<OrganizerContractFormular/>} />

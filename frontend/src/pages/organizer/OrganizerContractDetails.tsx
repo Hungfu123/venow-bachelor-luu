@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Contract } from "../../types/Contract";
-import { Card, CardContent, Button } from "@mui/material";
+import { Card, CardContent} from "@mui/material";
 import "../../styles/ApplicationsDetail.css";
 
 const OrganizerContractDetails = () => {
@@ -36,9 +36,9 @@ const OrganizerContractDetails = () => {
     if (!contract) return <div>Keine Vertragsdaten gefunden.</div>;
 
 
-    const handleCancelContract = () => {
-        alert("Vertrag stornieren (Platzhalter-Funktion)!");
-    };
+    // const handleCancelContract = () => {
+    //     alert("Vertrag stornieren (Platzhalter-Funktion)!");
+    // };
 
     return (
         <div className="application-detail-container">
