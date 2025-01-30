@@ -3,6 +3,7 @@ package org.venow.backend.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.venow.backend.domain.model.Role;
 import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.dto.UserDTO;
 import org.venow.backend.service.exception.AlreadyRejectedException;
@@ -108,5 +109,25 @@ public class ApplicationService {
                             return applicationDTO;
                         }
                 ).toList();
+    }
+
+    public List<ApplicationDTO> getAllApplicationsByExhibitor(UUID exhibitorId) {
+        if(exhibitorId == null){
+            throw new InvalidInputException("Exhibitor ID must not be null");
+        }
+        if(!userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)){
+            throw new NotFoundException("Exhibitor not found for ID: " + exhibitorId);
+        }
+
+        return applicationRepository.getAllApplicationsByExhibitorId(exhibitorId)
+                .stream()
+                .map(
+                        applicationDTO -> {
+                            applicationDTO.setEventTitle(applicationRepository.getEventName(applicationDTO.getEventId()));
+                            applicationDTO.setExhibitorName(userService.getUserByUserId(applicationDTO.getUserId()).name());
+                            return applicationDTO;
+                        }
+                ).toList();
+
     }
 }

@@ -3,6 +3,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.venow.backend.domain.model.Application;
+import org.venow.backend.service.dto.ApplicationDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +22,6 @@ public interface JpaApplicationRepository extends JpaRepository<Application, UUI
 
     @Query("SELECT e.title FROM events e WHERE e.eventId =:eventId")
     String findEventNameByEventId(UUID eventId);
+
+    List<Application> findAllByUserId(UUID exhibitorId);
 }

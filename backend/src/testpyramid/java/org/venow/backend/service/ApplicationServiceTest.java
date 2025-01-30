@@ -7,6 +7,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.venow.backend.domain.model.Role;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.dto.EventDTO;
@@ -568,6 +569,58 @@ public class ApplicationServiceTest {
         assertThat(result.getExhibitorName()).isEqualTo("Rejected User");
     }
 
+    @Test
+    @DisplayName("Should throw InvalidInputException when exhibitorId is null")
+    void shouldThrowExceptionWhenExhibitorIdIsNull() {
+        assertThatThrownBy(() -> service.getAllApplicationsByExhibitor(null))
+                .isInstanceOf(InvalidInputException.class)
+                .hasMessage("Exhibitor ID must not be null");
+    }
 
+    @Test
+    @DisplayName("Should throw NotFoundException when exhibitor does not exist")
+    void shouldThrowExceptionWhenExhibitorDoesNotExist() {
+        UUID exhibitorId = UUID.randomUUID();
+        when(userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)).thenReturn(false);
 
+        assertThatThrownBy(() -> service.getAllApplicationsByExhibitor(exhibitorId))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("Exhibitor not found for ID: " + exhibitorId);
+    }
+
+    @Test
+    @DisplayName("Should return empty list when exhibitor has no applications")
+    void shouldReturnEmptyListWhenExhibitorHasNoApplications() {
+        UUID exhibitorId = UUID.randomUUID();
+        when(userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)).thenReturn(true);
+        when(applicationRepository.getAllApplicationsByExhibitorId(exhibitorId)).thenReturn(List.of());
+
+        List<ApplicationDTO> result = service.getAllApplicationsByExhibitor(exhibitorId);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Should return applications with eventTitle and exhibitorName")
+    void shouldReturnApplicationsWithEventTitleAndExhibitorName() {
+        UUID exhibitorId = UUID.randomUUID();
+        UUID eventId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
+
+        ApplicationDTO application = ApplicationDTOFactory.createDefault()
+                .withUserId(userId.toString())
+                .withEventId(eventId.toString())
+                .build();
+
+        when(userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)).thenReturn(true);
+        when(applicationRepository.getAllApplicationsByExhibitorId(exhibitorId)).thenReturn(List.of(application));
+        when(applicationRepository.getEventName(eventId)).thenReturn("Test Event");
+        when(userService.getUserByUserId(userId)).thenReturn(UserDTOFactory.createDefault().withName("Exhibitor Name").build());
+
+        List<ApplicationDTO> result = service.getAllApplicationsByExhibitor(exhibitorId);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getEventTitle()).isEqualTo("Test Event");
+        assertThat(result.get(0).getExhibitorName()).isEqualTo("Exhibitor Name");
+    }
 }

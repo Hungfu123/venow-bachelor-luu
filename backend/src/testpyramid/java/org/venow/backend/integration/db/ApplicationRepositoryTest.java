@@ -212,4 +212,39 @@ class ApplicationRepositoryTest extends TestBase {
         assertThat(eventName).isNull();
     }
 
+    @DisplayName("should return all applications by exhibitor id")
+    @Test
+    @Sql(scripts = {"/db/testmigration/001_insert-event-user-application.sql"})
+    void shouldReturnAllApplicationsByExhibitorId() {
+        UUID exhibitorId = UUID
+                .fromString("123e4567-e89b-12d3-a456-426614174000");
+        ApplicationDTO application1 = ApplicationDTOFactory.createDefault()
+                .withUserId(exhibitorId.toString())
+                .withEventId("45353065-3834-3030-2d65-3239633d3431")
+                .build();
+
+        ApplicationDTO application2 = ApplicationDTOFactory.createDefault()
+                .withUserId(exhibitorId.toString())
+                .withEventId("17353065-3834-3030-2d65-3239633d3431")
+                .build();
+
+        ApplicationDTO savedApplication1 = applicationRepository.save(application1);
+        ApplicationDTO savedApplication2 = applicationRepository.save(application2);
+
+        List<ApplicationDTO> applications = applicationRepository.getAllApplicationsByExhibitorId(exhibitorId);
+
+        assertThat(applications)
+                .hasSize(2)
+                .contains(savedApplication1, savedApplication2);
+    }
+
+    @DisplayName("should return empty list if no applications found for given exhibitor id")
+    @Test
+    @Sql(scripts = {"/db/testmigration/001_insert-event-user-application.sql"})
+    void shouldReturnEmptyListIfNoApplicationsFoundForGivenExhibitorId() {
+
+        List<ApplicationDTO> applications = applicationRepository.getAllApplicationsByExhibitorId(UUID.fromString("bf333e19-6ed6-4c8b-b86e-ef78943a98a4"));
+
+        assertThat(applications).isEmpty();
+    }
 }

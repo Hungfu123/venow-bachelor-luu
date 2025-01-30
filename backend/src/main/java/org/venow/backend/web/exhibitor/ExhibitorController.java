@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import static org.venow.backend.web.reponse.ResponseMapper.mapToApplicationResponse;
 import static org.venow.backend.web.reponse.ResponseMapper.mapToEventResponse;
+@CrossOrigin(origins = "http://localhost:5173")
 @Slf4j
 @RestController()
 @AllArgsConstructor
@@ -99,6 +100,15 @@ public class ExhibitorController {
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(mapToApplicationResponse(applicationDTO));
+    }
+
+    @GetMapping("/applications")
+    public ResponseEntity<List<ApplicationResponse>> getAllApplicationsByExhibitor(
+            @PathVariable("exhibitorId") final UUID exhibitorId
+    ) {
+        final List<ApplicationDTO> applicationDTOList = applicationservice.getAllApplicationsByExhibitor(exhibitorId);
+
+        return ResponseEntity.ok(applicationDTOList.stream().map(ResponseMapper::mapToApplicationResponse).toList());
     }
 
 

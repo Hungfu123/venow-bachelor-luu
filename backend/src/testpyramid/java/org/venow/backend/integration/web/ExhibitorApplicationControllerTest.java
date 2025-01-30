@@ -145,4 +145,33 @@ class ExhibitorApplicationControllerTest {
         assertThat(contentAsString).isEqualTo("Application not found");
     }
 
+    @DisplayName("Exhibitor get all Applications")
+    @Test
+    void exhibitorGetAllApplications() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
+        final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
+        final List<ApplicationDTO> expectedApplications = Collections.singletonList(ApplicationDTOFactory.createDefault().build());
+        when(applicationservice.getAllApplicationsByExhibitor(any())).thenReturn(expectedApplications);
+
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/applications", testuser.userId(), expectedEvent.eventId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].applicationId").value(expectedApplications.get(0).getApplicationId().toString()));
+
+
+    }
+    @DisplayName("Exhibitor cannot get applications when not existing")
+    @Test
+    void exhibitorCannotGetApplicationsWhenNotExisting() throws Exception {
+        UUID nonExistentUserId = UUID.randomUUID();
+        when(applicationservice.getAllApplicationsByExhibitor(any()))
+                .thenThrow(new NotFoundException("Exhibitor not found for ID: " + nonExistentUserId));
+
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/applications", nonExistentUserId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$").value("Exhibitor not found for ID: " + nonExistentUserId));
+    }
+
+
 }

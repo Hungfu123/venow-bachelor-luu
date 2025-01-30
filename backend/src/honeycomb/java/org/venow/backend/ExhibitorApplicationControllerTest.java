@@ -1,5 +1,7 @@
 package org.venow.backend;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +11,16 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
+import org.venow.backend.service.dto.ApplicationDTO;
+import org.venow.backend.web.reponse.ApplicationResponse;
 import org.venow.backend.web.request.ApplicationRequest;
 
+import java.util.List;
 import java.util.UUID;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 class
 ExhibitorApplicationControllerTest extends TestBase {
@@ -175,7 +181,131 @@ ExhibitorApplicationControllerTest extends TestBase {
         assertThat(response.getStatusCode()).as("check if HTTP Status NOT FOUND").isEqualTo(HttpStatus.NOT_FOUND);
     }
 
+    @Test
+    @DisplayName("Exhibitor can see his applications")
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql" })
+    void canSeeHisApplications() throws Exception {
+        ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}/exhibitor/{exhibitorId}/applications",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port,
+                "af333e19-6ed6-4c8b-b86e-ef78943a98a2");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<ApplicationResponse> applications = objectMapper.readValue(
+                response.getBody(),
+                new TypeReference<List<ApplicationResponse>>() {}
+        );
+
+        assertThat(applications).hasSize(2);
+
+        assertThat(applications)
+                .extracting(
+                        "id",
+                        "applicationId",
+                        "userId",
+                        "eventId",
+                        "eventTitle",
+                        "exhibitorName",
+                        "contactInformation",
+                        "businessName",
+                        "typeOfBusiness",
+                        "previousParticipation",
+                        "message",
+                        "status"
+                )
+                .containsExactlyInAnyOrder(
+                        tuple(
+                                4L,
+                                UUID.fromString("c3456789-01cd-ef23-4567-8901cdef2346"),
+                                UUID.fromString("af333e19-6ed6-4c8b-b86e-ef78943a98a2"),
+                                UUID.fromString("17353065-3834-3030-2d65-3239633d3431"),
+                                "Test Event 3",
+                                "Khang",
+                                "dfadf@example.com",
+                                "IT Technik",
+                                "Software IT",
+                                true,
+                                "Looking forward to participating!",
+                                "CONTRACT"
+                        ),
+                        tuple(
+                                2L,
+                                UUID.fromString("b79a8e9b-7d74-4a5f-93e1-73f451e1ae0b"),
+                                UUID.fromString("af333e19-6ed6-4c8b-b86e-ef78943a98a2"),
+                                UUID.fromString("45353065-3834-3030-2d65-3239633d3431"),
+                                "Test",
+                                "Khang",
+                                "dfadf@example.com",
+                                "Luu Consults",
+                                "Consulting",
+                                true,
+                                "Looking forward to participating!",
+                                "IN_PROGRESS"
+                        )
+                );
+    }
+
+    @Test
+    @DisplayName("Exhibitor cannot see applications when not existing")
+    void exhibitorCannotSeeApplications() throws Exception {
+        ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}/exhibitor/{exhibitorId}/applications",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port,
+                null);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("invalid Userid ")
+    void invalidUserId() throws Exception {
+        UUID invalidUuid = UUID.randomUUID();
+        ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}/exhibitor/{exhibitorId}/applications",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port,
+                invalidUuid);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody()).isEqualTo("Exhibitor not found for ID: " +invalidUuid.toString());
+    }
+
+    @Test
+    @DisplayName("Exhibitor has no Applications")
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application.sql" })
+    void exhibitorhasNoApplication() throws Exception {
+        ResponseEntity<String> responseNoApplications = restTemplate.exchange(
+                "http://localhost:{port}/exhibitor/{exhibitorId}/applications",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port,
+                "bf333e19-6ed6-4c8b-b86e-ef78943a98a4");
+
+        assertThat(responseNoApplications.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<ApplicationResponse> applications = objectMapper.readValue(
+                responseNoApplications.getBody(),
+                new TypeReference<List<ApplicationResponse>>() {}
+        );
+
+        assertThat(applications).isEmpty();
+    }
+
 }
+
+
 
 
 
