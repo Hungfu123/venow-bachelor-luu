@@ -173,5 +173,40 @@ class ExhibitorApplicationControllerTest {
                 .andExpect(jsonPath("$").value("Exhibitor not found for ID: " + nonExistentUserId));
     }
 
+    @DisplayName("Exhibitor can see his application details")
+    @Test
+    void exhibitorCanSeeHisApplicationDetails() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
+        final ApplicationDTO expectedApplication = ApplicationDTOFactory.createDefault().build();
+        when(applicationservice.getApplication(any())).thenReturn(expectedApplication);
+
+        String contentAsString = mockMvc.perform(get("/exhibitor/{exhibitorId}/applications/{applicationId}", testuser.userId(),expectedApplication.getApplicationId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        verify(applicationservice, times(1)).getApplication(any());
+
+        final ApplicationDTO applicationDTO = objectMapper.readValue(contentAsString, ApplicationDTO.class);
+
+        assertThat(applicationDTO.getApplicationId()).isEqualTo(expectedApplication.getApplicationId());
+    }
+
+    @DisplayName("Exhibitor cannot see a non-existent application")
+    @Test
+    void exhibitorCannotSeeNonExistentApplication() throws Exception {
+        final UserDTO testuser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
+        UUID nonExistentApplicationId = UUID.randomUUID();
+
+        when(applicationservice.getApplication(any())).thenThrow(new NotFoundException("Application not found for ID: " + nonExistentApplicationId));
+
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/applications/{applicationId}", testuser.userId(), nonExistentApplicationId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$").value("Application not found for ID: " + nonExistentApplicationId));
+    }
+
 
 }

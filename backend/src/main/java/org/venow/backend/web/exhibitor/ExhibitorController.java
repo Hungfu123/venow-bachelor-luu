@@ -111,6 +111,15 @@ public class ExhibitorController {
         return ResponseEntity.ok(applicationDTOList.stream().map(ResponseMapper::mapToApplicationResponse).toList());
     }
 
+    @GetMapping("/applications/{applicationId}")
+    public ResponseEntity<ApplicationResponse> getApplicationDetailsPage(
+            @PathVariable("exhibitorId") final UUID exhibitorId,
+            @PathVariable("applicationId") final UUID applicationId
+    ) {
+        final ApplicationDTO applicationDTO = applicationservice.getApplication(applicationId);
+
+        return ResponseEntity.ok(ResponseMapper.mapToApplicationResponse(applicationDTO));
+    }
 
 
 

@@ -1,5 +1,6 @@
 package org.venow.backend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +12,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
-import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.web.reponse.ApplicationResponse;
 import org.venow.backend.web.request.ApplicationRequest;
 
@@ -27,6 +27,9 @@ ExhibitorApplicationControllerTest extends TestBase {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     @DisplayName("exhibitor gets on application for eventId")
@@ -301,6 +304,87 @@ ExhibitorApplicationControllerTest extends TestBase {
         );
 
         assertThat(applications).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should see an application by exhibitor")
+    @Sql(scripts = {"/db/testmigration/001_insert-event-user-application.sql"})
+    void shouldSeeAnApplicationByexhibitor() throws JsonProcessingException {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}exhibitor/{exhibitorId}/applications/{applicationId}",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port, "df333e19-6ed6-4c8b-b86e-ef78943a98a4", "b79a8e9b-7d74-4a5f-93e1-73f451e1ae0a"
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        ApplicationResponse actualResponses = objectMapper.readValue(
+                response.getBody(),
+                new TypeReference<>() {
+                }
+        );
+
+        assertThat(actualResponses.applicationId()).isEqualTo(UUID.fromString("b79a8e9b-7d74-4a5f-93e1-73f451e1ae0a"));
+    }
+
+    @Test
+    @DisplayName("should not see an application by exhibitor")
+    void shouldNotSeeAnApplicationByexhibitor() throws JsonProcessingException {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}exhibitor/{exhibitorId}/applications/{applicationId}",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port, "df333e19-6ed6-4c8b-b86e-ef78943a98a4", "b79a8e9b-7d74-4a5f-93e1-73f451e1ae0b"
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @DisplayName("should not get his application")
+    @Test
+    void exhibitorshouldNotSeeHisApplication() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}exhibitor/{exhibitorId}/applications/{applicationId}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port, "df333e19-6ed6-4c8b-b86e-ef78943a98a4", null);
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Stastus is Not Found")
+                .isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("should return NOT_FOUND for non-existent applicationId")
+    void shouldReturnNotFoundForNonExistentApplicationId() {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}exhibitor/{exhibitorId}/applications/{applicationId}",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port, "df333e19-6ed6-4c8b-b86e-ef78943a98a4", UUID.randomUUID().toString()
+        );
+
+        assertThat(response.getStatusCode())
+                .as("check if HTTP Status is Not Found for invalid applicationId")
+                .isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("should return BAD_REQUEST for invalid applicationId format")
+    void shouldReturnBadRequestForInvalidApplicationIdFormat() {
+        final ResponseEntity<String> response = restTemplate.exchange(
+                "http://localhost:{port}exhibitor/{exhibitorId}/applications/{applicationId}",
+                HttpMethod.GET,
+                null,
+                String.class,
+                port, "df333e19-6ed6-4c8b-b86e-ef78943a98a4", "blabla"
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
 }
