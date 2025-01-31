@@ -5,10 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.ApplicationService;
-import org.venow.backend.service.dto.EventDTO;
 import org.venow.backend.service.Eventservice;
+import org.venow.backend.service.dto.ApplicationDTO;
+import org.venow.backend.service.dto.EventDTO;
 import org.venow.backend.web.reponse.ApplicationResponse;
 import org.venow.backend.web.reponse.EventResponse;
 import org.venow.backend.web.reponse.ResponseMapper;
@@ -40,7 +40,7 @@ public class ExhibitorController {
 
     @GetMapping("/events")
     public ResponseEntity<List<EventResponse>> getAllEvents(@PathVariable("exhibitorId") final UUID exhibitorId,
-                                                            @RequestParam(value = "query", required = false) final String query) {
+                                                            @RequestParam(value = "query", required = false, defaultValue = "" ) final String query) {
         final List<EventDTO> allEvents;
     if(query == null || query.isBlank()) {
         allEvents = eventservice.getAllEvents();
