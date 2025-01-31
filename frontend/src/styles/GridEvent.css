@@ -103,8 +103,9 @@
 
 .view-button {
     display: block;
-    background: #7D75FF;
-    color: #fff;
+    background: #E5E4FC;
+    font-weight: bold;
+    color: #544DC9;
     border: none;
     border-radius: 0 0 0.5rem 0.5rem; /* Abrundung der unteren Ecken */
     padding: 0.75rem;
@@ -113,14 +114,14 @@
     cursor: pointer;
     width: calc(100% + 20px); /* Gleiche Breite wie die Karte */
     margin: 0 -10px; /* Gleicher Rand wie das Padding der Karte */
-    font-weight: normal;
+
     transition: background-color 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
 }
 
 .view-button:hover {
-    background-color: #E5E4FC; /* Hintergrundfarbe bei Hover */
-    color: #544DC9; /* Schriftfarbe bei Hover */
-    font-weight: bold; /* Fettgedruckt bei Hover */
+    background-color: #544DC9;
+    color: #ffffff;
+    font-weight: bold;
 }
 .success-box {
     background-color: #d4edda; /* Helles Grün */
@@ -148,9 +149,49 @@
     padding: 12px;
 }
 
+
 /* Erfolgsbox langsam ausblenden */
 @keyframes fadeOut {
     0% { opacity: 1; }
     90% { opacity: 1; }
     100% { opacity: 0; display: none; }
+}
+.search-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+}
+
+.search-input {
+    width: 100%;
+    max-width: none;
+    padding: 12px;
+    border: 2px solid #E5E4FC;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    color: #3E3E3E;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.search-input:focus {
+    border-color: #A3A2F8;
+    box-shadow: 0 0 5px rgba(163, 162, 248, 0.5);
+}
+.search-button {
+    padding: 12px 20px;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease-in-out;
+}
+
+.search-button:hover {
+    background-color: #5a54e6;
 }

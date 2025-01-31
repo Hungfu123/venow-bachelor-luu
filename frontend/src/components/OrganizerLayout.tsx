@@ -5,14 +5,15 @@ import { ReactComponent as ApplicationsIcon } from "../assets/applications-icon.
 import { ReactComponent as ContractsIcon } from "../assets/contracts-icon.svg";
 import { ReactComponent as LogoutIcon } from "../assets/profile-icon.svg";
 
-const OrganizerLayout = () => {
+const ExhibitorLayout = () => {
+    // exhibitorId aus der URL
     const { organizerId } = useParams();
     const location = useLocation();
 
     return (
         <div className="layout-container">
             {/* Sidebar */}
-            <aside id="default-sidebar" >
+            <aside id="default-sidebar">
                 <div className="sidebar-content">
                     <h2>Venow</h2>
                     <ul>
@@ -82,10 +83,10 @@ const OrganizerLayout = () => {
                 </Link>
             </header>
 
-            {/* HR Line */}
+            {/* Trennlinie */}
             <hr className="header-hr" />
 
-            {/* Main Content */}
+            {/* Hauptinhalt */}
             <div className="main-content">
                 <main>
                     <Outlet />
@@ -95,4 +96,4 @@ const OrganizerLayout = () => {
     );
 };
 
-export default OrganizerLayout;
+export default ExhibitorLayout;

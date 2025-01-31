@@ -24,7 +24,7 @@ const OrganizerEvents = () => {
                 setLoading(false);
             })
             .catch((error) => {
-                console.error("❌ Fehler beim Abrufen der Events:", error);
+                console.error("Fehler beim Abrufen der Events:", error);
                 setError("Fehler beim Laden der Events.");
                 setLoading(false);
             });
