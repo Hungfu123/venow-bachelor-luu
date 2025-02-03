@@ -39,7 +39,7 @@ public class ExhibitorContractController {
         return ResponseEntity.ok(ResponseMapper.mapToContractResponse(contractDTO));
     }
 
-    //TODO: writing tests
+
     @GetMapping("applications/{applicationId}/contracts/overview-detail/{contractId}")
     public ResponseEntity<Map<String, String>> overviewContractDetails(
             @PathVariable("exhibitorId") final UUID exhibitorId,

@@ -317,5 +317,42 @@ public class ExhibitorContractControllerTest extends TestBase{
         assertThat(response.getBody().getLast().price().getAmountInEuro().doubleValue()).isEqualTo(3.0);
     }
 
+    @DisplayName("redirect to contract details")
+    @Test
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    public void overviewContractDetails() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/applications/{applicationId}/contracts/overview-detail/{contractId}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port,
+                        "af333e19-6ed6-4c8b-b86e-ef78943a98a2",
+                        "c3456789-01cd-ef23-4567-8901cdef2346",
+                        "9a330d97-f4fb-4596-ab33-b826a0919272");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).contains("/exhibitor/af333e19-6ed6-4c8b-b86e-ef78943a98a2/applications/c3456789-01cd-ef23-4567-8901cdef2346/contract-details/9a330d97-f4fb-4596-ab33-b826a0919272");
+    }
+
+    @DisplayName("redirect to contract details - contract status not CONTRACT")
+    @Test
+    @Sql(scripts = { "/db/testmigration/001_insert-event-user-application-contracts.sql"})
+    public void redirectContractDetails() {
+        final ResponseEntity<String> response = restTemplate
+                .exchange("http://localhost:{port}/exhibitor/{exhibitorId}/applications/{applicationId}/contracts/overview-detail/{contractId}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(null),
+                        String.class,
+                        port,
+                        "af333e19-6ed6-4c8b-b86e-ef78943a98a2",
+                        "c3456789-01cd-ef23-4567-8901cdef2346",
+                        "551f8d69-996d-42c7-8b04-cd9e4ac6aa06");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).contains("/exhibitor/af333e19-6ed6-4c8b-b86e-ef78943a98a2/contracts/details/551f8d69-996d-42c7-8b04-cd9e4ac6aa06");
+    }
+
+
 
 }

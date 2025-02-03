@@ -320,4 +320,78 @@ public class ExhibitorContractControllerTest {
 
         assertThatJson(contentAsString).isArray().hasSize(2);
     }
+
+    @DisplayName("redirect to contract  overview")
+    @Test
+    void overviewContractDetails() throws Exception {
+        final UUID exhibitorId = UUID.randomUUID();
+        final UUID applicationId = UUID.randomUUID();
+        final UUID contractId = UUID.randomUUID();
+
+        final ContractDTO contractDTO = ContractDTOFactory.createDefault().withStatus(Status.CONTRACT.name()).build();
+
+        when(contractService.getContractByContractId(contractId)).thenReturn(contractDTO);
+
+        final String contentAsString = mockMvc.perform(get("/exhibitor/{exhibitorId}/applications/{applicationId}/contracts/overview-detail/{contractId}",
+                        exhibitorId, applicationId, contractId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThatJson(contentAsString).isEqualTo("{\"redirectUrl\":\"/exhibitor/" + exhibitorId + "/applications/" + applicationId + "/contract-details/" + contractId + "\"}");
+    }
+
+    @DisplayName("redirect to contract details")
+    @Test
+    void overviewContractDetails_Contract() throws Exception {
+        final UUID exhibitorId = UUID.randomUUID();
+        final UUID applicationId = UUID.randomUUID();
+        final UUID contractId = UUID.randomUUID();
+
+        final ContractDTO contractDTO = ContractDTOFactory.createDefault().withStatus(Status.CONFIRMED.name()).build();
+
+        when(contractService.getContractByContractId(contractId)).thenReturn(contractDTO);
+
+        final String contentAsString = mockMvc.perform(get("/exhibitor/{exhibitorId}/applications/{applicationId}/contracts/overview-detail/{contractId}",
+                        exhibitorId, applicationId, contractId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThatJson(contentAsString).isEqualTo("{\"redirectUrl\":\"/exhibitor/" + exhibitorId + "/contracts/details/" + contractId + "\"}");
+    }
+
+    @DisplayName("redirect to contract  overview - contract not found")
+    @Test
+    void overviewContractDetails_NotFound() throws Exception {
+        final UUID exhibitorId = UUID.randomUUID();
+        final UUID applicationId = UUID.randomUUID();
+        final UUID contractId = UUID.randomUUID();
+
+        when(contractService.getContractByContractId(contractId)).thenThrow(new NotFoundException("Contract ID not found"));
+
+        final String contentAsString = mockMvc.perform(get("/exhibitor/{exhibitorId}/applications/{applicationId}/contracts/overview-detail/{contractId}",
+                        exhibitorId, applicationId, contractId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(contentAsString).isEqualTo("Contract ID not found");
+    }
+
+    @DisplayName("exhibitor get on contract details - invalid inputs")
+    @Test
+    public void getContractDetailsInvalidInputs() throws Exception {
+        mockMvc.perform(get("/exhibitor/{exhibitorId}/applications/{applicationId}/contracts/overview-detail/{contractId}",
+                        "invalid-uuid", "invalid-uuid", "invalid-uuid")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
 }
