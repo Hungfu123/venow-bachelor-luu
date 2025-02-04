@@ -207,7 +207,7 @@ public class OrganizerEventControllerTest {
                         .content(invalidEventRequest))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").exists())
-                .andExpect(jsonPath("$.message").value("End date must be after start date"));
+                .andExpect(jsonPath("$.message").value("End date must be after or equal to start date"));
     }
 
     @Test
@@ -272,7 +272,7 @@ public class OrganizerEventControllerTest {
                         .content(invalidEventRequest))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").exists())
-                .andExpect(jsonPath("$.message").value("End date must be after start date"));
+                .andExpect(jsonPath("$.message").value("End date must be after or equal to start date"));
     }
 
     @Test
@@ -291,7 +291,7 @@ public class OrganizerEventControllerTest {
                         .content(invalidEventRequest))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").exists())
-                .andExpect(jsonPath("$.message").value("End date must be after start date"));
+                .andExpect(jsonPath("$.message").value("End date must be after or equal to start date"));
     }
 
     @Test
@@ -311,7 +311,7 @@ public class OrganizerEventControllerTest {
                         .content(invalidEventRequest))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").exists())
-                .andExpect(jsonPath("$.message").value("End date must be after start date"));
+                .andExpect(jsonPath("$.message").value("End date must be after or equal to start date"));
     }
 
 }

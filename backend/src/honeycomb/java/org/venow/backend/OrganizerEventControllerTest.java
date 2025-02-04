@@ -213,7 +213,7 @@ class OrganizerEventControllerTest extends TestBase {
                 response.getBody()
         ).as("check if response contains expected error message")
                 .and(
-                        json -> json.node("message").isEqualTo("End date must be after start date")
+                        json -> json.node("message").isEqualTo("End date must be after or equal to start date")
                 );
 
     }
@@ -240,7 +240,7 @@ class OrganizerEventControllerTest extends TestBase {
                 response.getBody()
         ).as("check if response contains expected error message")
                 .and(
-                        json -> json.node("message").isEqualTo("End date must be after start date")
+                        json -> json.node("message").isEqualTo("End date must be after or equal to start date")
                 );
 
     }

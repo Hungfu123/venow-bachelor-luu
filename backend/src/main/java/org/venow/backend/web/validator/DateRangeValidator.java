@@ -12,8 +12,9 @@ public class DateRangeValidator implements ConstraintValidator<StartDateIsBefore
             return true;
         }
 
-        if (!request.startDate().isBefore(request.endDate())) {
-            context.buildConstraintViolationWithTemplate("End date must be after start date")
+        if (request.startDate().isAfter(request.endDate())) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("End date must be after or equal to start date")
                     .addConstraintViolation();
             return false;
         }

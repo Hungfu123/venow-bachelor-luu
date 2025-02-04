@@ -86,7 +86,7 @@ class DateRangeValidatorTest {
         boolean isValid = dateRangeValidator.isValid(invalidEvent, context);
 
         assertThat(isValid).isFalse();
-        Mockito.verify(context).buildConstraintViolationWithTemplate("End date must be after start date");
+        Mockito.verify(context).buildConstraintViolationWithTemplate("End date must be after or equal to start date");
         Mockito.verify(violationBuilder).addConstraintViolation();
     }
 }
