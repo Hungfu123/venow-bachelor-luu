@@ -19,6 +19,8 @@ import ExhibitorContractDetail from "../pages/exhibitor/ExhibitorContractDetail.
 import ExhibitorContractDetailApplication from "../pages/exhibitor/ExhibitorContractDetailApplication.tsx";
 import OrganizerAllApplicationsOnEvent from "../pages/organizer/OrganizerAllApplicationsOnEvent.tsx";
 import ExhibitorApplication from "../pages/exhibitor/ExhibitorApplication.tsx";
+import ExhibitorApplicationView from "../pages/exhibitor/ExhibitorApplicationView.tsx";
+import ExhibitorContractRedirect from "../pages/exhibitor/ExhibitorContractRedirect.tsx";
 
 const AppRoutes = () => {
     return (
@@ -45,10 +47,12 @@ const AppRoutes = () => {
                 <Route path="events/:eventId" element={<ExhibitorEventDetail />} />
                 <Route path="events/:eventId/application" element={<ExhibitorEventToApply />} />
                 <Route path="events/:eventId/application/:applicationId" element={<ExhibitorApplicationDetails />} />
+                <Route path="applications/:applicationId" element={<ExhibitorApplicationView />} />
                 {/*Applications*/}
                 <Route path="applications" element={<ExhibitorApplication/>}/>
                 {/*Contracts*/}
                 <Route path="contracts" element={<ExhibitorContracts />} />
+                <Route path="/exhibitor/:exhibitorId/applications/:applicationId/contracts/overview-detail/:contractId" element={<ExhibitorContractRedirect />} />
                 <Route path="contracts/details/:contractId" element={<ExhibitorContractDetail />} />
                 <Route path="applications/:applicationId/contract-details/:contractId" element={<ExhibitorContractDetailApplication />} />
             </Route>

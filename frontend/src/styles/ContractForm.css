@@ -42,11 +42,22 @@
 }
 
 .create-contract-button {
-    background-color: #7D75FF !important;
-    color: white !important;
-    font-weight: bold !important;
-    border-radius: 8px;
-    margin-top: 1.5rem;
-    text-transform: none !important;
-    font-size: 1rem;
+    display: block;
+    background: #E5E4FC;
+    font-weight: bold;
+    color: #544DC9;
+    border: solid 1px #544DC9;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+    width: calc(100% + 20px);
+    margin: 0 -10px;
+    transition: background-color 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+}
+
+.create-contract-button:hover{
+    background-color: #544DC9;
+    color: #ffffff;
+    font-weight: bold;
 }

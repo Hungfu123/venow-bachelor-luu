@@ -51,24 +51,106 @@
     margin-top: 2rem;
 }
 
+
+/* Stil für den Vertrag-Button */
 .contract-button {
-    background-color: #7D75FF !important;
-    color: white !important;
-    font-weight: bold !important;
-    padding: 1rem;
+    display: block;
+    background: #E5E4FC;
+    font-weight: bold;
+    color: #544DC9;
+    border: solid 1px #544DC9;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+    width: calc(100% + 20px);
+    margin: 0 -10px;
+    transition: background-color 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+}
+
+.contract-button:hover {
+    background-color: #544DC9;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.view-button-application {
+    background-color: #7D75FF ;
+    color: white ;
+    font-weight: bold ;
     border-radius: 8px;
-    margin-top: 1.5rem;
-    text-transform: none !important;
+    text-transform: none ;
     font-size: 1rem;
 }
 
 .reject-application-button {
-    background-color: #dc3545 !important;
-    color: white !important;
-    font-weight: bold !important;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-top: 1.5rem;
-    text-transform: none !important;
-    font-size: 1rem;
+    display: block;
+    background: #E5E4FC;
+    font-weight: bold;
+    color: #544DC9;
+    border: solid 1px #544DC9;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+    width: calc(100% + 20px);
+    margin: 0 -10px;
+    transition: background-color 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+}
+
+.reject-application-button:hover {
+    background-color: #544DC9;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.contract-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+/*Exhibitor*/
+.confirm-application-button {
+    display: block;
+    background: #E5E4FC;
+    font-weight: bold;
+    color: #544DC9;
+    border: solid 1px #544DC9;
+    border-radius: 0 0 0.5rem 0.5rem;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+    width: calc(100% + 20px);
+    margin: 0 -10px;
+    transition: background-color 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+
+}
+
+.confirm-application-button:hover {
+    background-color: #544DC9;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.reject-application-exhibitor-button {
+    display: block;
+    background: #E5E4FC;
+    font-weight: bold;
+    color: #544DC9;
+    border: solid 1px #544DC9;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+    width: calc(100% + 20px);
+    margin: 0 -10px;
+    transition: background-color 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+}
+
+.reject-application-exhibitor-button:hover {
+    background-color: #544DC9;
+    color: #ffffff;
+    font-weight: bold;
 }
