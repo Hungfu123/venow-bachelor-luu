@@ -60,3 +60,30 @@
     background-color: #544DC9 !important;
     font-weight: bolder !important;
 }
+
+.apply-button {
+    display: block ;
+    background: #E5E4FC ;
+    font-weight: bold ;
+    color: #544DC9 ;
+    border: none ;
+    border-radius: 0 0 0.5rem 0.5rem ;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+    width: calc(100% + 20px);
+    margin: 0 -10px;
+
+    transition: background-color 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+}
+
+.apply-button:hover{
+    background-color: #544DC9 ;
+    color: #ffffff ;
+    font-weight: bold ;
+    border-radius: 0 0 0.5rem 0.5rem ;
+    border-radius: 6px;
+
+}
+

@@ -7,7 +7,6 @@ import {
     CardContent,
     Typography,
     TextField,
-    Button,
     Checkbox,
     FormControlLabel,
 } from "@mui/material";
@@ -184,14 +183,14 @@ const OrganizerContractFormular = () => {
                     />
 
                     {/* --- Button zum Erstellen des Vertrags --- */}
-                    <Button
+                    <button
                         variant="contained"
                         fullWidth
                         className="create-contract-button"
                         onClick={handleCreateContract}
                     >
                         Erstelle Vertrag
-                    </Button>
+                    </button>
                 </CardContent>
             </Card>
         </div>

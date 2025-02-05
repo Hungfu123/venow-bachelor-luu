@@ -1,6 +1,6 @@
 import {useNavigate, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, {post} from "axios";
 import { Application } from "../../types/Application";
 import { Card, CardContent, Button } from "@mui/material";
 import "../../styles/ApplicationsDetail.css";
@@ -136,22 +136,22 @@ const OrganizerApplicationsDetail = () => {
 
                         {/* Buttons */}
                         <div className="detail-actions">
-                            <Button
+                            <button
                                 variant="contained"
                                 color="primary"
                                 onClick={handleCreateContract}
                                 className="contract-button"
                             >
                                 Vertrag erstellen
-                            </Button>
-                            <Button
+                            </button>
+                            <button
                                 variant="contained"
                                 color="error"
                                 onClick={handleReject}
                                 className="reject-application-button"
                             >
                                 Bewerbung ablehnen
-                            </Button>
+                            </button>
                         </div>
                     </CardContent>
                 </Card>

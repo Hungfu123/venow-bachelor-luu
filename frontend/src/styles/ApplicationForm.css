@@ -1,0 +1,108 @@
+/* Container */
+.application-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+/* Styling der Bewerbungs-Karte */
+.application-card {
+    text-align: left;
+    width: 100%;
+    max-width: 700px;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Titel */
+.application-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: left;
+}
+
+/* Untertitel */
+.application-subtitle {
+    font-weight: bold;
+}
+
+/* Bewerberinformationen */
+.application-info {
+    background-color: #f5f5ff;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e5e4fc;
+}
+
+/* Textfelder */
+.text-field .MuiOutlinedInput-root {
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.text-field .MuiOutlinedInput-root:hover fieldset {
+    border-color: #544DC9 !important;
+}
+
+.text-field .MuiOutlinedInput-root.Mui-focused fieldset {
+    border-color: #544DC9 !important;
+    box-shadow: 0 0 5px rgba(84, 77, 201, 0.5);
+}
+
+.text-field .MuiInputLabel-root.Mui-focused {
+    color: #544DC9 !important;
+}
+
+/* Radio-Buttons */
+.radio-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.radio-group .MuiFormControlLabel-label {
+    color: #544DC9 !important;
+    font-weight: bold;
+}
+
+.radio-group .MuiRadio-root {
+    color: #544DC9 !important;
+}
+
+.radio-group .Mui-checked {
+    color: #544DC9 !important;
+}
+
+/* Bewerben-Button */
+.apply-button {
+    margin-top: 2rem;
+    background-color: #E5E4FC !important;
+    color: #544DC9 !important;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: none;
+    border-radius: 6px;
+}
+
+.apply-button:hover {
+    background-color: #544DC9 !important;
+    color: #ffffff !important;
+}
+
+/* Erfolgs- oder Fehlermeldung */
+.submission-status {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.error-message {
+    color: #d9534f;
+    text-align: center;
+    margin-top: 1rem;
+}

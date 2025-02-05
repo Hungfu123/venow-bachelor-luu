@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {Event} from "../../types/Event";
 import {Card, CardContent, Typography, Button} from "@mui/material";
-import {CalendarMonth, AccessTime, LocationOn, Search} from "@mui/icons-material";
+import {CalendarMonth, LocationOn, Search} from "@mui/icons-material";
 import "../../styles/EventDetail.css";
 
 const OrganizerEventDetail = () => {

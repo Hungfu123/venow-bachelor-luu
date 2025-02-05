@@ -195,3 +195,25 @@
 .search-button:hover {
     background-color: #5a54e6;
 }
+.contract-status {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.contract-status.contract {
+    color: #856404;
+    background-color: #fff3cd;
+}
+
+.contract-status.unterzeichnet {
+    color: #155724;
+    background-color: #d4edda;
+    text-decoration: underline; /* Unterstrichen */
+}
+
+.contract-status.storniert {
+    color: #721c24;
+    background-color: #f8d7da;
+}
