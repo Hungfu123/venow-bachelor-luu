@@ -21,10 +21,14 @@ import OrganizerAllApplicationsOnEvent from "../pages/organizer/OrganizerAllAppl
 import ExhibitorApplication from "../pages/exhibitor/ExhibitorApplication.tsx";
 import ExhibitorApplicationView from "../pages/exhibitor/ExhibitorApplicationView.tsx";
 import ExhibitorContractRedirect from "../pages/exhibitor/ExhibitorContractRedirect.tsx";
+import LoginPage from "../pages/Login.tsx";
 
 const AppRoutes = () => {
     return (
         <Routes>
+            {/*Login Route*/}
+            <Route path="/login" element=<LoginPage/> />
+
             {/* Organizer Routes */}
             <Route path="/organizer/:organizerId" element={<OrganizerLayout />}>
                 <Route path="events" element={<OrganizerEvents />} />
