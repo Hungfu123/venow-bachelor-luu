@@ -22,7 +22,6 @@ const ExhibitorEvents = () => {
 
     if (loading) return <div>Lade Events...</div>;
     if (error) return <div>{error}</div>;
-    if (!events || events.length === 0) return <div>Keine Events gefunden.</div>;
 
     return (
         <div className="grid-events-container">

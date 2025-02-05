@@ -55,7 +55,7 @@ const ExhibitorApplication = () => {
                     <th>Titel</th>
                     <th>StandplatzTyp</th>
                     <th>Application Status</th>
-                    <th>Aktionen</th>
+                    {/*<th>Aktionen</th>*/}
                 </tr>
                 </thead>
                 <tbody>
@@ -68,17 +68,17 @@ const ExhibitorApplication = () => {
                         <td>{app.eventTitle}</td>
                         <td>{app.typeOfBusiness}</td>
                         <td>{app.status}</td>
-                        <td>
-                            <div
-                                className="contract-button"
-                                onClick={(event) => {
-                                    event.stopPropagation(); // Verhindert, dass die ganze Zeile geklickt wird
-                                    handleViewContract(app.applicationId);
-                                }}
-                            >
-                                Vertrag
-                            </div>
-                        </td>
+                        {/*<td>*/}
+                        {/*    <div*/}
+                        {/*        className="contract-button"*/}
+                        {/*        onClick={(event) => {*/}
+                        {/*            event.stopPropagation(); // Verhindert, dass die ganze Zeile geklickt wird*/}
+                        {/*            handleViewContract(app.applicationId);*/}
+                        {/*        }}*/}
+                        {/*    >*/}
+                        {/*        Vertrag*/}
+                        {/*    </div>*/}
+                        {/*</td>*/}
                     </tr>
                 ))}
                 </tbody>

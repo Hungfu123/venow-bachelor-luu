@@ -10,7 +10,7 @@ const ExhibitorContractDetailApplication = () => {
 
     const { data: contract, loading, error} = useGet<Contract>(
         exhibitorId && applicationId && contractId
-            ? `http://localhost:8080/exhibitor/${exhibitorId}/applications/${applicationId}/contracts/overview-detail/${contractId}`
+            ? `http://localhost:8080/exhibitor/${exhibitorId}/applications/${applicationId}/contract-details/${contractId}`
             : null
     );
 
@@ -36,7 +36,6 @@ const ExhibitorContractDetailApplication = () => {
 
                 <section className="detail-section">
                     <h2 className="section-header">Allgemeine Infos</h2>
-                    <p><strong>Vertrag-ID:</strong> {contract.contractId}</p>
                     <p><strong>Status:</strong> {contract.status}</p>
                 </section>
 

@@ -63,6 +63,11 @@ const OrganizerContractFormular = () => {
                 }
             )
             .then(() => {
+            axios.post(
+                `http://localhost:8080/organizer/${organizerId}/applications/${applicationId}/accept`
+            )
+        })
+            .then(() => {
                 navigate(`/organizer/${organizerId}/applications`);
                 alert("Vertrag erfolgreich erstellt!");
             })

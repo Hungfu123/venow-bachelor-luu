@@ -38,7 +38,7 @@ const OrganizerAllApplicationsOnEvent = () => {
 
     const handleRowClick = (applicationId: string) => {
         if (!organizerId || !eventId) return;
-        navigate(`/organizer/${organizerId}/events/${eventId}/applications/${applicationId}`);
+        navigate(`/organizer/${organizerId}/applications/${applicationId}`);
     };
 
     const handleReject = (event: React.MouseEvent, applicationId: string) => {
@@ -84,7 +84,7 @@ const OrganizerAllApplicationsOnEvent = () => {
                     <th>Titel</th>
                     <th>StandplatzTyp</th>
                     <th>Status</th>
-                    <th>Aktionen</th>
+                    {/*<th>Aktionen</th>*/}
                 </tr>
                 </thead>
                 <tbody>
@@ -98,14 +98,14 @@ const OrganizerAllApplicationsOnEvent = () => {
                         <td>{app.eventTitle}</td>
                         <td>{app.typeOfBusiness}</td>
                         <td>{app.status}</td>
-                        <td>
-                            <button
-                                className="reject-button"
-                                onClick={(event) => handleReject(event, app.applicationId)}
-                            >
-                                Ablehnen
-                            </button>
-                        </td>
+                        {/*<td>*/}
+                        {/*    <button*/}
+                        {/*        className="reject-button"*/}
+                        {/*        onClick={(event) => handleReject(event, app.applicationId)}*/}
+                        {/*    >*/}
+                        {/*        Ablehnen*/}
+                        {/*    </button>*/}
+                        {/*</td>*/}
                     </tr>
                 ))}
                 </tbody>

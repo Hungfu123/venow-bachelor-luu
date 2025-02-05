@@ -144,14 +144,14 @@ const OrganizerApplicationsDetail = () => {
                             >
                                 Vertrag erstellen
                             </button>
-                            <button
-                                variant="contained"
-                                color="error"
-                                onClick={handleReject}
-                                className="reject-application-button"
-                            >
-                                Bewerbung ablehnen
-                            </button>
+                            {/*<button*/}
+                            {/*    variant="contained"*/}
+                            {/*    color="error"*/}
+                            {/*    onClick={handleReject}*/}
+                            {/*    className="reject-application-button"*/}
+                            {/*>*/}
+                            {/*    Bewerbung ablehnen*/}
+                            {/*</button>*/}
                         </div>
                     </CardContent>
                 </Card>
