@@ -48,6 +48,7 @@ public class UserTestData {
                 .userId(UUID.fromString("b23e4567-e89b-12d3-a456-426614174001"))
                 .email("organizer2@example.com")
                 .name("Organizer 2")
+                .password("password123")
                 .role(org.venow.backend.domain.model.Role.ORGANIZER)
                 .build();
     }

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,16 +22,15 @@ import org.venow.backend.web.request.EventRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-
 @CrossOrigin(origins = "http://localhost:5173")
 @Slf4j
 @RestController()
 @AllArgsConstructor
 @RequestMapping("/organizer/{organizerId}")
+@PreAuthorize("#organizerId == authentication.principal.userId")
 public class OrganizerEventController {
 
     private final Eventservice eventservice;
-
     @GetMapping("/events")
     public ResponseEntity<List<EventResponse>> getAllEventsByOrganizer(@PathVariable("organizerId") final UUID organizerId) {
         final List<EventDTO> allEvents = eventservice.getAllEventsByOrganizer(organizerId, Role.ORGANIZER);

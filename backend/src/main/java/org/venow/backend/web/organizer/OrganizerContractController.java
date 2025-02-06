@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.venow.backend.service.ApplicationService;
 import org.venow.backend.service.ContractService;
@@ -28,6 +29,7 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/organizer/{organizerId}")
+@PreAuthorize("#organizerId == authentication.principal.userId")
 public class OrganizerContractController {
 
     private final ApplicationService applicationService;

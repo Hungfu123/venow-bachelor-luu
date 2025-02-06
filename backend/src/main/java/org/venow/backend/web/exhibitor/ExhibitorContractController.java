@@ -6,6 +6,7 @@ import org.apache.coyote.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.ContractService;
@@ -25,6 +26,7 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/exhibitor/{exhibitorId}")
+@PreAuthorize("#organizerId == authentication.principal.userId")
 public class ExhibitorContractController {
 
     private final ContractService contractService;

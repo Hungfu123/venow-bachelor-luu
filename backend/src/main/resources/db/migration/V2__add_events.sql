@@ -13,11 +13,11 @@ VALUES ('550e8400-e29b-41d4-a716-446655440000', 'Fischstaebchen-Band', 'A large 
         '2024-06-01 12:00:00', '2024-06-01 23:00:00', 50, '06f6633d-1b90-4a17-95fb-5f7157aa157e');
 
 INSERT INTO users (user_id, email,name, password, role)
-VALUES ('df333e19-6ed6-4c8b-b86e-ef78943a98a4', 'showman@example.com', 'Max Exi', 'password123', 'EXHIBITOR'),
-       ('af333e19-6ed6-4c8b-b86e-ef78943a98a2', 'showmantest@example.com', 'Misty Exo', 'password123', 'EXHIBITOR'),
-       ('06f6633d-1b90-4a17-95fb-5f7157aa157e', 'luu@example.com', 'Hung Luu', 'password123', 'ORGANIZER'),
-       ('123e4567-e89b-12d3-a456-426614174000', 'vkhlu@example.com', 'Khang Delulu', 'password123', 'ORGANIZER'),
-       ('123e4567-e89b-12d3-a456-426614174001', 'mste@example.com', 'Melanie Steinmeier', 'password123', 'ORGANIZER');
+VALUES ('df333e19-6ed6-4c8b-b86e-ef78943a98a4', 'showman@example.com', 'Max Exi', '$2a$12$RDurX/JrH.zqU/7TMr5VBuNpQtRvbCsj8oWGiaGpCbnWgwRwL9S6G', 'EXHIBITOR'),
+       ('af333e19-6ed6-4c8b-b86e-ef78943a98a2', 'showmantest@example.com', 'Misty Exo', '', 'EXHIBITOR'),
+       ('06f6633d-1b90-4a17-95fb-5f7157aa157e', 'luu@example.com', 'Hung Luu', '$2a$12$yAE7nVDxEnms2I0duXMscO7E5Y6t5N.5wwvGJffCsm3wIo0MCPy5q', 'ORGANIZER'),
+       ('123e4567-e89b-12d3-a456-426614174000', 'vkhlu@example.com', 'Khang Delulu', '$2a$12$GkwN14Vt/j/kE0C3UR9p8ekfHVkqfIRcHBe82//u.S1DlnBKrlOm2', 'ORGANIZER'),
+       ('123e4567-e89b-12d3-a456-426614174001', 'mste@example.com', 'Melanie Steinmeier', '$2a$12$BveHZ/S4DaspxJs3PGLtaenvzUE.PczVQcWr3zzhr5nuhA1aEdV5K', 'ORGANIZER');
 
 INSERT INTO applications (application_id, user_id, event_id, contact_information, business_name, type_of_business, previous_participation, message, status)
 VALUES (
