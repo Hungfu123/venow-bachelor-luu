@@ -8,8 +8,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.venow.backend.config.TestSecurityConfig;
 import org.venow.backend.domain.model.Role;
 import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.ApplicationService;
@@ -40,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ExhibitorContractController.class)
+@Import(TestSecurityConfig.class)
 public class ExhibitorContractControllerTest {
     @Autowired
     ObjectMapper objectMapper;

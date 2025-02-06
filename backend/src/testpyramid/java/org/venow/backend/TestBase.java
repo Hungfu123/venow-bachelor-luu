@@ -8,10 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.venow.backend.config.TestSecurityConfig;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,6 +25,7 @@ import java.sql.Statement;
 @Testcontainers
 @AutoConfigureWireMock
 @ActiveProfiles("testpyramid-testcontainer")
+@Import(TestSecurityConfig.class)
 public abstract class TestBase {
 
 

@@ -264,7 +264,7 @@ ExhibitorApplicationControllerTest extends TestBase {
                 port,
                 null);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test

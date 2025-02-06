@@ -102,7 +102,7 @@ class OrganizerApplicationControllerTest extends TestBase {
                         port, null);
         assertThat(response.getStatusCode())
                 .as("check if HTTP Stastus is Not Found")
-                .isEqualTo(HttpStatus.NOT_FOUND);
+                .isEqualTo(HttpStatus.BAD_REQUEST);
 
     }
     @Test
@@ -364,11 +364,11 @@ class OrganizerApplicationControllerTest extends TestBase {
 
         assertThat(response.getStatusCode())
                 .as("check if HTTP Status is BAD REQUEST")
-                .isEqualTo(HttpStatus.NOT_FOUND);
+                .isEqualTo(HttpStatus.BAD_REQUEST);
 
         assertThat(response.getBody())
                 .as("check if response contains error message")
-                .contains("Not Found");
+                .contains("Bad Request");
     }
 
     @Test

@@ -13,5 +13,7 @@ public interface JpaUserRepository extends JpaRepository<User, UUID> {
     @Query("SELECT u FROM users u WHERE u.userId = :userId")
     Optional<User> findByUserId(UUID userId);
 
+    Optional<User> findByEmail(String email);
+
     boolean existsByUserIdAndRole(UUID organizerId, Role role);
 }

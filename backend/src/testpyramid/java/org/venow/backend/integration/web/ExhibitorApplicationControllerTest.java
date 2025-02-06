@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.venow.backend.config.TestSecurityConfig;
 import org.venow.backend.service.ApplicationService;
 import org.venow.backend.service.Eventservice;
 import org.venow.backend.service.dto.ApplicationDTO;
@@ -34,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.venow.backend.TestBase.loadObjectFromJson;
 
 @WebMvcTest(ExhibitorController.class)
+@Import(TestSecurityConfig.class)
 class ExhibitorApplicationControllerTest {
     @Autowired
     MockMvc mockMvc;
@@ -66,7 +69,7 @@ class ExhibitorApplicationControllerTest {
         final EventDTO expectedEvent = EventDTOFactory.createDefault().build();
 
         mockMvc.perform(get("/exhibitor/{exhibitorId}/events/{eventId}/application", null, expectedEvent.eventId()))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     @DisplayName("apply for an event")

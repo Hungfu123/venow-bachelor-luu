@@ -33,5 +33,9 @@ public class UserRepositoryImpl implements UserRepository {
         return repository.existsByUserIdAndRole(userId, role);
     }
 
+    @Override
+    public Optional<UserDTO> findByEmail(final String email) {
+        return repository.findByEmail(email).map(UserMapper::mapToDTO);
+    }
 
 }

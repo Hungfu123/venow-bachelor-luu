@@ -82,8 +82,8 @@ public class ExhibitorContractControllerTest extends TestBase{
                         null,
                         "9a330d97-f4fb-4596-ab33-b826a0919272");
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-        assertThat(response.getBody()).contains("Not Found");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody()).contains("Bad Request");
     }
 
     @DisplayName("exhibitor get on contract details - mismatched IDs")

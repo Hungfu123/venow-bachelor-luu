@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.venow.backend.config.TestSecurityConfig;
 import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.ApplicationService;
 import org.venow.backend.service.exception.AlreadyRejectedException;
@@ -30,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(OrganizerApplicationController.class)
+@Import(TestSecurityConfig.class)
 class OrganizerApplicationControllerTest {
 
     @Autowired
@@ -96,12 +99,12 @@ class OrganizerApplicationControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("Organizer gets NOT FOUND when no organizer exists")
+    @DisplayName("Organizer gets Bad Request when no organizer exists")
     @Test
     void organizerBadRequest() throws Exception {
         mockMvc.perform(get("/organizer/{organizerId}/applications", "")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
     @DisplayName("Organizer gets BAD REQUEST for invalid applicationId format")
     @Test
@@ -149,7 +152,7 @@ class OrganizerApplicationControllerTest {
     void organizerEmptyOrganizerId() throws Exception {
         mockMvc.perform(get("/organizer/{organizerId}/applications", "")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     @DisplayName("Organizer reject application")

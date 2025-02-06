@@ -10,6 +10,7 @@ public interface UserRepository {
 
     Optional<UserDTO> findById(final UUID id);
 
+    Optional<UserDTO> findByEmail(final String email);
     UserDTO save(UserDTO user);
 
     boolean existsByUserIdAndRole(UUID userId, Role role);

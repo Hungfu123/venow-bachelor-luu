@@ -51,8 +51,6 @@ public class ExhibitorController {
     }
     }
 
-
-
     @GetMapping("/events/{eventId}/application")
     public ResponseEntity<ApplicationResponse> getApplicationDetails(
             @PathVariable("eventId") final UUID eventId,
