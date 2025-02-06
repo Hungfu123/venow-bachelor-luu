@@ -74,4 +74,25 @@ class UserRepositoryTest extends TestBase {
 
         assertThat(exists).isFalse();
     }
+
+    @DisplayName("findByEmail should return user by email")
+    @Test
+    void findByEmailShouldReturnUserByEmail() {
+        UserDTO user = UserDTOFactory.createDefault().build();
+        userRepository.save(user);
+
+        Optional<UserDTO> retrievedUser = userRepository.findByEmail(user.email());
+
+        assertThat(retrievedUser).isPresent();
+        assertThat(retrievedUser.get().name()).isEqualTo(user.name());
+        assertThat(retrievedUser.get().email()).isEqualTo(user.email());
+        assertThat(retrievedUser.get().role()).isEqualTo(user.role());
+    }
+
+    @DisplayName("findByEmail should return empty optional if user is not found by email")
+    @Test
+    void findByEmailShouldReturnEmptyOptionalIfUserNotFoundByEmail() {
+        Optional<UserDTO> retrievedUser = userRepository.findByEmail("");
+        assertThat(retrievedUser).isEmpty();
+    }
 }
