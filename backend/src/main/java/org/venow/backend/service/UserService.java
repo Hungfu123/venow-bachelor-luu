@@ -20,7 +20,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     public UserDTO getUserByUserId(final UUID id) {
         if (id == null) {
@@ -33,13 +32,6 @@ public class UserService implements UserDetailsService {
         return userRepository.existsByUserIdAndRole(organizerId, role);
     }
 
-    public UserDTO registerUser(UserDTO user) {
-        user = user.toBuilder()
-                .userId(UUID.randomUUID())
-                .password(passwordEncoder.encode(user.password()))
-                .build();
-        return userRepository.save(user);
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -54,10 +46,6 @@ public class UserService implements UserDetailsService {
         );
     }
 
-
-    public Optional<UserDTO> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
 }
 
 

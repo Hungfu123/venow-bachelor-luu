@@ -20,7 +20,7 @@ import java.util.List;
 public class TestSecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChainTest(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChainTest2(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/health").permitAll()
                         .anyRequest().permitAll())
@@ -32,7 +32,7 @@ public class TestSecurityConfig {
 
     @Bean
     @Primary
-    public AuthenticationManager authenticationManager() {
+    public AuthenticationManager authenticationManagerTest() {
         return new ProviderManager(List.of(new TestingAuthenticationProvider()));
     }
 

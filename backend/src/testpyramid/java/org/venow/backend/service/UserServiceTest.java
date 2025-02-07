@@ -6,6 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.venow.backend.domain.model.Role;
 import org.venow.backend.infrastructure.UserRepositoryImpl;
 import org.venow.backend.service.dto.UserDTO;
@@ -15,7 +17,8 @@ import org.venow.backend.testdata.UserDTOFactory;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
@@ -93,5 +96,38 @@ public class UserServiceTest {
         boolean result = userService.existsByUserAndRole(nonOrganizerId, Role.EXHIBITOR);
 
         assertThat(result).isFalse();
+    }
+
+    @DisplayName("should load user by username")
+    @Test
+    void shouldLoadUserByUsername() {
+        String email = "test@venow.com";
+        UUID userId = UUID.randomUUID();
+        String password = "securePassword";
+        Role role = Role.ORGANIZER;
+
+        UserDTO user = new UserDTO(1L,userId, "Test User", password, email , role.toString());
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+
+        UserDetails userDetails = userService.loadUserByUsername(email);
+
+        assertThat(userDetails).isNotNull();
+        assertThat(userDetails.getUsername()).isEqualTo(email);
+        assertThat(userDetails.getPassword()).isEqualTo(password);
+        assertThat(userDetails.getAuthorities()).hasSize(1);
+        assertThat(userDetails.getAuthorities().iterator().next().getAuthority()).isEqualTo("ROLE_ORGANIZER");
+    }
+
+    @DisplayName("should throw UsernameNotFoundException when user does not exist")
+    @Test
+    void shouldThrowUsernameNotFoundExceptionWhenUserDoesNotExist() {
+        String email = "nonexistent@venow.com";
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.loadUserByUsername(email))
+                .isInstanceOf(UsernameNotFoundException.class)
+                .hasMessage("User not found with email: " + email);
     }
 }

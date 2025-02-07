@@ -127,9 +127,8 @@ class ExhibitorEventControllerTest {
     }
 
     @Test
-    @DisplayName("should get all events when no query param is provided => eventservice.getAllEvents()")
-    void getAllEvents_noQueryParam() throws Exception {
-        // Arrange
+    @DisplayName("should get all events when no query param is provided")
+    void getAllEventNoQueryParam() throws Exception {
         final UserDTO testUser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
         final EventDTO event1 = EventDTOFactory.createDefault().withTitle("Event 1").build();
         final EventDTO event2 = EventDTOFactory.createDefault().withTitle("Event 2").build();
@@ -137,7 +136,6 @@ class ExhibitorEventControllerTest {
 
         mockMvc.perform(get("/exhibitor/{exhibitorId}/events", testUser.userId()))
                 .andExpect(status().isOk())
-                // Ggf. weitere Checks auf JSON-Felder
                 .andExpect(jsonPath("$[0].title").value("Event 1"))
                 .andExpect(jsonPath("$[1].title").value("Event 2"));
 
@@ -146,8 +144,8 @@ class ExhibitorEventControllerTest {
     }
 
     @Test
-    @DisplayName("should get all events when query param is blank => eventservice.getAllEvents()")
-    void getAllEvents_blankQueryParam() throws Exception {
+    @DisplayName("should get all events when query param is blank")
+    void getAllEventsBlankQueryParam() throws Exception {
         final UserDTO testUser = UserDTOFactory.createDefault().withRole("EXHIBITOR").build();
         final EventDTO event1 = EventDTOFactory.createDefault().withTitle("Blank 1").build();
         final EventDTO event2 = EventDTOFactory.createDefault().withTitle("Blank 2").build();

@@ -8,4 +8,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-
+  security:
+    enabled: false

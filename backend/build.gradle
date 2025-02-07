@@ -49,6 +49,7 @@ dependencies {
 
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
+	testImplementation 'org.pitest:pitest-junit5-plugin:1.2.1'
 
 }
 tasks.withType(Copy) {
@@ -144,13 +145,23 @@ tasks.register("jacocoHoneycombReport", JacocoReport) {
 }
 
 tasks.register("jacocoTestPyramidReport", JacocoReport) {
-	dependsOn testPyramidTest // Task für Test Pyramid-Tests
+	dependsOn testPyramidTest
 
 	executionData.setFrom(fileTree(buildDir).include("jacoco/testPyramidTest.exec"))
 
 	sourceDirectories.setFrom(sourceSets.main.allSource.srcDirs)
 	classDirectories.setFrom(sourceSets.main.output)
 	additionalSourceDirs.setFrom(sourceSets.testpyramid.allSource.srcDirs)
+
+	classDirectories.setFrom(
+			files(
+					sourceSets.main.output.classesDirs.collect {
+						fileTree(dir: it, exclude: [
+								'org/venow/backend/config/**'
+						])
+					}
+			)
+	)
 
 	reports {
 		html.required.set(true)
@@ -161,9 +172,11 @@ tasks.register("jacocoTestPyramidReport", JacocoReport) {
 }
 
 pitest {
+	useClasspathFile = true
 	targetClasses = ['org.venow.backend.*']
+	excludedClasses = ['org.venow.backend.config.*']
 	targetTests = ['org.venow.backend.*']
-//	timeoutConstInMillis = 30000
+	timeoutConstInMillis = 30000
 	features = ['+auto_threads']
 	testSourceSets = [sourceSets.testpyramid]
 	junit5PluginVersion = '1.2.1'
@@ -173,7 +186,7 @@ pitest {
 	def testSourceSetName = project.hasProperty("testSourceSet") ? project.getProperty("testSourceSet") : "testpyramid"
 	testSourceSets = [sourceSets[testSourceSetName]]
 	reportDir.set(layout.buildDirectory.dir("reports/pitest/${testSourceSetName}"))
-
+	enableDefaultIncrementalAnalysis = false
 	outputFormats = ['HTML', 'XML', 'CSV']
 	exportLineCoverage = true
 }

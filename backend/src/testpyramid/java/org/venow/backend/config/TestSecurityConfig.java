@@ -25,8 +25,7 @@ public class TestSecurityConfig {
     }
 
     @Bean
-    @Primary
-    public AuthenticationManager authenticationManager() {
+    public AuthenticationManager authenticationManagerTestt() {
         return new ProviderManager(List.of(new TestingAuthenticationProvider()));
     }
 
