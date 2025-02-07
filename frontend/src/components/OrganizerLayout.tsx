@@ -1,14 +1,22 @@
-import { Link, Outlet, useParams, useLocation } from "react-router-dom";
+import { Link, Outlet, useParams, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../styles/layout.css";
 import { ReactComponent as EventsIcon } from "../assets/events-icon.svg";
 import { ReactComponent as ApplicationsIcon } from "../assets/applications-icon.svg";
 import { ReactComponent as ContractsIcon } from "../assets/contracts-icon.svg";
 import { ReactComponent as LogoutIcon } from "../assets/profile-icon.svg";
 
-const ExhibitorLayout = () => {
-    // exhibitorId aus der URL
+const OrganizerLayout
+    = () => {
     const { organizerId } = useParams();
     const location = useLocation();
+
+    // Logout-Funktion
+    const handleLogout = () => {
+        window.location.href = "http://localhost:8080/logout";
+    };
+
+
 
     return (
         <div className="layout-container">
@@ -51,11 +59,13 @@ const ExhibitorLayout = () => {
                             </Link>
                         </li>
                     </ul>
+
+                    {/* Logout-Button statt Link */}
                     <div className="logout">
-                        <Link to="/logout" className="sidebar-link">
+                        <button onClick={handleLogout} className="sidebar-link">
                             <LogoutIcon className="sidebar-icon" />
                             <span>Abmelden</span>
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </aside>
@@ -96,4 +106,5 @@ const ExhibitorLayout = () => {
     );
 };
 
-export default ExhibitorLayout;
+export default OrganizerLayout
+;

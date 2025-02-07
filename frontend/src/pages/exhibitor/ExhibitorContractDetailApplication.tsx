@@ -11,7 +11,9 @@ const ExhibitorContractDetailApplication = () => {
     const { data: contract, loading, error} = useGet<Contract>(
         exhibitorId && applicationId && contractId
             ? `http://localhost:8080/exhibitor/${exhibitorId}/applications/${applicationId}/contract-details/${contractId}`
-            : null
+            : null, {
+            withCredentials: true
+        }
     );
 
     if (loading) return <div className="loading-message">Lade Vertragsdetails...</div>;
@@ -21,8 +23,10 @@ const ExhibitorContractDetailApplication = () => {
     const updateContractStatus = async (status: "confirm" | "reject") => {
         try {
             await axios.put(
-                `http://localhost:8080/exhibitor/${exhibitorId}/contract-details/${contractId}/${status}`
-            );
+                `http://localhost:8080/exhibitor/${exhibitorId}/contract-details/${contractId}/${status}`,
+            null, {
+                withCredentials: true
+            })
             navigate(`/exhibitor/${exhibitorId}/contracts`);
         } catch (error) {
             console.error(`Fehler beim Ändern des Vertragsstatus:`, error);

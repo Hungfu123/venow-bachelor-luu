@@ -10,7 +10,9 @@ const ExhibitorContractRedirect = () => {
         if (!exhibitorId || !applicationId || !contractId) return;
 
         axios
-            .get(`http://localhost:8080/exhibitor/${exhibitorId}/applications/${applicationId}/contracts/overview-detail/${contractId}`)
+            .get(`http://localhost:8080/exhibitor/${exhibitorId}/applications/${applicationId}/contracts/overview-detail/${contractId}`, {
+                withCredentials: true
+            })
             .then((response) => {
                 const redirectUrl = response.data.redirectUrl;
                 if (redirectUrl) {

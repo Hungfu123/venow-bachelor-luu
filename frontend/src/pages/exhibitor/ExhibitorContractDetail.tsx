@@ -9,7 +9,10 @@ const ExhibitorContractDetail = () => {
     const { data: contract, loading, error } = useGet<Contract>(
         exhibitorId && contractId
             ? `http://localhost:8080/exhibitor/${exhibitorId}/contracts/details/${contractId}`
-            : null
+            : null,
+        {
+            withCredentials: true
+        }
     );
 
 

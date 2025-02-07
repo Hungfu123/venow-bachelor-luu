@@ -10,7 +10,7 @@ export const useGet = <T,>(url: string | null) => {
         if (!url) return;
 
         axios
-            .get<T>(url)
+            .get<T>(url, { withCredentials: true })
             .then((response) => {
                 setData(response.data);
                 setLoading(false);

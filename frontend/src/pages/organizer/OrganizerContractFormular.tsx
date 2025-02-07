@@ -33,7 +33,9 @@ const OrganizerContractFormular = () => {
 
         axios
             .get<Application>(
-                `http://localhost:8080/organizer/${organizerId}/applications/${applicationId}`
+                `http://localhost:8080/organizer/${organizerId}/applications/${applicationId}`, {
+                    withCredentials: true
+                }
             )
             .then((response) => {
                 setApplication(response.data);
@@ -60,11 +62,15 @@ const OrganizerContractFormular = () => {
                 {
                     price: parseFloat(price),
                     boothNumber: standplatznummer,
+                }, {
+                    withCredentials: true
                 }
             )
             .then(() => {
             axios.post(
-                `http://localhost:8080/organizer/${organizerId}/applications/${applicationId}/accept`
+                `http://localhost:8080/organizer/${organizerId}/applications/${applicationId}/accept`, {
+                    withCredentials: true
+                }
             )
         })
             .then(() => {

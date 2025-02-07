@@ -1,5 +1,3 @@
-import info.solidsoft.gradle.pitest.PitestTask
-
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.5'
@@ -178,19 +176,18 @@ pitest {
 
 	outputFormats = ['HTML', 'XML', 'CSV']
 	exportLineCoverage = true
-
 }
 
-tasks.register("pitestHoneycomb") {
-	group = "verification"
-	description = "Run PIT mutation tests for Honeycomb strategy"
-
-	doLast {
-		def gradleExecutable = System.getProperty("os.name").toLowerCase().contains("win") ? "gradlew.bat" : "./gradlew"
-
-		exec {
-			executable = gradleExecutable
-			args = ["pitest", "-PtestSourceSet=honeycomb"]
-		}
-	}
-}
+//tasks.register("pitestHoneycomb") {
+//	group = "verification"
+//	description = "Run PIT mutation tests for Honeycomb strategy"
+//
+//	doLast {
+//		def gradleExecutable = System.getProperty("os.name").toLowerCase().contains("win") ? "gradlew.bat" : "./gradlew"
+//
+//		exec {
+//			executable = gradleExecutable
+//			args = ["pitest", "-PtestSourceSet=honeycomb"]
+//		}
+//	}
+//}

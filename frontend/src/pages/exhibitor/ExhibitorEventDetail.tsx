@@ -10,7 +10,9 @@ const ExhibitorEventDetail = () => {
 
     // Holt die Event-Daten
     const { data: event, loading, error } = useGet<Event>(
-        exhibitorId && eventId ? `http://localhost:8080/exhibitor/${exhibitorId}/events/${eventId}` : null
+        exhibitorId && eventId ? `http://localhost:8080/exhibitor/${exhibitorId}/events/${eventId}` : null, {
+            withCredentials: true
+        }
     );
 
     if (loading) return <div className="loading-message">Lade Event...</div>;

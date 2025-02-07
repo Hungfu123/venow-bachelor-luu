@@ -27,7 +27,7 @@ const AppRoutes = () => {
     return (
         <Routes>
             {/*Login Route*/}
-            <Route path="/login" element=<LoginPage/> />
+            {/*<Route path="/login" element=<LoginPage/> />*/}
 
             {/* Organizer Routes */}
             <Route path="/organizer/:organizerId" element={<OrganizerLayout />}>

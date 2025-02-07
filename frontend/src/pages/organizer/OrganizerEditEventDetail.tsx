@@ -3,14 +3,12 @@ import { useForm, FieldValues, Controller } from "react-hook-form";
 import { Button, TextField, Card, CardContent } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import "../../styles/CreateEvent.css"; // Du kannst denselben CSS-Code verwenden
+import "../../styles/CreateEvent.css";
 
 const OrganizerEditEventDetail = () => {
     const { organizerId, eventId } = useParams();
     const navigate = useNavigate();
 
-    // useForm-Hook mit leeren Startwerten
-    // Diese werden gleich durch `reset(...)` überschrieben
     const {
         control,
         handleSubmit,
@@ -27,7 +25,6 @@ const OrganizerEditEventDetail = () => {
         },
     });
 
-    // Hilfsfunktion, um "YYYY-MM-DD" in "YYYY-MM-DDT00:00:00" zu konvertieren
     const formatToLocalDateTime = (date: string) => `${date}T00:00:00`;
 
     // 1) Beim Laden: Event-Daten holen und ins Formular setzen
@@ -37,13 +34,12 @@ const OrganizerEditEventDetail = () => {
         }
 
         axios
-            .get(`http://localhost:8080/organizer/${organizerId}/events/${eventId}`)
+            .get(`http://localhost:8080/organizer/${organizerId}/events/${eventId}`, {
+                withCredentials: true
+            })
             .then((response) => {
                 const eventData = response.data;
                 console.log("Geladene Event-Daten:", eventData);
-
-                // Falls eventData.startDate z. B. "2024-07-15T09:00:00" enthält,
-                // schneiden wir das "T09:00:00" ab, wenn wir nur "YYYY-MM-DD" brauchen.
                 reset({
                     title: eventData.title,
                     description: eventData.description,
@@ -73,7 +69,9 @@ const OrganizerEditEventDetail = () => {
         };
 
         try {
-            await axios.post(apiUrl, eventRequest);
+            await axios.post(apiUrl, eventRequest, {
+                withCredentials: true,
+            });
             alert("Veranstaltung erfolgreich bearbeitet!");
             navigate(`/organizer/${organizerId}/events`);
         } catch (error) {

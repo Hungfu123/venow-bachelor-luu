@@ -20,7 +20,9 @@ const OrganizerEventDetail = () => {
         }
 
         axios
-            .get<Event>(`http://localhost:8080/organizer/${organizerId}/events/${eventId}`)
+            .get<Event>(`http://localhost:8080/organizer/${organizerId}/events/${eventId}`, {
+                withCredentials: true
+            })
             .then((response) => {
                 console.log("Event data:", response.data);
 

@@ -17,7 +17,9 @@ const OrganizerApplications = () => {
             return;
         }
         axios
-            .get<Application[]>(`http://localhost:8080/organizer/${organizerId}/applications`)
+            .get<Application[]>(`http://localhost:8080/organizer/${organizerId}/applications`, {
+                withCredentials: true
+            })
             .then((response) => {
                 setApplications(response.data);
                 setLoading(false);
@@ -43,7 +45,11 @@ const OrganizerApplications = () => {
         if (!organizerId) return;
 
         axios
-            .post(`http://localhost:8080/organizer/${organizerId}/applications/${applicationId}/reject`)
+            .post(`http://localhost:8080/organizer/${organizerId}/applications/${applicationId}/reject`,
+                null
+                , {
+                    withCredentials: true
+                })
             .then(() => {
                 fetchApplications();
                 setErrorMessage(null);

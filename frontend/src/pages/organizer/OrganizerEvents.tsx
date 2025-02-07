@@ -1,12 +1,12 @@
 import "../../styles/GridEvent.css";
-import { ReactComponent as EditPenIcon } from "../../assets/edit-pen-icon.svg";
-import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {ReactComponent as EditPenIcon} from "../../assets/edit-pen-icon.svg";
+import {Link, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import {Event} from "../../types/Event.tsx";
 
 const OrganizerEvents = () => {
-    const { organizerId } = useParams();
+    const {organizerId} = useParams();
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -18,7 +18,9 @@ const OrganizerEvents = () => {
         }
 
         axios
-            .get<Event[]>(`http://localhost:8080/organizer/${organizerId}/events`)
+            .get<Event[]>(`http://localhost:8080/organizer/${organizerId}/events`, {
+                withCredentials: true
+            })
             .then((response) => {
                 setEvents(response.data);
                 setLoading(false);
@@ -28,8 +30,8 @@ const OrganizerEvents = () => {
                 setError("Fehler beim Laden der Events.");
                 setLoading(false);
             });
-    }, [organizerId]);
 
+    }, [organizerId]);
 
 
     if (loading) return <div>Lade Events...</div>;
@@ -53,7 +55,7 @@ const OrganizerEvents = () => {
                                 to={`/organizer/${organizerId}/events/edit/${event.eventId}`}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <EditPenIcon className="edit-button" />
+                                <EditPenIcon className="edit-button"/>
                             </Link>
                         </div>
                         <div className="grid-eventOrganizerName mt-2 text-gray-600">

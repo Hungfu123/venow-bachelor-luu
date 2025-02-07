@@ -21,7 +21,9 @@ const OrganizerApplicationsDetail = () => {
 
         axios
             .get<Application>(
-                `http://localhost:8080/organizer/${organizerId}/applications/${applicationId}`
+                `http://localhost:8080/organizer/${organizerId}/applications/${applicationId}`, {
+                    withCredentials: true
+                }
             )
             .then((response) => {
                 setApplication(response.data);

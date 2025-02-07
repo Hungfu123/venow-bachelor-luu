@@ -7,7 +7,9 @@ const ExhibitorContracts = () => {
     const {exhibitorId} = useParams();
 
     const {data: contracts, loading, error} = useGet<Contract[]>(
-        exhibitorId ? `http://localhost:8080/exhibitor/${exhibitorId}/contracts` : null
+        exhibitorId ? `http://localhost:8080/exhibitor/${exhibitorId}/contracts` : null, {
+            withCredentials: true
+        }
     );
 
     if (loading) return <div>Lade Verträge...</div>;
@@ -51,15 +53,15 @@ const ExhibitorContracts = () => {
                                 </span>
                             </div>
                         </div>
-                        <div className="event-footer">
-                            <Link
-                                to={`/exhibitor/${exhibitorId}/contracts/${contract.contractId}`}
-                                className="view-button"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                Kontakt
-                            </Link>
-                        </div>
+                        {/*<div className="event-footer">*/}
+                        {/*    <Link*/}
+                        {/*        to={`/exhibitor/${exhibitorId}/contracts/${contract.contractId}`}*/}
+                        {/*        className="view-button"*/}
+                        {/*        onClick={(e) => e.stopPropagation()}*/}
+                        {/*    >*/}
+                        {/*        Kontakt*/}
+                        {/*    </Link>*/}
+                        {/*</div>*/}
 
                     </Link>
                 ))}

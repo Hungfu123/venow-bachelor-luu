@@ -10,7 +10,9 @@ const ExhibitorEventToApply = () => {
     const { exhibitorId, eventId } = useParams();
 
     const { data: event, loading, error } = useGet<Event>(
-        exhibitorId && eventId ? `http://localhost:8080/exhibitor/${exhibitorId}/events/${eventId}/application` : null
+        exhibitorId && eventId ? `http://localhost:8080/exhibitor/${exhibitorId}/events/${eventId}/application` : null, {
+            withCredentials: true
+        }
     );
 
     // Formularstatus
@@ -36,7 +38,9 @@ const ExhibitorEventToApply = () => {
                 status: "IN_PROGRESS",
             };
 
-            await axios.post(`http://localhost:8080/exhibitor/${exhibitorId}/events/${eventId}/application`, applicationData);
+            await axios.post(`http://localhost:8080/exhibitor/${exhibitorId}/events/${eventId}/application`, applicationData, {
+                withCredentials: true
+            });
 
             setSubmissionStatus("Bewerbung erfolgreich eingereicht!");
             alert("Bewerbung wurde erfolgreich abgeschickt")

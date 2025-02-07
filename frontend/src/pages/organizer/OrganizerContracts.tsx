@@ -15,7 +15,9 @@ const OrganizerContracts = () => {
             return
     }
         axios
-            .get<Contract[]>(`http://localhost:8080/organizer/${organizerId}/contracts`)
+            .get<Contract[]>(`http://localhost:8080/organizer/${organizerId}/contracts`, {
+                withCredentials: true
+            })
             .then(reponse => {
                 setContracts(reponse.data);
                 setLoading(false);

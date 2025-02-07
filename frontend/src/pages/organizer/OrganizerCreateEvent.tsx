@@ -24,7 +24,9 @@ const OrganizerCreateEvent = () => {
         };
 
         try {
-            await axios.post(apiUrl, eventRequest);
+            await axios.post(apiUrl, eventRequest, {
+                withCredentials: true,
+            });
 
             navigate(`/organizer/${organizerId}/events`)
             alert("Veranstaltung erfolgreich erstellt!");

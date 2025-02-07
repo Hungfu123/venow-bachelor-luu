@@ -6,9 +6,12 @@ import { ReactComponent as ContractsIcon } from "../assets/contracts-icon.svg";
 import { ReactComponent as LogoutIcon } from "../assets/profile-icon.svg";
 
 const ExhibitorLayout = () => {
-    // exhibitorId aus der URL
     const { exhibitorId } = useParams();
     const location = useLocation();
+
+    const handleLogout = () => {
+        window.location.href = "http://localhost:8080/logout";
+    };
 
     return (
         <div className="layout-container">
@@ -51,11 +54,13 @@ const ExhibitorLayout = () => {
                             </Link>
                         </li>
                     </ul>
+
+                    {/* Logout-Button analog zum OrganizerLayout */}
                     <div className="logout">
-                        <Link to="/logout" className="sidebar-link">
+                        <button onClick={handleLogout} className="sidebar-link">
                             <LogoutIcon className="sidebar-icon" />
                             <span>Abmelden</span>
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </aside>

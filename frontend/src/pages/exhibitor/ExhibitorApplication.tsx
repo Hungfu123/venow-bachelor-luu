@@ -19,7 +19,9 @@ const ExhibitorApplication = () => {
         }
 
         axios
-            .get<Application[]>(`http://localhost:8080/exhibitor/${exhibitorId}/applications`)
+            .get<Application[]>(`http://localhost:8080/exhibitor/${exhibitorId}/applications`, {
+                withCredentials: true
+            })
             .then((response) => {
                 setApplications(response.data);
                 setLoading(false);

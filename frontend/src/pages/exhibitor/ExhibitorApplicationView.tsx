@@ -21,7 +21,9 @@ const ExhibitorApplicationView  = () => {
 
         axios
             .get<Application>(
-                `http://localhost:8080/exhibitor/${exhibitorId}/applications/${applicationId}`
+                `http://localhost:8080/exhibitor/${exhibitorId}/applications/${applicationId}`, {
+                    withCredentials: true
+                }
             )
             .then((response) => {
                 setApplication(response.data);

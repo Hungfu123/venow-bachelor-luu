@@ -18,7 +18,9 @@ const OrganizerAllApplicationsOnEvent = () => {
         }
         axios
             .get<Application[]>(
-                `http://localhost:8080/organizer/${organizerId}/events/${eventId}/applications`
+                `http://localhost:8080/organizer/${organizerId}/events/${eventId}/applications`, {
+                    withCredentials: true
+                }
             )
             .then((response) => {
                 setApplications(response.data);
