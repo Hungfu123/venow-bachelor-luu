@@ -1,13 +1,12 @@
 package org.venow.backend.service;
 
-import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.dto.ContractDTO;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ContractRepository  {
+public interface ContractRepository {
 
 
     ContractDTO save(ContractDTO contractDTO);

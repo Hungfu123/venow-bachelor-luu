@@ -28,12 +28,12 @@ public class ContractService {
     private EntityManager entityManager;
 
     public ContractDTO createContract(final UUID applicationId, final UUID organizerId, PriceDto priceDto, String bootNumber) throws InvalidStatusException {
-        if(applicationId == null || organizerId == null){
+        if (applicationId == null || organizerId == null) {
             throw new InvalidInputException("Application ID and Organizer ID must not be null");
         }
 
         final ApplicationDTO application = applicationService.getApplication(applicationId);
-        if(!application.getStatus().equals(Status.IN_PROGRESS.name())) {
+        if (!application.getStatus().equals(Status.IN_PROGRESS.name())) {
             throw new InvalidStatusException("Application Status must be in progress");
         }
 
@@ -61,7 +61,7 @@ public class ContractService {
 
 
     public List<ContractDTO> getAllContractsByOrganizer(UUID organizerId) {
-        if(!userService.existsByUserAndRole(organizerId, Role.ORGANIZER)){
+        if (!userService.existsByUserAndRole(organizerId, Role.ORGANIZER)) {
             throw new NotFoundException("Organizer ID not found");
         }
         List<ContractDTO> allByOrganizerId = contractRepository.findAllByOrganizerId(organizerId);
@@ -113,7 +113,6 @@ public class ContractService {
     }
 
 
-
     public ContractDTO getContractByApplicationIdAndContactId(UUID applicationId, UUID contractId) {
         if (applicationId == null) {
             throw new InvalidInputException("Application ID must not be null");
@@ -140,7 +139,7 @@ public class ContractService {
     }
 
     public List<ContractDTO> getAllContractsByExhibitor(UUID exhibitorId) {
-        if(!userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)){
+        if (!userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)) {
             throw new NotFoundException("Exhibitor ID not found");
         }
         List<ContractDTO> allByExhibitorId = contractRepository.findAllByExhibitorId(exhibitorId);

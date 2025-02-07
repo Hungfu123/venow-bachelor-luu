@@ -3,10 +3,10 @@ package org.venow.backend.infrastructure;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.venow.backend.service.dto.ApplicationDTO;
-import org.venow.backend.service.ApplicationRepository;
-import org.venow.backend.service.mapper.ApplicationMapper;
 import org.venow.backend.domain.model.Application;
+import org.venow.backend.service.ApplicationRepository;
+import org.venow.backend.service.dto.ApplicationDTO;
+import org.venow.backend.service.mapper.ApplicationMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,8 +30,8 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     }
 
     @Override
-    public boolean existsByUserIdAndEventId(final UUID userId,final UUID eventId) {
-        return repository.existsByUserIdAndEventId(userId,eventId);
+    public boolean existsByUserIdAndEventId(final UUID userId, final UUID eventId) {
+        return repository.existsByUserIdAndEventId(userId, eventId);
     }
 
     @Override
@@ -68,7 +68,6 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
                 .map(ApplicationMapper::mapToDTO)
                 .toList();
     }
-
 
 
 }

@@ -165,7 +165,7 @@ tasks.register("jacocoTestPyramidReport", JacocoReport) {
 pitest {
 	targetClasses = ['org.venow.backend.*']
 	targetTests = ['org.venow.backend.*']
-	timeoutConstInMillis = 30000
+//	timeoutConstInMillis = 30000
 	features = ['+auto_threads']
 	testSourceSets = [sourceSets.testpyramid]
 	junit5PluginVersion = '1.2.1'

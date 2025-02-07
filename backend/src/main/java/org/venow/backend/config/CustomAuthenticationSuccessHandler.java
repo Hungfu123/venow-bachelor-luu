@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.util.Collection;
 
@@ -25,9 +26,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         String redirectUrl;
         if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ORGANIZER"))) {
-            redirectUrl = frontendBaeUrl+"/organizer/" + userId + "/events";
+            redirectUrl = frontendBaeUrl + "/organizer/" + userId + "/events";
         } else {
-            redirectUrl = frontendBaeUrl+"/exhibitor/" + userId + "/events";
+            redirectUrl = frontendBaeUrl + "/exhibitor/" + userId + "/events";
         }
 
         response.sendRedirect(redirectUrl);

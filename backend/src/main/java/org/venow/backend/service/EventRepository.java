@@ -2,7 +2,6 @@ package org.venow.backend.service;
 
 import org.venow.backend.service.dto.EventDTO;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

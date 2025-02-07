@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.venow.backend.domain.model.Role;
+import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.dto.ApplicationDTO;
 import org.venow.backend.service.dto.UserDTO;
 import org.venow.backend.service.exception.AlreadyRejectedException;
 import org.venow.backend.service.exception.DuplicateApplicationException;
 import org.venow.backend.service.exception.InvalidInputException;
 import org.venow.backend.service.exception.NotFoundException;
-import org.venow.backend.domain.model.Status;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +24,7 @@ public class ApplicationService {
     private final UserService userService;
 
     public ApplicationDTO createApplication(final ApplicationDTO applicationDTO) {
-        if (applicationDTO.getUserId() == null ||  applicationDTO.getEventId() == null) {
+        if (applicationDTO.getUserId() == null || applicationDTO.getEventId() == null) {
             throw new InvalidInputException("User ID and Event ID must not be null");
         }
         if (applicationRepository.existsByUserIdAndEventId(applicationDTO.getUserId(), applicationDTO.getEventId())) {
@@ -67,7 +67,7 @@ public class ApplicationService {
 
     public ApplicationDTO rejectApplication(final UUID applicationId) {
         final ApplicationDTO applicationDTO = getApplication(applicationId);
-        if(applicationDTO.getStatus().equals(Status.REJECTED.name())){
+        if (applicationDTO.getStatus().equals(Status.REJECTED.name())) {
             throw new AlreadyRejectedException("Application already rejected");
         }
         applicationDTO.setStatus(Status.REJECTED.name());
@@ -80,7 +80,7 @@ public class ApplicationService {
 
     public ApplicationDTO acceptApplication(final UUID applicationId) {
         final ApplicationDTO applicationDTO = getApplication(applicationId);
-        if(applicationDTO.getStatus().equals(Status.CONTRACT.name()) || applicationDTO.getStatus().equals(Status.REJECTED.name())){
+        if (applicationDTO.getStatus().equals(Status.CONTRACT.name()) || applicationDTO.getStatus().equals(Status.REJECTED.name())) {
             throw new AlreadyRejectedException("Application already accepted or rejected");
         }
         applicationDTO.setStatus(Status.CONTRACT.name());
@@ -112,10 +112,10 @@ public class ApplicationService {
     }
 
     public List<ApplicationDTO> getAllApplicationsByExhibitor(UUID exhibitorId) {
-        if(exhibitorId == null){
+        if (exhibitorId == null) {
             throw new InvalidInputException("Exhibitor ID must not be null");
         }
-        if(!userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)){
+        if (!userService.existsByUserAndRole(exhibitorId, Role.EXHIBITOR)) {
             throw new NotFoundException("Exhibitor not found for ID: " + exhibitorId);
         }
 

@@ -3,7 +3,6 @@ package org.venow.backend.infrastructure;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.venow.backend.domain.model.Contract;
-import org.venow.backend.domain.model.Status;
 import org.venow.backend.service.ContractRepository;
 import org.venow.backend.service.dto.ContractDTO;
 import org.venow.backend.service.mapper.ContractMapper;

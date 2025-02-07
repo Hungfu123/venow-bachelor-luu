@@ -22,7 +22,7 @@ public class Eventservice {
 
         return eventRepository.findAll().stream().map(event -> {
             UserDTO organizer = userService.getUserByUserId(event.organizerId());
-            return new EventDTO(event.id(), event.eventId(), event.title(), event.description(), event.location(), event.startDate(), event.endDate(), organizer.name(), event.booths(),event.organizerId());
+            return new EventDTO(event.id(), event.eventId(), event.title(), event.description(), event.location(), event.startDate(), event.endDate(), organizer.name(), event.booths(), event.organizerId());
         }).toList();
 
     }
@@ -30,23 +30,23 @@ public class Eventservice {
     public EventDTO getEvent(final UUID eventId) {
         final EventDTO event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Event not found"));
         final UserDTO organizer = userService.getUserByUserId(event.organizerId());
-        return new EventDTO(event.id(), event.eventId(), event.title(), event.description(), event.location(), event.startDate(), event.endDate(), organizer.name(),event.booths(), event.organizerId());
+        return new EventDTO(event.id(), event.eventId(), event.title(), event.description(), event.location(), event.startDate(), event.endDate(), organizer.name(), event.booths(), event.organizerId());
     }
 
-    public List<EventDTO> getAllEventsByOrganizer(final UUID organizerId,final Role role) {
-        if(!userService.existsByUserAndRole(organizerId, role)) {
+    public List<EventDTO> getAllEventsByOrganizer(final UUID organizerId, final Role role) {
+        if (!userService.existsByUserAndRole(organizerId, role)) {
             throw new NotFoundException(role.name() + "Id not found");
         }
 
         return eventRepository.findAllByOrganizerId(organizerId).stream().map(event -> {
             UserDTO organizer = userService.getUserByUserId(event.organizerId());
-            return new EventDTO(event.id(), event.eventId(), event.title(), event.description(), event.location(), event.startDate(), event.endDate(), organizer.name(), event.booths(),event.organizerId());
+            return new EventDTO(event.id(), event.eventId(), event.title(), event.description(), event.location(), event.startDate(), event.endDate(), organizer.name(), event.booths(), event.organizerId());
 
         }).toList();
     }
 
-    public EventDTO createEvent(final EventDTO event,final UUID organizerId) {
-        if(!userService.existsByUserAndRole(organizerId, Role.ORGANIZER)) {
+    public EventDTO createEvent(final EventDTO event, final UUID organizerId) {
+        if (!userService.existsByUserAndRole(organizerId, Role.ORGANIZER)) {
             throw new NotFoundException("OrganizerId not found");
         }
         final UserDTO organizer = userService.getUserByUserId(organizerId);
@@ -84,7 +84,7 @@ public class Eventservice {
                 .organizerId(event.organizerId()).build();
 
         final EventDTO updatedEvent = eventRepository.save(eventNew);
-        return  new EventDTO(updatedEvent.id(), updatedEvent.eventId(), updatedEvent.title(), updatedEvent.description(), updatedEvent.location(), updatedEvent.startDate(), updatedEvent.endDate(), organizer.name(), updatedEvent.booths(),updatedEvent.organizerId());
+        return new EventDTO(updatedEvent.id(), updatedEvent.eventId(), updatedEvent.title(), updatedEvent.description(), updatedEvent.location(), updatedEvent.startDate(), updatedEvent.endDate(), organizer.name(), updatedEvent.booths(), updatedEvent.organizerId());
     }
 
     public List<EventDTO> getEventsBySearchTitle(String query) {
@@ -108,6 +108,6 @@ public class Eventservice {
                 .toList();
     }
 
-    }
+}
 
 

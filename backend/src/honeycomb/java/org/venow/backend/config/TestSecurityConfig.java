@@ -8,6 +8,10 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.TestingAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.List;
@@ -17,7 +21,9 @@ public class TestSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChainTest(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+        http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/health").permitAll()
+                        .anyRequest().permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .securityMatcher("/**");
 
