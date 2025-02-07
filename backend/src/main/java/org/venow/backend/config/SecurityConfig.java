@@ -28,19 +28,31 @@ public class SecurityConfig {
     private final PasswordEncoder passwordEncoder;
 
 
-
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(authorizeRequests ->
-                authorizeRequests
-                    .requestMatchers("/auth/login", "/auth/register").permitAll()
-                        .requestMatchers("/exhibitor/**").hasRole("EXHIBITOR")
-                        .requestMatchers("/organizer/**").hasRole("ORGANIZER")
-                    .anyRequest().authenticated()
-            )
-                .httpBasic(withDefaults());
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+
+
+                                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                                .requestMatchers("/auth/login", "/auth/register").permitAll()
+                                .requestMatchers("/exhibitor/**").hasRole("EXHIBITOR")
+                                .requestMatchers("/organizer/**").hasRole("ORGANIZER")
+                                .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .successHandler(customAuthenticationSuccessHandler)
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                ).sessionManagement(session -> session
+                        .sessionFixation().migrateSession()
+                );
+
         return http.build();
     }
 

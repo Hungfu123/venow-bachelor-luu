@@ -22,7 +22,7 @@ import org.venow.backend.web.request.EventRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @Slf4j
 @RestController()
 @AllArgsConstructor

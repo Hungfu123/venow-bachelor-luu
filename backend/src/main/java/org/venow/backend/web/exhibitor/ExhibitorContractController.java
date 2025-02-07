@@ -26,7 +26,7 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/exhibitor/{exhibitorId}")
-@PreAuthorize("#organizerId == authentication.principal.userId")
+@PreAuthorize("#exhibitorId == authentication.principal.userId")
 public class ExhibitorContractController {
 
     private final ContractService contractService;

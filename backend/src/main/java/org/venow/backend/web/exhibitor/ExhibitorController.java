@@ -25,7 +25,7 @@ import static org.venow.backend.web.reponse.ResponseMapper.mapToEventResponse;
 @RestController()
 @AllArgsConstructor
 @RequestMapping("/exhibitor/{exhibitorId}")
-@PreAuthorize("#organizerId == authentication.principal.userId")
+@PreAuthorize("#exhibitorId == authentication.principal.userId")
 public class ExhibitorController {
 
     private final Eventservice eventservice;
