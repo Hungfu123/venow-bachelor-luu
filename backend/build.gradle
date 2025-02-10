@@ -128,13 +128,23 @@ tasks.named('test') {
 }
 
 tasks.register("jacocoHoneycombReport", JacocoReport) {
-	dependsOn honeycombTest // Task für Honeycomb-Tests
+	dependsOn honeycombTest
 
 	executionData.setFrom(fileTree(buildDir).include("jacoco/honeycombTest.exec"))
 
 	sourceDirectories.setFrom(sourceSets.main.allSource.srcDirs)
 	classDirectories.setFrom(sourceSets.main.output)
 	additionalSourceDirs.setFrom(sourceSets.honeycomb.allSource.srcDirs)
+
+	classDirectories.setFrom(
+			files(
+					sourceSets.main.output.classesDirs.collect {
+						fileTree(dir: it, exclude: [
+								'org/venow/backend/config/**'
+						])
+					}
+			)
+	)
 
 	reports {
 		html.required.set(true)
