@@ -8,7 +8,6 @@ import {Event} from "../../types/Event.tsx"
 const ExhibitorEventDetail = () => {
     const { exhibitorId, eventId } = useParams();
 
-    // Holt die Event-Daten
     const { data: event, loading, error } = useGet<Event>(
         exhibitorId && eventId ? `http://localhost:8080/exhibitor/${exhibitorId}/events/${eventId}` : null, {
             withCredentials: true

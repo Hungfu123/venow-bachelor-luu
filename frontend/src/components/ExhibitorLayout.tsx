@@ -1,5 +1,5 @@
 import { Link, Outlet, useParams, useLocation } from "react-router-dom";
-import "../styles/layout.css";
+import "../styles/Layout.css";
 import { ReactComponent as EventsIcon } from "../assets/events-icon.svg";
 import { ReactComponent as ApplicationsIcon } from "../assets/applications-icon.svg";
 import { ReactComponent as ContractsIcon } from "../assets/contracts-icon.svg";
@@ -67,7 +67,7 @@ const ExhibitorLayout = () => {
 
             {/* Header */}
             <header>
-                <span>Hallo, Exhibitor</span>
+                <span>Hallo, Schausteller</span>
             </header>
 
             {/* Trennlinie */}

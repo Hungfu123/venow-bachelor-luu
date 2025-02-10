@@ -38,12 +38,6 @@ const ExhibitorApplication = () => {
         navigate(`/exhibitor/${exhibitorId}/applications/${applicationId}`);
     };
 
-    const handleViewContract = (applicationId: string) => {
-        event.stopPropagation(); // Verhindert, dass die Zeile ebenfalls angeklickt wird
-        if (!exhibitorId) return;
-        navigate(`/exhibitor/${exhibitorId}/applications/${applicationId}/contract`);
-    };
-
     if (loading) return <div className="loading-message">Lade Bewerbungen...</div>;
     if (errorMessage) return <div className="error-message">{errorMessage}</div>;
 
@@ -70,17 +64,6 @@ const ExhibitorApplication = () => {
                         <td>{app.eventTitle}</td>
                         <td>{app.typeOfBusiness}</td>
                         <td>{app.status}</td>
-                        {/*<td>*/}
-                        {/*    <div*/}
-                        {/*        className="contract-button"*/}
-                        {/*        onClick={(event) => {*/}
-                        {/*            event.stopPropagation(); // Verhindert, dass die ganze Zeile geklickt wird*/}
-                        {/*            handleViewContract(app.applicationId);*/}
-                        {/*        }}*/}
-                        {/*    >*/}
-                        {/*        Vertrag*/}
-                        {/*    </div>*/}
-                        {/*</td>*/}
                     </tr>
                 ))}
                 </tbody>

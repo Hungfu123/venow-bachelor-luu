@@ -1,7 +1,7 @@
 import {useParams, Link} from "react-router-dom";
 import {Contract} from "../../types/Contract.tsx";
 import {useGet} from "../../hooks/useGet";
-import "../../styles/GridEvent.css"; // Verwendet vorhandene CSS-Datei
+import "../../styles/GridEvent.css";
 
 const ExhibitorContracts = () => {
     const {exhibitorId} = useParams();
@@ -53,16 +53,6 @@ const ExhibitorContracts = () => {
                                 </span>
                             </div>
                         </div>
-                        {/*<div className="event-footer">*/}
-                        {/*    <Link*/}
-                        {/*        to={`/exhibitor/${exhibitorId}/contracts/${contract.contractId}`}*/}
-                        {/*        className="view-button"*/}
-                        {/*        onClick={(e) => e.stopPropagation()}*/}
-                        {/*    >*/}
-                        {/*        Kontakt*/}
-                        {/*    </Link>*/}
-                        {/*</div>*/}
-
                     </Link>
                 ))}
             </div>

@@ -52,10 +52,6 @@ const OrganizerContractFormular = () => {
     if (!application) return <div>Keine Daten gefunden.</div>;
 
     const handleCreateContract = () => {
-        if (!agreed) {
-            alert("Bitte bestätige die AGB, bevor du den Vertrag erstellst!");
-            return;
-        }
         axios
             .post(
                 `http://localhost:8080/organizer/${organizerId}/contracts/${applicationId}`,

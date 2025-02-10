@@ -1,6 +1,5 @@
-import { Link, Outlet, useParams, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../styles/layout.css";
+import { Link, Outlet, useParams, useLocation } from "react-router-dom";
+import "../styles/Layout.css";
 import { ReactComponent as EventsIcon } from "../assets/events-icon.svg";
 import { ReactComponent as ApplicationsIcon } from "../assets/applications-icon.svg";
 import { ReactComponent as ContractsIcon } from "../assets/contracts-icon.svg";
@@ -72,7 +71,7 @@ const OrganizerLayout
 
             {/* Header */}
             <header>
-                <span>Hallo, Organizer</span>
+                <span>Hallo, Veranstalter</span>
                 <Link
                     to={`/organizer/${organizerId}/events/create`}
                     className="add-event-button"
