@@ -8,31 +8,38 @@ Für die Testpyramide wurde eine \texttt{TestBase}-Klasse erstellt, die mithilfe
 
 Das Honeycomb-Modell fokussiert sich ausschliesslich auf Integrationstests. Mithilfe von \texttt{Testcontainers} wird eine MySQL-Datenbank in einem Docker-Container bereitgestellt, die mit realistischen Anwendungsdaten und einem konsistenten Schema typische Produktionsszenarien simuliert. Die \texttt{TestBase}-Klasse stellt sicher, dass die benötigte Datenbankumgebung effizient und automatisiert erfolgt.
 
-Die Laufzeit der Tests wird für jedes Feature gemessen, wobei ein Mittelwert aus insgesamt zehn Durchläufen berechnet wird. Dieser Ansatz ermöglicht eine präzise Analyse der durchschnittlichen Laufzeit der Testszenarien. Zur Überprüfung der Testabdeckung wird das Tool \texttt{JaCoCo} eingesetzt. Dieses Werkzeug liefert detaillierte Einblicke in die Testabdeckung der beiden Teststrategien, indem die Ergebnisse aus den separaten Ordnern für \texttt{Honeycomb} und \texttt{Testpyramide} ausgewertet werden.
+Die Laufzeit der Tests wird für jedes Feature gemessen, wobei der Mittelwert aus zehn Durchläufen berechnet wird. Dieser Ansatz ermöglicht eine präzisere Analyse der durchschnittlichen Laufzeit der Testszenarien.  
+
+Zur Überprüfung der Testabdeckung wird das Tool \texttt{JaCoCo} eingesetzt. \texttt{JaCoCo} (Java Code Coverage) ist ein weit verbreitetes Werkzeug zur Messung der Codeabdeckung. Es ermittelt, welche Teile des Codes durch Tests ausgeführt wurden, und liefert detaillierte Metriken wie die Abdeckung von Anweisungen, Zweigen und Methoden.  
+
+Für das Mutationstesting wird \texttt{Pitest} verwendet. \texttt{Pitest} ist ein Tool zur automatisierten Bewertung der Testqualität. Es verändert gezielt den Code und überprüft, ob die vorhandenen Tests diese Änderungen erkennen. Dadurch lassen sich Schwachstellen in der Testabdeckung identifizieren. Die Konfiguration erfolgt in der Datei \texttt{build.gradle}, wobei die Ergebnisse automatisch in den Ordner \texttt{reports} gespeichert werden. Die Auswertung erfolgt getrennt für die beiden Teststrategien \texttt{Honeycomb} und \texttt{Testpyramide}.
+
+
 
 \subsection{Tests für spezifische Anwendungsfälle}
 
-Die Testszenarien wurden entwickelt, um die Teststrategien Testpyramide und Honeycomb-Modell unter vergleichbaren Bedingungen zu analysieren. Die Anwendungsfälle umfassen den Bewerbungsprozess, das Vertragsmanagement, das Eventmanagement und die Login-Funktion. Besonders interessant ist der Übergang vom Bewerbungs- zum Vertragsmanagement, da aus einer erfolgreichen Bewerbung ein Vertrag generiert werden kann. Jeder Anwendungsfall wird separat beschrieben und die Testmethodik für beide Strategien detailliert erläutert. Die gewonnenen Testergebnisse – etwa die durchschnittliche Laufzeit, Testabdeckung und Stabilität der Tests – bilden die Grundlage für die spätere Bewertung und den Vergleich der beiden Testansätze.
+Die Testszenarien wurden entwickelt, um die Teststrategien Testpyramide und Honeycomb-Modell unter vergleichbaren Bedingungen zu analysieren. Die Anwendungsfälle umfassen den Bewerbungsprozess, das Vertragsmanagement, das Veranstaltungsmanagement und die Login-Funktion. Besonders interessant ist der Übergang vom Bewerbungs- zum Vertragsmanagement, da aus einer erfolgreichen Bewerbung ein Vertrag generiert werden kann. Jeder Anwendungsfall wird separat beschrieben und die Testmethodik für beide Strategien detailliert erläutert. Die gewonnenen Testergebnisse etwa die durchschnittliche Laufzeit, Testabdeckung und Stabilität der Tests bilden die Grundlage für die spätere Bewertung und den Vergleich der beiden Testansätze. 
 
 \subsubsection{Bewerbungsprozess}
-Der Bewerbungsprozess bildet den Einstieg in den Workflow und dient dazu, die grundlegenden Funktionalitäten der Anwendung zu prüfen. Er umfasst die Erstellung und Validierung von Bewerbungen sowie die Speicherung relevanter Daten.  
-Im Rahmen der Testpyramide werden Servicetests als Unit-Tests durchgeführt, um die interne Logik und die Datenverarbeitung zu validieren. Controller-Tests prüfen die HTTP-Endpunkte in einer WebMvcTest-Umgebung, und Repository-Tests untersuchen die Interaktionen mit der Datenbank. Diese Tests nutzen sowohl die H2-Datenbank für schnelle Durchläufe als auch eine MySQL-Datenbank mithilfe von Testcontainers für realitätsnahe Bedingungen.  
-Das Honeycomb-Modell simuliert den gesamten Bewerbungsprozess als End-to-End-Szenario unter realistischen Bedingungen, wobei ebenfalls eine MySQL-Datenbank via Testcontainers eingesetzt wird.
+Der Bewerbungsprozess bildet den Einstieg in den Workflow. Er dient dazu, die grundlegenden Funktionalitäten der Anwendung zu prüfen. Er umfasst die Erstellung und Validierung von Bewerbungen. Zusätzlich werden relevante Daten gespeichert.  
 
+In der Testpyramide werden Servicetests als Unit-Tests durchgeführt. Diese validieren die interne Logik und die Datenverarbeitung. Controller-Tests prüfen die HTTP-Endpunkte in einer \texttt{WebMvcTest}-Umgebung. Obwohl \texttt{WebMvcTest} nicht die gesamte Anwendung testet, handelt es sich um eine Form des Integrationstests. Der Test besitzt Abhängigkeiten zu externen Komponenten wie dem Web-Framework Spring MVC und validiert das Zusammenspiel der Controller mit der Web-Schicht. Repository-Tests untersuchen die Interaktionen mit der Datenbank. Für schnelle Durchläufe kommt die H2-Datenbank zum Einsatz. Testcontainers stellt eine MySQL-Datenbank bereit, um realitätsnahe Bedingungen zu schaffen.  
+
+Das Honeycomb-Modell testet den Bewerbungsprozess als End-to-End-Szenario. Dabei werden reale Abläufe unter möglichst realistischen Bedingungen simuliert. Die Tests greifen auf eine MySQL-Datenbank via Testcontainers zu. Zur Durchführung wird \texttt{TestRestTemplate} verwendet. Es stellt echte HTTP-Anfragen an die Anwendung. Dadurch wird nicht nur die Geschäftslogik getestet. Auch die Datenbankintegration und das Zusammenspiel aller Anwendungsschichten werden überprüft.
 \subsubsection{Vertragsmanagement}
 Das Vertragsmanagement stellt einen wesentlichen Teil der Geschäftslogik dar, da es den nahtlosen Übergang von einer Bewerbung zu einem Vertrag ermöglicht. Nachdem eine Bewerbung vom Organisator angenommen wurde, kann daraus ein Vertrag generiert werden, in dem Details wie Preis und Standplatznummer festgelegt werden.  
 Im Rahmen der Testpyramide wird eine Kombination aus Unit-Tests, Controller-Tests und Repository-Tests eingesetzt, um die interne Logik sowie die Datenflüsse zwischen den Modulen zu prüfen. Das Honeycomb-Modell bildet diesen Übergang mittels vollständiger Integrationstests ab, wobei die Interaktionen zwischen den beteiligten Komponenten in einer produktionsnahen Umgebung simuliert werden.
 
-\subsubsection{Eventmanagement}
-Das Eventmanagement erweitert den Workflow um die Erstellung, Bearbeitung und Verwaltung von Veranstaltungen. Es integriert die vorherigen Module, insbesondere den Zusammenhang zwischen Events und den Prozessen im Bewerbungs- sowie Vertragsmanagement.  
+\subsubsection{Veranstaltungsmanagement}
+Das Veranstaltungsmanagement erweitert den Workflow um die Erstellung, Bearbeitung und Verwaltung von Veranstaltungen. Es integriert die vorherigen Module, insbesondere den Zusammenhang zwischen Events und den Prozessen im Bewerbungs- sowie Vertragsmanagement.  
 Innerhalb der Testpyramide werden Servicetests zur Validierung der Geschäftslogik eingesetzt, Controller-Tests prüfen die HTTP-Schnittstellen, und Repository-Tests analysieren die Datenbankoperationen.  
-Das Honeycomb-Modell testet das Eventmanagement als gesamtes End-to-End-Szenario, sodass das Zusammenspiel aller Module unter realitätsnahen Bedingungen abgebildet wird.
+Das Honeycomb-Modell testet das Veranstaltungsmanagement als gesamtes End-to-End-Szenario, sodass das Zusammenspiel aller Module unter realitätsnahen Bedingungen abgebildet wird.
 
 \subsubsection{Login-Funktion}
 Die Login-Funktion, basierend auf Spring Security, ermöglicht registrierten Nutzern einen einfachen und sicheren Zugang zur Anwendung. Hierbei wird geprüft, ob die Authentifizierung korrekt erfolgt und ob ausschließlich autorisierte Nutzer Zugriff auf geschützte Bereiche erhalten. Die Tests evaluieren dabei sowohl die korrekte Rückgabe von HTTP-Statuscodes als auch die sichere Handhabung der Anmeldeinformationen.
 
-Die gewählten Testszenarien verdeutlichen die Unterschiede zwischen der Testpyramide und dem Honeycomb-Modell anhand praxisnaher Anwendungsfälle. Die Ergebnisse dieser Tests (unter anderem in Bezug auf Laufzeit, Abdeckung und Stabilität) liefern eine objektive Grundlage für den anschließenden Vergleich der beiden Teststrategien.
+Die gewählten Testszenarien verdeutlichen die Unterschiede zwischen der Testpyramide und dem Honeycomb-Modell anhand praxisnaher Anwendungsfälle. Die Ergebnisse dieser Tests  liefern eine objektive Grundlage für den anschließenden Vergleich der beiden Teststrategien. Unter anderem in Bezug auf Laufzeit, Abdeckung und Stabilität.
 
 % Leere Zeile zur Trennung des TDD-Abschnitts
 
-Zusätzlich wird im Rahmen der Methodik der Einsatz von Test-Driven Development (TDD) evaluiert. Dabei wird untersucht, inwiefern TDD den Entwicklungsprozess und die Effektivität der Teststrategien (sowohl bei der Testpyramide als auch beim Honeycomb-Modell) beeinflusst. Die hierbei gewonnenen Erkenntnisse fließen in die abschließende Bewertung der Ansätze ein.
+Zusätzlich wird im Rahmen der Methodik der Einsatz von Test-Driven Development (TDD) evaluiert. Dabei wird untersucht, inwiefern TDD den Entwicklungsprozess und die Effektivität der Teststrategien beeinflusst. Die hierbei gewonnenen Erkenntnisse fließen in die abschließende Bewertung der Ansätze ein.

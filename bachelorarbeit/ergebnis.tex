@@ -147,9 +147,8 @@ Zusammengefasst verdeutlichen diese Beobachtungen, dass MySQL-Testcontainer eine
 \subsection{Messdaten nach Integration von Spring Security und TDD}
 In einem zweiten Messzyklus wurden die Testszenarien erneut durchgeführt, nachdem Spring Security in die Anwendung integriert wurde. Auch hier wurden für jeden Anwendungsfall 10 Durchläufe realisiert, aus denen die Durchschnittswerte ermittelt wurden. Die aktualisierten Messwerte spiegeln den zusätzlichen Aufwand durch Authentifizierungsprüfungen sowie den Einfluss von TDD-Prozessen wider.
 
-
 \subsubsection{Bewerbung (aktualisiert)}
-\textbf{Ergebnisse:}\\
+\textbf{Ergebnisse:}\
 Im Bereich Bewerbung ergeben sich nach Integration von Spring Security folgende neue Durchschnittswerte:
 
 \begin{table}[H]
@@ -169,14 +168,14 @@ Im Bereich Bewerbung ergeben sich nach Integration von Spring Security folgende 
 	\end{tabular}
 \end{table}
 
-\textbf{Interpretation:}\\
-Die Integration von Spring Security führt in beiden Teststrategien zu verlängerten Laufzeiten. Dennoch bleibt der Vorteil der Testpyramide erhalten: Ihr modularer Aufbau mit einem hohen Anteil an Unit Tests, die die Geschäftslogik schichtweise isoliert prüfen, ermöglicht eine schnelle Fehlerdiagnose. Im Honeycomb-Modell, das den gesamten End-to-End-Prozess abbildet, sind die Laufzeiten länger, und die Debugging-Phase wird erschwert, da der exakte Fehlerort nicht unmittelbar ersichtlich ist.
+\textbf{Interpretation:}\
+Die Integration von Spring Security verlängert die Laufzeiten beider Teststrategien. Dennoch bleibt die Testpyramide effizient. Ihr modularer Aufbau mit vielen Unit-Tests ermöglicht eine schnelle Fehlerdiagnose. Das Honeycomb-Modell bildet den gesamten End-to-End-Prozess ab. Dadurch steigen die Laufzeiten. Auch die Fehlersuche wird erschwert, da der genaue Fehlerort nicht sofort ersichtlich ist.
 
+Auffällig ist die Performance-Differenz zwischen H2 und MySQL-Testcontainer. Die Laufzeit mit H2 bleibt konstant niedrig (2,14 s). Im Gegensatz dazu benötigt MySQL-Testcontainer deutlich mehr Zeit. Dies liegt nicht primär an der Testausführung selbst. Vielmehr verursachen externe Faktoren wie Datenbankinitialisierung, Netzwerkkommunikation und Query-Overhead den zusätzlichen Aufwand.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Bewerbung mit Vertrag (aktualisiert)}
-\textbf{Ergebnisse:}\\
-Im Szenario „Bewerbung mit Vertrag“ wurden folgende aktualisierte Durchschnittswerte ermittelt:
+\textbf{Ergebnisse:}\
+Im Szenario "Bewerbung mit Vertrag" wurden folgende aktualisierte Durchschnittswerte ermittelt:
 
 \begin{table}[H]
 	\centering
@@ -195,38 +194,48 @@ Im Szenario „Bewerbung mit Vertrag“ wurden folgende aktualisierte Durchschni
 	\end{tabular}
 \end{table}
 
-\textbf{Interpretation:}\\
-Auch im Szenario „Bewerbung mit Vertrag“ zeigen die aktualisierten Werte, dass die Testpyramide – trotz der zusätzlichen Sicherheitsprüfungen – schneller arbeitet als das Honeycomb-Modell. Bei der Testpyramide werden 75 Tests ausgeführt, wovon 25 als Service Unit Tests implementiert sind. Diese schichtweise, isolierte Teststruktur ermöglicht eine präzise Diagnose von Fehlern, während das Honeycomb-Modell, das den gesamten End-to-End-Prozess abbildet, zu längeren Laufzeiten (13\,s 695\,ms) führt und die Fehlersuche erschwert, da der genaue Fehlerort nicht unmittelbar ersichtlich ist.
+\textbf{Interpretation:}\
+Auch im Szenario "Bewerbung mit Vertrag" zeigt sich, dass die Testpyramide trotz der zusätzlichen Sicherheitsprüfungen deutlich effizienter arbeitet. Die Laufzeit von Honeycomb steigt auf fast 14 Sekunden, während die Testpyramide nur knapp 7 Sekunden mit MySQL-Testcontainer benötigt und unter 2,5 Sekunden mit H2 bleibt. Dies verdeutlicht, dass Unit-Tests aus der Testpyramide schneller Feedback liefern und eine bessere Granularität bei der Fehlersuche bieten.
 
+Die Tatsache, dass die Anzahl der Tests in der Testpyramide mit 75 gegenüber der Bewerbungsszene nur leicht steigt, aber die Laufzeit nicht proportional erhöht wird, spricht dafür, dass die modularen Tests gut optimiert sind und den zusätzlichen Overhead durch Spring Security effizient handhaben.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Eventbereich (aktualisiert)}
-\textbf{Ergebnisse:}\\
+\textbf{Ergebnisse:}\
 Im Eventbereich, in dem auch Authentifizierungsmechanismen integriert wurden, wurden folgende aktualisierte Durchschnittswerte ermittelt:
 
 \begin{table}[H]
 	\centering
 	\caption{Eventmanagement (nach Integration von Spring Security)}
 	\label{tab:eventbereich_updated}
-	\begin{tabular}{|l|l|l|l|l|l|}
+	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Modell} & \textbf{Laufzeit} & \textbf{Anzahl der Tests} & \textbf{Datenbank} & \textbf{Unit Tests} \\
 		\hline
 		Honeycomb      & 17\,s 487\,ms      & 80  & Testcontainer MySQL & -- \\
 		\hline
-		Testpyramide   & 10\,s 871\,ms      & 82  & Testcontainer MySQL & 25 \\
+		Testpyramide   & 10\,s 871\,ms      & 192  & Testcontainer MySQL & 82 \\
 		\hline
-		Testpyramide   & 3\,s 466\,ms       & 75  & H2                  & 25 \\
+		Testpyramide   & 3\,s 466\,ms       & 192  & H2                  & 82 \\
 		\hline
 	\end{tabular}
 \end{table}
 
-\textbf{Interpretation:}\\
-Im Eventbereich ermöglicht die Testpyramide – insbesondere mit H2 – deutlich kürzere Laufzeiten und eine präzisere Fehlerdiagnose. Bei der MySQL-Konfiguration werden 82 Tests durchgeführt (davon 25 Unit Tests), während das Honeycomb-Modell mit 80 End-to-End-Tests deutlich längere Laufzeiten (ca. 17\,s 487\,ms) erzielt, was die Debugging-Phase erschwert.
+\textbf{Interpretation:}\
+Im Eventbereich zeigt sich ein noch deutlicherer Performance-Unterschied zwischen den Testmodellen. Die Testpyramide mit H2 bleibt mit 3,47 Sekunden äußerst schnell. Das Honeycomb-Modell benötigt mit 17,49 Sekunden fast vier Mal mehr Zeit. Auch die Testpyramide mit MySQL-Testcontainer ist mit 10,87 Sekunden immer noch 38 Prozent schneller als das Honeycomb-Modell.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Eine der Hauptursachen für die langen Laufzeiten im Honeycomb-Modell sind die zahlreichen Datenbankoperationen und die aufwendigen End-to-End-Tests. Diese führen zu einem hohen Overhead und erschweren die Fehlersuche.
+
+Die Testpyramide nutzt 192 Tests, während das Honeycomb-Modell nur 80 Tests enthält. Dies entspricht einer 140 Prozent höheren Testanzahl. Besonders auffällig ist die Anzahl der Unit-Tests in der Testpyramide (82 Stück). Durch diese höhere Testdichte lassen sich Fehler schneller isolieren und gezielt beheben.
+
+Ein weiterer wichtiger Faktor ist die Wahl der Datenbanklösung. H2 als In-Memory-Datenbank sorgt für eine 68 Prozent kürzere Laufzeit im Vergleich zur Testpyramide mit MySQL-Testcontainer. Dies bestätigt erneut, dass H2 für schnelle Testzyklen besonders effizient ist.
+
 \subsubsection{Vergleich der Datenbanklösungen (nach Spring Security)}
-Auch nach Integration von Spring Security bleibt der Einfluss der Datenbankwahl deutlich: H2 führt weiterhin zu wesentlich schnelleren Testdurchläufen als MySQL-Testcontainer, welche eine realitätsnähere, jedoch zeitintensivere Umgebung bieten.
+Die Analyse zeigt, dass H2 konstant schneller als MySQL-Testcontainer bleibt, unabhängig von der Teststrategie. MySQL-Testcontainer bietet eine produktionsnähere Umgebung, erfordert aber einen deutlich höheren Laufzeitaufwand und verursacht zusätzlichen Overhead in der Testausführung.
+Die Testpyramide ist modular aufgebaut und nutzt viele Unit-Tests. Sie bietet eine höhere Testabdeckung und eine schnellere Fehlerdiagnose. Das Honeycomb-Modell hat längere Laufzeiten, bedingt durch externe Abhängigkeiten und Authentifizierungsprüfungen.
+
+Die H2-Datenbank ist deutlich schneller als MySQL-Testcontainer. Sie eignet sich für schnelle Entwicklungszyklen. MySQL-Testcontainer liefert realistischere, aber zeitintensivere Tests.
+
+Die Teststrategie richtet sich nach den Anforderungen. Die Testpyramide ermöglicht schnelle, isolierte und effiziente Fehleranalysen. Das Honeycomb-Modell ist realitätsnah und umfassend, aber ressourcenintensiv.
 
 
 \subsection{Analyse der JaCoCo-Ergebnisse}
@@ -257,7 +266,7 @@ Die höhere Abdeckung in der Testpyramide zeigt, dass kleinere Code-Einheiten in
 
 Die \textbf{Testeffizienz} unterscheidet sich ebenfalls: Die vielen kleinen Unit-Tests der Testpyramide laufen schnell, da sie keine externe Umgebung benötigen. Honeycomb-Tests erfordern mehr Ressourcen, da sie Datenbanken und externe Systeme einbeziehen, was die Laufzeiten verlängert. Die große Anzahl an Tests in der Testpyramide kann jedoch ebenfalls zu längeren Laufzeiten führen, falls sie nicht optimiert sind. Dennoch erleichtert die Granularität das Debugging, da Fehler schneller eingegrenzt werden können.
 
-\textbf{Fazit:} Die Testpyramide erreicht in allen Bereichen eine höhere Testabdeckung. Die Vielzahl an Tests ermöglicht eine genauere Prüfung einzelner Methoden und Entscheidungspfade. Honeycomb fokussiert sich auf größere Abläufe und realistische Szenarien, was die Software in der Praxis stabiler macht. Die Wahl der Strategie hängt von den Projektanforderungen ab: \textbf{Die Testpyramide eignet sich für modulare, wartbare Codebasen, während das Honeycomb-Modell die Gesamtsystemstabilität priorisiert.}
+Die Testpyramide erreicht in allen Bereichen eine höhere Testabdeckung. Die Vielzahl an Tests ermöglicht eine genauere Prüfung einzelner Methoden und Entscheidungspfade. Honeycomb fokussiert sich auf größere Abläufe und realistische Szenarien, was die Software in der Praxis stabiler macht. Die Wahl der Strategie hängt von den Projektanforderungen ab: Die Testpyramide eignet sich für modulare, wartbare Codebasen, während das Honeycomb-Modell die Gesamtsystemstabilität priorisiert.
 
 
 \subsection{Analyse der PIT Mutation Testing Ergebnisse}

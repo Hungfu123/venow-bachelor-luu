@@ -42,27 +42,3 @@ Das Honeycomb-Modell setzt ausschliesslich auf die MySQL-Datenbank mit Testconta
 
 Die gewählte Kombination erlaubt es, die Vorteile beider Ansätze zu nutzen. Die H2-Datenbank ermöglicht schnelle, ressourcenschonende Tests in der Testpyramide, während Testcontainers realitätsnahe Tests unterstützt und für das Honeycomb-Modell unverzichtbar ist.
 
-\subsection{Webanwendung zur Veranstaltungsorganisation}
-
-Die entwickelte Webanwendung unterstützt Veranstalter und Schausteller bei der Organisation von Events. Veranstalter können eigenständig Events erstellen, Bewerbungen verwalten und Verträge abschließen, während Schausteller die Möglichkeit haben, sich über die Plattform für Events zu bewerben und ihre Teilnahme zu organisieren. Um die Funktionalitäten der Anwendung umfassend darzustellen, werden die zentralen Use Cases detailliert beschrieben.
-
-\subsubsection{Bewerbungsprozess}
-Im Bewerbungsprozess haben Schausteller die Möglichkeit, sich über vorhandene Events zu informieren und sich auf diese zu bewerben. Wird eine Bewerbung eingereicht, erfolgt zunächst eine Validierung der Daten, bevor diese in der Datenbank gespeichert werden. Der Organisator kann anschließend alle eingegangenen Bewerbungen einsehen und den jeweiligen Status nachvollziehen. So wird beispielsweise angezeigt, ob eine Bewerbung lediglich eingereicht, bereits angenommen oder ob dem Schausteller ein Vertrag zugewiesen wurde. Wird eine Bewerbung vom Organisator angenommen, lässt sich daraus theoretisch ein Vertrag ableiten, der den nächsten Schritt im Prozess darstellt.
-
-\subsubsection{Vertragsverwaltung}
-Die Vertragsverwaltung ermöglicht es dem Organisator, aus einer angenommenen Bewerbung einen Vertrag zu erstellen. Hierbei können Details wie der Preis und die Standplatznummer festgelegt werden. Der Schausteller, der sich beworben hat, kann diesen Vertrag einsehen und entscheiden, ob er den Vertragsbedingungen zustimmt oder diese ablehnt. Wird der Vertrag von beiden Parteien angenommen, gilt der Vertrag als abgeschlossen und der Bewerbungsprozess ist beendet.
-
-\subsubsection{Event-Management}
-Im Event-Management können Veranstalter neue Events erstellen, bestehende Events bearbeiten und aktualisieren. Schausteller haben die Möglichkeit, alle verfügbaren Events einzusehen. Eine integrierte Suchfunktion ermöglicht es den Schaustellern, gezielt nach Events zu suchen. Die im Event-Management erfassten Daten, wie Datum, Ort und Teilnehmerzahl, sind direkt mit den anderen Modulen verknüpft, sodass alle Prozessschritte reibungslos ineinander übergehen.
-
-\subsubsection{Login-Funktion und grundlegendes Veranstaltungsmanagement}
-Die Login-Funktion sichert den Zugriff auf die Webanwendung, indem sie den Zugang auf registrierte Nutzer beschränkt. Zusätzlich umfasst das grundlegende Veranstaltungsmanagement die kontinuierliche Pflege und Aktualisierung der Veranstaltungsdaten. Diese Funktion stellt sicher, dass nur autorisierte Nutzer Änderungen vornehmen können und so der reibungslose Ablauf der Anwendung gewährleistet ist.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.8\textwidth]{fig/UML_Diagramm_Luu_Bachelor_Thema.png}
-	\caption{UML-Diagramm der zentralen Funktionalitäten der Webanwendung.}
-	\label{fig:uml-diagramm}
-\end{figure}
-
-Die detaillierte Beschreibung dieser Use Cases bildet die Grundlage für die spätere Analyse der Teststrategien. Insbesondere wird untersucht, wie sich die Implementierung der verschiedenen Module auf die Effektivität der Tests auswirkt.
