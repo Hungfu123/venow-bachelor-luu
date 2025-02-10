@@ -44,24 +44,19 @@ Die gewählte Kombination erlaubt es, die Vorteile beider Ansätze zu nutzen. Di
 
 \subsection{Webanwendung zur Veranstaltungsorganisation}
 
-Die entwickelte Webanwendung unterstützt Veranstalter und Schausteller bei der Organisation von Veranstaltungen. Veranstalter können Events erstellen, Bewerbungen verwalten und Verträge abschliessen. Schausteller können sich über die Plattform bewerben und ihre Teilnahme organisieren.
+Die entwickelte Webanwendung unterstützt Veranstalter und Schausteller bei der Organisation von Events. Veranstalter können eigenständig Events erstellen, Bewerbungen verwalten und Verträge abschließen, während Schausteller die Möglichkeit haben, sich über die Plattform für Events zu bewerben und ihre Teilnahme zu organisieren. Um die Funktionalitäten der Anwendung umfassend darzustellen, werden die zentralen Use Cases detailliert beschrieben.
 
-Die zentralen Funktionalitäten umfassen: 
-\begin{itemize}
-	 \item Event-Management: Verwaltung von Veranstaltungen mit Informationen wie Datum, Ort und Teilnehmern. 
-	 \item Bewerbungsmanagement: Einreichung und Prüfung von Bewerbungen durch Schausteller und Veranstalter. 
-	 \item Vertragsverwaltung: Erstellung und Speicherung von Verträgen zwischen Veranstaltern und Schaustellern. 
-	 \item Benutzerverwaltung: Registrierung neuer Benutzer, bei der User angelegt und gespeichert werden. 
-	 \item Veranstaltungsmanagement: Erstellung und Bearbeiten von Veranstaltungen. 
-\end{itemize}
+\subsubsection{Bewerbungsprozess}
+Im Bewerbungsprozess haben Schausteller die Möglichkeit, sich über vorhandene Events zu informieren und sich auf diese zu bewerben. Wird eine Bewerbung eingereicht, erfolgt zunächst eine Validierung der Daten, bevor diese in der Datenbank gespeichert werden. Der Organisator kann anschließend alle eingegangenen Bewerbungen einsehen und den jeweiligen Status nachvollziehen. So wird beispielsweise angezeigt, ob eine Bewerbung lediglich eingereicht, bereits angenommen oder ob dem Schausteller ein Vertrag zugewiesen wurde. Wird eine Bewerbung vom Organisator angenommen, lässt sich daraus theoretisch ein Vertrag ableiten, der den nächsten Schritt im Prozess darstellt.
 
-Die Implementierung beginnt mit dem Bewerbungsprozess. Dieser Use Case bildet die Grundlage für die Anwendung, da er die Interaktion zwischen Schaustellern und Veranstaltern abbildet. Weitere Use Cases wie Vertragsverwaltung und Event-Management werden ebenfalls betrachtet.
+\subsubsection{Vertragsverwaltung}
+Die Vertragsverwaltung ermöglicht es dem Organisator, aus einer angenommenen Bewerbung einen Vertrag zu erstellen. Hierbei können Details wie der Preis und die Standplatznummer festgelegt werden. Der Schausteller, der sich beworben hat, kann diesen Vertrag einsehen und entscheiden, ob er den Vertragsbedingungen zustimmt oder diese ablehnt. Wird der Vertrag von beiden Parteien angenommen, gilt der Vertrag als abgeschlossen und der Bewerbungsprozess ist beendet.
 
-\subsubsection{Bewerbungsprozess} Der Bewerbungsprozess ermöglicht es Schaustellern, sich für Veranstaltungen zu bewerben, und Veranstaltern, Bewerbungen zu prüfen. Der Prozess umfasst: 
-\begin{itemize} 
-	\item Einreichung und Validierung von Bewerbungen. 
-	\item Speicherung der Daten in der Datenbank. 
-	\item Statusänderungen wie „eingereicht“, „angenommen“ oder „abgelehnt“. \end{itemize} Dieser Use Case wird als erster implementiert und dient als Basis für die Analyse der Teststrategien.
+\subsubsection{Event-Management}
+Im Event-Management können Veranstalter neue Events erstellen, bestehende Events bearbeiten und aktualisieren. Schausteller haben die Möglichkeit, alle verfügbaren Events einzusehen. Eine integrierte Suchfunktion ermöglicht es den Schaustellern, gezielt nach Events zu suchen. Die im Event-Management erfassten Daten, wie Datum, Ort und Teilnehmerzahl, sind direkt mit den anderen Modulen verknüpft, sodass alle Prozessschritte reibungslos ineinander übergehen.
+
+\subsubsection{Login-Funktion und grundlegendes Veranstaltungsmanagement}
+Die Login-Funktion sichert den Zugriff auf die Webanwendung, indem sie den Zugang auf registrierte Nutzer beschränkt. Zusätzlich umfasst das grundlegende Veranstaltungsmanagement die kontinuierliche Pflege und Aktualisierung der Veranstaltungsdaten. Diese Funktion stellt sicher, dass nur autorisierte Nutzer Änderungen vornehmen können und so der reibungslose Ablauf der Anwendung gewährleistet ist.
 
 \begin{figure}[h]
 	\centering
@@ -70,7 +65,4 @@ Die Implementierung beginnt mit dem Bewerbungsprozess. Dieser Use Case bildet di
 	\label{fig:uml-diagramm}
 \end{figure}
 
-Die schrittweise Implementierung der Use Cases wird in der Methodik beschrieben. Der Fokus liegt dabei auf dem Bewerbungsprozess, der als Grundlage für die Analyse der Teststrategien dient.
-
-Wie in \cref{fig:uml-diagramm} dargestellt, bietet die Webanwendung zentrale Funktionen zur Verwaltung von Bewerbungen, Verträgen und Events.
-
+Die detaillierte Beschreibung dieser Use Cases bildet die Grundlage für die spätere Analyse der Teststrategien. Insbesondere wird untersucht, wie sich die Implementierung der verschiedenen Module auf die Effektivität der Tests auswirkt.

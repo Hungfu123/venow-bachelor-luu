@@ -20,11 +20,18 @@
 \section{Einleitung}
 
 \subsection{Motivation}
-Effektive Teststrategien helfen, Fehler frühzeitig zu erkennen und die Stabilität von Anwendungen zu verbessern. Die Testpyramide ist ein weit verbreitetes Modell mit klarer Struktur. Das Testing-Honeycomb-Modell bietet hingegen eine alternative Herangehensweise. Diese Arbeit untersucht beide Ansätze anhand einer kleinen Webanwendung, die einen Bewerbungs- und Vertragsmanagementprozess abbildet.
+Im Modul \emph{ProgrammierPraktikum 2} wurde Test-Driven Development (TDD) eingeführt. Dabei erhielt ich erstmals Einblicke in praktische Teststrategien, insbesondere in die \emph{Testpyramide}. Als Anfänger faszinierten mich die klare Struktur und die methodische Vorgehensweise. Dies veranlasste mich, die Frage zu stellen, ob dieser Ansatz universell angewendet wird oder ob alternative Modelle existieren.
+
+Aus meinem aktuellen Werkstudentenjob ergab sich eine weitere Beobachtung. In einigen Projekten werden vorwiegend Systemtests implementiert, die das Gesamtverhalten der Anwendung abdecken. Separate Unit-Tests für einzelne Schichten kommen dabei weitgehend zu kurz. Diese Vorgehensweise ist auf mein Arbeitsumfeld beschränkt und stellt keinen allgemeinen Trend dar.
+
+Darueber hinaus wurde in fachlichen Diskussionen das sogenannte \emph{Spotify-Modell}~\cite{Spotify18} erörtert. Diese unterschiedlichen Erfahrungen und Beobachtungen bilden den Ausgangspunkt dieser Arbeit. Es soll untersucht werden, welche Vor- und Nachteile die Testpyramide und das Testing-Honeycomb-Modell im Kontext einer Webanwendung bieten.
+
 \subsection{Ziel der Arbeit}
-Diese Arbeit vergleicht die Testpyramide und das Testing-Honeycomb-Modell. Der Fokus liegt auf einem zentralen Anwendungsfall: dem Bewerbungs- und Vertragsmanagementprozess. Zudem wird untersucht, wie sich die Nutzung einer H2-Datenbank im Vergleich zu produktionsnahen Datenbanken mit Testcontainers auf die Tests auswirkt. Dabei werden Laufzeit, Komplexität und Fehlererkennungsrate analysiert. Ziel ist es, praxisnahe Empfehlungen für den Einsatz beider Ansätze abzuleiten.
+Diese Arbeit vergleicht die Effektivität der Testpyramide und des Testing-Honeycomb-Modells. Dazu wird eine Webanwendung entwickelt, in der Test-Driven Development (TDD) implementiert wurde. Die Anwendung umfasst Module wie Bewerbungsmanagement, Vertragsmanagement und Eventmanagement. Zudem wurde Spring Security integriert, um ein Sicherheitskonzept zu realisieren. Es wird evaluiert, welcher Ansatz hinsichtlich Testqualität, Laufzeit und Komplexit\"at Vorteile bietet. Zur Messung der Testabdeckung werden JaCoCo und PIT eingesetzt. Weiterhin wird untersucht, wie sich der Einsatz einer H2-Datenbank im Vergleich zu produktionsnahen Datenbanken mit Testcontainers auswirkt. Die Ergebnisse dienen als Grundlage f\"ur praxisnahe Empfehlungen.
 
 \subsection{Aufbau der Arbeit}
-Die Arbeit startet mit einer Einführung in die Grundlagen der Teststrategien und Datenbanktechnologien. Anschliessend wird der Bewerbungs- und Vertragsmanagementprozess vorgestellt. Die praktische Umsetzung erfolgt anhand einer monolithischen Webanwendung. Darauf aufbauend werden die Teststrategien evaluiert und die Ergebnisse miteinander verglichen. Abschliessend werden die gewonnenen Erkenntnisse diskutiert und ein Ausblick gegeben.
+Die Arbeit ist in mehrere Kapitel gegliedert. Zunaechst werden die theoretischen Grundlagen zu Teststrategien, Datenbanktechnologien und Evaluierungstools dargelegt. Im Anschluss wird die Methodik vorgestellt, welche den generellen Ablauf der Untersuchung beschreibt. 
 
-Die Methodik beschreibt die schrittweise Implementierung der Use Cases. Der Fokus liegt dabei auf dem Bewerbungsprozess, der als Basis für die Analyse der Teststrategien dient.
+Im Hauptteil der Arbeit wird schrittweise anhand einzelner Features der Webanwendung vorgegangen. Für jedes Feature werden zunächst beide Teststrategien implementiert und deren Laufzeiten gemessen. Die gewonnenen Erfahrungen und Beobachtungen werden dabei systematisch dokumentiert und analysiert. Anschliessend erfolgt die Untersuchung sicherheitsrelevanter Aspekte sowie die Implementierung der Frontend-Page.
+
+Den Abschluss bildet eine Zusammenfassung der experimentellen Ergebnisse sowie ein Ausblick auf zukuenftige Entwicklungen im Bereich der Softwaretests.
