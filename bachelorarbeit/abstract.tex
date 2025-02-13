@@ -1,4 +1,11 @@
-Fassen Sie hier die Fragestellung, Motivation und Ergebnisse Ihrer Arbeit
-in wenigen Worten zusammen.
+Softwaretests sind essenziell für die Qualitätssicherung moderner Webanwendungen. Die Testpyramide setzt auf eine hohe Anzahl isolierter Unit-Tests mit gezielter Fehlerlokalisierung, während das Testing-Honeycomb-Modell realitätsnahe End-to-End-Tests priorisiert, die das Zusammenspiel aller Komponenten prüfen.
 
-Die Zusammenfassung sollte den Umfang einer Seite nicht überschreiten.
+Diese Arbeit vergleicht beide Teststrategien anhand einer monolithischen Webanwendung zur Veranstaltungsorganisation. Dabei wurden für die Testpyramide sowohl eine H2-Datenbank als auch eine produktionsnahe MySQL-Testcontainer-Umgebung genutzt, während das Testing-Honeycomb-Modell ausschließlich auf MySQL-Testcontainer setzte, um eine realistische Systemprüfung zu gewährleisten. Laufzeiten, Testabdeckung und Fehlerdiagnose wurden mithilfe von Spring Boot, Testcontainers und JaCoCo systematisch analysiert.
+
+Die Ergebnisse zeigen, dass Tests in der Testpyramide im Durchschnitt drei Mal schneller ausgeführt werden, während das Testing-Honeycomb-Modell eine um 15 Prozent höhere Abdeckung der Systemprozesse erreicht. Während die schichtweise Teststruktur der Testpyramide eine präzisere Fehlerlokalisierung ermöglicht, erhöht das Testing-Honeycomb-Modell den Aufwand beim Debugging, da Fehler über alle Schichten hinweg gesucht werden müssen.
+
+Ein weiterer Unterschied zeigt sich in der Testentwicklung mit Test-Driven Development (TDD). Das Testing-Honeycomb-Modell ermöglicht einen schnelleren Einstieg, da Tests geschrieben werden können, bevor Service- oder Repository-Klassen existieren. Die Testpyramide erfordert hingegen eine schrittweise Implementierung der Schichten, bevor umfassende Tests durchgeführt werden können. Gleichzeitig ist das Setup im Testing-Honeycomb-Modell komplexer, da bereits zu Beginn Datenbankkonfigurationen und Testdaten berücksichtigt werden müssen.
+
+Die Untersuchung zeigt, dass die Wahl der Teststrategie stark von den Anforderungen der Anwendung abhängt. Während die Testpyramide besonders für modulare und agil entwickelte Software geeignet ist, bietet das Testing-Honeycomb-Modell Vorteile für Systeme mit vielen interagierenden Komponenten. Eine Kombination beider Ansätze könnte eine bessere Balance zwischen Testgeschwindigkeit und realitätsnaher Systemprüfung ermöglichen.
+
+Diese Arbeit erweitert bestehende Forschungsarbeiten durch eine praxisnahe Evaluierung beider Modelle und zeigt potenzielle Optimierungen für hybride Testansätze auf. Zukünftige Arbeiten sollten untersuchen, wie sich ein kombinierter Testansatz automatisiert implementieren lässt und welche Kombination für verschiedene Softwarearchitekturen optimal ist.
