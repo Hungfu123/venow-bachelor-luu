@@ -12,13 +12,11 @@ TDD hatte einen positiven Einfluss auf die Teststabilität. Die Testpyramide erf
 
 \subsection{Effizienz der Teststrategien}
 
-Die Testpyramide erwies sich als effizient für die Validierung von Geschäftslogik. Sie ermöglichte eine präzise Fehlerlokalisierung, insbesondere in der Mapper-Schicht. Änderungen an bestehenden Geschäftsprozessen erforderten jedoch eine Anpassung mehrerer Tests, was zu höherem Wartungsaufwand führte.
+Die Testpyramide erwies sich als besonders effizient für die Validierung von Geschäftslogik. Durch den hohen Anteil an Unit-Tests konnten Fehler frühzeitig erkannt und gezielt behoben werden. Insbesondere in der Mapper-Schicht erleichterte sie die präzise Identifikation von Problemen. Änderungen an Geschäftsprozessen erforderten jedoch eine Anpassung mehrerer Tests in verschiedenen Schichten, was den Wartungsaufwand erhöhte.
 
-Das Honeycomb-Modell deckte komplette Geschäftsprozesse realitätsnah ab, hatte aber längere Laufzeiten. Besonders datenbankintensive Tests führten zu Timeouts und erschwerten die Fehleranalyse, da Probleme über mehrere Schichten verteilt sein konnten.
+Das Honeycomb-Modell ermöglichte eine realitätsnahe Überprüfung kompletter Geschäftsprozesse, hatte jedoch längere Laufzeiten. End-to-End-Tests deckten Systeminteraktionen umfassend ab, führten aber auch zu erhöhter Komplexität in der Fehleranalyse. Besonders datenbankintensive Tests verursachten aufgrund zahlreicher Abfragen und Abhängigkeiten längere Laufzeiten und gelegentliche Timeouts.
 
-Die Kombination beider Strategien könnte eine ausgewogene Lösung darstellen. Während die Testpyramide gezielte Prüfungen ermöglicht, bietet das Honeycomb-Modell eine vollständige Systemabsicherung. Besonders in Monolithen zeigte sich, dass Honeycomb ineffizient ist, während es für Microservices vorteilhafter wäre, da Services unabhängig getestet werden können.
-
-Besonders in einem Monolithen zeigte sich, dass die Honeycomb-Strategie aufgrund der langen Laufzeiten weniger effizient ist. Bei einem Microservices-Ansatz könnte Honeycomb besser eingesetzt werden, da die einzelnen Services unabhängig voneinander getestet werden können. Die Ergebnisse zeigen, dass in einem monolithischen System die Testpyramide besser geeignet ist, während Honeycomb vor allem bei serviceorientierten Architekturen Vorteile bietet.
+Eine Kombination beider Strategien könnte eine ausgewogene Lösung darstellen. Während die Testpyramide schnelle und gezielte Tests einzelner Komponenten ermöglicht, bietet das Honeycomb-Modell eine realitätsnahe Systemabsicherung. In monolithischen Systemen erwies sich die Testpyramide als effizienter, da sie durch ihre modulare Struktur kürzere Testzeiten und eine gezieltere Fehlerlokalisierung ermöglicht. Das Honeycomb-Modell ist hingegen besser für Microservices geeignet, da dort einzelne Services unabhängig voneinander getestet werden können.
 
 \subsection{TDD und Teststrategien}
 
@@ -33,8 +31,8 @@ Eine Kombination beider Ansätze kann sinnvoll sein. Während das Honeycomb-Mode
 
 \subsection{Auswirkungen der Datenbankwahl}
 
-Die Wahl der Datenbank hatte einen grossen Einfluss auf die Testergebnisse. H2 ist deutlich schneller, stößt aber auf Kompatibilitätsprobleme mit MySQL. Besonders \texttt{UNSIGNED}-Typen und bestimmte SQL-Funktionen wurden nicht unterstützt, was Anpassungen in den Tests erforderlich machte.
-Ein konkretes Problem war die Spring JPA-Methode \texttt{findAllByTitleContainingIgnoreCase(String title)}, die in H2 nicht funktionierte, da \texttt{LIKE}-Abfragen anders interpretiert wurden. Erst eine manuelle Query-Annotation mit \texttt{@Query} ermöglichte die korrekte Ausführung der Tests in beiden Datenbanken.
+Die Wahl der Datenbank hatte einen Einfluss auf die Testergebnisse. H2 ist deutlich schneller, stößt aber auf Kompatibilitätsprobleme mit MySQL. Besonders \texttt{UNSIGNED}-Typen und bestimmte SQL-Funktionen wurden nicht unterstützt, was Anpassungen in den Tests erforderlich machte.
+Ein konkretes Problem war die JPA-Methode findAllByTitleContainingIgnoreCase(String title), die in H2 nicht funktionierte, da \texttt{LIKE}-Abfragen anders interpretiert wurden. Erst eine manuelle Query-Annotation mit \texttt{@Query} ermöglichte die korrekte Ausführung der Tests in beiden Datenbanken.
 Ohne diese Anpassung funktionierten Tests in H2, schlugen jedoch in MySQL fehl. Dies zeigt, dass H2 nicht als verlässlicher Ersatz für produktive Datenbanken geeignet ist. Während H2 schnelle Testdurchläufe ermöglichte, war MySQL-Testcontainer realitätsnäher, verursachte jedoch längere Laufzeiten. Besonders in End-to-End-Tests mit dem Honeycomb-Modell führte dies zu Verzögerungen, da jede Testausführung das Starten und Verwalten eines Containers erforderte.
 
 Zusammenfassend bietet H2 eine hohe Geschwindigkeit, kann aber Syntaxprobleme verursachen, die manuell behoben werden müssen. MySQL-Testcontainer ist realitätsnaher, erfordert aber mehr Ressourcen und Zeit. Eine hybride Strategie ist sinnvoll, bei der H2 für schnelle Unit-Tests und Validierungen verwendet wird, während MySQL-Testcontainer für vollständige End-to-End-Tests genutzt wird, da es realitätsnaher ist und weniger Probleme mit SQL-Syntax verursacht.
@@ -89,3 +87,5 @@ Die Datenbankwahl hatte Auswirkungen auf die Testergebnisse. Während H2 schnell
 Die Skalierbarkeit der Teststrategien bei wachsender Codebasis stellt eine weitere Herausforderung dar. Während in dieser Arbeit ein Monolith getestet wurde, könnte in zukünftigen Arbeiten geprüft werden, wie sich die Teststrategien in einer Microservices-Architektur verhalten. Honeycomb wurde ursprünglich für Microservices konzipiert und könnte dort effizienter eingesetzt werden als im Monolithen.
 
 Abschließend könnte erforscht werden, wie hybride Teststrategien eine bessere Balance zwischen Granularität und Systemintegration ermöglichen. Eine Kombination aus Unit-, Integration- und gezielten End-to-End-Tests könnte eine hohe Fehlererkennungsrate gewährleisten und gleichzeitig akzeptable Laufzeiten ermöglichen. Insbesondere für Monolithen wäre es interessant, inwieweit eine angepasste Teststrategie zur langfristigen Wartbarkeit und Skalierbarkeit beitragen kann.
+
+Zusammenfassend zeigt diese Untersuchung, dass die Wahl der Teststrategie stark von der Systemarchitektur abhängt. Während die Testpyramide eine effiziente und stabile Lösung für monolithische Systeme bietet, eignet sich das Honeycomb-Modell besser für Microservices. Eine hybride Teststrategie kann die Vorteile beider Ansätze kombinieren. Die Erkenntnisse dieser Arbeit liefern eine solide Grundlage für zukünftige Optimierungen in der Teststrategie, insbesondere hinsichtlich Laufzeiten, Skalierbarkeit und Wartbarkeit.
