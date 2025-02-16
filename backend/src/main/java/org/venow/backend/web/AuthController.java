@@ -13,10 +13,7 @@ public class AuthController {
 
 
     @GetMapping("/health")
-    public ResponseEntity<String> health(Authentication authentication) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
-        }
+    public ResponseEntity<String> health() {
         return ResponseEntity.ok("Authenticated");
     }
 }
