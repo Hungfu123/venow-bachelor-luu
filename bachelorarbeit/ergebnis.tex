@@ -329,9 +329,9 @@ Im Veranstaltungsmanagement, in dem auch Authentifizierungsmechanismen integrier
 		\hline
 		Honeycomb      & 17\,s 487\,ms      & 80  & Testcontainer MySQL & -- \\
 		\hline
-		Testpyramide   & 10\,s 871\,ms      & 192  & Testcontainer MySQL & 82 \\
+		Testpyramide   & 10\,s 256\,ms      & 195  & Testcontainer MySQL & 82 \\
 		\hline
-		Testpyramide   & 3\,s 466\,ms       & 192  & H2                  & 82 \\
+		Testpyramide   & 3\,s 466\,ms       & 195  & H2                  & 82 \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -347,6 +347,34 @@ Die Integration von Spring Security hat keine neuen Tests für die Business Case
 Während Phase 2 bereits zeigte, dass die Testpyramide eine gezieltere Fehlerlokalisierung ermöglicht, verdeutlicht Phase 3 die Auswirkungen von TDD. Durch den iterativen Entwicklungsansatz konnten Tests frühzeitig ergänzt und Fehler schneller behoben werden. Die Testpyramide profitierte von dieser Methode, da neue Regeln und Statusänderungen gezielt validiert wurden. Das Honeycomb-Modell hingegen erforderte häufigere Anpassungen bestehender Tests, da neue Sicherheitsprüfungen deren Ausführung beeinflussten.
 
 Zusammenfassend zeigt sich, dass die gestiegene Testanzahl aus neuen Randfällen resultiert, während die höhere Laufzeit eine direkte Folge der zusätzlichen Sicherheitskonfiguration ist. Die Testpyramide bleibt effizient für gezielte Validierungen, während das Honeycomb-Modell weiterhin notwendig ist, um die vollständige Systemintegration zu überprüfen, allerdings mit längeren Laufzeiten und höherem Wartungsaufwand.
+
+\subsubsection{Alle Business Fälle mit Authentifizierung}
+\textbf{Ergebnisse:}\
+Die Testergebnisse für alle Geschäftsprozesse mit aktivierter Authentifizierung für Login Tests sind in \autoref{tab:eventbereich_updated} dargestellt.
+
+\begin{table}[H]
+	\centering
+	\caption{Alle Business Fälle mit Authentifizierung}
+	\label{tab:eventbereich_updated}
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\textbf{Modell} & \textbf{Laufzeit} & \textbf{Anzahl der Tests} & \textbf{Datenbank} & \textbf{Unit Tests} \\
+		\hline
+		Honeycomb      & 19\,s 388\,ms      & 84  & Testcontainer MySQL & -- \\
+		\hline
+		Testpyramide   & 10\,s 671\,ms      & 200  & Testcontainer MySQL & 82 \\
+		\hline
+		Testpyramide   & 3\,s 482\,ms       & 200  & H2                  & 82 \\
+		\hline
+	\end{tabular}
+\end{table}
+Die Anzahl der Tests ist leicht gestiegen. Honeycomb enthält fünf neue Tests, die Testpyramide ebenfalls. Trotzdem sind die Laufzeiten gestiegen. 
+
+Das Honeycomb-Modell benötigt nun 19,388 Sekunden, etwa zwei Sekunden mehr als zuvor. Grund ist die Authentifizierung. Jeder Test durchläuft die komplette Anwendung, einschließlich Login- und Rollenprüfung. Es wird geprüft, ob Benutzer als Schausteller oder Veranstalter auf die richtigen Seiten gelangen.
+
+Die Testpyramide ist weniger betroffen. Mit MySQL-Testcontainer beträgt die Laufzeit 10,671 Sekunden, etwa eine Sekunde mehr. H2 bleibt mit 3,482 Sekunden am schnellsten, da es nicht viele Auswirkung macht.
+
+Die Ergebnisse zeigen, dass sich Authentifizierungsprüfungen besonders im Honeycomb-Modell auswirken. Da jeder Test durch alle Schichten geht, ist der Overhead höher. Die Testpyramide bleibt effizienter, da viele Tests ohne vollständige Authentifizierung ausgeführt werden.
 
 
 \subsubsection{Vergleich der Datenbanklösungen (nach Spring Security)}
