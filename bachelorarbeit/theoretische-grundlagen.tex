@@ -22,11 +22,12 @@ Das Testing-Honeycomb-Modell wurde von Spotify~\cite{Spotify18} speziell für Mi
 
 Dieser Ansatz zeigt, dass die Tests über isolierte Komponenten hinausgehen und das Gesamtsystem einbeziehen. Durch die Integration von Datenbanken, Services und APIs wird das Zusammenspiel aller Komponenten geprüft, ohne sich auf spezifische Implementierungsdetails zu beschränken~\cite{Spotify18}. Damit unterscheidet sich das Honeycomb-Modell deutlich von der Testpyramide, die den Fokus auf isolierte Tests legt.
 
-Spotify ~\cite{Spotify18} beschreibt im RAhmen des Honeycomb-Modells drei zentrale Testtypen:
+Spotify ~\cite{Spotify18} beschreibt im Rahmen des Honeycomb-Modells drei zentrale Testtypen:
 \begin{itemize} 
 	\item \textbf{Integrationstests:} Diese bilden das Herzstück des Modells. Laut Spotify sollen sie sicherstellen, dass Schnittstellen korrekt implementiert sind und Dienste wie erwartet zusammenarbeiten~\cite{Spotify18}. 
-	\item \textbf{Implementierungsdetail-Tests:} Diese Tests konzentrieren sich auf die interne Logik eines einzelnen Services, wie z. B. komplexe Berechnungen. Spotify sieht diese Tests als Ergänzung zu Integrationstests, jedoch mit geringerer Priorität~\cite{Spotify18}. 
-	\item \textbf{Integrierte Tests:} Diese hängen von der Korrektheit anderer Systeme ab und sollten laut Spotify reduziert oder vermieden werden, da sie schwerer zu warten sind und die Testpipeline verlangsamen können~\cite{Spotify18}. 
+	\item \textbf{Implementierungsdetail-Tests:} Diese Tests konzentrieren sich auf die interne Logik eines einzelnen Services, wie komplexe Berechnungen. Spotify sieht diese Tests als Ergänzung zu Integrationstests, jedoch mit geringerer Priorität~\cite{Spotify18}. 
+\item \textbf{Integrierte Tests:} Diese Tests überprüfen die Funktionalität eines Systems in Verbindung mit externen Abhängigkeiten, wie z. B. anderen Microservices, Datenbanken oder APIs. Sie sind fragil, da sie von der Verfügbarkeit und Korrektheit dieser externen Systeme abhängen. Laut Spotify sollten sie reduziert oder vermieden werden, da sie schwerer zu warten sind, die Testpipeline verlangsamen und Fehlinterpretationen von Fehlerquellen verursachen können~\cite{Spotify18}.
+
 \end{itemize}
 Indem Integrationstests priorisiert werden, ermöglicht das Honeycomb-Modell eine umfassende Prüfung der Interaktionspunkte im System. Spotify ~\cite{Spotify18} empfiehlt, Tests so zu gestalten, dass das Gesamtsystem möglichst realistisch abgebildet wird.
 
@@ -34,11 +35,11 @@ Auch in dieser Arbeit wird auf Mocking verzichtet und eine produktionsnahe Daten
 
 \subsection{Datenbanklösung für Tests}
 
-In dieser Arbeit werden die H2-Datenbank und eine MySQL-Datenbank mithilfe von Testcontainers genutzt. Die Wahl der Datenbank richtet sich nach der jeweiligen Teststrategie.
+In dieser Arbeit werden die H2-Datenbank und eine MySQL-Datenbank mithilfe von Testcontainers implementiert. Die Wahl der Datenbank richtet sich nach der jeweiligen Teststrategie.
 
 Im Rahmen der Testpyramide kommen beide Datenbanklösungen zum Einsatz. Die H2-Datenbank~\cite{H2Doc} wird für schnelle Unit- und Integrationstests verwendet, da sie eine einfache Konfiguration und kurze Laufzeiten ermöglicht. Sie erlaubt die Prüfung isolierter Logik ohne Abhängigkeit von externer Infrastruktur. Ergänzend wird für Integrationstests eine MySQL-Datenbank mithilfe von Testcontainers eingesetzt. Diese ermöglicht realitätsnahe Tests in einer produktionsnahen Umgebung und minimiert das Risiko von Umgebungsinkonsistenzen~\cite{Testcontainers}.
 
-Das Honeycomb-Modell setzt ausschliesslich auf die MySQL-Datenbank mit Testcontainers. Ziel ist es, realistische Testbedingungen zu schaffen, indem das gesamte System einschliesslich der Datenbank getestet wird~\cite{Spotify18}. Testcontainers stellt eine produktionsnahe Umgebung bereit und bildet Interaktionen zwischen Anwendung und Datenbank realistisch ab. Zur Sicherstellung eines konsistenten Datenbankschemas wird Flyway als Migrationstool eingesetzt~\cite{FlywayDoc}.
+Das Honeycomb-Modell setzt ausschließlich auf die MySQL-Datenbank mit Testcontainers. Ziel ist es, realistische Testbedingungen zu schaffen, indem das gesamte System einschließlich der Datenbank getestet wird~\cite{Spotify18}. Testcontainers stellt eine produktionsnahe Umgebung bereit und bildet Interaktionen zwischen Anwendung und Datenbank realistisch ab. Zur Sicherstellung eines konsistenten Datenbankschemas wird Flyway als Migrationstool eingesetzt~\cite{FlywayDoc}.
 
 Die gewählte Kombination erlaubt es, die Vorteile beider Ansätze zu nutzen. Die H2-Datenbank ermöglicht schnelle, ressourcenschonende Tests in der Testpyramide, während Testcontainers realitätsnahe Tests unterstützt und für das Honeycomb-Modell unverzichtbar ist.
 

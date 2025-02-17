@@ -1,12 +1,19 @@
-\section{Webanwendung zur Veranstaltungsorganisation}
+\section{Webanwendung zur Veranstaltungsorganisation: Venow}
 
-Die entwickelte Webanwendung unterstützt Veranstalter und Schausteller bei der Organisation von Veranstaltungen. Veranstalter können eigenständig Veranstaltungen erstellen, Bewerbungen verwalten und Verträge abschließen. Schausteller haben die Möglichkeit, sich über die Plattform für Veranstaltungen zu bewerben und ihre Teilnahme zu organisieren.
+Die entwickelte Webanwendung Venow unterstützt Veranstalter und Schausteller bei der Organisation von Veranstaltungen. Veranstalter können eigenständig Veranstaltungen erstellen, Bewerbungen verwalten und Verträge abschließen. Schausteller haben die Möglichkeit, sich über die Plattform für Veranstaltungen zu bewerben. Nach der Annahme durch den Veranstalter wird ein Vertrag generiert, den der Schausteller annehmen kann.
 
 \subsection{Motivation für die Wahl der Webanwendung als Fallstudie}
 
 Diese Webanwendung wurde als Fallstudie gewählt, weil sie mehrere zentrale Herausforderungen der Softwareentwicklung abbildet. Die Plattform erfasst komplexe organisatorische Abläufe. Sie unterstützt Veranstalter bei der Verwaltung von Veranstaltungen und Schausteller bei der Bewerbung und Vertragsabwicklung. Beide Nutzergruppen haben unterschiedliche, aber miteinander verknüpfte Interaktionen mit dem System. Die Anwendung bietet vielfältige Testfälle, um verschiedene Teststrategien systematisch zu vergleichen. Durch ihre praxisnahe Umsetzung dient sie als reales Beispiel für die digitale Transformation im Veranstaltungsmanagement.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{fig/UML_Diagramm_Luu_Bachelor_Thema.png}
+	\caption{Benutzer Prozess bei Venow}
+	\label{fig:uml}
+\end{figure}
 
-Ein persönlicher Grund für die Entwicklung dieser Webanwendung war eine reale Erfahrung. Ein Bekannter berichtete, dass er jedes Jahr seinen Imbisswagen für eine Veranstaltung anmelden musste. Der Bewerbungsprozess verlief ausschließlich analog. Er musste den Veranstalter kontaktieren, viele E-Mails schreiben und zahlreiche Telefonate führen. Die vertraglichen Details wurden ebenfalls manuell geklärt. Dieser Prozess war aufwendig und fehleranfällig. Es war schwierig, den Überblick über alle Bewerbungen und abgeschlossenen Verträge zu behalten. Daraus entstand die Idee, eine digitale Lösung zu entwickeln. Eine Plattform sollte alle Bewerbungen und Verträge zentral speichern. Der Bewerbungsprozess sollte mit wenigen Klicks erfolgen. Verträge sollten direkt digital erstellt und verwaltet werden. Veranstalter sollten neue Veranstaltungen effizient organisieren können. Viele Veranstaltungen sind weiterhin analog und verfügen über keine zentrale digitale Lösung. Diese Webanwendung bietet eine einheitliche Plattform für Veranstalter und Schausteller.
+
+Eine persönliche Motivation für die Entwicklung dieser Webanwendung war ein Bekannter, der berichtete, dass er seinen Imbisswagen jedes Jahr für eine Veranstaltung anmeldete. Der Bewerbungsprozess verlief ausschließlich analog. Hierzu musste er den Veranstalter kontaktieren, viele E-Mails schreiben und zahlreiche Telefonate führen. Die vertraglichen Details wurden ebenfalls manuell geregelt. Dieser Prozess war aufwendig und fehleranfällig. Es war schwierig, den Überblick über alle Bewerbungen und abgeschlossenen Verträge zu behalten. Daraus entstand die Idee, eine digitale Lösung zu entwickeln. Eine Plattform sollte alle Bewerbungen und Verträge zentral speichern. Der Bewerbungsprozess sollte mit wenigen Klicks erfolgen. Verträge sollten direkt digital erstellt und verwaltet werden. Veranstalter sollten neue Veranstaltungen effizient organisieren können. Viele Veranstaltungen sind weiterhin analog und verfügen über keine zentrale digitale Lösung. Diese Webanwendung bietet eine einheitliche Plattform für Veranstalter und Schausteller.
 
 \subsection{Bewerbungsprozess}
 
@@ -41,7 +48,7 @@ Veranstalter können neue Veranstaltungen erstellen und bestehende Veranstaltung
 	\label{fig:organizer-Veranstaltungen}
 \end{figure}
 
-\subsection{Bewerbungen verwalten und Verträge erstellen}
+\subsection{Aus angenommenen Bewerbungen Verträge erstellen}
 
 Veranstalter können Bewerbungen prüfen und über eine Annahme oder Ablehnung entscheiden. Wird eine Bewerbung angenommen, kann der Veranstalter direkt einen Vertrag über die Plattform erstellen.
 
