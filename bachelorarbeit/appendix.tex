@@ -13,10 +13,10 @@ Entfernen Sie bei Bedarf die Kommentierung um den Anhang nutzen zu können.
 Der Anhang wird wie die Abschnitte des Hauptteils der Arbeit gestaltet,
 also mit \texttt{\textbackslash section} Befehlen.
 
-  \subsection{Unterabschnitte}
-  Die Verwendung von Unterabschnitten im Anhang
-  mittels \texttt{\textbackslash subsection}
-  funktioniert ebenfalls!
+\subsection{Unterabschnitte}
+Die Verwendung von Unterabschnitten im Anhang
+mittels \texttt{\textbackslash subsection}
+funktioniert ebenfalls!
 
 \section{Bibliographie}%
 \label{app:sec:bib}
@@ -40,11 +40,11 @@ In der Regel gibt es dazu Tagungsbände, die sogenannten \emph{Proceedings},
 in denen die vorgestellten Forschungsartikel gesammelt werden.
 
 \begin{figure}
-    \centering
-    \includegraphics[scale=.5]{fig/prob-springer.png}
-    \caption[Screenshot von \url{https://link.springer.com}]{
-      Screenshot von \url{https://link.springer.com/chapter/10.1007/978-3-540-45236-2_46}}%
-    \label{fig:prob-springer}
+	\centering
+	\includegraphics[scale=.5]{fig/prob-springer.png}
+	\caption[Screenshot von \url{https://link.springer.com}]{
+		Screenshot von \url{https://link.springer.com/chapter/10.1007/978-3-540-45236-2_46}}%
+	\label{fig:prob-springer}
 \end{figure}
 
 Ein Beispiel ist der Artikel von Leuschel und Butler zu \textsc{ProB}~\cite{leuschel2003prob}.
@@ -53,18 +53,18 @@ die Sie auf jeden Fall angeben sollten.
 Ein Beispiel für einen passenden Bibtex-Eintrag lautet wie folgt (hier wird der \verb|InProceedings|-Typ verwendet):
 
 \begin{verbatim}
-@InProceedings(leuschel2003prob,
-  Author	= {Leuschel, Michael and Butler, Michael},
-  Title		= {{ProB}: A Model Checker for {B}},
-  Year		= 2003,
-  Month		= sep,
-  Booktitle	= {{FME} 2003: Formal Methods},
-  Series	= {LNCS},
-  Volume	= 2805,
-  Pages		= {855--874},
-  Publisher	= {Springer},
-  Address	= {Berlin, Heidelberg}
-)
+	@InProceedings(leuschel2003prob,
+	Author	= {Leuschel, Michael and Butler, Michael},
+	Title		= {{ProB}: A Model Checker for {B}},
+	Year		= 2003,
+	Month		= sep,
+	Booktitle	= {{FME} 2003: Formal Methods},
+	Series	= {LNCS},
+	Volume	= 2805,
+	Pages		= {855--874},
+	Publisher	= {Springer},
+	Address	= {Berlin, Heidelberg}
+	)
 \end{verbatim}
 
 \paragraph{Title, Author, Pages.} Diese Einträge sollten selbsterklärend sein.
@@ -96,17 +96,17 @@ Ein Beispiel ist die Festschrift zu Egon Börgers 75.\ Geburtstag.
 Darin findet man unter anderem den folgenden Artikel:
 
 \begin{verbatim}
-@InCollection(Leuschel2021,
-  Author    = {Leuschel, Michael},
-  Title     = {Spot the Difference: A Detailed Comparison Between {B}
-                and Event-{B}},
-  Booktitle = {Logic, Computation and Rigorous Methods},
-  Publisher = {Springer},
-  Year      = 2021,
-  Volume    = 12750,
-  Series    = {Lecture Notes in Computer Science},
-  Pages     = {147--172}
-)
+	@InCollection(Leuschel2021,
+	Author    = {Leuschel, Michael},
+	Title     = {Spot the Difference: A Detailed Comparison Between {B}
+		and Event-{B}},
+	Booktitle = {Logic, Computation and Rigorous Methods},
+	Publisher = {Springer},
+	Year      = 2021,
+	Volume    = 12750,
+	Series    = {Lecture Notes in Computer Science},
+	Pages     = {147--172}
+	)
 \end{verbatim}
 
 Insgesamt ist dies sehr ähnlich zum Konferenzartikel; deshalb wird her nicht näher auf die einzelnen Schlüssel eingegangen.
@@ -124,17 +124,17 @@ Für die Bibliographie werden viele ähnliche Einträge wie beim Konferenzartike
 allerdings ist der Typ hier \verb|Article|.
 
 \begin{verbatim}
-@Article(leuschel2008prob,
-  Author	= {Leuschel, Michael and Butler, Michael},
-  Title		= {{ProB}: An Automated Analysis Toolset for the {B} Method},
-  Year		= 2008,
-  Month		= mar,
-  Journal	= {International Journal on Software Tools for
-             Technology Transfer},
-  Volume	= 10,
-  Pages		= {185--203},
-  Number	= 2
-)
+	@Article(leuschel2008prob,
+	Author	= {Leuschel, Michael and Butler, Michael},
+	Title		= {{ProB}: An Automated Analysis Toolset for the {B} Method},
+	Year		= 2008,
+	Month		= mar,
+	Journal	= {International Journal on Software Tools for
+		Technology Transfer},
+	Volume	= 10,
+	Pages		= {185--203},
+	Number	= 2
+	)
 \end{verbatim}
 
 \paragraph{Title, Author, Pages, Year.} Diese Einträge sollten wieder selbsterklärend sein.
@@ -156,13 +156,13 @@ Hier werden insgesamt recht wenig Informationen benötigt,
 wie etwa in dem Beispiel hier:
 
 \begin{verbatim}
-@Book(abrial1996b,
-  Author	= {Abrial, Jean-Raymond},
-  Title		= {The {B}-Book: Assigning Programs to Meanings},
-  Year		= 1996,
-  Publisher	= {Cambridge University Press},
-  Address	= {New York, NY, USA}
-)
+	@Book(abrial1996b,
+	Author	= {Abrial, Jean-Raymond},
+	Title		= {The {B}-Book: Assigning Programs to Meanings},
+	Year		= 1996,
+	Publisher	= {Cambridge University Press},
+	Address	= {New York, NY, USA}
+	)
 \end{verbatim}
 
 Leicht andere Arten der Monographien sind Abschlussarbeiten.
@@ -170,21 +170,21 @@ Hier haben Master- und Doktorarbeiten eigene Typen mit selbsterklärenden Schlü
 Falls Sie eine Bachelorarbeit zitieren möchten, können Sie auch den Typen \verb|MastersThesis| verwenden.
 
 \begin{verbatim}
-@MastersThesis(eulynx_ma,
-  Author    = {Abdul Rasheeq},
-  Title     = {An Approach To Improve {SysML} Railway Specification
-                Using {UML-B} And Event-{B}},
-  School    = {Frankfurt University of Applied Sciences},
-  Year      = 2019
-)
+	@MastersThesis(eulynx_ma,
+	Author    = {Abdul Rasheeq},
+	Title     = {An Approach To Improve {SysML} Railway Specification
+		Using {UML-B} And Event-{B}},
+	School    = {Frankfurt University of Applied Sciences},
+	Year      = 2019
+	)
 \end{verbatim}
 
 \begin{verbatim}
-@PhDThesis(nummenmaa2013executable,
-  Author    = {Nummenmaa, Timo},
-  Title     = {Executable formal specifications in game development:
-                Design, validation and evolution},
-  School    = {University of Tampere},
-  Year      = 2013
-)
+	@PhDThesis(nummenmaa2013executable,
+	Author    = {Nummenmaa, Timo},
+	Title     = {Executable formal specifications in game development:
+		Design, validation and evolution},
+	School    = {University of Tampere},
+	Year      = 2013
+	)
 \end{verbatim}
