@@ -1,96 +1,143 @@
-# venow-bachelor-luu
-Figma Link für das Design: 
-https://www.figma.com/design/luRuvzkRmb6EM30SW5EKuq/BA-User-Journey?node-id=0-1&t=OUGIlCaT1bQqkhsQ-1
-📖 Bachelorarbeit – [Titel deines Projekts]
+# 📖 Bachelorarbeit – Testpyramide vs. Honeycomb-Modell: Ein Vergleich von Teststrategien im Kontext einer Webanwendung
 
-📌 Übersicht
+## 📌 Übersicht
+Dies ist die Webanwendung für meine Bachelorarbeit mit dem Fokus auf Teststrategien (**Testpyramide vs. Honeycomb-Modell**) und dem Vergleich von **Datenbanken** (**H2 vs. produktionsnahe Datenbanken mit Testcontainers**).
+Hier ist ein Design Entwurf ing Figma. Hier ist der Link:
 
-Dies ist die Webanwendung für meine Bachelorarbeit mit dem Fokus auf Teststrategien (Testpyramide vs. Honeycomb-Modell) und dem Vergleich von Datenbanken (H2 vs. produktionsnahe Datenbanken mit Testcontainers).
+https://www.figma.com/design/luRuvzkRmb6EM30SW5EKuq/BA-User-Journey?node-id=0-1&t=W6ESECmhGxaol9qV-1
+## 🎯 Ziel der Arbeit
+- Vergleich der **Testpyramide** und des **Testing-Honeycomb-Modells** hinsichtlich Fehlererkennungsrate und Kosten-Nutzen-Verhältnis.
+- Analyse der **H2-Datenbank** vs. **MySQL (Testcontainers)** in Bezug auf Laufzeit und Komplexität.
+- Untersuchung der Auswirkungen auf eine **monolithische Webanwendung**.
 
-🎯 Ziel der Arbeit
+## 🏗️ Architektur
+Die Anwendung basiert auf einer **3-Schichten-Architektur**:
 
-Vergleich der Testpyramide und des Testing-Honeycomb-Modells hinsichtlich Fehlererkennungsrate und Kosten-Nutzen-Verhältnis.
+1. **Web Layer**: Enthält die REST-Controller zur Kommunikation mit dem Frontend.
+2. **Service Layer**: Enthält die Geschäftslogik.
+3. **Repository Layer**: Verwaltet den Datenzugriff mit JPA-Repositories.
 
-Analyse der H2-Datenbank vs. MySQL (Testcontainers) in Bezug auf Laufzeit und Komplexität.
-
-Untersuchung der Auswirkungen auf eine monolithische Webanwendung.
-
-🏗️ Architektur
-
-Die Anwendung basiert auf einer 3-Schichten-Architektur:
-
-Web Layer: Enthält die REST-Controller zur Kommunikation mit dem Frontend.
-
-Service Layer: Enthält die Geschäftslogik.
-
-Repository Layer: Verwaltet den Datenzugriff mit JPA-Repositories.
-
-📂 Verzeichnisstruktur
-
+### 📂 Verzeichnisstruktur
+```
 /backend
-  ├── src/main/java
-  │   ├── com.example.project
-  │   │   ├── controller  # Web Layer (REST API)
-  │   │   ├── service  # Business-Logik
-  │   │   ├── repository  # Datenbankzugriff (JPA)
-  │   │   ├── model  # JPA-Entitäten
-  ├── src/test/java  # Testpyramide
-  ├── src/test/honeycomb  # Honeycomb-Modell
+  ├── src/honeycomb
+  ├── src/main
+  │   ├── java/org.venow.backend
+  │   │   ├── config
+  │   │   ├── domain.model
+  │   │   ├── infrastructure
+  │   │   ├── service
+  │   │   ├── web
+  │   │   ├── BackendApplication.java
+  │   ├── resources
+  ├── src/testpyramid
 /frontend
   ├── src/components
   ├── src/pages
   ├── tailwind.config.js
   ├── package.json
+```
 
-🚀 Setup & Installation
+## 🚀 Setup & Installation
 
-Voraussetzungen
+### Voraussetzungen
+- **Java 21+** (empfohlen über SDKMAN!)
+- **Node.js** (für das Frontend) -> v20.10.0
+- **Docker** (für Testcontainers)
+- **MySQL** (optional, falls nicht über Testcontainers genutzt)
 
-Java 17+ (empfohlen über SDKMAN!)
-
-Node.js + npm (für das Frontend)
-
-Docker (für Testcontainers)
-
-MySQL (optional, falls nicht über Testcontainers genutzt)
-
-Backend starten
-
+### Datenbank und Backend starten
+```bash
 cd backend
+docker-compose up -d
+```
+
+```bash
 ./mvnw spring-boot:run
+```
+ Falls **Testcontainers** genutzt wird, startet die Datenbank automatisch.
 
-Falls Testcontainers genutzt wird, startet die Datenbank automatisch.
-
-Frontend starten
-
+### Frontend starten
+```bash
 cd frontend
 npm install
 npm run dev
+```
 
-🔍 Tests ausführen
+## 🔍 Tests ausführen
 
-Unit- & Integrationstests (Testpyramide)
+### Alle Tests starten (Honeycomb & Testpyramide) mit JaCoCo & Pitest
+```bash
+./gradlew build
+```
+ Führt alle Tests aus und erstellt Code Coverage-Berichte mit JaCoCo sowie Mutationstests mit Pitest.
 
-./mvnw test
+### Alternativ: Tests mit Gradle Check ausführen
+```bash
+gradlew check
+```
+Führt die Tests sowie die zugehörigen Qualitätsanalysen aus.
 
-Honeycomb-Tests separat ausführen
+### Unit- & Integrationstests (Testpyramide)
+```bash
+gradlew test
+```
+Führt standardmäßig die Unit- und Integrationstests für die Testpyramide aus.
 
-mvn test -P honeycomb
+### Honeycomb-Tests separat ausführen
+```bash
+./gradlew honeycombTest
+``` 
+Führt die Tests für das Honeycomb-Testmodell aus.
 
-📊 Evaluation
+### Testpyramide-Tests separat ausführen mit Testcontainern
+```bash
+./gradlew testPyramidTest
+```
+Führt die Tests für das Honeycomb-Testmodell aus.
 
-Laufzeit der Tests (H2 vs. MySQL mit Testcontainers)
 
-Fehlererkennungsrate zwischen Testpyramide und Honeycomb-Modell
+### Testpyramide mit H2-Datenbank ausführen
+```bash
+./gradlew testPyramidTest -PactiveProfile=testpyramid-h2
+```
+Setzt das aktive Spring-Profil auf `testpyramid-h2` und führt die Tests der Testpyramide mit H2 als Datenbank aus.
 
-Vergleich der Datenbank-Performance
+### Mutation Testing für Testpyramid
+```bash
+./gradlew pitest
+```
+Führt Mutationstests mit PIT für die Testpyramide aus.
 
-🛠️ Mögliche Erweiterungen
+### Mutation Testing für Honeycomb
+```bash
+./gradlew pitestHoneycomb
+```
+Führt Mutationstests mit PIT für das Honeycomb-Testmodell aus.
 
-Weitere Testfälle für komplexe Szenarien
+### JaCoCo Test Coverage für Testpyramid
+```bash
+./gradlew jacocoTestPyramidReport
+```
+Erstellt einen JaCoCo Coverage-Report für die Testpyramide.
 
-CI/CD-Integration
+### JaCoCo Test Coverage für Honeycomb
+```bash
+./gradlew jacocoHoneycombReport
+```
+Erstellt einen JaCoCo Coverage-Report für das Honeycomb-Testmodell.
 
-Verbesserte Datenbank-Migration mit Flyway
 
-📜 Lizenz
+Die Reports von Jacoco und Pitest sind im Verzeichnis `build/reports` zu finden.
+Davon im jacoco und im pitest Ordner `build/reports/jacoco` und `build/reports/pitest`.
+Davon die index.html öffnen
+
+## 📊 Evaluation
+- **Laufzeit** der Tests (H2 vs. MySQL mit Testcontainers)
+- **Fehlererkennungsrate** zwischen Testpyramide und Honeycomb-Modell
+- **Vergleich der Datenbank-Performance**
+
+
+
+
+
