@@ -177,17 +177,6 @@ const OrganizerContractFormular = () => {
                         />
                     </section>
 
-                    {/* --- Checkbox --- */}
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={agreed}
-                                onChange={(e) => setAgreed(e.target.checked)}
-                                color="primary"
-                            />
-                        }
-                        label="I have read and agree to the terms and conditions"
-                    />
 
                     {/* --- Button zum Erstellen des Vertrags --- */}
                     <button
