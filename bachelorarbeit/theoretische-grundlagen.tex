@@ -4,7 +4,7 @@ Ein strukturierter Ansatz für Softwaretests ist entscheidend, um Anwendungen sy
 In diesem Abschnitt werden die Testpyramide und das Testing-Honeycomb-Modell vorgestellt. Beide Modelle sind in der Praxis etabliert und bieten unterschiedliche Perspektiven auf die Organisation von Tests.
 
 \subsection{Testpyramide}
-Die Testpyramide wurde erstmals von Fowler~\cite{Fow12} als hierarchisches Modell eingeführt. Sie gliedert Softwaretests in drei Ebenen: Unit-Tests, Integrationstests und Systemtests. Das Modell verfolgt das Ziel, die Mehrheit der Tests auf den unteren Ebenen anzusiedeln, da diese schneller ausführbar und kosteneffizienter sind.
+Die Testpyramide wurde erstmals von Fowler~\cite{Fow12} als hierarchisches Modell eingeführt. Sie gliedert Softwaretests typischerweise in drei Hauptkategorien: Unit-Tests, Integrationstests und Systemtests. In manchen Darstellungen wird die Pyramide durch eine vierte Ebene ergänzt, die manuelle Tests umfasst. Das Modell verfolgt das Ziel, die Mehrheit der Tests auf den unteren Ebenen anzusiedeln, da diese schneller ausführbar und kosteneffizienter sind.
 
 \begin{itemize}
 	\item \textbf{Unit-Tests:} Die Basis der Pyramide bilden Unit-Tests. Sie testen einzelne, isolierte Softwareeinheiten wie Methoden oder Klassen. Durch die Unabhängigkeit von externen Schnittstellen ermöglichen sie eine schnelle und einfache Fehlerlokalisierung bei geringer Komplexität~\cite{BF14}.
@@ -16,28 +16,40 @@ Cohn~\cite{Coh09} hebt hervor, dass Tests möglichst auf der niedrigsten Ebene i
 
 \subsection{Testing-Honeycomb-Modell}
 
-Das Testing-Honeycomb-Modell wurde von Spotify~\cite{Spotify18} speziell für Microservices-Architekturen entwickelt. Es legt den Schwerpunkt auf Integrationstests, da die grösste Komplexität in solchen Architekturen häufig in der Interaktion zwischen den Diensten liegt. Spotify betont, dass diese Tests nicht nur die Kommunikation zwischen Services, sondern auch die zugrunde liegende Infrastruktur, wie Datenbanken und APIs, umfassen sollten, um realitätsnahe Szenarien abzubilden~\cite{Spotify18}. In ihrem Artikel \enquote{Testing of Microservices} beschreibt Spotify diesen Ansatz mit den Worten:
+Das Testing-Honeycomb-Modell wurde von Spotify~\cite{Spotify18} speziell für Microservices-Architekturen entwickelt. Es legt den Schwerpunkt auf Integrationstests, da die größte Komplexität in solchen Architekturen häufig in der Interaktion zwischen den Diensten liegt. Spotify betont, dass diese Tests nicht nur die Kommunikation zwischen Services, sondern auch die zugrunde liegende Infrastruktur, wie Datenbanken und APIs, umfassen sollten, um realitätsnahe Szenarien abzubilden~\cite{Spotify18}. In ihrem Artikel \enquote{Testing of Microservices} beschreibt Spotify diesen Ansatz mit den Worten:
 
-\begin{quote} \enquote{We spin up a database, populate it, start the service, and query the actual API in the tests.} \end{quote}
+\begin{quote}
+	\enquote{We spin up a database, populate it, start the service, and query the actual API in the tests.}
+\end{quote}
 
-Dieser Ansatz zeigt, dass die Tests über isolierte Komponenten hinausgehen und das Gesamtsystem einbeziehen. Durch die Integration von Datenbanken, Services und APIs wird das Zusammenspiel aller Komponenten geprüft, ohne sich auf spezifische Implementierungsdetails zu beschränken~\cite{Spotify18}. Damit unterscheidet sich das Honeycomb-Modell deutlich von der Testpyramide, die den Fokus auf isolierte Tests legt.
+Dieser Ansatz zeigt, dass die Tests über isolierte Komponenten hinausgehen und das Zusammenspiel aller Systemteile einbeziehen. Damit unterscheidet sich das Honeycomb-Modell deutlich von der Testpyramide, die den Fokus auf isolierte Tests legt.  
 
-Spotify ~\cite{Spotify18} beschreibt im Rahmen des Honeycomb-Modells drei zentrale Testtypen:
+Gleichzeitig warnt Spotify jedoch ausdrücklich vor der Nutzung sogenannter integrierter Tests:  
+\begin{quote}
+	\enquote{That means we should focus on Integration Tests, have a few Implementation Detail Tests and even fewer Integrated Tests (ideally none).}~\cite{Spotify18}
+\end{quote}
+Während Integrationstests gezielt die Zusammenarbeit einzelner Komponenten innerhalb eines Systems prüfen, hängen integrierte Tests von externen Abhängigkeiten wie Microservices oder Datenbanken ab. Diese gelten laut Spotify als \textbf{fragil und schwer wartbar}, da sie von der Korrektheit anderer Systeme abhängen und die Testpipeline verlangsamen können~\cite{Spotify18}.  
+
+Obwohl Spotify betont, dass integrierte Tests möglichst vermieden werden sollten, beschreibt ihr eigener Ansatz dennoch den Einsatz vollständiger Testumgebungen mit externen Abhängigkeiten. Dies verdeutlicht, dass solche Tests zwar nicht als bevorzugte Strategie gelten, in spezifischen Anwendungsfällen jedoch unvermeidbar sein können. Der Fokus liegt dennoch primär auf Integrationstests, die eine stabile Teststrategie ermöglichen, ohne externe Abhängigkeiten einzubeziehen.  
+
+Spotify~\cite{Spotify18} beschreibt im Rahmen des Honeycomb-Modells drei zentrale Testtypen:  
 \begin{itemize} 
-	\item \textbf{Integrationstests:} Diese bilden das Herzstück des Modells. Laut Spotify sollen sie sicherstellen, dass Schnittstellen korrekt implementiert sind und Dienste wie erwartet zusammenarbeiten~\cite{Spotify18}. 
-	\item \textbf{Implementierungsdetail-Tests:} Diese Tests konzentrieren sich auf die interne Logik eines einzelnen Services, wie komplexe Berechnungen. Spotify sieht diese Tests als Ergänzung zu Integrationstests, jedoch mit geringerer Priorität~\cite{Spotify18}. 
-\item \textbf{Integrierte Tests:} Diese Tests überprüfen die Funktionalität eines Systems in Verbindung mit externen Abhängigkeiten, wie z. B. anderen Microservices, Datenbanken oder APIs. Sie sind fragil, da sie von der Verfügbarkeit und Korrektheit dieser externen Systeme abhängen. Laut Spotify sollten sie reduziert oder vermieden werden, da sie schwerer zu warten sind, die Testpipeline verlangsamen und Fehlinterpretationen von Fehlerquellen verursachen können~\cite{Spotify18}.
-
+	\item \textbf{Integrationstests:} Diese bilden den Kern des Modells und stellen sicher, dass die Schnittstellen innerhalb eines Systems korrekt implementiert sind und die Zusammenarbeit zwischen internen Komponenten erwartungsgemäß funktioniert~\cite{Spotify18}. Beispielsweise kann ein Integrationstest überprüfen, ob ein REST-Controller die erwarteten Antworten liefert, wenn er mit dem Service-Layer kommuniziert. 
+	\item \textbf{Implementierungsdetail-Tests:} Diese Tests konzentrieren sich auf die interne Logik eines einzelnen Services, beispielsweise komplexe Berechnungen. Spotify betrachtet sie als Ergänzung zu Integrationstests, ordnet ihnen jedoch eine geringere Priorität zu~\cite{Spotify18}. 
+	\item \textbf{Integrierte Tests:} Diese Tests überprüfen die Funktionalität eines Systems unter Berücksichtigung externer Abhängigkeiten, beispielsweise durch die Anbindung an andere Microservices, Datenbanken oder APIs. Da sie von der Verfügbarkeit und der korrekten Funktion dieser externen Systeme abhängen, sind sie fehleranfällig. Laut Spotify sollten sie möglichst reduziert oder vermieden werden, da sie die Wartung erschweren, die Testpipeline verlangsamen und zu Fehlinterpretationen von Testergebnissen führen können~\cite{Spotify18}. Ein Beispiel für einen integrierten Test wäre die Validierung der Kommunikation eines Microservices mit einer externen Zahlungs-API, bei der Netzwerklatenzen oder API-Ausfälle zu unerwarteten Testergebnissen führen können.
 \end{itemize}
-Indem Integrationstests priorisiert werden, ermöglicht das Honeycomb-Modell eine umfassende Prüfung der Interaktionspunkte im System. Spotify ~\cite{Spotify18} empfiehlt, Tests so zu gestalten, dass das Gesamtsystem möglichst realistisch abgebildet wird.
+
+Indem Integrationstests priorisiert werden, ermöglicht das Honeycomb-Modell eine umfassende Prüfung der Interaktionspunkte im System. Spotify~\cite{Spotify18} empfiehlt, Tests so zu gestalten, dass das Gesamtsystem möglichst realistisch abgebildet wird.
 
 Auch in dieser Arbeit wird auf Mocking verzichtet und eine produktionsnahe Datenbankumgebung mithilfe von Testcontainers integriert. Dieser Ansatz orientiert sich an den von Spotify beschriebenen Best Practices und erlaubt eine realitätsnahe Validierung der Systemintegration auf allen Ebenen.
+
 
 \subsection{Datenbanklösung für Tests}
 
 In dieser Arbeit werden die H2-Datenbank und eine MySQL-Datenbank mithilfe von Testcontainers implementiert. Die Wahl der Datenbank richtet sich nach der jeweiligen Teststrategie.
 
-Im Rahmen der Testpyramide kommen beide Datenbanklösungen zum Einsatz. Die H2-Datenbank~\cite{H2Doc} wird für schnelle Unit- und Integrationstests verwendet, da sie eine einfache Konfiguration und kurze Laufzeiten ermöglicht. Sie erlaubt die Prüfung isolierter Logik ohne Abhängigkeit von externer Infrastruktur. Ergänzend wird für Integrationstests eine MySQL-Datenbank mithilfe von Testcontainers eingesetzt. Diese ermöglicht realitätsnahe Tests in einer produktionsnahen Umgebung und minimiert das Risiko von Umgebungsinkonsistenzen~\cite{Testcontainers}.
+Im Rahmen der Testpyramide kommen beide Datenbanklösungen zum Einsatz. Klassische Unit-Tests werden vollständig isoliert von einer Datenbank ausgeführt, indem Mocking-Techniken eingesetzt werden. Die H2-Datenbank~\cite{H2Doc} wird hingegen für komponentennahe Tests sowie Integrationstests verwendet, da sie eine einfache Konfiguration und kurze Laufzeiten ermöglicht. Sie erlaubt die Prüfung der Datenzugriffsschicht ohne Abhängigkeit von einer externen Datenbankinstanz. Ergänzend wird für umfassendere Integrationstests eine MySQL-Datenbank mithilfe von Testcontainers eingesetzt. Diese ermöglicht realitätsnahe Tests in einer produktionsnahen Umgebung und minimiert das Risiko von Umgebungsinkonsistenzen~\cite{Testcontainers}.
+
 
 Das Honeycomb-Modell setzt ausschließlich auf die MySQL-Datenbank mit Testcontainers. Ziel ist es, realistische Testbedingungen zu schaffen, indem das gesamte System einschließlich der Datenbank getestet wird~\cite{Spotify18}. Testcontainers stellt eine produktionsnahe Umgebung bereit und bildet Interaktionen zwischen Anwendung und Datenbank realistisch ab. Zur Sicherstellung eines konsistenten Datenbankschemas wird Flyway als Migrationstool eingesetzt~\cite{FlywayDoc}.
 

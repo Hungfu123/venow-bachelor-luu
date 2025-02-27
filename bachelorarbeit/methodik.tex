@@ -19,7 +19,9 @@ Für das Mutationstesting wird \texttt{Pitest} verwendet. \texttt{Pitest} ist ei
 Die Testszenarien wurden entwickelt, um die Teststrategien Testpyramide und Honeycomb-Modell unter vergleichbaren Bedingungen zu analysieren. Die Anwendungsfälle umfassen den Bewerbungsprozess, das Vertragsmanagement, das Veranstaltungsmanagement und die Login-Funktion. Besonders interessant ist der Übergang vom Bewerbungs- zum Vertragsmanagement, da aus einer erfolgreichen Bewerbung ein Vertrag generiert werden kann. Jeder Anwendungsfall wird separat beschrieben und die Testmethodik für beide Strategien detailliert erläutert. Die gewonnenen Testergebnisse etwa die durchschnittliche Laufzeit, Testabdeckung und Stabilität der Tests bilden die Grundlage für die spätere Bewertung und den Vergleich der beiden Testansätze. 
 
 \subsubsection{Bewerbungsprozess}
-Der Bewerbungsprozess bildet den Einstieg in den Workflow. Er dient dazu, die grundlegenden Funktionalitäten der Anwendung zu prüfen. Er umfasst die Erstellung und Validierung von Bewerbungen. Zusätzlich werden relevante Daten gespeichert.  
+Da der Bewerbungsprozess als zentraler Use-Case betrachtet wurde, begann die Entwicklung mit diesem Modul. Die Entität „Veranstaltung“ war von Anfang an vorhanden, enthielt jedoch zunächst keine Verwaltungsfunktionen. Sie diente primär dazu, dass Schausteller existierende Veranstaltungen einsehen und sich darauf bewerben konnten.  
+Aus prozesslogischer Sicht wäre es naheliegend gewesen, zunächst Verwaltungsfunktionen für Veranstaltungen zu implementieren, bevor Bewerbungen ermöglicht werden. Allerdings wurde die Entwicklung bewusst mit dem Bewerbungs- und Vertragsmanagement begonnen, da dieser Use-Case als besonders relevant und interessant für die Analyse verschiedener Teststrategien angesehen wurde. Zudem lag der initiale Fokus der Arbeit ausschließlich auf dem Bewerbungs- und Vertragsfeature, sodass zunächst nicht klar war, ob weitere Verwaltungsfunktionen für Veranstaltungen erforderlich sein würden. Erst nach einer ersten Evaluierung wurde geprüft, ob zusätzliche Verwaltungsfunktionen für Veranstalter notwendig sind, um die Vergleichbarkeit verschiedener Teststrategien zu gewährleisten.
+
 
 In der Testpyramide werden Servicetests als Unit-Tests durchgeführt. Diese validieren die interne Logik und die Datenverarbeitung. Controller-Tests prüfen die HTTP-Endpunkte in einer \texttt{WebMvcTest}-Umgebung. Obwohl \texttt{WebMvcTest} nicht die gesamte Anwendung testet, handelt es sich um eine Form des Integrationstests. Der Test besitzt Abhängigkeiten zu externen Komponenten wie dem Web-Framework Spring MVC und validiert das Zusammenspiel der Controller mit der Web-Schicht. Repository-Tests untersuchen die Interaktionen mit der Datenbank. Für schnelle Durchläufe kommt die H2-Datenbank zum Einsatz. Testcontainers stellt eine MySQL-Datenbank bereit, um realitätsnahe Bedingungen zu schaffen.  
 
@@ -34,9 +36,11 @@ Innerhalb der Testpyramide werden Servicetests zur Validierung der Geschäftslog
 Das Honeycomb-Modell testet das Veranstaltungsmanagement als gesamtes End-to-End-Szenario, sodass das Zusammenspiel aller Module unter realitätsnahen Bedingungen abgebildet wird.
 
 \subsubsection{Login-Funktion}
+Die Webanwendung enthält eine Login-Funktion, die den Zugriff auf registrierte Nutzer beschränkt. Dadurch wird sichergestellt, dass nur autorisierte Personen Bewerbungen und Verträge verwalten können. Veranstalter können ihre Veranstaltungen kontinuierlich aktualisieren. Die Plattform stellt sicher, dass alle Prozesse digital und nachvollziehbar bleiben.
 Die Login-Funktion, basierend auf Spring Security, ermöglicht registrierten Nutzern einen einfachen und sicheren Zugang zur Anwendung. Hierbei wird geprüft, ob die Authentifizierung korrekt erfolgt und ob ausschließlich autorisierte Nutzer Zugriff auf geschützte Bereiche erhalten. Die Tests evaluieren dabei sowohl die korrekte Rückgabe von HTTP-Statuscodes als auch die sichere Handhabung der Anmeldeinformationen.
 
 Die gewählten Testszenarien verdeutlichen die Unterschiede zwischen der Testpyramide und dem Honeycomb-Modell anhand praxisnaher Anwendungsfälle. Die Ergebnisse dieser Tests  liefern eine objektive Grundlage für den anschließenden Vergleich der beiden Teststrategien. Unter anderem in Bezug auf Laufzeit, Abdeckung und Stabilität.
+\subsection{Login-Funktion und grundlegendes Veranstaltungsmanagement}
 
 % Leere Zeile zur Trennung des TDD-Abschnitts
 
