@@ -17,25 +17,23 @@ Jede Phase schließt mit einem Fazit ab, das die zentralen Erkenntnisse der Anal
 In diesem Abschnitt werden die Testergebnisse für die drei zentralen Geschäftsprozesse der Anwendung untersucht: \textit{Bewerbungsprozess}, \textit{Vertragsmanagement} und \textit{Veranstaltungsmanagement}. Die getrennte Betrachtung dieser Anwendungsfälle ermöglicht eine detaillierte Analyse der jeweiligen Teststrategien und ihrer Auswirkungen. Neben den initialen Testergebnissen werden auch Veränderungen durch neue Features und die Weiterentwicklung der Anwendung betrachtet.
 
 
-\subsubsection{Bewerbungsprozess (nach Integration von Spring Security)}
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{davon Unit Tests} & \textbf{Laufzeit} \\
 		\hline
-		Honeycomb       & Testcontainer MySQL & 34  & --  & 8\,s 156\,ms  \\
+		Honeycomb       & Testcontainer MySQL & 34  & --  & 47\,s 700\,ms    \\
 		\hline
-		Testpyramide    & Testcontainer MySQL & 73  & 30  & 5\,s 632\,ms  \\
+		Testpyramide    & Testcontainer MySQL & 73  & 30  & 34\,s   \\
 		\hline
-		Testpyramide    & H2                  & 73  & 30  & 2\,s 146\,ms  \\
+		Testpyramide    & H2                  & 73  & 30  & 16\,s 900\,ms   \\
 		\hline
 	\end{tabular}
 	\caption{Laufzeiten und Testanzahl im Bewerbungsprozess}
 	\label{tab:bewerbung_updated_first}
 \end{table}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Vertragsmanagement (nach Integration von Spring Security)}
+
 
 \begin{table}[H]
 	\centering
@@ -43,31 +41,28 @@ In diesem Abschnitt werden die Testergebnisse für die drei zentralen Geschäfts
 		\hline
 		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{davon Unit Tests} & \textbf{Laufzeit} \\
 		\hline
-		Honeycomb      & Testcontainer MySQL & 26  & --  & 7\,s 298\,ms  \\
+		Honeycomb      & Testcontainer MySQL & 26  & --  & 45\,s 700\,ms   \\
 		\hline
-		Testpyramide   & Testcontainer MySQL & 57  & 25  & 3\,s 217\,ms  \\
+		Testpyramide   & Testcontainer MySQL & 57  & 25  &31\,s 400\,ms    \\
 		\hline
-		Testpyramide   & H2                  & 57  & 25  & 2\,s 70\,ms   \\
+		Testpyramide   & H2                  & 57  & 25  & 17\,s   \\
 		\hline
 	\end{tabular}
 	\caption{Vertragsmanagement}
 	\label{tab:vertrag_einzeln}
 \end{table}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsubsection{Veranstaltungsmanagement (nach Integration von Spring Security)}
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{davon Unit Tests} & \textbf{Laufzeit} \\
 		\hline
-		Honeycomb      & Testcontainer MySQL & 19  & --  & 5\,s 210\,ms  \\
+		Honeycomb      & Testcontainer MySQL & 19  & --  & 44\,s \\
 		\hline
-		Testpyramide   & Testcontainer MySQL & 61  & 20  & 5\,s 73\,ms  \\
+		Testpyramide   & Testcontainer MySQL & 61  & 20  &31\,s 400\,ms   \\
 		\hline
-		Testpyramide   & H2                  & 61  & 20  & 2\,s 302\,ms   \\
+		Testpyramide   & H2                  & 61  & 20  & 17\,s    \\
 		\hline
 	\end{tabular}
 		\caption{Veranstaltungsmanagement}
@@ -101,54 +96,53 @@ Die folgenden Abschnitte analysieren, wie sich diese Erkenntnisse über den Entw
 In dieser Phase werden die Testergebnisse betrachtet, die vor der Integration von Spring Security ermittelt wurden. Dies ermöglicht eine Analyse der ursprünglichen Teststruktur und bildet die Grundlage für den späteren Vergleich. Die Tests wurden inkrementell und iterativ entwickelt. Durch mehrere Durchläufe passte sich die Teststrategie schrittweise an neue Anforderungen an. So entstand eine stabile Basis für die weiteren Entwicklungen. Die folgenden Testergebnisse werden im Fazit der zweiten Testphase analysiert.
 
 
-\subsubsection{Bewerbungsprozess (vor Integration von Spring Security)}
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|l|l|l|}
 		\hline
 		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{Laufzeit} \\
 		\hline
-		Honeycomb      & MySQL-Testcontainer & 18  & 4\,s 699\,ms  \\
+		Honeycomb      & MySQL-Testcontainer & 18  &43\,s 444\,ms    \\
 		\hline
-		Testpyramide   & H2                   & 44  & 1\,s 876\,ms  \\
-		\hline
-		Testpyramide   & MySQL-Testcontainer & 44  & 3\,s 408\,ms  \\
+				Testpyramide   & MySQL-Testcontainer & 44  & 29\,s 900\,ms \\
+				\hline
+		Testpyramide   & H2                   & 44 &    15\,s \\
 		\hline
 	\end{tabular}
 	\caption{Laufzeiten und Testanzahl im Bewerbungsprozess (vor Integration von Spring Security)}
 	\label{tab:bewerbungsprozess}
 \end{table}
 
-\subsubsection{Vertrag- und Bewerbungsmanagement (vor Spring Security)}
+
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{Test Typ} & \textbf{Laufzeit} \\
 		\hline
-		Honeycomb       & MySQL-Testcontainer & 48  & Integration  & 9\,s 835\,ms  \\
+		Honeycomb       & MySQL-Testcontainer & 48  & Integration  & 73\,s 400\,ms    \\
+				\hline
+		Testpyramide    & MySQL-Testcontainer & 103 & Alle         & 45\,s  \\
 		\hline
-		Testpyramide    & H2                  & 103 & Alle         & 2\,s 565\,ms  \\
-		\hline
-		Testpyramide    & MySQL-Testcontainer & 103 & Alle         & 3\,s 757\,ms  \\
+		Testpyramide    & H2                  & 103 & Alle         & 17\,s  \\
 		\hline
 	\end{tabular}
 		\caption{Laufzeiten und Testanzahl im Vertragsmanagement (vor Spring Security)}
 		\label{tab:vertragsmanagement}
 \end{table}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Veranstaltung- , Vertrag- und Bewerbungsmanagement (vor Spring Security)}
+
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{Test Typ} & \textbf{Laufzeit} \\
 		\hline
-		Honeycomb       & MySQL-Testcontainer & 58  & Integration  & 12\,s 939\,ms  \\
+		Honeycomb       & MySQL-Testcontainer & 58  & Integration  & 101\,s 900\,ms    \\
+				\hline
+		Testpyramide    & MySQL-Testcontainer & 140 & Alle         & 88\,s 777\,ms     \\
 		\hline
-		Testpyramide    & H2                   & 140 & Alle         & 2\,s 858\,ms   \\
-		\hline
-		Testpyramide    & MySQL-Testcontainer & 140 & Alle         & 7\,s 428\,ms   \\
+		Testpyramide    & H2                   & 140 & Alle         & 23\,s \\
 		\hline
 	\end{tabular}
 		\caption{Laufzeiten und Testanzahl im Veranstaltungsmanagement (vor Spring Security)}
@@ -198,25 +192,8 @@ Nach der Integration von Spring Security und TDD wurden die Testergebnisse erneu
 
 Im Bereich Bewerbung ergeben sich nach Integration von Spring Security folgende neue Durchschnittswerte:
 
-\begin{table}[H]
-	\centering
-	\begin{tabular}{|l|l|l|l|l|}
-		\hline
-		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{Unit Tests} & \textbf{Laufzeit} \\
-		\hline
-		Honeycomb       & Testcontainer MySQL & 34  & --  & 8\,s 156\,ms  \\
-		\hline
-		Testpyramide    & Testcontainer MySQL & 73  & 30  & 5\,s 632\,ms  \\
-		\hline
-		Testpyramide    & H2                  & 73  & 30  & 2\,s 146\,ms  \\
-		\hline
-	\end{tabular}
-	\caption{Bewerbungsprozess (nach Integration von Spring Security)}
-	\label{tab:bewerbung_updated}
-\end{table}
 
-
-Die Testergebnisse zeigen eine erhöhte Testanzahl. Dies liegt nicht an Spring Security, sondern an neuen Edge-Case-Tests. Insbesondere wurden zusätzliche Tests für Statusübergänge ergänzt.
+Die Testergebnisse in \ref{tab:bewerbung_updated_first} zeigen eine erhöhte Testanzahl. Dies liegt nicht an Spring Security, sondern an neuen Edge-Case-Tests. Insbesondere wurden zusätzliche Tests für Statusübergänge ergänzt.
 
 Die Laufzeiten sind leicht gestiegen. Dies resultiert aus den zusätzlichen Konfigurationsschritten von Spring Security. Besonders im Honeycomb-Modell sind die Auswirkungen spürbar. Jede Anfrage wird durch die Sicherheitsmechanismen geprüft, was zusätzlichen Overhead verursacht.
 
@@ -227,27 +204,23 @@ Durch TDD wurden neue Tests frühzeitig ergänzt. Fehler wurden schneller entdec
 Die gestiegene Testanzahl resultiert aus neuen Randfalltests. Die höhere Laufzeit ist auf Spring Security zurückzuführen. Die Testpyramide bleibt effizient für gezielte Validierungen. Das Honeycomb-Modell ist notwendig für die vollständige Systemintegration, erfordert jedoch mehr Wartung.
 
 
-\subsubsection{Bewerbung mit Vertragsmanagement (aktualisiert)}
-\textbf{Ergebnisse:}\
-Im Szenario "Bewerbung mit Vertrag" wurden folgende aktualisierte Durchschnittswerte ermittelt:
-
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{Unit Tests} & \textbf{Laufzeit} \\
 		\hline
-		Honeycomb       & Testcontainer MySQL & 60  & --  & 13\,s 695\,ms  \\
+		Honeycomb       & Testcontainer MySQL & 60  & --  & 77\,s 777\,ms   \\
 		\hline
-		Testpyramide    & Testcontainer MySQL & 75  & 25  & 6\,s 979\,ms  \\
+		Testpyramide    & Testcontainer MySQL & 75  & 25  & 49\,s 333\,ms    \\
 		\hline
-		Testpyramide    & H2                  & 75  & 25  & 2\,s 481\,ms  \\
+		Testpyramide    & H2                  & 75  & 25  & 19\,s \\
 		\hline
 	\end{tabular}
 	\caption{Vertragsmanagement im Szenario "Bewerbung mit Vertrag" (nach Integration von Spring Security)}
 	\label{tab:bewerbung_mit_vertrag_updated}
 \end{table}
-\subsubsection{Veranstaltungs-, Vertrags- und Bewerbungsmanagement (aktualisiert)}
+
 
 \begin{table}[H]
 	\centering
@@ -255,29 +228,28 @@ Im Szenario "Bewerbung mit Vertrag" wurden folgende aktualisierte Durchschnittsw
 		\hline
 		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{Unit Tests} & \textbf{Laufzeit} \\
 		\hline
-		Honeycomb      & Testcontainer MySQL & 80  & --  & 17\,s 487\,ms  \\
+		Honeycomb      & Testcontainer MySQL & 80  & --  & 107\,s \\
 		\hline
-		Testpyramide   & Testcontainer MySQL & 195 & 82  & 10\,s 256\,ms  \\
+		Testpyramide   & Testcontainer MySQL & 195 & 82  & 78\,s 700\,ms    \\
 		\hline
-		Testpyramide   & H2                  & 195 & 82  & 3\,s 466\,ms   \\
+		Testpyramide   & H2                  & 195 & 82  & 22\,s   \\
 		\hline
 	\end{tabular}
 		\caption{Veranstaltungsmanagement (nach Integration von Spring Security)}
 		\label{tab:eventbereich_updated}
 \end{table}
 
-\subsubsection{Alle Business Fälle mit Authentifizierung}
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{Unit Tests} & \textbf{Laufzeit} \\
 		\hline
-		Honeycomb      & Testcontainer MySQL & 84  & --  & 19\,s 388\,ms  \\
+		Honeycomb      & Testcontainer MySQL & 84  & --  & 120\,s 750\,ms   \\
 		\hline
-		Testpyramide   & Testcontainer MySQL & 200 & 82  & 10\,s 671\,ms  \\
+		Testpyramide   & Testcontainer MySQL & 200 & 82  & 80\,s 100\,ms    \\
 		\hline
-		Testpyramide   & H2                  & 200 & 82  & 3\,s 482\,ms   \\
+		Testpyramide   & H2                  & 200 & 82  & 22\,s 600\,ms     \\
 		\hline
 	\end{tabular}
 	\caption{Alle Business Fälle mit Authentifizierung}
