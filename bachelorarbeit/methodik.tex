@@ -38,19 +38,24 @@ Das Vertragsmanagement stellt einen wesentlichen Teil der Geschäftslogik dar, d
 Im Rahmen der Testpyramide wird eine Kombination aus Unit-Tests, Controller-Tests und Repository-Tests eingesetzt, um die interne Logik sowie die Datenflüsse zwischen den Modulen zu prüfen. Das Honeycomb-Modell bildet diesen Übergang mittels vollständiger Integrationstests ab, wobei die Interaktionen zwischen den beteiligten Komponenten in einer produktionsnahen Umgebung simuliert werden.
 
 \subsubsection{Veranstaltungsmanagement}
-Das Veranstaltungsmanagement erweitert den Workflow um die Erstellung, Bearbeitung und Verwaltung von Veranstaltungen. Es integriert die vorherigen Module, insbesondere den Zusammenhang zwischen Veranstaltungen und den Prozessen im Bewerbungs- sowie Vertragsmanagement.  
-Innerhalb der Testpyramide werden Servicetests zur Validierung der Geschäftslogik eingesetzt, Controller-Tests prüfen die HTTP-Schnittstellen, und Repository-Tests analysieren die Datenbankoperationen.  
-Das Honeycomb-Modell testet das Veranstaltungsmanagement als gesamtes End-to-End-Szenario, sodass das Zusammenspiel aller Module unter realitätsnahen Bedingungen abgebildet wird.
+
+Das Veranstaltungsmanagement wurde nachträglich hinzugefügt, um zusätzliche Testszenarien für die Analyse der Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb} zu ermöglichen. Während der Bewerbungsprozess als zentraler Use-Case frühzeitig umgesetzt wurde, stand zu Beginn nicht fest, ob weitere Features für eine aussagekräftige Testanalyse erforderlich sein würden. Da die Entitäten für Veranstaltungen bereits vorhanden waren, wurde das Modul später erweitert, um auch den gesamten Prozess der Veranstaltungsverwaltung zu integrieren.  
+
+Dieses Feature ergänzt den Workflow um die Erstellung, Bearbeitung und Verwaltung von Veranstaltungen. Es verbindet die zuvor entwickelten Module und stellt sicher, dass die Zusammenhänge zwischen Veranstaltungen, Bewerbungs- und Vertragsmanagement in der Testanalyse berücksichtigt werden können.  
+
+Innerhalb der \texttt{Testpyramide} werden Servicetests zur Validierung der Geschäftslogik eingesetzt, Controller-Tests prüfen die HTTP-Schnittstellen, und Repository-Tests analysieren die Datenbankoperationen.  
+Das \texttt{Honeycomb}-Modell testet das Veranstaltungsmanagement als gesamtes End-to-End-Szenario, sodass das Zusammenspiel aller Module unter realitätsnahen Bedingungen abgebildet wird.
+
 
 \subsubsection{Login-Funktion}
 Die Webanwendung enthält eine Login-Funktion, die den Zugriff auf registrierte Nutzer beschränkt. Dadurch wird sichergestellt, dass nur autorisierte Personen Bewerbungen und Verträge verwalten können. Veranstalter können ihre Veranstaltungen kontinuierlich aktualisieren. Die Plattform stellt sicher, dass alle Prozesse digital und nachvollziehbar bleiben.
+
 Die Login-Funktion, basierend auf Spring Security, ermöglicht registrierten Nutzern einen einfachen und sicheren Zugang zur Anwendung. Hierbei wird geprüft, ob die Authentifizierung korrekt erfolgt und ob ausschließlich autorisierte Nutzer Zugriff auf geschützte Bereiche erhalten. Die Tests evaluieren dabei sowohl die korrekte Rückgabe von HTTP-Statuscodes als auch die sichere Handhabung der Anmeldeinformationen.
 
-Die gewählten Testszenarien verdeutlichen die Unterschiede zwischen der Testpyramide und dem Honeycomb-Modell anhand praxisnaher Anwendungsfälle. Die Ergebnisse dieser Tests  liefern eine objektive Grundlage für den anschließenden Vergleich der beiden Teststrategien. Unter anderem in Bezug auf Laufzeit, Abdeckung und Stabilität.
-\subsection{Login-Funktion und grundlegendes Veranstaltungsmanagement}
+Die Tests der Login-Funktion sind Teil der Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb}. Während die Testpyramide einzelne Komponenten der Authentifizierung isoliert prüft, testet das Honeycomb-Modell die gesamte Login-Prozesskette in einer realitätsnahen Umgebung. Die gewonnenen Erkenntnisse tragen zur übergeordneten Analyse der beiden Testmodelle bei, insbesondere im Hinblick auf Testlaufzeiten und Fehlererkennungsraten.
+
 
 % Leere Zeile zur Trennung des TDD-Abschnitts
 
-Zusätzlich wird im Rahmen der Methodik der Einsatz von Test-Driven Development (TDD) evaluiert. Dabei wird untersucht, inwiefern TDD den Entwicklungsprozess und die Effektivität der Teststrategien beeinflusst. Die hierbei gewonnenen Erkenntnisse fließen in die abschließende Bewertung der Ansätze ein.
+Die beschriebenen Methoden und Testansätze bilden die Grundlage für die anschließende Analyse der Testergebnisse. Im folgenden Kapitel werden die Ergebnisse der durchgeführten Testmessungen vorgestellt und interpretiert. Dabei wird unter anderem untersucht, welchen Einfluss \texttt{Test-Driven Development (TDD)} auf den Entwicklungsprozess hatte und wie sich die unterschiedlichen Teststrategien \texttt{Testpyramide} und \texttt{Honeycomb} hinsichtlich Laufzeit, Testabdeckung und Stabilität verhalten.
 
-Für die Durchführung der Tests nutze ich ein System mit 16 GB RAM, einem AMD Ryzen 5 5600H und einer 512 GB NVMe SSD. Um eine möglichst genaue Messung der Laufzeiten zu gewährleisten, werden während der Testdurchläufe keine weiteren Programme geöffnet oder ausgeführt.

@@ -2,6 +2,11 @@
 
 Die durchgeführten Testmessungen lassen sich in drei Phasen unterteilen, die unterschiedliche Aspekte der Teststrategie beleuchten. In der ersten Phase erfolgte eine getrennte Analyse der Geschäftsprozesse \textit{Bewerbungsprozess}, \textit{Vertragsmanagement} und \textit{Veranstaltungsmanagement}, um die spezifischen Auswirkungen der Teststrategien \textbf{Testpyramide} und \textbf{Honeycomb-Modell} auf die einzelnen Anwendungsfälle zu untersuchen. Dabei wurden jeweils zehn Durchläufe pro Testkonfiguration durchgeführt, aus denen Durchschnittswerte für Laufzeit und Testanzahl ermittelt wurden. Die Tests liefen in IntelliJ mit Gradle unter Java 21.
 
+Zusätzlich wird im Rahmen der Testergebnisse der Einsatz von \textbf{Test-Driven Development (TDD)} evaluiert. Dabei wird untersucht, inwiefern TDD den Entwicklungsprozess und die Effektivität der Teststrategien beeinflusst. Die hierbei gewonnenen Erkenntnisse fließen in die abschließende Bewertung der Ansätze ein.
+
+Die Messungen wurden auf einem System mit 16 GB RAM, einem AMD Ryzen 5 5600H und einer 512 GB NVMe SSD durchgeführt. Um möglichst genaue Laufzeitergebnisse zu gewährleisten, wurden während der Testdurchläufe keine weiteren Programme geöffnet oder ausgeführt.
+
+
 In Phase zwei wurden die Testergebnisse chronologisch analysiert, um die Auswirkungen wachsender Features zu untersuchen. Dadurch wurde sichtbar, wie sich die zunehmende Komplexität der Domäne auf die Testausführung auswirkte und welche Effekte die Einführung neuer Funktionalitäten, insbesondere von Spring Security, auf die Testperformance hatte. Die Analyse folgt dabei zunächst einer Einzelfallbetrachtung und geht anschließend auf die Entwicklung der Testkennzahlen im Zeitverlauf ein.
 
 In der dritten Phase wurden ergänzende Tests in die chronologische Analyse integriert, die sich aus Fehlerentdeckungen während der Frontend-Entwicklung ergaben. Diese zusätzlichen Testfälle decken Randbedingungen ab und erweitern die Gesamtabdeckung der Anwendung. Die erneuten Messungen erfolgten unter den gleichen Rahmenbedingungen wie in Phase zwei, einschließlich der Berücksichtigung von Spring Security, um eine umfassende Analyse der finalen Implementierung sicherzustellen.
