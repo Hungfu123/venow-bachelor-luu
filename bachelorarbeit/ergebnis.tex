@@ -1,22 +1,24 @@
 \section{Ergebnisse und Interpretation}
+Die durchgeführten Testmessungen lassen sich in drei Phasen unterteilen, die verschiedene Aspekte der Teststrategien Testpyramide und Honeycomb-Modell beleuchten. In der ersten Phase erfolgte eine getrennte Analyse der Anwendungsfälle Bewerbungsprozess, Vertragsmanagement und Veranstaltungsmanagement, um die spezifischen Auswirkungen der beiden Strategien zu untersuchen. Alle Anwendungsfälle waren zu diesem Zeitpunkt vollständig implementiert.
 
-Die durchgeführten Testmessungen lassen sich in drei Phasen unterteilen, die unterschiedliche Aspekte der Teststrategie beleuchten. In der ersten Phase erfolgte eine getrennte Analyse der Geschäftsprozesse \textit{Bewerbungsprozess}, \textit{Vertragsmanagement} und \textit{Veranstaltungsmanagement}, um die spezifischen Auswirkungen der Teststrategien \textbf{Testpyramide} und \textbf{Honeycomb-Modell} auf die einzelnen Anwendungsfälle zu untersuchen. Dabei wurden jeweils zehn Durchläufe pro Testkonfiguration durchgeführt, aus denen Durchschnittswerte für Laufzeit und Testanzahl ermittelt wurden. Die Tests liefen in IntelliJ mit Gradle unter Java 21.
+Für jede Testkonfiguration wurden zehn Durchläufe durchgeführt, aus denen die durchschnittliche Laufzeit und die Anzahl der ausgeführten Tests ermittelt wurden. Die Tests liefen mit Gradle unter Java 21 auf einem System mit 16 GB RAM, einem AMD Ryzen 5 5600H und einer 512 GB NVMe SSD unter Windows. Um möglichst präzise Laufzeitergebnisse zu erhalten, wurden während der Testdurchläufe keine weiteren Programme ausgeführt.
 
-Zusätzlich wird im Rahmen der Testergebnisse der Einsatz von \textbf{Test-Driven Development (TDD)} evaluiert. Dabei wird untersucht, inwiefern TDD den Entwicklungsprozess und die Effektivität der Teststrategien beeinflusst. Die hierbei gewonnenen Erkenntnisse fließen in die abschließende Bewertung der Ansätze ein.
+Neben der Testlaufzeit wurde analysiert, inwiefern sich die Anzahl der Tests zwischen den Strategien unterscheidet und welchen Einfluss dies auf die Testergebnisse hat. Ein besonderer Fokus lag dabei auf der Frage, ob das Honeycomb-Modell durch seine ausschließlich realitätsnahen Tests präzisere, aber potenziell langsamere Testergebnisse liefert und ob die Testpyramide durch die Kombination aus schnellen Unit-Tests und gezielten Integrationstests eine effizientere Alternative darstellt. Zusätzlich wurde der Einfluss von Test-Driven Development (TDD) untersucht, insbesondere hinsichtlich der Auswirkungen auf die Testqualität und die Struktur der entwickelten Tests.
+In der zweiten Phase wurde die Entwicklung der Testkennzahlen über den gesamten Implementierungsprozess hinweg betrachtet. Zunächst wurde der Bewerbungsprozess vollständig entwickelt, getestet und gemessen, bevor das Vertragsmanagement als nächstes Feature hinzugefügt wurde. Nach Abschluss der Tests folgte schließlich die Integration und Messung des Veranstaltungsmanagements.
 
-Die Messungen wurden auf einem System mit 16 GB RAM, einem AMD Ryzen 5 5600H und einer 512 GB NVMe SSD durchgeführt. Um möglichst genaue Laufzeitergebnisse zu gewährleisten, wurden während der Testdurchläufe keine weiteren Programme geöffnet oder ausgeführt.
+Durch diese schrittweise Erweiterung konnte untersucht werden, wie sich die steigende Komplexität der Anwendung und die zunehmenden Abhängigkeiten zwischen den Features auf die Testperformance auswirkten. Die Analyse betrachtete nicht nur die einzelnen Features, sondern auch deren Effekt auf die gesamte Teststrategie im Verlauf der Entwicklung.
 
+In der dritten Phase wurden zusätzliche Tests ergänzt, die aus Fehleranalysen während der Frontend-Entwicklung resultierten. Diese Tests deckten Randfälle ab und erweiterten die Gesamtabdeckung der Anwendung.
 
-In Phase zwei wurden die Testergebnisse chronologisch analysiert, um die Auswirkungen wachsender Features zu untersuchen. Dadurch wurde sichtbar, wie sich die zunehmende Komplexität der Domäne auf die Testausführung auswirkte und welche Effekte die Einführung neuer Funktionalitäten, insbesondere von Spring Security, auf die Testperformance hatte. Die Analyse folgt dabei zunächst einer Einzelfallbetrachtung und geht anschließend auf die Entwicklung der Testkennzahlen im Zeitverlauf ein.
+Darüber hinaus wurde Spring Security implementiert, wodurch die Authentifizierungs- und Autorisierungsszenarien in die Tests aufgenommen wurden. Die Messungen wurden unter denselben Rahmenbedingungen wie in Phase zwei durchgeführt, um die Ergebnisse vergleichbar zu halten.
 
-In der dritten Phase wurden ergänzende Tests in die chronologische Analyse integriert, die sich aus Fehlerentdeckungen während der Frontend-Entwicklung ergaben. Diese zusätzlichen Testfälle decken Randbedingungen ab und erweitern die Gesamtabdeckung der Anwendung. Die erneuten Messungen erfolgten unter den gleichen Rahmenbedingungen wie in Phase zwei, einschließlich der Berücksichtigung von Spring Security, um eine umfassende Analyse der finalen Implementierung sicherzustellen.
-
-Jede Phase schließt mit einem Fazit ab, das die zentralen Erkenntnisse der Analyse zusammenfasst.
+Am Ende jeder Phase werden die wichtigsten Erkenntnisse zusammengefasst und die Auswirkungen der Teststrategien bewertet.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Business Case-spezifische Testergebnisse}
-In diesem Abschnitt werden die Testergebnisse für die drei zentralen Geschäftsprozesse der Anwendung untersucht: \textit{Bewerbungsprozess}, \textit{Vertragsmanagement} und \textit{Veranstaltungsmanagement}. Die getrennte Betrachtung dieser Anwendungsfälle ermöglicht eine detaillierte Analyse der jeweiligen Teststrategien und ihrer Auswirkungen. Neben den initialen Testergebnissen werden auch Veränderungen durch neue Features und die Weiterentwicklung der Anwendung betrachtet.
+\subsection{Phase eins - Business Case-spezifische Testergebnisse}
+In dieser Phase werden die Testergebnisse für die drei zentralen Geschäftsprozesse der Anwendung untersucht: Bewerbungsprozess, Vertragsmanagement und Veranstaltungsmanagement. Diese Anwendungsfälle wurden bereits in den vorherigen Kapiteln beschrieben und bilden die Grundlage für die Untersuchung der beiden Teststrategien.
 
-
+Um eine einheitliche Darstellung der Ergebnisse zu gewährleisten, werden die Messwerte in Tabellenform präsentiert. Jede Tabelle enthält die verwendete Teststrategie, die eingesetzte Datenbank, die Anzahl der durchgeführten Tests, die Anzahl der Unit-Tests innerhalb der Testpyramide und die durchschnittliche Laufzeit über zehn Durchläufe hinweg. Während das Honeycomb-Modell ausschließlich Integrationstests durchführt, kombiniert die Testpyramide sowohl Unit- als auch Integrationstests, wobei je nach Konfiguration entweder die In-Memory-Datenbank H2 oder eine MySQL-Datenbank mit Testcontainers verwendet wird.
+Die folgende Tabelle zeigt die Ergebnisse für den Bewerbungsprozess.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|l|l|l|l|}
@@ -60,7 +62,7 @@ In diesem Abschnitt werden die Testergebnisse für die drei zentralen Geschäfts
 		\hline
 		Honeycomb      & Testcontainer MySQL & 19  & --  & 44\,s \\
 		\hline
-		Testpyramide   & Testcontainer MySQL & 61  & 20  &31\,s 400\,ms   \\
+		Testpyramide   & Testcontainer MySQL & 61  & 20  &31\,s   \\
 		\hline
 		Testpyramide   & H2                  & 61  & 20  & 17\,s    \\
 		\hline
@@ -71,29 +73,22 @@ In diesem Abschnitt werden die Testergebnisse für die drei zentralen Geschäfts
 
 
 \subsubsection{Analyse der Testkomplexität und ihrer Auswirkungen}
-Die folgende Analyse betrachtet die Ergebnisse aus den vorherigen Abschnitten und zeigt, welche Faktoren die Testkomplexität beeinflussen. Dabei werden insbesondere die Testanzahl, die Laufzeiten sowie Abhängigkeiten zwischen den Geschäftsprozessen analysiert.
+Die folgende Analyse betrachtet die Testergebnisse aus den Tabellen und zeigt, welche Faktoren die Testlaufzeit beeinflussen. Die Anzahl der Tests und die Laufzeit allein reichen nicht aus, um den Aufwand eines Business Cases zu bestimmen. Eine genauere Bewertung erfordert die Berücksichtigung mehrerer Aspekte, darunter die Struktur der Geschäftsprozesse, die Anzahl der Prüfungen und die Abhängigkeiten zwischen den Features.
 
-Die Testkomplexität lässt sich nicht allein durch die Anzahl der Tests oder die Laufzeiten bestimmen. Eine fundierte Analyse erfordert die Betrachtung mehrerer Metriken, die Rückschlüsse auf die Geschäftslogik und die Abhängigkeiten zwischen den Anwendungsfällen ermöglichen. Die Ergebnisse zeigen deutliche Unterschiede zwischen den Geschäftsprozessen.
+Die Testpyramide weist in \autoref{tab:bewerbung_updated_first} mit 73 Tests die höchste Testanzahl auf , was auf Statusänderungen innerhalb des Bewerbungsprozesses zurückzuführen ist. Besonders die Verwaltung von Bewerbungen, Ablehnen und Annehmen der Bewerbungen. Die Laufzeiten zeigen, dass Tests mit H2 schneller ausgeführt werden als mit Testcontainers 34 Sekunden. Das Honeycomb-Modell testet mit nur 34 Tests das gesamte System, benötigt jedoch mit 47,7 Sekunden deutlich mehr Zeit.
+Im Vertragsmanagement in \autoref{tab:vertrag_einzeln} sind weniger Tests erforderlich als im Bewerbungsprozess, dennoch sind die Laufzeiten vergleichbar. Die enge Verknüpfung mit dem Bewerbungsprozess führt zu häufigen Datenbankzugriffen und Prüfungen. Diese Funktion ist von den Ergebnissen nah an dem Bewerbungsmanagement, da aus einer angenommenen Bewerbung ein Vertrag erstellt werden kann.
+Im Veranstaltungsmanagement in \autoref{tab:eventbereich_einzeln} zeigt die Testpyramide 61 und das Honeycomb-Modell 19 Tests. Die Laufzeiten bleiben jedoch relativ hoch, was auf Datenbankoperationen und Verknüpfungen zwischen Entitäten hinweist.
 
-Im \textbf{Bewerbungsprozess} weist die Testpyramide die höchste Testanzahl auf, wie \autoref{tab:bewerbung_updated_first} zeigt. Dies deutet auf eine umfangreiche Regellogik mit zahlreichen Validierungen und Grenzfällen hin. Eine hohe Testanzahl allein bedeutet jedoch nicht zwangsläufig eine höhere Feature-Komplexität. Vielmehr zeigt sie, dass dieser Bereich granular getestet wurde, wodurch eine präzisere Absicherung einzelner Geschäftsregeln ermöglicht wird. Die hohe Testanzahl resultiert aus der Vielzahl an Statusänderungen innerhalb des Bewerbungsprozesses. Eine Bewerbung kann zunächst abgelehnt oder angenommen werden, wodurch in beiden Fällen eine Statusänderung ausgelöst wird. Im Falle einer Annahme wird ein \textbf{Vertrag} erstellt, der wiederum einen eigenen Status besitzt. Dieser Vertrag kann vom Bewerber akzeptiert oder abgelehnt werden, wobei erneute Prüfungen der Bedingungen erfolgen. Diese Prozesskette erfordert eine Vielzahl an Validierungen, insbesondere für Geschäftsregeln, wie Zugriffsberechtigungen, Gültigkeitszeiträume und Verknüpfungen zwischen den Entitäten.
+Auffällig ist, dass die Anzahl der Unit-Tests innerhalb der Testpyramide vergleichsweise gering ist. Dies könnte darauf zurückzuführen sein, dass die Geschäftslogik der betrachteten Anwendungsfälle nicht besonders umfangreich ist und weniger verschiedene Prüfungen benötigt. Die Funktionalität ist klar definiert und enthält keine komplexen Abhängigkeiten, wodurch auch der Bedarf an zusätzlichen Tests geringer ausfällt.
 
-Das \textbf{Vertragsmanagement} weist hingegen eine geringere Testanzahl auf, jedoch mit längeren Testlaufzeiten, wie in \autoref{tab:vertrag_einzeln} dargestellt. Dies lässt sich auf eine starke Abhängigkeit zum Bewerbungsprozess zurückzuführen. Viele Tests greifen auf bestehende Daten zu, was die Anzahl der Datenbankabfragen erhöht. Die längere Laufzeit resultiert nicht nur aus der Geschäftslogik, sondern auch auf die Interaktion mit anderen Prozessen. Ähnlich wie im Bewerbungsprozess enthält das Vertragsmanagement zahlreiche Statusänderungen. Ein Vertrag kann beispielsweise im Status \textbf{Contract} erstellt und nach Annahme durch den Bewerber \textbf{Confirmed} werden. Die Verwaltung dieser Statusübergänge, insbesondere in Verbindung mit den Daten des Bewerbungsprozesses, führt zu komplexen Prüfungen und einer erhöhten Testlaufzeit. Die geringere Anzahl an Tests führt hier nicht zu einer verbesserten Performance. Dies zeigt, dass neben der Teststrategie auch andere Faktoren, wie beispielsweise die Datenbanknutzung oder die Komplexität der Geschäftslogik, die Laufzeiten beeinflussen.
+Die Wahl der Teststrategie bestimmt, welche Aspekte eines Business Cases stärker sichtbar werden. Die Testpyramide ermöglicht eine detaillierte Überprüfung einzelner Geschäftsregeln durch isolierte Tests. Das Honeycomb-Modell hingegen deckt Abhängigkeiten zwischen den Prozessen auf und zeigt, welche Bereiche besonders lange Laufzeiten verursachen.
 
-Im \textbf{Veranstaltungsmanagement} zeigt sich eine moderatere Anzahl an Tests, wie \autoref{tab:eventbereich_einzeln} verdeutlicht. Die Laufzeiten sind jedoch nicht wesentlich geringer als in anderen Bereichen. Dies könnte darauf hindeuten, dass ressourcenintensive Datenbankoperationen oder komplexe Validierungen eine größere Rolle spielen als die Testanzahl. 
+Die kommenden Abschnitte untersuchen, wie sich diese Unterschiede mit wachsender Funktionalität weiterentwickeln.
 
-Die \textbf{Testpyramide} beinhaltet die isolierte Validierung einzelner Geschäftsregeln, insbesondere im Bewerbungs- und Vertragsmanagement, wie aus \autoref{tab:bewerbung_updated_first} und \autoref{tab:vertrag_einzeln} hervorgeht. Dadurch werden Fehler früh erkannt und könnten frühzeitig behoben werden.
-
-Das \textbf{Honeycomb-Modell} hingegen betrachtet die gesamte Geschäftslogik und deren Wechselwirkungen. Besonders im Vertragsmanagement wird dies sichtbar, wie die längeren Laufzeiten in \autoref{tab:vertrag_einzeln} zeigen. Diese resultieren nicht nur komplexen Logik der einzelnen Tests, sondern auch aus Abhängigkeiten zu anderen Prozessen wie dem Bewerbungsmanagement. End-to-End-Tests prüfen komplette Abläufe und zeigen auf, wo das System langsam oder ineffizient arbeitet.
-
-Die Wahl der Teststrategie bestimmt, welche Aspekte der Komplexität sichtbar werden. Die Testpyramide liefert detaillierte Einblicke in einzelne Regeln und Validierungen, was sich in \autoref{tab:bewerbung_updated_first} und \autoref{tab:vertrag_einzeln} widerspiegelt. Das Honeycomb-Modell zeigt hingegen Abhängigkeiten und Interaktionen zwischen Prozessen auf, wie \autoref{tab:eventbereich_einzeln} verdeutlicht.
-
-Zusammenfassend ergibt sich die Testkomplexität aus mehreren Faktoren. Die Kombination aus Testanzahl, Laufzeiten und Abhängigkeiten gibt ein vollständiges Bild ab. Die Testpyramide zeigt, welche Geschäftsprozesse granular validiert werden, wie in \autoref{tab:bewerbung_updated_first} und \autoref{tab:vertrag_einzeln} ersichtlich ist. Das Honeycomb-Modell verdeutlicht hingegen, dass lange Laufzeiten oft durch externe Abhängigkeiten oder intensive Datenbankoperationen entstehen, wie \autoref{tab:eventbereich_einzeln} zeigt. Beide Strategien zusammen ermöglichen eine umfassende Analyse der Systemarchitektur.
-
-Die folgenden Abschnitte analysieren, wie sich diese Erkenntnisse über den Entwicklungszeitraum hinweg verändert haben und welchen Einfluss die zunehmende Komplexität auf die Testperformance hatte.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Chronologische Entwicklung der Testergebnisse Phase 2 vor Spring Security}
-In dieser Phase werden die Testergebnisse betrachtet, die vor der Integration von Spring Security ermittelt wurden. Dies ermöglicht eine Analyse der ursprünglichen Teststruktur und bildet die Grundlage für den späteren Vergleich. Die Tests wurden inkrementell und iterativ entwickelt. Durch mehrere Durchläufe passte sich die Teststrategie schrittweise an neue Anforderungen an. So entstand eine stabile Basis für die weiteren Entwicklungen. Die folgenden Testergebnisse werden im Fazit der zweiten Testphase analysiert.
+\subsection{Phase zwei – Erste Implementierung und Teststrategie ohne Authentifizierung}
+In dieser Phase werden die Testergebnisse vor der Integration von Spring Security analysiert. Sie dienen als Grundlage, um später die Auswirkungen der Authentifizierung auf die Teststrategien zu vergleichen. Die Tests wurden schrittweise erweitert und angepasst, wodurch eine stabile Testbasis entstand. Die Ergebnisse sind in Tabellen dargestellt, die wie in Phase eins die Teststrategie, die eingesetzte Datenbank, die Anzahl der Tests, die Anzahl der Unit-Tests innerhalb der Testpyramide und die durchschnittliche Laufzeit über zehn Durchläufe hinweg enthalten. Diese Tabellen zeigen, wie sich die Testlaufzeiten und die Anzahl der Tests in Abhängigkeit von der Teststrategie und der Datenbank verhalten. Im Fazit dieser Phase werden die Ergebnisse ausgewertet und mit den Messungen nach der Security-Integration verglichen.
 
 
 \begin{table}[H]
@@ -109,7 +104,7 @@ In dieser Phase werden die Testergebnisse betrachtet, die vor der Integration vo
 		Testpyramide   & H2                   & 44 &    15\,s \\
 		\hline
 	\end{tabular}
-	\caption{Laufzeiten und Testanzahl im Bewerbungsprozess (vor Integration von Spring Security)}
+	\caption{Phase zwei - Bewerbungsmanagement}
 	\label{tab:bewerbungsprozess}
 \end{table}
 
@@ -118,16 +113,16 @@ In dieser Phase werden die Testergebnisse betrachtet, die vor der Integration vo
 	\centering
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{Test Typ} & \textbf{Laufzeit} \\
+		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl}& \textbf{Laufzeit} \\
 		\hline
-		Honeycomb       & MySQL-Testcontainer & 48  & Integration  & 73\,s 400\,ms    \\
+		Honeycomb       & MySQL-Testcontainer & 48  & 73\,s 400\,ms    \\
 				\hline
-		Testpyramide    & MySQL-Testcontainer & 103 & Alle         & 45\,s  \\
+		Testpyramide    & MySQL-Testcontainer & 103        & 45\,s  \\
 		\hline
-		Testpyramide    & H2                  & 103 & Alle         & 17\,s  \\
+		Testpyramide    & H2                  & 103       & 17\,s  \\
 		\hline
 	\end{tabular}
-		\caption{Laufzeiten und Testanzahl im Vertragsmanagement (vor Spring Security)}
+		\caption{Phase zwei - Bewerbungs- und Vertragsmanagement}
 		\label{tab:vertragsmanagement}
 \end{table}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -136,62 +131,36 @@ In dieser Phase werden die Testergebnisse betrachtet, die vor der Integration vo
 	\centering
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{Test Typ} & \textbf{Laufzeit} \\
+		\textbf{Modell} & \textbf{Datenbank} & \textbf{Testanzahl} & \textbf{Laufzeit} \\
 		\hline
-		Honeycomb       & MySQL-Testcontainer & 58  & Integration  & 101\,s 900\,ms    \\
+		Honeycomb       & MySQL-Testcontainer & 58  & 101\,s 900\,ms    \\
 				\hline
-		Testpyramide    & MySQL-Testcontainer & 140 & Alle         & 88\,s 777\,ms     \\
+		Testpyramide    & MySQL-Testcontainer & 140      & 88\,s 777\,ms     \\
 		\hline
-		Testpyramide    & H2                   & 140 & Alle         & 23\,s \\
+		Testpyramide    & H2                   & 140        & 23\,s \\
 		\hline
 	\end{tabular}
-		\caption{Laufzeiten und Testanzahl im Veranstaltungsmanagement (vor Spring Security)}
+		\caption{Phase zwei - Bewerbungs-, Vertrags - und Veranstaltungsmanagement}
 		\label{tab:eventmanagement}
 \end{table}
-\subsubsection{Einfluss der Datenbankwahl (H2 vs. MySQL-Testcontainer)}
-
-Die Wahl der Datenbank beeinflusst die Testergebnisse erheblich. H2 ermöglicht schnelle Tests, stößt jedoch auf Kompatibilitätsprobleme mit MySQL-spezifischen Funktionen. MySQL-Testcontainer bildet die Produktionsumgebung realistischer ab, benötigt aber mehr Ressourcen und verlängert die Testlaufzeiten.
-
-Ein Problem trat bei `UNSIGNED`-Typen auf. MySQL unterstützt diesen Datentyp, H2 jedoch nicht. Dies führte zu Fehlern in Tests mit der H2-Datenbank. Zusätzlich gab es Schwierigkeiten mit `LIKE`-Abfragen. Die `ESCAPE`-Klausel wurde in H2 doppelt interpretiert, was zu einer fehlerhaften SQL-Syntax führte. In MySQL funktionierte dieselbe Abfrage problemlos.
-
-Auch die Suchfunktion für Events war betroffen. Die Methode `findAllByTitleContainingIgnoreCase(String title)`, die in Spring JPA normalerweise ohne explizite Query funktioniert, wurde in H2 nicht erkannt. Dies machte eine manuelle Anpassung notwendig:
-
-\begin{lstlisting}[language=Java]
-	@Query("SELECT e FROM Event e WHERE UPPER(e.title) LIKE "
-	+ "CONCAT('%', UPPER(:title), '%')")
-	List<Event> findAllByTitleContaining(String title);
-\end{lstlisting}
-
-
-Erst diese Anpassung ermöglichte die korrekte Ausführung der Suche in beiden Datenbanken. Ohne sie schlugen die Tests in H2 fehl, während sie in MySQL erfolgreich waren. Dies zeigt, dass H2 nicht alle MySQL-Funktionen korrekt unterstützt.
-
-H2 eignet sich gut für schnelle Unit-Tests, hat aber Einschränkungen bei MySQL-spezifischen Features. MySQL-Testcontainer bietet eine genauere Produktionsumgebung, benötigt aber mehr Zeit. Eine Kombination beider Datenbanken ist sinnvoll. H2 kann für schnelle Tests genutzt werden, während MySQL-Testcontainer tiefere Integrationstests ermöglicht.
-
-\subsubsection{Fazit zur zweiten Testphase}
-
-Die zweite Testphase zeigt deutliche Veränderungen in der Teststruktur und Performance. Der \textbf{Bewerbungsprozess} bleibt der am stärksten getestete Bereich. Die hohe Anzahl an Geschäftsregeln und Statusänderungen führt zu zahlreichen Tests. Das \textbf{Vertragsmanagement} weist ebenfalls viele Statusübergänge auf. Die enge Verknüpfung mit dem Bewerbungsprozess erhöht die Anzahl der Datenbankabfragen und verlängert die Testlaufzeiten.
+\subsubsection{Fazit zur zweiten Phase}
+Die zweite Testphase zeigt Veränderungen in der Teststruktur und Performance im Verlauf der Feature-Entwicklung. Mit jedem neu hinzugefügten Feature stieg die Anzahl der Tests sowie die Laufzeit der Testausführungen. Besonders beim \textbf{Vertragsmanagement} zeigte sich eine enge Abhängigkeit zum Bewerbungsprozess, da Verträge erst aus bestehenden Bewerbungen generiert werden können. Dies führte zu einer erhöhten Anzahl an Datenbankabfragen und verlängerte die Testlaufzeiten, insbesondere bei der Nutzung des Honeycomb-Modells.
 
 Das \textbf{Honeycomb-Modell} erfasst diese Abhängigkeiten in seinen End-to-End-Tests. Fehler im Zusammenspiel zwischen Bewerbungen und Verträgen werden sichtbar. Gleichzeitig erschwert die umfassende Systemprüfung die Fehlersuche. Besonders problematisch war dies bei der Verarbeitung von SQL-Skripten, wo eine ungültige UUID erst entdeckt wurde, als der gesamte Prozess fehlschlug. Die \textbf{Testpyramide} ermöglichte eine gezieltere Überprüfung einzelner Geschäftsregeln. Fehler wurden frühzeitig erkannt und effizient behoben. Insbesondere zeigte sich, dass die granularen Tests im Repository durch die Testpyramide besser unterstützt wurden, was eine schnellere Identifikation fehlerhafter Abfragen ermöglichte.
 
-Auch bei Änderungen an Entitäten zeigte sich ein deutlicher Unterschied zwischen den Teststrategien. Die Einführung der \texttt{ApplicationId} in die Entität \texttt{Contract} konnte in der \textbf{Testpyramide} durch gezielte Unit-Tests schnell validiert werden, bevor Anpassungen in der Geschäftslogik oder der Datenbank erforderlich waren. Dies erleichterte die Fehleranalyse und minimierte unerwartete Seiteneffekte. Allerdings war die Wartung der Tests in der Testpyramide aufwendiger, da Änderungen an einer Komponente dazu führten, dass mehrere Tests über verschiedene Schichten hinweg angepasst werden mussten. Während der Implementierung eines neuen Attributs für ein Event im Frontend mussten auch Änderungen am Response-Objekt vorgenommen werden. Dies führte zu Anpassungen an den bestehenden Tests und verursachte eine zusätzliche Verzögerung.
+Auch bei Änderungen an Entitäten zeigten sich ein Unterschied zwischen den Teststrategien. Die Einführung der \texttt{ApplicationId} in die Entität \texttt{Contract} konnte in der \textbf{Testpyramide} durch gezielte Unit-Tests schnell validiert werden, bevor Anpassungen in der Geschäftslogik oder der Datenbank erforderlich waren. Dies erleichterte die Fehleranalyse und minimierte unerwartete Seiteneffekte. Während der Implementierung eines neuen Attributs für ein Event im Frontend mussten auch Änderungen am Response-Objekt vorgenommen werden. Dies führte zu Bugs und es zeigte sich hier ein Nachteil bei der Fehlersuche im Honeycomb Modell. Wenn durch eine Änderung neue Bugs entstanden, konnten diese in der Testpyramide schnell identifiziert werden, da der Fehler einer bestimmten Schicht zugeordnet werden konnte. Im Honeycomb-Modell dauerte die Fehlersuche hingegen deutlich länger, da der gesamte Prozess in einem Systemtest durchlaufen werden musste. Dies führte zu längeren Debugging-Phasen, da nicht sofort ersichtlich war, ob ein Fehler in der Geschäftslogik, der Datenbank oder den Abhängigkeiten zwischen den Prozessen lag. Besonders Mapping-Probleme konnten in der Testpyramide schnell identifiziert werden, da sie einer bestimmten Schicht wie dem Mapper direkt zugeordnet werden konnten. Im Honeycomb-Modell war dies schwieriger, da Fehler erst im Gesamtkontext sichtbar wurden.
+Besonders auffällig ist, dass der Laufzeitanstieg bei H2 von Abbildung \ref{tab:bewerbungsprozess} zu Abbildung \ref{tab:eventmanagement} nur etwa 7 Sekunden betrug, während er bei MySQL-Testcontainer mehr als das Doppelte betrug. Dies zeigt, dass H2 eine konstante Performance mit geringen Laufzeitsteigerungen bietet, während MySQL-Testcontainer mit wachsender Testanzahl und steigender Datenbanklast deutlich längere Ausführungszeiten benötigt.
 
-Im \textbf{Honeycomb-Modell} war das Anpassen bestehender Tests hingegen weniger aufwendig, da es insgesamt eine geringere Anzahl an Testfällen gibt und viele Änderungen bereits durch End-to-End-Tests abgedeckt wurden. Allerdings zeigte sich hier ein Nachteil bei der Fehlersuche. Wenn durch eine Änderung neue Bugs entstanden, konnten diese in der Testpyramide schnell identifiziert werden, da der Fehler einer bestimmten Schicht zugeordnet werden konnte. Im Honeycomb-Modell dauerte die Fehlersuche hingegen deutlich länger, da der gesamte Prozess in einem Systemtest durchlaufen werden musste. Dies führte zu längeren Debugging-Phasen, da nicht sofort ersichtlich war, ob ein Fehler in der Geschäftslogik, der Datenbank oder den Abhängigkeiten zwischen den Prozessen lag. Besonders Mapping-Probleme konnten in der Testpyramide schnell identifiziert werden, da sie einer bestimmten Schicht wie dem Mapper direkt zugeordnet werden konnten. Im Honeycomb-Modell war dies schwieriger, da Fehler erst im Gesamtkontext sichtbar wurden.
-
-
-Die Wahl der Datenbank beeinflusste die Testdauer. H2 ermöglichte schnellere Testdurchläufe, war aber nicht vollständig kompatibel mit MySQL. Probleme traten insbesondere bei \texttt{UNSIGNED}-Typen und \texttt{LIKE}-Abfragen auf. Besonders die fehlerhafte \texttt{LIKE}-Abfrage führte dazu, dass die Spring-Repository-Methode \texttt{findAllByTitleContainingIgnoreCase} in H2 nicht funktionierte. Eine explizite Query-Annotation war erforderlich. MySQL-Testcontainer bot eine realistischere Umgebung, führte jedoch zu längeren Testlaufzeiten.
-
-Zusammenfassend zeigt die zweite Testphase, dass sowohl die Wahl der Teststrategie als auch die Datenbankarchitektur die Testperformance erheblich beeinflussen. Die \textbf{Testpyramide} eignet sich besonders für regelbasierte Geschäftsprozesse mit vielen Statusänderungen, da sie eine detaillierte Validierung einzelner Komponenten ermöglicht. Das \textbf{Honeycomb-Modell} bildet hingegen komplexe Systeminteraktionen und Prozessketten besser ab. Das Debugging im Honeycomb-Modell war herausfordernder, da Fehler nicht isoliert in einzelnen Komponenten auftraten, sondern über mehrere Schichten hinweg verteilt waren. Dies erschwerte die Fehlersuche, da nicht sofort ersichtlich war, ob ein Fehler in der Geschäftslogik, der Datenbank oder den Abhängigkeiten zwischen den Prozessen lag.
+Zusammenfassend zeigt die zweite Testphase, dass sowohl die Wahl der Teststrategie als auch die Datenbank die Testperformance beeinflussen. Die \textbf{Testpyramide} eignet sich besonders für regelbasierte Geschäftsprozesse mit vielen Statusänderungen, da sie eine gezielte Validierung einzelner Komponenten ermöglicht. Das \textbf{Honeycomb-Modell} testet hingegen das gesamte System in einer Umgebung, die näher an der tatsächlichen Nutzung liegt. Dadurch können Probleme erkannt werden, die erst im Zusammenspiel mehrerer Teile der Anwendung auftreten. Allerdings war das Debugging im Honeycomb-Modell schwieriger, da Fehler nicht einer bestimmten Schicht zugeordnet werden konnten. Stattdessen mussten alle beteiligten Bereiche überprüft werden, was die Fehlersuche aufwendiger machte.
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Messdaten nach Integration von Spring Security und TDD Phase 3}
-Nach der Integration von Spring Security und TDD wurden die Testergebnisse erneut erfasst. Die Sicherheitsprüfungen beeinflussen die Testperformance. Der iterative TDD-Ansatz verbessert die Stabilität der Tests. Neue Testfälle wurden ergänzt, die während der Frontend-Entwicklung identifizierte Randfälle abdecken. Die höhere Testanzahl resultiert nicht aus Spring Security. Es gibt keine spezifischen Sicherheitsprüfungen für die Business Cases. Die zusätzlichen Tests entstanden durch die Abdeckung von Edge Cases.
+\subsection{Phase drei - Messdaten mit zusätzlichen Tests und Spring Security}
+Nach der Integration von Spring Security wurden die Testergebnisse erneut erfasst. Die Sicherheitsprüfungen beeinflussen die Testperformance. Der iterative TDD-Ansatz verbessert die Stabilität der Tests. Neue Testfälle wurden ergänzt, die während der Frontend-Entwicklung identifizierte Randfälle abdecken. Die höhere Testanzahl resultiert nicht aus Spring Security. Es gibt keine spezifischen Sicherheitsprüfungen für die Business Cases. Die zusätzlichen Tests entstanden durch die Abdeckung von Edge Cases.
 
-\subsubsection{Bewerbung (aktualisiert)}
 
 Im Bereich Bewerbung ergeben sich nach Integration von Spring Security folgende neue Durchschnittswerte:
-
 
 Die Testergebnisse in \ref{tab:bewerbung_updated_first} zeigen eine erhöhte Testanzahl. Dies liegt nicht an Spring Security, sondern an neuen Edge-Case-Tests. Insbesondere wurden zusätzliche Tests für Statusübergänge ergänzt.
 
