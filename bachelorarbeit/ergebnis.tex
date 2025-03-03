@@ -135,7 +135,7 @@ In dieser Phase werden die Testergebnisse vor der Integration von Spring Securit
 		\hline
 		Honeycomb       & MySQL-Testcontainer & 58  & 101\,s 900\,ms    \\
 				\hline
-		Testpyramide    & MySQL-Testcontainer & 140      & 88\,s 777\,ms     \\
+		Testpyramide    & MySQL-Testcontainer & 140      & 78\,s 700\,ms     \\
 		\hline
 		Testpyramide    & H2                   & 140        & 23\,s \\
 		\hline
@@ -145,6 +145,14 @@ In dieser Phase werden die Testergebnisse vor der Integration von Spring Securit
 \end{table}
 \subsubsection{Fazit zur zweiten Phase}
 Die zweite Testphase zeigt Veränderungen in der Teststruktur und Performance im Verlauf der Feature-Entwicklung. Mit jedem neu hinzugefügten Feature stieg die Anzahl der Tests sowie die Laufzeit der Testausführungen. Besonders beim \textbf{Vertragsmanagement} zeigte sich eine enge Abhängigkeit zum Bewerbungsprozess, da Verträge erst aus bestehenden Bewerbungen generiert werden können. Dies führte zu einer erhöhten Anzahl an Datenbankabfragen und verlängerte die Testlaufzeiten, insbesondere bei der Nutzung des Honeycomb-Modells.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{fig/phase-zwei.png}
+	\caption{Vergleich der Testlaufzeiten in Phase zwei}
+	\label{fig:phase-zwei}
+\end{figure}
 
 Das \textbf{Honeycomb-Modell} erfasst diese Abhängigkeiten in seinen End-to-End-Tests. Fehler im Zusammenspiel zwischen Bewerbungen und Verträgen werden sichtbar. Gleichzeitig erschwert die umfassende Systemprüfung die Fehlersuche. Besonders problematisch war dies bei der Verarbeitung von SQL-Skripten, wo eine ungültige UUID erst entdeckt wurde, als der gesamte Prozess fehlschlug. Die \textbf{Testpyramide} ermöglichte eine gezieltere Überprüfung einzelner Geschäftsregeln. Fehler wurden frühzeitig erkannt und effizient behoben. Insbesondere zeigte sich, dass die granularen Tests im Repository durch die Testpyramide besser unterstützt wurden, was eine schnellere Identifikation fehlerhafter Abfragen ermöglichte.
 
@@ -157,21 +165,9 @@ Zusammenfassend zeigt die zweite Testphase, dass sowohl die Wahl der Teststrateg
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Phase drei - Messdaten mit zusätzlichen Tests und Spring Security}
-Nach der Integration von Spring Security wurden die Testergebnisse erneut erfasst. Die Sicherheitsprüfungen beeinflussen die Testperformance. Der iterative TDD-Ansatz verbessert die Stabilität der Tests. Neue Testfälle wurden ergänzt, die während der Frontend-Entwicklung identifizierte Randfälle abdecken. Die höhere Testanzahl resultiert nicht aus Spring Security. Es gibt keine spezifischen Sicherheitsprüfungen für die Business Cases. Die zusätzlichen Tests entstanden durch die Abdeckung von Edge Cases.
+ach der Integration von Spring Security wurden die Testergebnisse in Phase drei erneut erfasst. Die Sicherheitsprüfungen beeinflussen die Testperformance, doch die gestiegene Testanzahl resultiert primär aus neuen Randfalltests, die während der Frontend-Entwicklung identifiziert wurden. Spring Security selbst fügte lediglich fünf Tests für den Login-Prozess hinzu, ohne spezifische Sicherheitsprüfungen für die Business Cases.
 
-
-Im Bereich Bewerbung ergeben sich nach Integration von Spring Security folgende neue Durchschnittswerte:
-
-Die Testergebnisse in \ref{tab:bewerbung_updated_first} zeigen eine erhöhte Testanzahl. Dies liegt nicht an Spring Security, sondern an neuen Edge-Case-Tests. Insbesondere wurden zusätzliche Tests für Statusübergänge ergänzt.
-
-Die Laufzeiten sind leicht gestiegen. Dies resultiert aus den zusätzlichen Konfigurationsschritten von Spring Security. Besonders im Honeycomb-Modell sind die Auswirkungen spürbar. Jede Anfrage wird durch die Sicherheitsmechanismen geprüft, was zusätzlichen Overhead verursacht.
-
-Die Testpyramide mit H2 bleibt die schnellste Variante mit 2,146 Sekunden. MySQL-Testcontainer erhöht die Laufzeit auf 5,632 Sekunden. Das Honeycomb-Modell benötigt 8,156 Sekunden. Dies zeigt, dass End-to-End-Tests besonders stark von Spring Security beeinflusst werden.
-
-Durch TDD wurden neue Tests frühzeitig ergänzt. Fehler wurden schneller entdeckt und behoben. Dies reduzierte den Debugging-Aufwand und verbesserte die Teststabilität. Die Testpyramide profitierte von isolierten Tests. Änderungen an Geschäftsregeln konnten gezielt geprüft werden. Im Honeycomb-Modell mussten End-to-End-Tests häufiger angepasst werden.
-
-Die gestiegene Testanzahl resultiert aus neuen Randfalltests. Die höhere Laufzeit ist auf Spring Security zurückzuführen. Die Testpyramide bleibt effizient für gezielte Validierungen. Das Honeycomb-Modell ist notwendig für die vollständige Systemintegration, erfordert jedoch mehr Wartung.
-
+Da in Phase eins die einzelnen Businessfälle bereits vollständig implementiert und analysiert wurden, können die Ergebnisse des Bewerbungsmanagements aus \autoref{tab:bewerbung_updated_first} als Referenz dienen. In dieser Phase wird darauf aufbauend das Vertragsmanagement betrachtet.
 
 \begin{table}[H]
 	\centering
@@ -186,7 +182,7 @@ Die gestiegene Testanzahl resultiert aus neuen Randfalltests. Die höhere Laufze
 		Testpyramide    & H2                  & 75  & 25  & 19\,s \\
 		\hline
 	\end{tabular}
-	\caption{Vertragsmanagement im Szenario "Bewerbung mit Vertrag" (nach Integration von Spring Security)}
+	\caption{Phase drei - Bewerbungs- und Vertragsmanagement}
 	\label{tab:bewerbung_mit_vertrag_updated}
 \end{table}
 
@@ -199,12 +195,12 @@ Die gestiegene Testanzahl resultiert aus neuen Randfalltests. Die höhere Laufze
 		\hline
 		Honeycomb      & Testcontainer MySQL & 80  & --  & 107\,s \\
 		\hline
-		Testpyramide   & Testcontainer MySQL & 195 & 82  & 78\,s 700\,ms    \\
+		Testpyramide   & Testcontainer MySQL & 195 & 82  & 88\,s    \\
 		\hline
-		Testpyramide   & H2                  & 195 & 82  & 22\,s   \\
+		Testpyramide   & H2                  & 195 & 82  & 24\,s   \\
 		\hline
 	\end{tabular}
-		\caption{Veranstaltungsmanagement (nach Integration von Spring Security)}
+		\caption{Phase drei - Bewerbungs-, Vertrags - und Veranstaltungsmanagement}
 		\label{tab:eventbereich_updated}
 \end{table}
 
@@ -216,33 +212,27 @@ Die gestiegene Testanzahl resultiert aus neuen Randfalltests. Die höhere Laufze
 		\hline
 		Honeycomb      & Testcontainer MySQL & 84  & --  & 120\,s 750\,ms   \\
 		\hline
-		Testpyramide   & Testcontainer MySQL & 200 & 82  & 80\,s 100\,ms    \\
+		Testpyramide   & Testcontainer MySQL & 200 & 82  & 88\,s 777\,ms    \\
 		\hline
-		Testpyramide   & H2                  & 200 & 82  & 22\,s 600\,ms     \\
+		Testpyramide   & H2                  & 200 & 82  & 24\,s    \\
 		\hline
 	\end{tabular}
-	\caption{Alle Business Fälle mit Authentifizierung}
-	\label{tab:eventbereich_updated}
+	\caption{Phase drei - alle Features mit Login Tests}
+	\label{tab:eventbereich_updated_security}
 \end{table}
 
-\subsubsection{Vergleich der Datenbanklösungen (nach Spring Security)}
-Die Wahl der Datenbank beeinflusst weiterhin die Laufzeiten. Wie in Phase 2 beobachtet, ist H2 schneller, während MySQL-Testcontainer eine realistischere Umgebung bietet, aber langsamer ist.
+\subsubsection{Erkenntnisse zur dritten Testphase}
+Wie bereits in Phase 2 beobachtet, bleibt H2 die schnellere Lösung mit nur leicht steigenden Laufzeiten, während MySQL-Testcontainer mit zunehmender Testanzahl eine stärkere Laufzeitsteigerung zeigt. Die Testpyramide mit H2 bleibt weitgehend stabil und zeigt nur eine geringe Erhöhung um etwa eine Sekunde von Tabelle \ref{tab:eventmanagement} zu \ref{tab:eventbereich_updated}, was darauf hinweist, dass die zusätzlichen Tests kaum Einfluss auf die Gesamtperformance hatten.
 
-In Phase 3 sind die Testlaufzeiten insgesamt gestiegen. Dies liegt nicht an zusätzlichen Sicherheitsprüfungen, sondern an neuen Testfällen für Edge Cases. Die Testpyramide mit H2 zeigt kaum Veränderungen. Die Laufzeit beträgt nun 3,466 Sekunden statt 2,858 Sekunden aus Phase 2. Der Anstieg ist gering und zeigt, dass die zusätzlichen Tests kaum Einfluss auf die Performance haben.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{fig/phase-drei.png}
+	\caption{Vergleich der Testlaufzeiten in Phase drei}
+	\label{fig:phase-drei}
+\end{figure}
 
-Die Tests mit MySQL-Testcontainer sind deutlich langsamer. Dies liegt daran, dass bei jeder Testausführung der Spring Security-Kontext geladen wird. Dadurch verlängert sich die Laufzeit, auch wenn keine Spring Security-Tests für die Geschäftslogik hinzugefügt wurden. H2 bleibt effizient für schnelle Tests. MySQL-Testcontainer bleibt notwendig für realistische Systemprüfungen.
-
-\subsubsection{Fazit zur dritten Testphase}
-Die dritte Testphase zeigt deutliche Veränderungen in der Teststruktur und Performance. Die Anzahl der Tests ist gestiegen, jedoch nicht durch Spring Security. Die zusätzlichen Tests decken Randfälle ab, die während der Frontend-Entwicklung identifiziert wurden. Besonders Statusübergänge wurden umfassender getestet.  
-
-Die Laufzeiten haben sich ebenfalls erhöht. Dies liegt an der Spring Security-Konfiguration, die jede End-to-End-Anfrage prüft. Besonders im Honeycomb-Modell in \autoref{tab:eventbereich_updated} macht sich dies bemerkbar. Die Testdauer stieg von 12,939 Sekunden in Phase 2 auf 17,487 Sekunden in Phase 3. Das zusätzliche Login und die Rollenprüfung führen zu höherem Overhead. Die Testpyramide ist weniger betroffen. Sie nutzt mehr isolierte Tests, die nicht durch die vollständige Authentifizierung laufen.  
-
-Der Einsatz von TDD erleichterte die Erweiterung der Tests. Fehler wurden frühzeitig entdeckt und behoben. Dadurch reduzierte sich der Debugging-Aufwand. Die Testpyramide profitierte besonders von dieser Methode. Neue Geschäftsregeln und Statusänderungen konnten gezielt validiert werden. Im Honeycomb-Modell mussten End-to-End-Tests häufiger angepasst werden, da Änderungen an einer Schicht Auswirkungen auf mehrere Prozesse hatten.  
-
-Besonders auffällig war der Einfluss der Datenbankwahl in  \autoref{tab:eventbereich_updated}. Die Tests mit H2 blieben weitgehend stabil. Die Laufzeit stieg nur leicht von 2,858 Sekunden in Phase 2 auf 3,466 Sekunden in Phase 3. Die Tests mit MySQL-Testcontainer waren dagegen deutlich langsamer. Hier sorgte das Laden des Spring Security-Kontexts für zusätzliche Verzögerungen.  
-
-Zusammenfassend zeigt Phase 3, dass sich die gestiegene Testanzahl aus neuen Randfalltests ergibt. Die höheren Laufzeiten sind auf zusätzliche Authentifizierungsprüfungen zurückzuführen. Die Testpyramide bleibt effizient für gezielte Validierungen, während das Honeycomb-Modell für die vollständige Systemintegration notwendig ist, jedoch längere Testzeiten und mehr Wartung erfordert.
-
+Im Gegensatz dazu verlängerten sich die Laufzeiten mit MySQL-Testcontainer erheblich. Besonders im Honeycomb-Modell ist der Anstieg auffällig: Die Laufzeit erhöhte sich von 101,9 Sekunden in Phase 2 (\autoref{tab:eventmanagement}) auf 120,75 Sekunden in Phase 3 (\autoref{tab:eventbereich_updated}), ein Anstieg um fast 19 Sekunden. Dies liegt primär an der Authentifizierungsprüfung, die jede End-to-End-Anfrage durchläuft. Die zusätzlichen fünf Login-Tests  erklären diesen Anstieg.
+Die Testpyramide war weniger betroffen, da sie viele isolierte Tests nutzt, die nicht durch die vollständige Authentifizierung laufen. Die bereits in Phase 2 beobachteten Auswirkungen von Test-Driven Development auf die Fehlererkennung und den Debugging-Aufwand zeigten sich erneut: Während die Testpyramide gezielte Validierungen einzelner Geschäftsregeln ermöglichte, mussten im Honeycomb-Modell End-to-End-Tests häufiger angepasst werden, da Änderungen an einer Schicht mehrere Teile des Systems beeinflussten.
 
 \subsection{Analyse der JaCoCo-Ergebnisse}
 Die Testabdeckung wurde mit JaCoCo gemessen, um die Qualität und Reichweite der durchgeführten Tests zu evaluieren. Die Analyse zeigt, wie gut die verschiedenen Teststrategien Codebereiche abdecken und welche Unterschiede zwischen der Testpyramide und dem Honeycomb-Modell bestehen. Die folgende Tabelle fasst die Ergebnisse zusammen.
@@ -278,7 +268,7 @@ Zusammenfassend zeigt sich, dass die Testpyramide in allen Kategorien höhere Ab
 
 
 \subsection{Analyse der PIT Mutation Testing Ergebnisse}
-Mutation Testing überprüft die Wirksamkeit der Tests, indem gezielt kleine Änderungen oder Mutationen am Code vorgenommen werden. Ein Test gilt als stark, wenn er solche Mutationen erkennt und die Tests fehlschlagen. Die Ergebnisse zeigen Unterschiede in der Teststärke, der Laufzeit und der Anzahl der Timeouts zwischen der Testpyramide und dem Honeycomb-Modell. Während die Testpyramide eine hohe Anzahl an Mutationen in kurzer Zeit überprüft, zeigen sich im Honeycomb-Modell längere Laufzeiten und eine erhöhte Anzahl an Timeouts.
+Mutation Testing überprüft die Wirksamkeit der Tests, indem gezielt kleine Änderungen oder Mutationen am Code vorgenommen werden. Die Ergebnisse zeigen Unterschiede in der Teststärke, der Laufzeit und der Anzahl der Timeouts zwischen der Testpyramide und dem Honeycomb-Modell. Während die Testpyramide eine hohe Anzahl an Mutationen in kurzer Zeit überprüft, zeigen sich im Honeycomb-Modell längere Laufzeiten und eine erhöhte Anzahl an Timeouts.
 
 \begin{table}[h]
 	\centering
