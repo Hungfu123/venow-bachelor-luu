@@ -4,13 +4,11 @@
 
 Die Testergebnisse zeigen klare Unterschiede zwischen der Testpyramide und dem Honeycomb-Modell. Die Testpyramide prüft einzelne Komponenten gezielt und schnell, während das Honeycomb-Modell ganze Abläufe und Wechselwirkungen testet. Die Anzahl der Tests war in der Testpyramide durchweg höher, da sie neben Integrationstests viele Unit-Tests enthält. Das Honeycomb-Modell führte hingegen weniger, aber umfassendere End-to-End-Tests durch.
 
-Die Wahl der Datenbank hatte einen Einfluss auf die Laufzeiten. H2 ermöglichte schnelle Tests, war jedoch nicht vollständig mit MySQL kompatibel. Besonders UNSIGNED-Typen und LIKE-Abfragen führten zu Problemen. MySQL-Testcontainer bildete die reale Umgebung besser ab, hatte aber längere Testlaufzeiten.
-
-Spring Security hatte signifikante Auswirkungen auf die Testlaufzeiten. Besonders in Honeycomb verzögerten sich End-to-End-Tests merklich, da jede Anfrage den vollständigen Authentifizierungsprozess durchlaufen musste. In der Testpyramide war der Einfluss moderater, da viele Tests auf isolierte Schichten beschränkt waren.
+Spring Security hatte Auswirkungen auf die Testlaufzeiten wie in \autoref{tab:eventbereich_updated_security} angegeben. Besonders in Honeycomb verzögerten sich End-to-End-Tests merklich, da die Login und Autorisierungs Tests den vollständigen Authentifizierungsprozess durchlaufen musste. In der Testpyramide war der Einfluss moderater, da viele Tests auf isolierte Schichten beschränkt waren.
 
 Die Laufzeitanalyse zeigt, dass das Honeycomb-Modell mit MySQL-Testcontainer fast doppelt so lange benötigt wie die Testpyramide mit derselben Datenbank. Während die Testpyramide mit Testcontainer in 10,7 Sekunden ausgeführt wurde, dauerte das Honeycomb-Modell 19,4 Sekunden.Die End-to-End-Tests im Honeycomb-Modell erhöhen die Laufzeit um durchschnittlich 80–90 Prozent, da jede Anfrage das vollständige System durchläuft.
 
-TDD hatte einen positiven Einfluss auf die Teststabilität. Die Testpyramide erforderte vollständige Implementierungen vor dem Schreiben von Tests, während das Honeycomb-Modell Tests ermöglichte, bevor alle Klassen existierten. Dies erleichterte frühe Entwicklungsphasen, erschwerte jedoch das Debugging, da Fehler oft erst in späteren Testphasen sichtbar wurden.
+TDD hatte einen positiven Einfluss auf die Teststabilität. Dies erleichterte frühe Entwicklungsphasen, erschwerte jedoch das Debugging, da Fehler oft erst in späteren Testphasen sichtbar wurden.
 
 
 
