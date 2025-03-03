@@ -274,12 +274,16 @@ Mutation Testing überprüft die Wirksamkeit der Tests, indem gezielt kleine Än
 		\hline
 		\textbf{Metrik}       & \textbf{Honeycomb} & \textbf{Testpyramide} \\ \hline
 		Line Coverage        & 95\,\% (573/605)   & 98\,\% (593/605)      \\ \hline
-		Mutation Coverage    & 94\,\% (176/188)   & 96\,\% (181/188)      \\ \hline
-		Test Strength        & 100\,\% (176/176)  & 98\,\% (181/185)      \\ \hline
+		Mutation Coverage    & 94\,\% (175/185)   & 96\,\% (178/185)      \\ \hline
+		Test Strength        & 99\,\% (175/176)  & 98\,\% (178/182)      \\ \hline
 	\end{tabular}
 	\caption{Mutation Testing mit PIT}
 	\label{tab:pit-ergebnisse}
 \end{table}
+
+Tabelle \ref{tab:pit-ergebnisse} zeigt zwei wesentliche Metriken zur Testabdeckung. \textbf{Line Coverage}misst, ob Codezeilen durch Tests ausgeführt wurden, während \textbf{Mutation Coverage }bewertet, ob Tests gezielt Fehler erkennen können.Die Werte in Klammern geben das Verhältnis zwischen abgedeckten und insgesamt geprüften Einheiten an. Beispielsweise bedeutet 573/605 in der Line Coverage von Honeycomb, dass 573 von 605 Codezeilen während der Tests mindestens einmal ausgeführt wurden.
+Im Gegensatz dazu zeigt 175/185 in der Mutation Coverage von Honeycomb, dass von 185 absichtlich eingefügten Mutationen 175 durch Tests erkannt und \textbf{killed} wurden. Während die Line Coverage nur misst, ob eine Zeile überhaupt ausgeführt wurde, zeigt die Mutation Coverage, ob Tests tatsächlich stark genug sind, um unerwartete Codeänderungen zu erkennen.
+Ähnlich bedeutet der Wert 175/176 in der \textbf{Test Strength }von Honeycomb, dass von 176 durchgeführten Mutationen 175 erkannt wurden, was auf eine hohe Teststärke hindeutet.
 
 \begin{table}[h]
 	\centering
@@ -295,12 +299,14 @@ Mutation Testing überprüft die Wirksamkeit der Tests, indem gezielt kleine Än
 	\label{tab:pit-timings}
 \end{table}
 
+Tabelle \ref{tab:pit-timings} enthält verschiedene Metriken zur Laufzeit und Stabilität des Mutation Testings. Die \textbf{Gesamtdauer}beschreibt die gesamte Zeit, die für das Mutation Testing benötigt wurde. Die \textbf{Mutation Analysis }misst nur die Zeit für das Erzeugen und Testen der Mutationen. \textbf{Timeouts }zeigen, wie oft Tests nicht innerhalb der vorgesehenen Zeit abgeschlossen wurden. In solchen Fällen wird die Mutation als überlebt gewertet. Mutationen ohne Abdeckung sind Mutationen, die in Codeabschnitten eingefügt wurden, die von keinem Testfall erreicht wurden.
 
-Die Ergebnisse der Mutation Testing-Analyse (siehe \autoref{tab:pit-ergebnisse}) verdeutlichen weitere Unterschiede zwischen den Teststrategien. Die Testpyramide bietet eine höhere Granularität, was sich an der höheren Mutation Coverage (96\, \% vs. 94 \, \%) und der höheren Line Coverage (98\, \% vs. 95\, \%) zeigt. Zudem hat sie keine Timeouts, während das Honeycomb-Modell 157 Timeouts aufweist (\autoref{tab:pit-timings}).
 
-Die \textbf{Line Coverage} ist in der Testpyramide mit 98\,\% um drei Prozentpunkte höher als im Honeycomb-Modell (95\,\%). Dies bestätigt die bereits in der JaCoCo-Analyse beobachtete höhere Abdeckung von Codezeilen. Der Unterschied ist jedoch geringer als zuvor, da Mutation Testing nicht nur misst, ob Code ausgeführt wurde, sondern auch überprüft, ob Fehler zuverlässig erkannt werden.
+Die Ergebnisse der Mutation Testing-Analyse in \autoref{tab:pit-ergebnisse} verdeutlichen weitere Unterschiede zwischen den Teststrategien. Die Testpyramide bietet eine höhere Granularität, was sich an der höheren Mutation Coverage (96\, \% vs. 94 \, \%) und der höheren Line Coverage (98\, \% vs. 95\, \%) zeigt. Zudem hat sie keine Timeouts, während das Honeycomb-Modell 157 Timeouts aufweist (\autoref{tab:pit-timings}).
 
-Die \textbf{Mutation Coverage} liegt in der Testpyramide bei 96\,\% und im Honeycomb-Modell bei 94\,\%. Dies zeigt, dass beide Strategien eine hohe Fehlererkennungsrate haben, jedoch die Testpyramide Mutationen effizienter entdeckt. Die \textbf{Test Strength} liegt im Honeycomb-Modell bei 100\,\%, während sie in der Testpyramide mit 98\,\% leicht darunter liegt. Dies weist darauf hin, dass im Honeycomb-Modell alle getesteten Mutationen zuverlässig erkannt wurden, während in der Testpyramide einige unentdeckt blieben.
+Die \textbf{Line Coverage} ist in der Testpyramide mit 98\,\% um drei Prozente höher als im Honeycomb-Modell mit 95\,\%. Dies bestätigt die bereits in der JaCoCo-Analyse beobachtete höhere Abdeckung von Codezeilen. Der Unterschied ist jedoch geringer als zuvor, da Mutation Testing nicht nur misst, ob Code ausgeführt wurde, sondern auch überprüft, ob Fehler zuverlässig erkannt werden.
+
+Die \textbf{Mutation Coverage} liegt in der Testpyramide bei 96\,\% und im Honeycomb-Modell bei 94\,\%. Dies zeigt, dass beide Strategien eine hohe Fehlererkennungsrate haben, jedoch die Testpyramide Mutationen effizienter entdeckt. Die \textbf{Test Strength} liegt im Honeycomb-Modell bei 99\,\%, während sie in der Testpyramide mit 98\,\% leicht darunter liegt.
 
 
 \begin{figure}[H]
@@ -317,18 +323,18 @@ Die \textbf{Mutation Coverage} liegt in der Testpyramide bei 96\,\% und im Honey
 	\label{fig:honeycomb-diagramm}
 \end{figure}
 
-Die Mutationsstatus-Verteilung zeigt klare Unterschiede. Die Testpyramide weist viele \textit{KILLED} Mutationen auf (\autoref{fig:testpyramid-diagramm}). Eine Mutation gilt als \textit{KILLED}, wenn sie von einem Test erkannt wird. Der Test schlägt dann fehl, weil die Mutation eine fehlerhafte Änderung verursacht hat. Dies zeigt, dass die Tests in der Testpyramide gezielt Codeänderungen prüfen und Fehler zuverlässig erkennen.
+Die Mutationsstatus-Verteilung zeigt klare Unterschiede. Die Testpyramide weist viele \textit{KILLED} Mutationen auf \autoref{fig:testpyramid-diagramm}. Dies zeigt, dass die Tests in der Testpyramide gezielt Codeänderungen prüfen und Fehler zuverlässig erkennen.
 
-Im Honeycomb-Modell treten viele \textit{TIMED-OUT} Mutationen auf (\autoref{fig:honeycomb-diagramm}). Das bedeutet, dass einige Mutationen nicht rechtzeitig getestet wurden. Der Grund ist die hohe Laufzeit durch REST-Calls und Datenbankabfragen. Diese Tests sind realitätsnäher, brauchen aber mehr Ressourcen.
+Im Honeycomb-Modell treten viele \textit{TIMED-OUT} Mutationen auf \autoref{fig:honeycomb-diagramm}. Das bedeutet, dass einige Mutationen nicht rechtzeitig getestet wurden. Der Grund ist die hohe Laufzeit durch alle Schichten geht und dort jedes mal Datenabfragen und REST-API Calls aufgerufen wird. Diese Tests sind realitätsnäher, brauchen aber mehr Ressourcen.
 
 Die Testpyramide bietet eine effizientere Fehlererkennung. Sie testet alle Mutationen erfolgreich und verhindert Timeouts. Beim Honeycomb-Modell bleiben durch lange Laufzeiten einige Mutationen ungetestet. Dies kann die Stabilität der Teststrategie beeinträchtigen.
 
-\textbf{Optimierungsmöglichkeiten:} Eine Anpassung der Timeout-Werte könnte Timeouts verringern und die Testabdeckung verbessern.
+\textbf{Optimierungsmöglichkeiten:} Eine Anpassung der Timeout-Werte könnte Timeouts verringern und die Testabdeckung verbessern, aber dafür eine längere Gesamtdauer.
 
 \subsection{Testpyramide vs. Honeycomb Laufzeit und Statistik}
-Die Testpyramide benötigte insgesamt \textbf{1 Minute und 51 Sekunden}, davon \textbf{15 Sekunden} für die Coverage-Analyse und \textbf{1 Minute und 34 Sekunden} für die Mutationstests. Während dieser Zeit wurden \textbf{188 Mutationen} generiert, von denen \textbf{181 (96\,\%)} erfolgreich erkannt und eliminiert wurden. Nur \textbf{3 Mutationen} blieben ohne Testabdeckung.
+Die Testpyramide benötigte insgesamt \textbf{1 Minute und 51 Sekunden}, davon \textbf{15 Sekunden} für die Coverage-Analyse und \textbf{1 Minute und 34 Sekunden} für die Mutationstests. Während dieser Zeit wurden \textbf{185 Mutationen} generiert, von denen \textbf{178 (96\,\%)} erfolgreich erkannt und eliminiert wurden. Nur \textbf{3 Mutationen} blieben ohne Testabdeckung.
 
-Im Vergleich dazu zeigt sich im Honeycomb-Modell eine signifikant längere Testdauer. Die gesamte Laufzeit betrug \textbf{1 Stunde, 19 Minuten und 9 Sekunden}, davon allein \textbf{1 Stunde, 17 Minuten und 12 Sekunden} für die Mutationstests. Von den \textbf{188 generierten Mutationen} konnte Honeycomb \textbf{176 (94\,\%)} eliminieren, jedoch traten \textbf{12 Mutationen} ohne Testabdeckung auf. Die hohe Anzahl an Timeouts führte dazu, dass einige Mutationen nicht zuverlässig überprüft werden konnten.
+Im Vergleich dazu zeigt sich im Honeycomb-Modell eine signifikant längere Testdauer. Die gesamte Laufzeit betrug \textbf{1 Stunde, 19 Minuten und 9 Sekunden}, davon allein \textbf{1 Stunde, 17 Minuten und 12 Sekunden} für die Mutationstests. Von den \textbf{185 generierten Mutationen} konnte Honeycomb \textbf{175 (94\,\%)} eliminieren, jedoch traten \textbf{12 Mutationen} ohne Testabdeckung auf. Die hohe Anzahl an Timeouts führte dazu, dass einige Mutationen nicht zuverlässig überprüft werden konnten.
 
 Die Testpyramide ist effizienter und schneller, erreicht eine höhere Abdeckung und hat keine Timeouts. Das Honeycomb-Modell benötigt deutlich mehr Zeit, deckt aber umfassendere Abläufe ab. Die Wahl der Strategie hängt von den Prioritäten im Testprozess ab: Wenn eine hohe Granularität und schnelle Ausführung entscheidend sind, ist die Testpyramide besser geeignet. Wenn realistische Szenarien und vollständige Systemintegration im Vordergrund stehen, bietet das Honeycomb-Modell Vorteile, ist jedoch mit längeren Laufzeiten verbunden.
 
