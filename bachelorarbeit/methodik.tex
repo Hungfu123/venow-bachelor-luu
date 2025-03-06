@@ -24,18 +24,25 @@ Für das Mutationstesting wird \texttt{PITest} verwendet. \texttt{Parallel Isola
 Die Wahl der Teststrategie basiert auf den Anforderungen der Webanwendung Venow, die als Fallstudie dient. Durch den Einsatz von H2 und Testcontainers werden die zuvor beschriebenen Testansätze praktisch erprobt, um die Systemfunktionen wie den Bewerbungsprozess, die Vertragsverwaltung und der Veranstaltungsverwaltung umfassend zu validieren.
 
 
+
 \subsection{Untersuchung der Teststrategien in drei Phasen}
-Die durchgeführten Testmessungen lassen sich in drei Phasen unterteilen, die verschiedene Aspekte der Teststrategien beleuchten. In der \textbf{ersten Phase }erfolgte eine getrennte Analyse der Anwendungsfälle Bewerbungsprozess, Vertragsmanagement und Veranstaltungsmanagement, um die spezifischen Auswirkungen der beiden Strategien zu untersuchen. Alle Anwendungsfälle waren zu diesem Zeitpunkt vollständig implementiert.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.35\textwidth]{fig/drei-phasen.jpg}
+	\caption{Übersicht der drei Phasen}
+	\label{fig:drei-phasen}
+\end{figure}
+Wie in \autoref{fig:drei-phasen} lassen sich die durchgeführten Testmessungen in drei Phasen unterteilen, die verschiedene Aspekte der Teststrategien beleuchten. In der \textbf{ersten Phase }erfolgte eine getrennte Analyse der Anwendungsfälle Bewerbungsprozess, Vertragsmanagement und Veranstaltungsmanagement, um die spezifischen Auswirkungen der beiden Strategien zu untersuchen. Alle Anwendungsfälle waren vollständig implementiert, da die Tests erst nach Abschluss der gesamten Entwicklung durchgeführt wurden.
 
 Für jede Testkonfiguration wurden zehn Durchläufe durchgeführt, aus denen die durchschnittliche Laufzeit und die Anzahl der ausgeführten Tests ermittelt wurden. Die Tests liefen mit Gradle unter Java 21 auf einem System mit 16 GB RAM, einem AMD Ryzen 5 5600H und einer 512 GB NVMe SSD unter Windows. Um möglichst präzise Laufzeitergebnisse zu erhalten, wurden während der Testdurchläufe keine weiteren Programme ausgeführt.
 
 Neben der Testlaufzeit wurde analysiert, inwiefern sich die Anzahl der Tests zwischen den Strategien unterscheidet und welchen Einfluss dies auf die Testergebnisse hat. Ein besonderer Fokus lag dabei auf der Frage, ob das Honeycomb-Modell durch seine ausschließlich realitätsnahen Tests präzisere, aber potenziell langsamere Testergebnisse liefert und ob die Testpyramide durch die Kombination aus schnellen Unit-Tests und gezielten Integrationstests eine effizientere Alternative darstellt. Zusätzlich wurde der Einfluss von TDD untersucht, insbesondere hinsichtlich der Auswirkungen auf die Testqualität und die Struktur der entwickelten Tests.
 
-In der \textbf{zweiten Phase }wurde die Entwicklung der Testkennzahlen über den gesamten Implementierungsprozess hinweg betrachtet. Zunächst wurde der Bewerbungsprozess vollständig entwickelt, getestet und gemessen, bevor das Vertragsmanagement als nächstes Feature hinzugefügt wurde. Nach Abschluss der Tests folgte schließlich die Integration und Messung des Veranstaltungsmanagements. Durch diese schrittweise Erweiterung konnte untersucht werden, wie sich die steigende Komplexität der Anwendung und die zunehmenden Abhängigkeiten zwischen den Features auf die Testperformance auswirkten. Die Analyse betrachtete nicht nur die einzelnen Features, sondern auch deren Effekt auf die gesamte Teststrategie im Verlauf der Entwicklung.
+In der \textbf{zweiten Phase} wurde die Entwicklung der Testkennzahlen über den gesamten Implementierungsprozess hinweg betrachtet. Zunächst wurde der Bewerbungsprozess vollständig entwickelt, getestet und gemessen, bevor das Vertragsmanagement als nächstes Feature hinzugefügt wurde. Dies wurde vor der Integration von Spring Security analysiert Sie dienen als Grundlage, um später die Auswirkungen der Authentifizierung auf die Teststrategien zu vergleichen. Nach Abschluss der Tests folgte schließlich die Integration und Messung des Veranstaltungsmanagements. Durch diese schrittweise Erweiterung konnte untersucht werden, wie sich die steigende Komplexität der Anwendung und die zunehmenden Abhängigkeiten zwischen den Features auf die Testperformance auswirkten. Die Analyse betrachtete nicht nur die einzelnen Features, sondern auch deren Effekt auf die gesamte Teststrategie im Verlauf der Entwicklung.
 
 In der \textbf{dritten Phase} wurden zusätzliche Tests ergänzt, die aus Fehleranalysen während der Frontend-Entwicklung resultierten. Diese Tests deckten Randfälle ab und erweiterten die Gesamtabdeckung der Anwendung. Darüber hinaus wurde Spring Security implementiert, wodurch die Authentifizierungs- und Autorisierungsszenarien in die Tests aufgenommen wurden. Die Messungen wurden unter denselben Rahmenbedingungen wie in Phase zwei durchgeführt, um die Ergebnisse vergleichbar zu halten.
 
-Am Ende jeder Phase werden die wichtigsten Erkenntnisse zusammengefasst und die Auswirkungen der Teststrategien bewertet.
+Am Ende jeder Phase werden die wichtigsten Erkenntnisse zusammengefasst und die Auswirkungen der Teststrategien bewertet. Dabei fließen nicht nur die Testergebnisse selbst ein, sondern auch praktische Erfahrungen, etwa wie sich die Teststrategien beim Debuggen, beim Hinzufügen neuer Attribute oder bei Änderungen am Code ausgewirkt haben.
 
 \subsection{Tests für spezifische Anwendungsfälle}
 

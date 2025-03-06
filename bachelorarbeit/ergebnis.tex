@@ -1,11 +1,11 @@
 \section{Ergebnisse und Interpretation}
-Hier beginnt der Abschnitt wo die Laufzeiten zwischen den Teststrategien gemessen werden in drei Phasen wie in der Methodik beschrieben.
+Hier beginnt der Abschnitt wo die Laufzeiten zwischen den Teststrategien gemessen werden in drei Phasen wie in der Methodik beschrieben. Um eine einheitliche Darstellung der Ergebnisse zu gewährleisten, werden die Messwerte in Tabellenform präsentiert. Jede Tabelle enthält die verwendete Teststrategie, die eingesetzte Datenbank, die Anzahl der durchgeführten Tests, die Anzahl der Unit-Tests innerhalb der Testpyramide und die durchschnittliche Laufzeit über zehn Durchläufe hinweg. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Phase eins - Business Case-spezifische Testergebnisse}
 In dieser Phase werden die Testergebnisse für die drei zentralen Geschäftsprozesse der Anwendung untersucht: Bewerbungsprozess, Vertragsmanagement und Veranstaltungsmanagement. Diese Anwendungsfälle wurden bereits in den vorherigen Kapiteln beschrieben und bilden die Grundlage für die Untersuchung der beiden Teststrategien.
 
-Um eine einheitliche Darstellung der Ergebnisse zu gewährleisten, werden die Messwerte in Tabellenform präsentiert. Jede Tabelle enthält die verwendete Teststrategie, die eingesetzte Datenbank, die Anzahl der durchgeführten Tests, die Anzahl der Unit-Tests innerhalb der Testpyramide und die durchschnittliche Laufzeit über zehn Durchläufe hinweg. Während das Honeycomb-Modell ausschließlich Integrationstests durchführt, kombiniert die Testpyramide sowohl Unit- als auch Integrationstests, wobei je nach Konfiguration entweder die In-Memory-Datenbank H2 oder eine MySQL-Datenbank mit Testcontainers verwendet wird.
-Die folgende Tabelle zeigt die Ergebnisse für den Bewerbungsprozess.
+
+Die folgende \autoref{tab:bewerbung_updated_first} zeigt die Ergebnisse für den Bewerbungsprozess.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|l|l|l|l|}
@@ -62,20 +62,18 @@ Die folgende Tabelle zeigt die Ergebnisse für den Bewerbungsprozess.
 \subsubsection{Analyse der Testkomplexität und ihrer Auswirkungen}
 Die folgende Analyse betrachtet die Testergebnisse aus den Tabellen und zeigt, welche Faktoren die Testlaufzeit beeinflussen. Die Anzahl der Tests und die Laufzeit allein reichen nicht aus, um den Aufwand eines Business Cases zu bestimmen. Eine genauere Bewertung erfordert die Berücksichtigung mehrerer Aspekte, darunter die Struktur der Geschäftsprozesse, die Anzahl der Prüfungen und die Abhängigkeiten zwischen den Features.
 
-Die Testpyramide weist in \autoref{tab:bewerbung_updated_first} mit 73 Tests die höchste Testanzahl auf , was auf Statusänderungen innerhalb des Bewerbungsprozesses zurückzuführen ist. Besonders die Verwaltung von Bewerbungen, Ablehnen und Annehmen der Bewerbungen. Die Laufzeiten zeigen, dass Tests mit H2 schneller ausgeführt werden als mit Testcontainers 34 Sekunden. Das Honeycomb-Modell testet mit nur 34 Tests das gesamte System, benötigt jedoch mit 47,7 Sekunden deutlich mehr Zeit.
-Im Vertragsmanagement in \autoref{tab:vertrag_einzeln} sind weniger Tests erforderlich als im Bewerbungsprozess, dennoch sind die Laufzeiten vergleichbar. Die enge Verknüpfung mit dem Bewerbungsprozess führt zu häufigen Datenbankzugriffen und Prüfungen. Diese Funktion ist von den Ergebnissen nah an dem Bewerbungsmanagement, da aus einer angenommenen Bewerbung ein Vertrag erstellt werden kann.
-Im Veranstaltungsmanagement in \autoref{tab:eventbereich_einzeln} zeigt die Testpyramide 61 und das Honeycomb-Modell 19 Tests. Die Laufzeiten bleiben jedoch relativ hoch, was auf Datenbankoperationen und Verknüpfungen zwischen Entitäten hinweist.
+Die Testpyramide weist in \autoref{tab:bewerbung_updated_first} mit 73 Tests die höchste Testanzahl auf, was auf Statusänderungen innerhalb des Bewerbungsprozesses zurückzuführen ist. Besonders die Verwaltung von Bewerbungen und das Ablehnen oder Annehmen der Bewerbungen. Die Laufzeiten zeigen, dass Tests mit H2 schneller ausgeführt werden als mit Testcontainers mit 34 Sekunden. Das Honeycomb-Modell testet mit nur 34 Tests das gesamte System, benötigt jedoch mit 47,7 Sekunden deutlich mehr Zeit.
+Im Vertragsmanagement in \autoref{tab:vertrag_einzeln} sind etwas weniger Tests erforderlich als im Bewerbungsprozess, dennoch sind die Laufzeiten vergleichbar. Die enge Verknüpfung mit dem Bewerbungsprozess führt zu häufigen Datenbankzugriffen und Prüfungen. Diese Funktion ist von den Ergebnissen nah an dem Bewerbungsmanagement, da aus einer angenommenen Bewerbung ein Vertrag erstellt werden kann.
+Im Veranstaltungsmanagement in \autoref{tab:eventbereich_einzeln} führt die Testpyramide 61 und das Honeycomb-Modell 19 Tests durch. Die Laufzeiten bleiben jedoch relativ hoch, was auf Datenbankoperationen und Verknüpfungen zwischen Entitäten hinweist.
 
 Auffällig ist, dass die Anzahl der Unit-Tests innerhalb der Testpyramide vergleichsweise gering ist. Dies könnte darauf zurückzuführen sein, dass die Geschäftslogik der betrachteten Anwendungsfälle nicht besonders umfangreich ist und weniger verschiedene Prüfungen benötigt. Die Funktionalität ist klar definiert und enthält keine komplexen Abhängigkeiten, wodurch auch der Bedarf an zusätzlichen Tests geringer ausfällt.
-
-Die Wahl der Teststrategie bestimmt, welche Aspekte eines Business Cases stärker sichtbar werden. Die Testpyramide ermöglicht eine detaillierte Überprüfung einzelner Geschäftsregeln durch isolierte Tests. Das Honeycomb-Modell hingegen deckt Abhängigkeiten zwischen den Prozessen auf und zeigt, welche Bereiche besonders lange Laufzeiten verursachen.
 
 Die kommenden Abschnitte untersuchen, wie sich diese Unterschiede mit wachsender Funktionalität weiterentwickeln.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Phase zwei – Erste Implementierung und Teststrategie ohne Authentifizierung}
-In dieser Phase werden die Testergebnisse vor der Integration von Spring Security analysiert. Sie dienen als Grundlage, um später die Auswirkungen der Authentifizierung auf die Teststrategien zu vergleichen. Die Tests wurden schrittweise erweitert und angepasst, wodurch eine stabile Testbasis entstand. Die Ergebnisse sind in Tabellen dargestellt, die wie in Phase eins die Teststrategie, die eingesetzte Datenbank, die Anzahl der Tests, die Anzahl der Unit-Tests innerhalb der Testpyramide und die durchschnittliche Laufzeit über zehn Durchläufe hinweg enthalten. Diese Tabellen zeigen, wie sich die Testlaufzeiten und die Anzahl der Tests in Abhängigkeit von der Teststrategie und der Datenbank verhalten. Im Fazit dieser Phase werden die Ergebnisse ausgewertet und mit den Messungen nach der Security-Integration verglichen.
+  Die Ergebnisse sind in Tabellen dargestellt, die wie in Phase eins die Teststrategie, die eingesetzte Datenbank, die Anzahl der Tests, die Anzahl der Unit-Tests innerhalb der Testpyramide und die durchschnittliche Laufzeit über zehn Durchläufe hinweg enthalten. Diese Tabellen zeigen, wie sich die Testlaufzeiten und die Anzahl der Tests in Abhängigkeit von der Teststrategie und der Datenbank verhalten. Im Fazit dieser Phase werden die Ergebnisse ausgewertet und mit den Messungen nach der Security-Integration verglichen.
 
 
 \begin{table}[H]
@@ -131,12 +129,12 @@ In dieser Phase werden die Testergebnisse vor der Integration von Spring Securit
 		\label{tab:eventmanagement}
 \end{table}
 \subsubsection{Fazit zur zweiten Phase}
-Die zweite Testphase zeigt Veränderungen in der Teststruktur und Performance im Verlauf der Feature-Entwicklung. Mit jedem neu hinzugefügten Feature stieg die Anzahl der Tests sowie die Laufzeit der Testausführungen. Besonders beim \textbf{Vertragsmanagement} zeigte sich eine enge Abhängigkeit zum Bewerbungsprozess, da Verträge erst aus bestehenden Bewerbungen generiert werden können. Dies führte zu einer erhöhten Anzahl an Datenbankabfragen und verlängerte die Testlaufzeiten, insbesondere bei der Nutzung des Honeycomb-Modells.
+Die \autoref{fig:phase-zwei} zeigt Veränderungen in der Teststruktur und Performance im Verlauf der Feature-Entwicklung. Mit jedem neu hinzugefügten Feature stieg die Anzahl der Tests sowie die Laufzeit der Testausführungen. Besonders beim \textbf{Vertragsmanagement} zeigte sich eine enge Abhängigkeit zum Bewerbungsprozess, da Verträge erst aus bestehenden Bewerbungen generiert werden können. Dies führte zu einer erhöhten Anzahl an Datenbankabfragen und verlängerte die Testlaufzeiten, insbesondere bei der Nutzung des Honeycomb-Modells.
 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{fig/phase-zwei.png}
+	\includegraphics[width=0.8\textwidth]{fig/phase-zweii.png}
 	\caption{Vergleich der Testlaufzeiten in Phase zwei}
 	\label{fig:phase-zwei}
 \end{figure}
@@ -164,9 +162,9 @@ Da in Phase eins die einzelnen Businessfälle bereits vollständig implementiert
 		\hline
 		Honeycomb       & Testcontainer MySQL & 60  & --  & 77\,s 777\,ms   \\
 		\hline
-		Testpyramide    & Testcontainer MySQL & 75  & 25  & 49\,s 333\,ms    \\
+		Testpyramide    & Testcontainer MySQL & 130  & 55  & 49\,s 333\,ms    \\
 		\hline
-		Testpyramide    & H2                  & 75  & 25  & 19\,s \\
+		Testpyramide    & H2                  & 130  & 55  & 19\,s \\
 		\hline
 	\end{tabular}
 	\caption{Phase drei - Bewerbungs- und Vertragsmanagement}
@@ -213,7 +211,7 @@ Wie bereits in Phase 2 beobachtet, bleibt H2 die schnellere Lösung mit nur leic
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{fig/phase-drei.png}
+	\includegraphics[width=0.8\textwidth]{fig/phase-dreii.png}
 	\caption{Vergleich der Testlaufzeiten in Phase drei}
 	\label{fig:phase-drei}
 \end{figure}
