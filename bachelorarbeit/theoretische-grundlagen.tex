@@ -1,5 +1,5 @@
 \section{Grundlagen der Testmethodik}
-Ein strukturierter Ansatz für Softwaretests ist entscheidend, um Anwendungen systematisch auf Fehler zu überprüfen und deren Stabilität zu gewährleisten.
+Ein strukturierter Ansatz für Softwaretests ist entscheidend, um Anwendungen auf Fehler zu überprüfen und deren Stabilität zu gewährleisten.
 
 In diesem Abschnitt werden die Testpyramide und das Testing-Honeycomb-Modell vorgestellt. Beide Modelle sind in der Praxis etabliert und bieten unterschiedliche Perspektiven auf die Organisation von Tests.
 
@@ -33,7 +33,7 @@ Gleichzeitig warnt Spotify jedoch ausdrücklich vor der Nutzung sogenannter inte
 \begin{quote}
 	\enquote{That means we should focus on Integration Tests, have a few Implementation Detail Tests and even fewer Integrated Tests (ideally none).}~\cite{Spotify18}
 \end{quote}
-Das Honeycomb-Modell priorisiert Integrationstests, um die Interaktionspunkte innerhalb eines Systems umfassend zu prüfen. Spotify empfiehlt dabei, Tests in einer vollständig kontrollierten Umgebung durchzuführen, anstatt auf produktive externe Abhängigkeiten zurückzugreifen~\cite{Spotify18}.
+Das Honeycomb-Modell priorisiert Integrationstests, um die Interaktionspunkte innerhalb einer Anwendung umfassend zu prüfen. Spotify empfiehlt dabei, Tests in einer vollständig kontrollierten Umgebung durchzuführen, anstatt auf produktive externe Abhängigkeiten zurückzugreifen~\cite{Spotify18}.
 
 Auch in dieser Arbeit wird weitgehend auf Mocking verzichtet, insbesondere für die Datenbank, indem eine produktionsnahe Testumgebung mit Testcontainers verwendet wird. Dies ermöglicht eine realitätsnahe Überprüfung des Zusammenspiels aller Komponenten, ohne dabei auf unzuverlässige externe Abhängigkeiten angewiesen zu sein.
 
