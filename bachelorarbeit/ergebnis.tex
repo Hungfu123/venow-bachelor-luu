@@ -59,7 +59,7 @@ Die folgende \autoref{tab:bewerbung_updated_first} zeigt die Ergebnisse für den
 \end{table}
 
 
-\subsubsection{Analyse der Testkomplexität und ihrer Auswirkungen}
+\subsubsection{Erkenntnisse zur ersten Phase}
 Die folgende Analyse betrachtet die Testergebnisse aus den Tabellen und zeigt, welche Faktoren die Testlaufzeit beeinflussen. Die Anzahl der Tests und die Laufzeit allein reichen nicht aus, um den Aufwand eines Business Cases zu bestimmen. Eine genauere Bewertung erfordert die Berücksichtigung mehrerer Aspekte, darunter die Struktur der Geschäftsprozesse, die Anzahl der Prüfungen und die Abhängigkeiten zwischen den Features.
 
 Die Testpyramide weist in \autoref{tab:bewerbung_updated_first} mit 73 Tests die höchste Testanzahl auf, was auf Statusänderungen innerhalb des Bewerbungsprozesses zurückzuführen ist. Besonders die Verwaltung von Bewerbungen und das Ablehnen oder Annehmen der Bewerbungen. Die Laufzeiten zeigen, dass Tests mit H2 schneller ausgeführt werden als mit Testcontainers mit 34 Sekunden. Das Honeycomb-Modell testet mit nur 34 Tests das gesamte System, benötigt jedoch mit 47,7 Sekunden deutlich mehr Zeit.
@@ -128,7 +128,7 @@ Die kommenden Abschnitte untersuchen, wie sich diese Unterschiede mit wachsender
 		\caption{Phase zwei - Bewerbungs-, Vertrags - und Veranstaltungsmanagement}
 		\label{tab:eventmanagement}
 \end{table}
-\subsubsection{Fazit zur zweiten Phase}
+\subsubsection{Erkenntnisse zur zweiten Phase}
 Die \autoref{fig:phase-zwei} zeigt Veränderungen in der Teststruktur und Performance im Verlauf der Feature-Entwicklung. Mit jedem neu hinzugefügten Feature stieg die Anzahl der Tests sowie die Laufzeit der Testausführungen. Besonders beim \textbf{Vertragsmanagement} zeigte sich eine enge Abhängigkeit zum Bewerbungsprozess, da Verträge erst aus bestehenden Bewerbungen generiert werden können. Dies führte zu einer erhöhten Anzahl an Datenbankabfragen und verlängerte die Testlaufzeiten, insbesondere bei der Nutzung des Honeycomb-Modells.
 
 
@@ -150,7 +150,7 @@ Zusammenfassend zeigt die zweite Testphase, dass sowohl die Wahl der Teststrateg
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Phase drei - Messdaten mit zusätzlichen Tests und Spring Security}
-ach der Integration von Spring Security wurden die Testergebnisse in Phase drei erneut erfasst. Die Sicherheitsprüfungen beeinflussen die Testperformance, doch die gestiegene Testanzahl resultiert primär aus neuen Randfalltests, die während der Frontend-Entwicklung identifiziert wurden. Spring Security selbst fügte lediglich fünf Tests für den Login-Prozess hinzu, ohne spezifische Sicherheitsprüfungen für die Business Cases.
+Nach der Integration von Spring Security wurden die Testergebnisse in Phase drei erneut erfasst. Die Sicherheitsprüfungen beeinflussen die Testperformance, doch die gestiegene Testanzahl resultiert primär aus neuen Randfalltests, die während der Frontend-Entwicklung identifiziert wurden. Spring Security selbst fügte lediglich fünf Tests für den Login-Prozess hinzu, ohne spezifische Sicherheitsprüfungen für die Business Cases.
 
 Da in Phase eins die einzelnen Businessfälle bereits vollständig implementiert und analysiert wurden, können die Ergebnisse des Bewerbungsmanagements aus \autoref{tab:bewerbung_updated_first} als Referenz dienen. In dieser Phase wird darauf aufbauend das Vertragsmanagement betrachtet.
 
@@ -216,8 +216,8 @@ Wie bereits in Phase 2 beobachtet, bleibt H2 die schnellere Lösung mit nur leic
 	\label{fig:phase-drei}
 \end{figure}
 
-Im Gegensatz dazu verlängerten sich die Laufzeiten mit MySQL-Testcontainer wie in \autoref{fig:phase-drei} zu sehen. Besonders im Honeycomb-Modell ist der Anstieg auffällig: Die Laufzeit erhöhte sich von 101,9 Sekunden in Phase 2 von \autoref{tab:eventmanagement} auf 120,75 Sekunden von der \autoref{tab:eventbereich_updated} in Phase 3, ein Anstieg um fast 19 Sekunden. Dies liegt primär an der Authentifizierungsprüfung, die jede End-to-End-Anfrage durchläuft. Die zusätzlichen fünf Login-Tests  erklären diesen Anstieg.
-Die Testpyramide war weniger betroffen, da sie viele isolierte Tests nutzt, die nicht durch die vollständige Authentifizierung laufen. Die bereits in Phase 2 beobachteten Auswirkungen von Test-Driven Development auf die Fehlererkennung und den Debugging-Aufwand zeigten sich erneut: Während die Testpyramide gezielte Validierungen einzelner Geschäftsregeln ermöglichte, mussten im Honeycomb-Modell End-to-End-Tests häufiger angepasst werden, da Änderungen an einer Schicht mehrere Teile des Systems beeinflussten.
+Im Gegensatz dazu verlängerten sich die Laufzeiten mit MySQL-Testcontainer wie in \autoref{fig:phase-drei} zu sehen. Besonders im Honeycomb-Modell ist der Anstieg auffällig: Die Laufzeit erhöhte sich von 101,9 Sekunden (\autoref{tab:eventmanagement}) in Phase 2  auf 120,75 Sekunden (\autoref{tab:eventbereich_updated}) in Phase 3, ein Anstieg um fast 19 Sekunden. Dies liegt primär an der Authentifizierungsprüfung, die jeden Test durchläuft. Der Anstieg könnte daher durch die zusätzlichen fünf Login-Tests erklärt werden.
+Die Testpyramide war weniger betroffen, da sie viele isolierte Tests nutzt, die nicht durch die vollständige Authentifizierung laufen. Die bereits in Phase 2 beobachteten Auswirkungen auf die Fehlererkennung und den Debugging-Aufwand zeigten sich in Phase drei erneut.
 
 \subsection{Analyse der JaCoCo-Ergebnisse}
 Die JaCoCo-Analyse zeigt, wie gut die verschiedenen Teststrategien Codebereiche abdecken und worin sich die Testpyramide und das Honeycomb-Modell unterscheiden. Die folgende Tabelle enthält Metriken zur Testabdeckung. Die Prozentwerte geben an, wie viel Code während der Tests ausgeführt wurde, während die Spalte \textbf{Missed} die nicht getesteten Codeabschnitte angibt. Die Metrik \textbf{Instructions} zeigt, wie viele ausführbare Code-Anweisungen getestet wurden. Eine hohe Abdeckung bedeutet, dass der Großteil des Codes mindestens einmal geprüft wurde, während eine niedrige darauf hinweist, dass bestimmte Bereiche ungetestet blieben.
