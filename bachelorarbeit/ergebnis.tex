@@ -315,7 +315,7 @@ Die Testpyramide bietet eine effizientere Fehlererkennung. Sie testet alle Mutat
 Eine mögliche Optimierungsmöglichkeit wäre eine Anpassung der Timeout-Werte. Das könnte die Anzahl der Timeouts reduzieren und die Testabdeckung verbessern, allerdings auf Kosten einer längeren Gesamtdauer.
 
 \subsection{Testpyramide vs. Honeycomb Laufzeit und Statistik}
-Die Testpyramide benötigte insgesamt sieben Minuten und 18 Sekunden, davon 1 Minute und 34 Sekunden für die Mutationstests. Während dieser Zeit wurden 185 Mutationen generiert, von denen 178  erfolgreich erkannt und eliminiert wurden. Nur 3 Mutationen blieben ohne Testabdeckung.
+Die Testpyramide benötigte insgesamt sieben Minuten und 18 Sekunden, davon 1 Minute und 34 Sekunden für die Mutationstests (\autoref{tab:pit-timings}). Während dieser Zeit wurden 185 Mutationen generiert, von denen 178  erfolgreich erkannt und eliminiert wurden. Nur 3 Mutationen blieben ohne Testabdeckung.
 
 Im Vergleich dazu zeigt sich im Honeycomb-Modell eine bedeutend längere Testdauer. Die gesamte Laufzeit betrug 56 Minuten und 21 Sekunden, davon allein 53 Minuten und 37 Sekunden für die Mutationstests. Von den 185 generierten Mutationen konnte Honeycomb 175 eliminieren, jedoch traten 13 Mutationen ohne Testabdeckung auf. Die hohe Anzahl an Timeouts führte dazu, dass einige Mutationen nicht zuverlässig überprüft werden konnten.
 Die Testpyramide ist schneller, erreicht eine höhere Abdeckung und hat keine Timeouts. Das Honeycomb-Modell benötigt deutlich mehr Zeit und hat mehr Timeouts, deckt aber umfassendere Abläufe ab.

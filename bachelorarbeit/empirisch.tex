@@ -6,7 +6,7 @@ Die Testergebnisse zeigen deutliche Unterschiede zwischen der Testpyramide und d
 
 Die Einführung von Spring Security beeinflusste die Testlaufzeiten allein um 13 Sekunden im Honeycomb-Modell in \autoref{tab:eventbereich_updated_security}. Da jeder Test den vollständigen Authentifizierungsprozess durchlaufen musste, verlängerten sich die Laufzeiten spürbar. In der Testpyramide fiel der Effekt geringer aus, da viele Tests isolierte Schichten überprüften und nicht von der Authentifizierung betroffen waren.
 
-Die Laufzeitanalyse in \autoref{tab:eventbereich_updated} zeigt, dass das Honeycomb-Modell mit MySQL-Testcontainer erheblich längere Laufzeiten aufweist als die Testpyramide mit derselben Datenbank. Dies liegt an den umfassenden Systemtests, die zahlreiche Datenbankoperationen und API-Aufrufe beinhalten. Vor allem war dies beim Pitest erkenntlich, dass in \autoref{fig:honeycomb-diagramm} zu erkennen ist, dass es sehr viele Timeouts hat.
+Die Laufzeitanalyse in \autoref{tab:eventbereich_updated} zeigt, dass das Honeycomb-Modell deutlich längere Laufzeiten aufweist als die Testpyramide, obwohl beide denselben MySQL-Testcontainer nutzen. Dies liegt an den umfassenden Integrationstests, die zahlreiche Datenbankoperationen und API-Aufrufe beinhalten. Zudem könnte die längere Laufzeit auch mit Testcontainers zusammenhängen, da das Starten und Verwalten einer echten Datenbankinstanz zusätzliche Zeit benötigt. Besonders auffällig war dies beim PITest, wie in \autoref{fig:honeycomb-diagramm} zu erkennen ist, wo es zu zahlreichen Timeouts kam.
 
 TDD hatte einen positiven Einfluss auf die Teststabilität und erleichterte die frühen Entwicklungsphasen. Allerdings zeigte sich insbesondere im Honeycomb-Modell eine erschwerte Fehlersuche, da Fehler oft erst in späteren Testphasen oder durch komplette End-to-End-Szenarien sichtbar wurden. Die Testpyramide ermöglichte hier eine schnellere und gezieltere Fehleranalyse.
 \subsection{Effizienz der Teststrategien}
@@ -30,7 +30,7 @@ Die Implementierung von Spring Security in Phase 3 führte zu einem Anstieg der 
 
 Zusätzlich wurden fünf spezifische Login-Tests hinzugefügt, die zur Testanzahl beitrugen, jedoch keinen signifikanten Einfluss auf die Gesamtperformance hatten. Die Auswirkungen auf die Teststrategien zeigten, dass Auth-Tests in End-to-End-Szenarien erheblichen Overhead verursachen können, während bei granulareren Tests, wie sie in der Testpyramide vorkommen, der Einfluss moderater bleibt.
 
-Insgesamt verdeutlichte die Analyse, dass Spring Security die Testdauer in realitätsnahen Systemtests wie dem Honeycomb-Modell stärker beeinflusst, während eine schichtenspezifische Teststrategie wie die Testpyramide eine effizientere Integration ermöglicht.
+Insgesamt verdeutlichte die Analyse, dass Spring Security die Testdauer in realitätsnahen Integrationstests wie dem Honeycomb-Modell stärker beeinflusst, während eine schichtenspezifische Teststrategie wie die Testpyramide eine effizientere Integration ermöglicht.
 
 
 \subsection{Bewertung und Auswahl der Teststrategien im Monolithen}
@@ -38,10 +38,10 @@ In der durchgeführten Analyse der Teststrategien zeigte sich, dass die Testpyra
 
 Im Gegensatz dazu erforderte das Honeycomb-Modell eine vollständige Durchlaufzeit durch alle Schichten der Anwendung, was sich in längeren Laufzeiten widerspiegelte. Dies machte sich insbesondere beim Debugging bemerkbar: Ein Fehler, der in einer tiefen Schicht auftrat, wurde erst spät sichtbar, da das gesamte System durchlaufen werden musste. Dadurch gestaltete sich die Fehlersuche zeitaufwendiger als in der Testpyramide, wo gezielte Tests eine direkte Zuordnung von Fehlern zu bestimmten Schichten ermöglichten.
 
-Die Ergebnisse legen nahe, dass sich die Testpyramide in einem Monolithen besonders gut eignet, da sie eine schnelle Rückmeldung über Fehler liefert und gezieltes Debugging ermöglicht. Das Honeycomb-Modell erwies sich hingegen als ineffizienter, da die Systemtests durch die vollständige Abdeckung aller Schichten längere Laufzeiten hatten und Fehler nicht direkt einer bestimmten Schicht zugeordnet werden konnten.
+Die Ergebnisse legen nahe, dass sich die Testpyramide in einem Monolithen besonders gut eignet, da sie eine schnelle Rückmeldung über Fehler liefert und gezieltes Debugging ermöglicht. Das Honeycomb-Modell erwies sich hingegen als ineffizienter, da die Integrationstests durch die vollständige Abdeckung aller Schichten längere Laufzeiten hatten und Fehler nicht direkt einer bestimmten Schicht zugeordnet werden konnten.
 
-Die Quelle von Schaffer und Dybeck im Jahr 2018 beschreibt zwar die Herausforderungen der Testpyramide speziell im Kontext von Microservices, liefert jedoch eine relevante Perspektive auf Teststrategien im Allgemeinen.
-\textit{"The biggest complexity in a Microservice is not within the service itself, but in how it interacts with others, and that deserves special attention."} \cite{Spotify18}.In einem Monolithen mit klar getrennten Schichten ist diese Problematik weniger ausgeprägt, da die Hauptkomplexität innerhalb des Systems selbst liegt und nicht in der Kommunikation zwischen unabhängigen Services.
+Die Quelle von Schaffer und Dybeck im Jahr 2018 beschreibt zwar die Herausforderungen der Testpyramide speziell im Kontext von Microservices, liefert jedoch eine relevante Perspektive auf Teststrategien \textit{"im Allgemeinen:
+The biggest complexity in a Microservice is not within the service itself, but in how it interacts with others, and that deserves special attention. \cite{Spotify18}"}. In einem Monolithen mit klar getrennten Schichten ist diese Problematik weniger ausgeprägt, da die Hauptkomplexität innerhalb des Systems selbst liegt und nicht in der Kommunikation zwischen unabhängigen Services.
 
 Dennoch bedeutet dies nicht, dass das Honeycomb-Modell für einen Monolithen grundsätzlich ungeeignet ist. Falls eine realitätsnähere Absicherung gewünscht wird, könnte der Anteil an Integrationstests innerhalb der Testpyramide erhöht werden, um kritische Systeminteraktionen besser zu überprüfen, ohne die Nachteile des Honeycomb-Modells vollständig zu übernehmen.
 
