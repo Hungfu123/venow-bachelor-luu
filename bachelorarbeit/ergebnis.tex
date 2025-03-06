@@ -1,18 +1,5 @@
 \section{Ergebnisse und Interpretation}
-Die durchgeführten Testmessungen lassen sich in drei Phasen unterteilen, die verschiedene Aspekte der Teststrategien Testpyramide und Honeycomb-Modell beleuchten. In der ersten Phase erfolgte eine getrennte Analyse der Anwendungsfälle Bewerbungsprozess, Vertragsmanagement und Veranstaltungsmanagement, um die spezifischen Auswirkungen der beiden Strategien zu untersuchen. Alle Anwendungsfälle waren zu diesem Zeitpunkt vollständig implementiert.
-
-Für jede Testkonfiguration wurden zehn Durchläufe durchgeführt, aus denen die durchschnittliche Laufzeit und die Anzahl der ausgeführten Tests ermittelt wurden. Die Tests liefen mit Gradle unter Java 21 auf einem System mit 16 GB RAM, einem AMD Ryzen 5 5600H und einer 512 GB NVMe SSD unter Windows. Um möglichst präzise Laufzeitergebnisse zu erhalten, wurden während der Testdurchläufe keine weiteren Programme ausgeführt.
-
-Neben der Testlaufzeit wurde analysiert, inwiefern sich die Anzahl der Tests zwischen den Strategien unterscheidet und welchen Einfluss dies auf die Testergebnisse hat. Ein besonderer Fokus lag dabei auf der Frage, ob das Honeycomb-Modell durch seine ausschließlich realitätsnahen Tests präzisere, aber potenziell langsamere Testergebnisse liefert und ob die Testpyramide durch die Kombination aus schnellen Unit-Tests und gezielten Integrationstests eine effizientere Alternative darstellt. Zusätzlich wurde der Einfluss von Test-Driven Development (TDD) untersucht, insbesondere hinsichtlich der Auswirkungen auf die Testqualität und die Struktur der entwickelten Tests.
-In der zweiten Phase wurde die Entwicklung der Testkennzahlen über den gesamten Implementierungsprozess hinweg betrachtet. Zunächst wurde der Bewerbungsprozess vollständig entwickelt, getestet und gemessen, bevor das Vertragsmanagement als nächstes Feature hinzugefügt wurde. Nach Abschluss der Tests folgte schließlich die Integration und Messung des Veranstaltungsmanagements.
-
-Durch diese schrittweise Erweiterung konnte untersucht werden, wie sich die steigende Komplexität der Anwendung und die zunehmenden Abhängigkeiten zwischen den Features auf die Testperformance auswirkten. Die Analyse betrachtete nicht nur die einzelnen Features, sondern auch deren Effekt auf die gesamte Teststrategie im Verlauf der Entwicklung.
-
-In der dritten Phase wurden zusätzliche Tests ergänzt, die aus Fehleranalysen während der Frontend-Entwicklung resultierten. Diese Tests deckten Randfälle ab und erweiterten die Gesamtabdeckung der Anwendung.
-
-Darüber hinaus wurde Spring Security implementiert, wodurch die Authentifizierungs- und Autorisierungsszenarien in die Tests aufgenommen wurden. Die Messungen wurden unter denselben Rahmenbedingungen wie in Phase zwei durchgeführt, um die Ergebnisse vergleichbar zu halten.
-
-Am Ende jeder Phase werden die wichtigsten Erkenntnisse zusammengefasst und die Auswirkungen der Teststrategien bewertet.
+Hier beginnt der Abschnitt wo die Laufzeiten zwischen den Teststrategien gemessen werden in drei Phasen wie in der Methodik beschrieben.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Phase eins - Business Case-spezifische Testergebnisse}
 In dieser Phase werden die Testergebnisse für die drei zentralen Geschäftsprozesse der Anwendung untersucht: Bewerbungsprozess, Vertragsmanagement und Veranstaltungsmanagement. Diese Anwendungsfälle wurden bereits in den vorherigen Kapiteln beschrieben und bilden die Grundlage für die Untersuchung der beiden Teststrategien.
@@ -310,7 +297,7 @@ Im Gegensatz dazu zeigt 175/185 in der Mutation Coverage von Honeycomb, dass von
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{fig/pitest-timeout.png}
-	\caption{Verteilung der Mutationsstatusse}
+	\caption{Verteilung der Mutationsstatus}
 	\label{fig:honeycomb-diagramm}
 \end{figure}
 Tabelle \ref{tab:pit-timings} enthält verschiedene Metriken zur Laufzeit und Stabilität des Mutation Testings. Die \textbf{Gesamtdauer}beschreibt die gesamte Zeit, die für das Mutation Testing benötigt wurde. Die \textbf{Mutation Analysis }misst nur die Zeit für das Erzeugen und Testen der Mutationen. \textbf{Timeouts }zeigen, wie oft Tests nicht innerhalb der vorgesehenen Zeit abgeschlossen wurden. In solchen Fällen wird die Mutation als überlebt gewertet. Mutationen ohne Abdeckung sind Mutationen, die in Codeabschnitten eingefügt wurden, die von keinem Testfall erreicht wurden.

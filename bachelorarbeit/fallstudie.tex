@@ -2,25 +2,31 @@
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\textwidth]{fig/UML_Diagramm_Luu_Bachelor_Thema.png}
-	\caption{Benutzer Prozess bei Venow}
+	\caption{Benutzerprozess bei Venow}
 	\label{fig:uml}
 \end{figure}
-Eine persönliche Motivation für die Entwicklung dieser Webanwendung war ein Bekannter, der berichtete, dass er seinen Imbisswagen jedes Jahr für eine Veranstaltung anmeldete. Der Bewerbungsprozess verlief ausschließlich analog. Hierzu musste er den Veranstalter kontaktieren, viele E-Mails schreiben und zahlreiche Telefonate führen. Die vertraglichen Details wurden ebenfalls manuell geregelt. Dieser Prozess war aufwendig und fehleranfällig. Es war schwierig, den Überblick über alle Bewerbungen und abgeschlossenen Verträge zu behalten. Daraus entstand die Idee, eine digitale Lösung zu entwickeln. Eine Plattform sollte alle Bewerbungen und Verträge zentral speichern. Der Bewerbungsprozess sollte mit wenigen Klicks erfolgen. Verträge sollten direkt digital erstellt und verwaltet werden. Veranstalter sollten neue Veranstaltungen effizient organisieren können. Viele Veranstaltungen sind weiterhin analog und verfügen über keine zentrale digitale Lösung. Diese Webanwendung bietet eine einheitliche Plattform für Veranstalter und Schausteller. Veranstalter können eigenständig Veranstaltungen erstellen, Bewerbungen verwalten und Verträge abschließen. Schausteller haben die Möglichkeit, sich über die Plattform für Veranstaltungen zu bewerben. Nach der Annahme durch den Veranstalter wird ein Vertrag generiert, den der Schausteller annehmen kann.
+Die Motivation für die Entwicklung dieser Webanwendung basiert auf den Erfahrungen eines Bekannten, der als Schausteller tätig ist und jedes Jahr seinen Imbisswagen für verschiedene Veranstaltungen anmeldet. Der Bewerbungsprozess erfolgt dabei häufig noch analog: Veranstalter müssen kontaktiert, zahlreiche E-Mails geschrieben und Telefonate geführt werden. Auch die vertraglichen Details werden meist schriftlich per Brief oder PDF geregelt. Dieser Prozess ist aufwendig, fehleranfällig und macht es schwer, den Überblick über Bewerbungen und abgeschlossene Verträge zu behalten. Daraus entstand die Idee, eine digitale Lösung zu entwickeln. Eine Plattform sollte alle Bewerbungen und Verträge zentral speichern. Der Bewerbungsprozess sollte mit wenigen Klicks erfolgen. Verträge sollten direkt digital erstellt und verwaltet werden. Veranstalter sollten neue Veranstaltungen effizient organisieren können. Viele Veranstaltungen werden weiterhin analog organisiert und verfügen über keine zentrale digitale Lösung. Diese Webanwendung bietet eine einheitliche Plattform für Veranstalter und Schausteller. Veranstalter können eigenständig Veranstaltungen erstellen, Bewerbungen verwalten und Verträge abschließen. Schausteller haben die Möglichkeit, sich über die Plattform für Veranstaltungen zu bewerben. Nach der Annahme durch den Veranstalter wird ein Vertrag generiert, den der Schausteller annehmen kann.
 
-Diese Webanwendung wurde als Fallstudie gewählt, weil sie mehrere zentrale Herausforderungen der Softwareentwicklung abbildet. Die Plattform erfasst komplexe organisatorische Abläufe. Sie unterstützt Veranstalter bei der Verwaltung von Veranstaltungen und Schausteller bei der Bewerbung und Vertragsabwicklung. Beide Nutzergruppen haben unterschiedliche, aber miteinander verknüpfte Interaktionen mit dem System. Die Anwendung bietet vielfältige Testfälle, um verschiedene Teststrategien systematisch zu vergleichen. Durch ihre praxisnahe Umsetzung dient sie als reales Beispiel für die digitale Transformation im Veranstaltungsmanagement.
+Diese Webanwendung wurde als Fallstudie gewählt, weil sie mehrere zentrale Herausforderungen der Softwareentwicklung abbildet. Die Plattform erfasst organisatorische Abläufe. Sie unterstützt Veranstalter bei der Verwaltung von Veranstaltungen und Schausteller bei der Bewerbung und Vertragsabwicklung. Beide Nutzergruppen haben unterschiedliche, aber miteinander verknüpfte Interaktionen mit dem System. Die Anwendung bietet vielfältige Testfälle, um verschiedene Teststrategien systematisch zu vergleichen. Durch ihre praxisnahe Umsetzung dient sie als reales Beispiel für die digitale Transformation im Veranstaltungsmanagement.
 
 
 
 \subsection{Erstellung von Veranstaltungen durch Veranstalter}
 
-Wie in Abbildung \ref{fig:organizer-events-create} haben die Veranstalter die Möglichkeit, über ein Formular neue Veranstaltungen anzulegen. Um auf die Formularseite zu gelangen, kann man den Button oben rechts anklicken. Hier können sie alle relevanten Informationen wie Datum, Standort und die maximale Anzahl an Stellplätzen erfassen und mit dem Button die Veranstaltung erstellen. 
+Wie in Abbildung \ref{fig:organizer-events-create} haben die Veranstalter die Möglichkeit, über ein Formular neue Veranstaltungen anzulegen. Um auf die Formularseite zu gelangen, kann man den Button oben rechts anklicken. Hier können sie alle relevanten Informationen wie Datum, Standort und die maximale Anzahl an Stellplätzen definieren und mit dem Button die Veranstaltung erstellen. 
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{fig/frontend-organizer-events-create.png}
+	\caption{Übersicht der Veranstaltungen für Veranstalter}
+	\label{fig:organizer-events-create}
+\end{figure}
 
 
 
 \subsection{Veranstaltungs-Management}
 
-Veranstalter können neue Veranstaltungen erstellen und bestehende Veranstaltungen bearbeiten. Nachdem eine Veranstaltung erstellt wurde, gelangt man wieder auf die Übersichtsseite der Veranstaltungen wie in Abbildung \ref{fig:organizer-Veranstaltungen} zu sehen. Alle Veranstaltungen sind für Schausteller sichtbar. Eine integrierte Suchfunktion für die Schausteller ermöglicht es, gezielt nach Veranstaltungen zu suchen. Veranstalter können relevante Veranstaltungsdaten wie Datum, Ort und verfügbare Standplätze erfassen. Diese Informationen sind mit anderen Modulen verknüpft. Alle Prozessschritte greifen ineinander, um eine effiziente Verwaltung zu ermöglichen. Außerdem kann man die einzelnen Veranstaltungen bearbeiten, indem man auf den Stift der einzelnen Veranstaltungen anklickt.
+Veranstalter können neue Veranstaltungen erstellen und bestehende Veranstaltungen bearbeiten. Nachdem eine Veranstaltung erstellt wurde, gelangt man wieder auf die Übersichtsseite der Veranstaltungen wie in Abbildung \ref{fig:organizer-Veranstaltungen} zu sehen. Alle Veranstaltungen sind für Schausteller sichtbar. Eine integrierte Suchfunktion für die Schausteller ermöglicht es, gezielt nach Veranstaltungen zu suchen. Veranstalter können relevante Veranstaltungsdaten wie Datum, Ort und verfügbare Standplätze erfassen. Diese Informationen sind mit anderen Modulen verknüpft. Alle Prozessschritte greifen ineinander, um eine effiziente Verwaltung zu ermöglichen. Außerdem kann man die einzelnen Veranstaltungen bearbeiten, indem man auf den Stift der einzelnen Veranstaltungen klickt.
 
 \begin{figure}[H]
 	\centering
@@ -31,9 +37,9 @@ Veranstalter können neue Veranstaltungen erstellen und bestehende Veranstaltung
 \subsection{Bewerbungsprozess}
 
 
-Abbildung~\ref{fig:exhibitor-apply} zeigt die Bewerbersicht innerhalb der Plattform. Schausteller können sich über vorhandene Veranstaltungen informieren und sich direkt über das gezeigte Formular bewerben. Das Formular erfasst Stammdaten des Bewerbers, wie die Firmenname, Art des Geschäfts und frühere Teilnahmen, sowie spezifische Anforderungen oder eine Nachricht an den Veranstalter.  
+Abbildung~\ref{fig:exhibitor-apply} zeigt die Bewerbersicht innerhalb der Plattform. Schausteller können sich über vorhandene Veranstaltungen informieren und sich direkt über das gezeigte Formular bewerben. Das Formular erfasst Stammdaten des Bewerbers, wie den Firmennamen, die Art des Geschäfts und ob man zum Beispiel in vorherigen Jahren bereits an dieser Veranstaltung teilgenommen hat, sowie spezifische Anforderungen oder eine Nachricht an den Veranstalter.
 
-Veranstalter können die eingegangenen Bewerbungen einsehen und den aktuellen Status jeder Bewerbung nachverfolgen. Das System zeigt an, ob eine Bewerbung neu eingereicht, akzeptiert oder bereits in einen Vertrag überführt wurde. Wird eine Bewerbung angenommen, kann der Veranstalter daraus einen Vertrag generieren.
+Veranstalter können die eingegangenen Bewerbungen einsehen und den aktuellen Status jeder Bewerbung nachverfolgen. Das System zeigt an, ob eine Bewerbung neu eingereicht, akzeptiert oder bereits in einen Vertrag überführt wurde. Über entsprechende Buttons kann der Veranstalter eine Bewerbung akzeptieren und daraus direkt einen Vertrag generieren.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{fig/frontend-exhibitor-apply.png}
@@ -43,7 +49,7 @@ Veranstalter können die eingegangenen Bewerbungen einsehen und den aktuellen St
 
 \subsection{Aus angenommenen Bewerbungen Verträge erstellen}
 
-Nachdem der Schausteller sich beworben hatte, kann der Veranstalter wie in Abbildung \ref{fig:applications-create-contract} sich die Bewerbung anschauen. Veranstalter können Bewerbungen prüfen und über eine Annahme oder Ablehnung entscheiden. Wird eine Bewerbung angenommen, kann der Veranstalter direkt einen Vertrag über die Plattform erstellen, indem man auf den Button \textbf{Vertrag erstellen} klickt.
+Nachdem der Schausteller sich beworben hat, kann der Veranstalter, wie in Abbildung \ref{fig:applications-create-contract} gezeigt, die Bewerbung einsehen. Veranstalter können Bewerbungen prüfen und über eine Annahme oder Ablehnung entscheiden. Wird eine Bewerbung angenommen, kann der Veranstalter über die Plattform einen Vertrag erstellen, indem er auf den Button Vertrag erstellen klickt. Daraufhin öffnet sich ein Formular, was in nächstem Abschnitt erklärt wird.
 
 \begin{figure}[H]
 	\centering
@@ -53,7 +59,7 @@ Nachdem der Schausteller sich beworben hatte, kann der Veranstalter wie in Abbil
 \end{figure}
 \subsection{Vertragsverwaltung}
 
-Wenn auf den Button \textbf{Vertrag erstellen} geklickt wurde, dann gelangt man auf das Vertragsformular wie in Abbildung \ref{fig:exhibitor-contracts} zu sehen. Veranstalter können aus einer angenommenen Bewerbung einen Vertrag erstellen. Dabei werden Details wie Preis und Standplatznummer festgelegt. Schausteller erhalten den Vertrag digital und können diesen einsehen. Sie haben die Möglichkeit, den Vertrag zu akzeptieren oder abzulehnen. Sobald beide Parteien den Vertrag annehmen, ist der Bewerbungsprozess abgeschlossen und man gelangt auf die Übersichtsseite von den Verträgen.
+Wenn auf den Button \textbf{Vertrag erstellen} geklickt wurde, dann gelangt man auf das Vertragsformular wie in Abbildung \ref{fig:exhibitor-contracts} zu sehen. Dabei werden Details wie Preis und Standplatznummer festgelegt. Schausteller erhalten den Vertrag digital und können diesen einsehen. Sie haben die Möglichkeit, den Vertrag zu akzeptieren oder abzulehnen. Sobald beide Parteien den Vertrag annehmen, ist der Bewerbungsprozess abgeschlossen und man gelangt auf die Übersichtsseite von den Verträgen.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{fig/frontend-exhibitor-contracts-confirm.png}
