@@ -49,19 +49,29 @@ Die Anwendung basiert auf einer **3-Schichten-Architektur**:
 ### Datenbank und Backend starten
 ```bash
 cd backend
-docker-compose up -d
+docker compose up -d
 ```
 
 ```bash
-./mvnw spring-boot:run
+./gradlew bootRun
 ```
  Falls **Testcontainers** genutzt wird, startet die Datenbank automatisch.
 
 ### Frontend starten
 ```bash
-cd frontend
+cd ../frontend
 npm install
 npm run dev
+```
+### Testuser für die Anwendung
+```bash
+ORGANIZER (Veranstalter):
+email: luu@example.com
+password: password123
+
+EXHIBITOR (Schausteller):
+email: showman@example.com
+password: password123
 ```
 
 ## 🔍 Tests ausführen
@@ -77,12 +87,6 @@ npm run dev
 gradlew check
 ```
 Führt die Tests sowie die zugehörigen Qualitätsanalysen aus.
-
-### Unit- & Integrationstests (Testpyramide)
-```bash
-gradlew test
-```
-Führt standardmäßig die Unit- und Integrationstests für die Testpyramide aus.
 
 ### Honeycomb-Tests separat ausführen
 ```bash
@@ -102,6 +106,7 @@ Führt die Tests für das Honeycomb-Testmodell aus.
 ./gradlew testPyramidTest -PactiveProfile=testpyramid-h2
 ```
 Setzt das aktive Spring-Profil auf `testpyramid-h2` und führt die Tests der Testpyramide mit H2 als Datenbank aus.
+Ansonsten in die Testbase im testpyramid Ordner bei @Activeprofiles auf "testpyramid-h2" umbenennen.
 
 ### Mutation Testing für Testpyramid
 ```bash
@@ -134,7 +139,6 @@ Davon die index.html öffnen
 
 ## 📊 Evaluation
 - **Laufzeit** der Tests (H2 vs. MySQL mit Testcontainers)
-- **Fehlererkennungsrate** zwischen Testpyramide und Honeycomb-Modell
 - **Vergleich der Datenbank-Performance**
 
 
