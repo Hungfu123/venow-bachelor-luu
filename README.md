@@ -58,6 +58,8 @@ docker compose up -d
  Falls **Testcontainers** genutzt wird, startet die Datenbank automatisch.
 
 ### Frontend starten
+
+Damit das Frontend auch funktioniert, muss dieser localhost auch verfügbar sein: http://localhost:5173/
 ```bash
 cd ../frontend
 npm install
