@@ -63,6 +63,16 @@ cd frontend
 npm install
 npm run dev
 ```
+### Testuser für die Anwendung
+```bash
+ORGANIZER (Veranstalter):
+email: luu@example.com
+password: password123
+
+EXHIBITOR (Schausteller):
+email: showman@example.com
+password: password123
+```
 
 ## 🔍 Tests ausführen
 
