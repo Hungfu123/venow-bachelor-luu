@@ -53,7 +53,7 @@ docker-compose up -d
 ```
 
 ```bash
-./mvnw spring-boot:run
+./gradlew bootRun
 ```
  Falls **Testcontainers** genutzt wird, startet die Datenbank automatisch.
 
