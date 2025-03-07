@@ -105,7 +105,8 @@ Führt die Tests für das Honeycomb-Testmodell aus.
 Testbase im testpyramid Ordner bei @Activeprofiles auf "testpyramid-h2" umbenennen.
 Die Testbase ist hier unter: 
 ```
-src/testpyramid/java/org/venow/backend/TestBase
+src/testpyramid/java/org/venow/backend/
+Es ist die TestBase.java
 ```
 führe den Befehl nochmal aus:
 ```bash
