@@ -186,7 +186,7 @@ pitest {
 	targetClasses = ['org.venow.backend.*']
 	excludedClasses = ['org.venow.backend.config.*']
 	targetTests = ['org.venow.backend.*']
-	timeoutConstInMillis = 30000
+	timeoutConstInMillis = 10000
 	features = ['+auto_threads']
 	testSourceSets = [sourceSets.testpyramid]
 	junit5PluginVersion = '1.2.1'
