@@ -84,7 +84,7 @@ password: password123
 
 ### Alternativ: Tests mit Gradle Check ausführen
 ```bash
-gradlew check
+./gradlew check
 ```
 Führt die Tests sowie die zugehörigen Qualitätsanalysen aus.
 
