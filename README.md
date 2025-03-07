@@ -105,8 +105,14 @@ Führt die Tests für das Honeycomb-Testmodell aus.
 ```bash
 ./gradlew testPyramidTest -PactiveProfile=testpyramid-h2
 ```
-Setzt das aktive Spring-Profil auf `testpyramid-h2` und führt die Tests der Testpyramide mit H2 als Datenbank aus.
-Ansonsten in die Testbase im testpyramid Ordner bei @Activeprofiles auf "testpyramid-h2" umbenennen.
+
+Testbase im testpyramid Ordner bei @Activeprofiles auf "testpyramid-h2" umbenennen.
+Die Testbase ist hier: src/testpyramid/java/org/venow/backend/TestBase
+
+führe den Befehl nochmal aus:
+```bash
+./gradlew testPyramidTest
+```
 
 ### Mutation Testing für Testpyramid
 ```bash
