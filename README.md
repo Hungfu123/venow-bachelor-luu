@@ -84,6 +84,8 @@ password: password123
 ```
  Führt alle Tests aus und erstellt Code Coverage-Berichte mit JaCoCo sowie Mutationstests mit Pitest.
 
+ ACHTUNG: wegen dem PITtest von Honeycomb, kann das sehr lange dauern, weil der PITest von Honeycomb ca. 1 Stunde betragen kann. Der Rest davon geht schnell
+
 ### Alternativ: Tests mit Gradle Check ausführen
 ```bash
 ./gradlew check
