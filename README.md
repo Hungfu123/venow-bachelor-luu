@@ -102,10 +102,6 @@ Führt die Tests für das Honeycomb-Testmodell aus.
 
 
 ### Testpyramide mit H2-Datenbank ausführen
-```bash
-./gradlew testPyramidTest -PactiveProfile=testpyramid-h2
-```
-
 Testbase im testpyramid Ordner bei @Activeprofiles auf "testpyramid-h2" umbenennen.
 Die Testbase ist hier: src/testpyramid/java/org/venow/backend/TestBase
 
