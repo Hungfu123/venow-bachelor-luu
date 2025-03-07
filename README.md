@@ -59,7 +59,7 @@ docker compose up -d
 
 ### Frontend starten
 
-Damit das Frontend auch funktioniert, muss dieser localhost auch verfügbar sein: http://localhost:5173/
+Damit das Frontend auch funktioniert, muss dieser localhost auch verfügbar sein, wenn npm run dev läuft: http://localhost:5173/ 
 ```bash
 cd ../frontend
 npm install
